@@ -62,7 +62,7 @@ Partial Class KMDISystemsLogin
         Me.PasswordTbox.FontSize = MetroFramework.MetroTextBoxSize.Medium
         Me.PasswordTbox.FontWeight = MetroFramework.MetroTextBoxWeight.Bold
         Me.PasswordTbox.Lines = New String(-1) {}
-        Me.PasswordTbox.Location = New System.Drawing.Point(173, 127)
+        Me.PasswordTbox.Location = New System.Drawing.Point(173, 126)
         Me.PasswordTbox.MaxLength = 32767
         Me.PasswordTbox.Name = "PasswordTbox"
         Me.PasswordTbox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
