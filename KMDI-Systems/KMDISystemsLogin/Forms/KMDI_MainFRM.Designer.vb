@@ -904,7 +904,6 @@ Partial Class KMDI_MainFRM
         'ReloadMainFrm
         '
         Me.ReloadMainFrm.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ReloadMainFrm.Backwards = True
         Me.ReloadMainFrm.Cursor = System.Windows.Forms.Cursors.Hand
         Me.ReloadMainFrm.Location = New System.Drawing.Point(1127, 42)
         Me.ReloadMainFrm.Maximum = 100

@@ -347,4 +347,5 @@
         LoggedAcctPermissions()
         PanelVisibility()
     End Sub
+
 End Class
