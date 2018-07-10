@@ -340,11 +340,7 @@
             ReloadMainFrm.Value = i
             System.Threading.Thread.Sleep(1)
         Next
-
-        CheckCHKBOX()
-        PanelVisibility()
-        LoggedAcctPermissions()
-        PanelVisibility()
+        KMDI_MainFRM_Load(sender, e)
     End Sub
 
 End Class
