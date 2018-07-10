@@ -80,7 +80,7 @@ Partial Class KMDI_MainFRM
         Me.AcctsLBL = New MetroFramework.Controls.MetroLabel()
         Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
         Me.NicknameLbl = New MetroFramework.Controls.MetroLabel()
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.ReloadMainFrm = New MetroFramework.Controls.MetroProgressSpinner()
         Me.FlowLayoutPanel3.SuspendLayout()
         Me.ContractsPanel.SuspendLayout()
         Me.FlowLayoutPanel9.SuspendLayout()
@@ -96,7 +96,6 @@ Partial Class KMDI_MainFRM
         Me.FlowLayoutPanel10.SuspendLayout()
         Me.AccountsPanel.SuspendLayout()
         Me.FlowLayoutPanel8.SuspendLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'DbNameCbox
@@ -902,16 +901,22 @@ Partial Class KMDI_MainFRM
         Me.NicknameLbl.Theme = MetroFramework.MetroThemeStyle.Dark
         Me.NicknameLbl.UseStyleColors = True
         '
-        'PictureBox1
+        'ReloadMainFrm
         '
-        Me.PictureBox1.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.PictureBox1.Image = Global.KMDI_Systems.My.Resources.Resources.refresh_white_192x192
-        Me.PictureBox1.Location = New System.Drawing.Point(1119, 39)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(36, 36)
-        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.PictureBox1.TabIndex = 7
-        Me.PictureBox1.TabStop = False
+        Me.ReloadMainFrm.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ReloadMainFrm.Backwards = True
+        Me.ReloadMainFrm.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.ReloadMainFrm.Location = New System.Drawing.Point(1127, 42)
+        Me.ReloadMainFrm.Maximum = 100
+        Me.ReloadMainFrm.Name = "ReloadMainFrm"
+        Me.ReloadMainFrm.Size = New System.Drawing.Size(26, 29)
+        Me.ReloadMainFrm.Spinning = False
+        Me.ReloadMainFrm.Style = MetroFramework.MetroColorStyle.White
+        Me.ReloadMainFrm.TabIndex = 17
+        Me.ReloadMainFrm.Theme = MetroFramework.MetroThemeStyle.Dark
+        Me.ReloadMainFrm.UseSelectable = True
+        Me.ReloadMainFrm.UseStyleColors = True
+        Me.ReloadMainFrm.Value = 100
         '
         'KMDI_MainFRM
         '
@@ -919,7 +924,7 @@ Partial Class KMDI_MainFRM
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1360, 760)
         Me.ControlBox = False
-        Me.Controls.Add(Me.PictureBox1)
+        Me.Controls.Add(Me.ReloadMainFrm)
         Me.Controls.Add(Me.NicknameLbl)
         Me.Controls.Add(Me.DbNameCbox)
         Me.Controls.Add(Me.FlowLayoutPanel3)
@@ -952,7 +957,6 @@ Partial Class KMDI_MainFRM
         Me.AccountsPanel.ResumeLayout(False)
         Me.AccountsPanel.PerformLayout()
         Me.FlowLayoutPanel8.ResumeLayout(False)
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1015,5 +1019,5 @@ Partial Class KMDI_MainFRM
     Friend WithEvents MngeAccTile As MetroFramework.Controls.MetroTile
     Friend WithEvents LogoutTile As MetroFramework.Controls.MetroTile
     Friend WithEvents AcctsLBL As MetroFramework.Controls.MetroLabel
-    Friend WithEvents PictureBox1 As PictureBox
+    Friend WithEvents ReloadMainFrm As MetroFramework.Controls.MetroProgressSpinner
 End Class

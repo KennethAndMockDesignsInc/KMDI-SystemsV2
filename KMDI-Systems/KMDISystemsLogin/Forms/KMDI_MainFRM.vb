@@ -336,8 +336,15 @@
         Me.Dispose()
     End Sub
 
-    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
+    Private Sub ReloadMainFrm_Click(sender As Object, e As EventArgs) Handles ReloadMainFrm.Click
+        For i As Integer = 0 To 100
+            ReloadMainFrm.Value = i
+            System.Threading.Thread.Sleep(1)
+        Next
+
         CheckCHKBOX()
+        PanelVisibility()
+        LoggedAcctPermissions()
         PanelVisibility()
     End Sub
 End Class
