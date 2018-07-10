@@ -72,7 +72,6 @@ Partial Class KMDI_MainFRM
         Me.AccountsPanel = New MetroFramework.Controls.MetroPanel()
         Me.FlowLayoutPanel8 = New System.Windows.Forms.FlowLayoutPanel()
         Me.InboxTile = New MetroFramework.Controls.MetroTile()
-        Me.RecycleTile = New MetroFramework.Controls.MetroTile()
         Me.NotifTile = New MetroFramework.Controls.MetroTile()
         Me.UpdSecTile = New MetroFramework.Controls.MetroTile()
         Me.MngeAccTile = New MetroFramework.Controls.MetroTile()
@@ -81,6 +80,7 @@ Partial Class KMDI_MainFRM
         Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
         Me.NicknameLbl = New MetroFramework.Controls.MetroLabel()
         Me.ReloadMainFrm = New MetroFramework.Controls.MetroProgressSpinner()
+        Me.RecycleTile = New MetroFramework.Controls.MetroTile()
         Me.FlowLayoutPanel3.SuspendLayout()
         Me.ContractsPanel.SuspendLayout()
         Me.FlowLayoutPanel9.SuspendLayout()
@@ -103,7 +103,7 @@ Partial Class KMDI_MainFRM
         Me.DbNameCbox.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.DbNameCbox.FormattingEnabled = True
         Me.DbNameCbox.ItemHeight = 23
-        Me.DbNameCbox.Location = New System.Drawing.Point(1161, 41)
+        Me.DbNameCbox.Location = New System.Drawing.Point(1142, 35)
         Me.DbNameCbox.Name = "DbNameCbox"
         Me.DbNameCbox.Size = New System.Drawing.Size(143, 29)
         Me.DbNameCbox.TabIndex = 1
@@ -165,6 +165,7 @@ Partial Class KMDI_MainFRM
         'FlowLayoutPanel9
         '
         Me.FlowLayoutPanel9.Controls.Add(Me.NewConTile)
+        Me.FlowLayoutPanel9.Controls.Add(Me.RecycleTile)
         Me.FlowLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.FlowLayoutPanel9.Location = New System.Drawing.Point(0, 30)
         Me.FlowLayoutPanel9.Name = "FlowLayoutPanel9"
@@ -777,7 +778,6 @@ Partial Class KMDI_MainFRM
         'FlowLayoutPanel8
         '
         Me.FlowLayoutPanel8.Controls.Add(Me.InboxTile)
-        Me.FlowLayoutPanel8.Controls.Add(Me.RecycleTile)
         Me.FlowLayoutPanel8.Controls.Add(Me.NotifTile)
         Me.FlowLayoutPanel8.Controls.Add(Me.UpdSecTile)
         Me.FlowLayoutPanel8.Controls.Add(Me.MngeAccTile)
@@ -802,23 +802,10 @@ Partial Class KMDI_MainFRM
         Me.InboxTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
         Me.InboxTile.UseSelectable = True
         '
-        'RecycleTile
-        '
-        Me.RecycleTile.ActiveControl = Nothing
-        Me.RecycleTile.Location = New System.Drawing.Point(203, 3)
-        Me.RecycleTile.Name = "RecycleTile"
-        Me.RecycleTile.Size = New System.Drawing.Size(128, 63)
-        Me.RecycleTile.Style = MetroFramework.MetroColorStyle.Blue
-        Me.RecycleTile.TabIndex = 33
-        Me.RecycleTile.Text = "Recycle"
-        Me.RecycleTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
-        Me.RecycleTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
-        Me.RecycleTile.UseSelectable = True
-        '
         'NotifTile
         '
         Me.NotifTile.ActiveControl = Nothing
-        Me.NotifTile.Location = New System.Drawing.Point(337, 3)
+        Me.NotifTile.Location = New System.Drawing.Point(203, 3)
         Me.NotifTile.Name = "NotifTile"
         Me.NotifTile.Size = New System.Drawing.Size(128, 63)
         Me.NotifTile.Style = MetroFramework.MetroColorStyle.Blue
@@ -831,7 +818,7 @@ Partial Class KMDI_MainFRM
         'UpdSecTile
         '
         Me.UpdSecTile.ActiveControl = Nothing
-        Me.UpdSecTile.Location = New System.Drawing.Point(471, 3)
+        Me.UpdSecTile.Location = New System.Drawing.Point(337, 3)
         Me.UpdSecTile.Name = "UpdSecTile"
         Me.UpdSecTile.Size = New System.Drawing.Size(128, 63)
         Me.UpdSecTile.Style = MetroFramework.MetroColorStyle.Blue
@@ -905,7 +892,7 @@ Partial Class KMDI_MainFRM
         '
         Me.ReloadMainFrm.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ReloadMainFrm.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.ReloadMainFrm.Location = New System.Drawing.Point(1127, 42)
+        Me.ReloadMainFrm.Location = New System.Drawing.Point(1108, 36)
         Me.ReloadMainFrm.Maximum = 100
         Me.ReloadMainFrm.Name = "ReloadMainFrm"
         Me.ReloadMainFrm.Size = New System.Drawing.Size(26, 29)
@@ -916,6 +903,19 @@ Partial Class KMDI_MainFRM
         Me.ReloadMainFrm.UseSelectable = True
         Me.ReloadMainFrm.UseStyleColors = True
         Me.ReloadMainFrm.Value = 100
+        '
+        'RecycleTile
+        '
+        Me.RecycleTile.ActiveControl = Nothing
+        Me.RecycleTile.Location = New System.Drawing.Point(337, 3)
+        Me.RecycleTile.Name = "RecycleTile"
+        Me.RecycleTile.Size = New System.Drawing.Size(262, 132)
+        Me.RecycleTile.Style = MetroFramework.MetroColorStyle.Pink
+        Me.RecycleTile.TabIndex = 34
+        Me.RecycleTile.Text = "Recycle"
+        Me.RecycleTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
+        Me.RecycleTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
+        Me.RecycleTile.UseSelectable = True
         '
         'KMDI_MainFRM
         '
@@ -1012,11 +1012,11 @@ Partial Class KMDI_MainFRM
     Friend WithEvents AccountsPanel As MetroFramework.Controls.MetroPanel
     Friend WithEvents FlowLayoutPanel8 As FlowLayoutPanel
     Friend WithEvents InboxTile As MetroFramework.Controls.MetroTile
-    Friend WithEvents RecycleTile As MetroFramework.Controls.MetroTile
     Friend WithEvents NotifTile As MetroFramework.Controls.MetroTile
     Friend WithEvents UpdSecTile As MetroFramework.Controls.MetroTile
     Friend WithEvents MngeAccTile As MetroFramework.Controls.MetroTile
     Friend WithEvents LogoutTile As MetroFramework.Controls.MetroTile
     Friend WithEvents AcctsLBL As MetroFramework.Controls.MetroLabel
     Friend WithEvents ReloadMainFrm As MetroFramework.Controls.MetroProgressSpinner
+    Friend WithEvents RecycleTile As MetroFramework.Controls.MetroTile
 End Class

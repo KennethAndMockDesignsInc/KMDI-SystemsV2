@@ -95,7 +95,6 @@
                             ToVisibleCostingPanel = 1
 
                     End Select
-
                 Next
             Else
 

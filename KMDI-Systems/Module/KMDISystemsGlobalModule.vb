@@ -46,7 +46,7 @@ Module KMDISystemsGlobalModule
             sqlCommand.Parameters.AddWithValue("@UserAcctAutonum", UserAcctAutonum)
             Read = sqlCommand.ExecuteReader
 
-            Read.Read()
+            'Read.Read()
             'While Read.HasRows
 
             If Read.HasRows = True Then
