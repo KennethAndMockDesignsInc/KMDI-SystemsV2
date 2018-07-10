@@ -160,7 +160,7 @@ Partial Class KMDISystemsLogin
         'LoginBtn
         '
         Me.LoginBtn.Image = Nothing
-        Me.LoginBtn.Location = New System.Drawing.Point(341, 169)
+        Me.LoginBtn.Location = New System.Drawing.Point(340, 169)
         Me.LoginBtn.Name = "LoginBtn"
         Me.LoginBtn.Size = New System.Drawing.Size(63, 23)
         Me.LoginBtn.TabIndex = 4
@@ -171,7 +171,7 @@ Partial Class KMDISystemsLogin
         'CloseBtn
         '
         Me.CloseBtn.Image = Nothing
-        Me.CloseBtn.Location = New System.Drawing.Point(272, 169)
+        Me.CloseBtn.Location = New System.Drawing.Point(271, 169)
         Me.CloseBtn.Name = "CloseBtn"
         Me.CloseBtn.Size = New System.Drawing.Size(63, 23)
         Me.CloseBtn.TabIndex = 3
