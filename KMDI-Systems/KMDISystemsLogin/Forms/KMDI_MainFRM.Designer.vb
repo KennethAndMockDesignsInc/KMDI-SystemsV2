@@ -794,7 +794,7 @@ Partial Class KMDI_MainFRM
         Me.InboxTile.ActiveControl = Nothing
         Me.InboxTile.Location = New System.Drawing.Point(69, 3)
         Me.InboxTile.Name = "InboxTile"
-        Me.InboxTile.Size = New System.Drawing.Size(128, 63)
+        Me.InboxTile.Size = New System.Drawing.Size(172, 63)
         Me.InboxTile.Style = MetroFramework.MetroColorStyle.Blue
         Me.InboxTile.TabIndex = 34
         Me.InboxTile.Text = "Inbox"
@@ -805,9 +805,9 @@ Partial Class KMDI_MainFRM
         'NotifTile
         '
         Me.NotifTile.ActiveControl = Nothing
-        Me.NotifTile.Location = New System.Drawing.Point(203, 3)
+        Me.NotifTile.Location = New System.Drawing.Point(247, 3)
         Me.NotifTile.Name = "NotifTile"
-        Me.NotifTile.Size = New System.Drawing.Size(128, 63)
+        Me.NotifTile.Size = New System.Drawing.Size(172, 63)
         Me.NotifTile.Style = MetroFramework.MetroColorStyle.Blue
         Me.NotifTile.TabIndex = 32
         Me.NotifTile.Text = "Notification"
@@ -818,9 +818,9 @@ Partial Class KMDI_MainFRM
         'UpdSecTile
         '
         Me.UpdSecTile.ActiveControl = Nothing
-        Me.UpdSecTile.Location = New System.Drawing.Point(337, 3)
+        Me.UpdSecTile.Location = New System.Drawing.Point(425, 3)
         Me.UpdSecTile.Name = "UpdSecTile"
-        Me.UpdSecTile.Size = New System.Drawing.Size(128, 63)
+        Me.UpdSecTile.Size = New System.Drawing.Size(172, 63)
         Me.UpdSecTile.Style = MetroFramework.MetroColorStyle.Blue
         Me.UpdSecTile.TabIndex = 31
         Me.UpdSecTile.Text = "Account Update"

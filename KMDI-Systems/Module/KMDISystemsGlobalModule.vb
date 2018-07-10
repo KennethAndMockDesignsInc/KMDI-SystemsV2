@@ -46,9 +46,6 @@ Module KMDISystemsGlobalModule
             sqlCommand.Parameters.AddWithValue("@UserAcctAutonum", UserAcctAutonum)
             Read = sqlCommand.ExecuteReader
 
-            'Read.Read()
-            'While Read.HasRows
-
             If Read.HasRows = True Then
                 While Read.Read
                     tileAccessHere = Read.Item("Tile").ToString
