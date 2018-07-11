@@ -46,15 +46,26 @@
     End Sub
 
     Private Sub AddAcctTypeBtn_Click(sender As Object, e As EventArgs) Handles AddAcctTypeBtn.Click
-        KMDI_ACCT_ACCTYPE_TB_INSERT(AcctTypeNameTbox.Text)
+        AcctTypeNameTbox.Text = Trim(AcctTypeNameTbox.Text)
+        If AcctTypeNameTbox.Text = "" Or AcctTypeNameTbox.Text = Nothing Then
+            MetroFramework.MetroMessageBox.Show(Me, "Field(s) cannot be empty", "", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+        Else
+            KMDI_ACCT_ACCTYPE_TB_INSERT(AcctTypeNameTbox.Text)
+        End If
     End Sub
 
     Private Sub UpdateAcctTypeBtn_Click(sender As Object, e As EventArgs) Handles UpdateAcctTypeBtn.Click
+        AcctTypeNameTbox.Text = Trim(AcctTypeNameTbox.Text)
         If autonumACCTtype = Nothing Then
             MetroFramework.MetroMessageBox.Show(Me, "Select first", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
         Else
-            KMDI_ACCT_ACCTYPE_TB_UPDATE(AcctTypeNameTbox.Text, autonumACCTtype)
-            autonumACCTtype = Nothing
+            If AcctTypeNameTbox.Text = "" Or AcctTypeNameTbox.Text = Nothing Then
+                MetroFramework.MetroMessageBox.Show(Me, "Field(s) cannot be empty", "", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+            Else
+
+                KMDI_ACCT_ACCTYPE_TB_UPDATE(AcctTypeNameTbox.Text, autonumACCTtype)
+                autonumACCTtype = Nothing
+            End If
         End If
 
     End Sub
