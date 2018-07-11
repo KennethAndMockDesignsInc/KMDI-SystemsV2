@@ -29,6 +29,7 @@ Partial Class KMDI_MainFRM
         Me.ContractsLBL = New MetroFramework.Controls.MetroLabel()
         Me.FlowLayoutPanel9 = New System.Windows.Forms.FlowLayoutPanel()
         Me.NewConTile = New MetroFramework.Controls.MetroTile()
+        Me.RecycleTile = New MetroFramework.Controls.MetroTile()
         Me.ProductionPanel = New MetroFramework.Controls.MetroPanel()
         Me.FlowLayoutPanel6 = New System.Windows.Forms.FlowLayoutPanel()
         Me.StatusMonitoringTile = New MetroFramework.Controls.MetroTile()
@@ -80,7 +81,6 @@ Partial Class KMDI_MainFRM
         Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
         Me.NicknameLbl = New MetroFramework.Controls.MetroLabel()
         Me.ReloadMainFrm = New MetroFramework.Controls.MetroProgressSpinner()
-        Me.RecycleTile = New MetroFramework.Controls.MetroTile()
         Me.FlowLayoutPanel3.SuspendLayout()
         Me.ContractsPanel.SuspendLayout()
         Me.FlowLayoutPanel9.SuspendLayout()
@@ -187,6 +187,19 @@ Partial Class KMDI_MainFRM
         Me.NewConTile.Theme = MetroFramework.MetroThemeStyle.Dark
         Me.NewConTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
         Me.NewConTile.UseSelectable = True
+        '
+        'RecycleTile
+        '
+        Me.RecycleTile.ActiveControl = Nothing
+        Me.RecycleTile.Location = New System.Drawing.Point(337, 3)
+        Me.RecycleTile.Name = "RecycleTile"
+        Me.RecycleTile.Size = New System.Drawing.Size(262, 132)
+        Me.RecycleTile.Style = MetroFramework.MetroColorStyle.Pink
+        Me.RecycleTile.TabIndex = 34
+        Me.RecycleTile.Text = "Recycle"
+        Me.RecycleTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
+        Me.RecycleTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
+        Me.RecycleTile.UseSelectable = True
         '
         'ProductionPanel
         '
@@ -903,19 +916,6 @@ Partial Class KMDI_MainFRM
         Me.ReloadMainFrm.UseSelectable = True
         Me.ReloadMainFrm.UseStyleColors = True
         Me.ReloadMainFrm.Value = 100
-        '
-        'RecycleTile
-        '
-        Me.RecycleTile.ActiveControl = Nothing
-        Me.RecycleTile.Location = New System.Drawing.Point(337, 3)
-        Me.RecycleTile.Name = "RecycleTile"
-        Me.RecycleTile.Size = New System.Drawing.Size(262, 132)
-        Me.RecycleTile.Style = MetroFramework.MetroColorStyle.Pink
-        Me.RecycleTile.TabIndex = 34
-        Me.RecycleTile.Text = "Recycle"
-        Me.RecycleTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
-        Me.RecycleTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
-        Me.RecycleTile.UseSelectable = True
         '
         'KMDI_MainFRM
         '

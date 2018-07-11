@@ -1035,7 +1035,7 @@
 
     Private Sub SaveManageBtn_Click(sender As Object, e As EventArgs) Handles SaveManageBtn.Click
         Dim Tcode As String
-
+        FailedCount = 0
         If AddedAccess <> "" Then
 
             For searchingTileAccess As Integer = 0 To AddedAccess.Length - 1 Step 3

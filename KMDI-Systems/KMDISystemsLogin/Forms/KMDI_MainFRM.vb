@@ -343,4 +343,8 @@
         KMDI_MainFRM_Load(sender, e)
     End Sub
 
+    Private Sub UpdSecTile_Click(sender As Object, e As EventArgs) Handles UpdSecTile.Click
+        AccountUpdate.Show()
+        Me.Enabled = False
+    End Sub
 End Class

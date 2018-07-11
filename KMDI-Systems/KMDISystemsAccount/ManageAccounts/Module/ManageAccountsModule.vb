@@ -428,7 +428,6 @@ Module ManageAccountsModule
                 KMDI_ACCT_ACCESS_TB_READ_FOR_ChangeWritePermision(ManageAccounts.UsersAutonum)
             Else
                 MetroFramework.MetroMessageBox.Show(ChangeWritePermision, "Failed UPDATE at KMDI_ACCT_ACCESS_TB", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                FailedCount += 1
             End If
         Catch ex As Exception
             MessageBox.Show(ex.Message)
@@ -437,4 +436,123 @@ Module ManageAccountsModule
         End Try
     End Sub
 
+    Public Sub KMDI_ACCT_TB_UPDATE_ManageAccounts_FOR_AccountUpdate_Username(ByVal username As String)
+        Try
+            sqlConnection.Close()
+            sqlConnection.Open()
+            Dim str1 As String = "SELECT * FROM KMDI_ACCT_TB WHERE [USERNAME] COLLATE Latin1_General_CS_AS = '" & username & "'"
+
+            sqlCommand = New SqlCommand(str1, sqlConnection)
+            Read = sqlCommand.ExecuteReader
+            If Read.HasRows = True Then
+                MetroFramework.MetroMessageBox.Show(ManageAccounts, " Invalid Nickname : " & username & " Already Exists", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                sqlConnection.Close()
+                Read.Close()
+            Else
+                sqlConnection.Close()
+                Read.Close()
+
+                sqlConnection.Open()
+
+                Query = " UPDATE KMDI_ACCT_TB SET [USERNAME] = @USERNAME
+                                            WHERE AUTONUM = @AccountAutonum "
+                sqlCommand = New SqlCommand(Query, sqlConnection)
+                sqlCommand.Parameters.AddWithValue("@USERNAME", username)
+                sqlCommand.Parameters.AddWithValue("@AccountAutonum", AccountAutonum)
+                confirmQuery = sqlCommand.ExecuteNonQuery
+                If confirmQuery <> 0 Then
+                    MetroFramework.MetroMessageBox.Show(AccountUpdate, "Updated!", "", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    AccountUpdate.UsernameLbl.Text = username
+                    usernamePrint = username
+                Else
+                    MetroFramework.MetroMessageBox.Show(AccountUpdate, "Failed!", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                End If
+                AccountUpdate.NewUserTbox.Clear()
+
+            End If
+
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        Finally
+            sqlConnection.Close()
+        End Try
+
+    End Sub
+
+    Public Sub KMDI_ACCT_TB_UPDATE_ManageAccounts_FOR_AccountUpdate_Password(ByVal oldpass As String,
+                                                                             ByVal newpass As String,
+                                                                             ByVal retypepass As String)
+        Try
+
+            If oldpass = AcctPASSWORD Then
+
+                If newpass = retypepass Then
+
+                    sqlConnection.Close()
+                    Read.Close()
+
+                    sqlConnection.Open()
+
+
+                    Query = " UPDATE KMDI_ACCT_TB SET [PASSWORD] = @PASSWORD
+                                            WHERE AUTONUM = @AccountAutonum "
+                    sqlCommand = New SqlCommand(Query, sqlConnection)
+                    sqlCommand.Parameters.AddWithValue("@PASSWORD", Encrypt(newpass))
+                    sqlCommand.Parameters.AddWithValue("@AccountAutonum", AccountAutonum)
+                    confirmQuery = sqlCommand.ExecuteNonQuery
+                    If confirmQuery <> 0 Then
+                        MetroFramework.MetroMessageBox.Show(AccountUpdate, "Updated!", "", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                        AcctPASSWORD = newpass
+                    Else
+                        MetroFramework.MetroMessageBox.Show(AccountUpdate, "Failed!", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                    End If
+
+                Else
+                    MetroFramework.MetroMessageBox.Show(AccountUpdate, "Passwords does not match", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                End If
+
+            Else
+                MetroFramework.MetroMessageBox.Show(AccountUpdate, "Wrong Old password", "", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+            End If
+            AccountUpdate.OldPasswordTbox.Clear()
+            AccountUpdate.NewPassTbox.Clear()
+            AccountUpdate.RetypePassTbox.Clear()
+
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        Finally
+            sqlConnection.Close()
+        End Try
+
+    End Sub
+
+    Public Sub KMDI_ACCT_TB_UPDATE_ManageAccounts_FOR_AccountUpdate_PicImage(ByVal PROFILEPATH22 As String)
+        Try
+
+            sqlConnection.Close()
+            Read.Close()
+
+            sqlConnection.Open()
+
+
+            Query = " UPDATE KMDI_ACCT_TB SET [PROFILEPATH] = @PROFILEPATH
+                                           WHERE AUTONUM = @AccountAutonum "
+            sqlCommand = New SqlCommand(Query, sqlConnection)
+            sqlCommand.Parameters.AddWithValue("@PROFILEPATH", PROFILEPATH22)
+            sqlCommand.Parameters.AddWithValue("@AccountAutonum", AccountAutonum)
+            confirmQuery = sqlCommand.ExecuteNonQuery
+            If confirmQuery <> 0 Then
+                PROFILEPATH = AccountUpdate.ProfilePicDirectory
+                MetroFramework.MetroMessageBox.Show(AccountUpdate, "Updated!", "", MessageBoxButtons.OK, MessageBoxIcon.Information)
+
+            Else
+                MetroFramework.MetroMessageBox.Show(AccountUpdate, "Failed!", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            End If
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        Finally
+            sqlConnection.Close()
+        End Try
+
+    End Sub
 End Module

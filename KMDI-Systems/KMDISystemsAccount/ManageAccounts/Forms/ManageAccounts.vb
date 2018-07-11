@@ -63,18 +63,35 @@
     End Sub
 
     Private Sub AddUserBtn_Click(sender As Object, e As EventArgs) Handles AddUserBtn.Click
-        KMDI_ACCT_TB_INSERT_ManageAccounts(FullnameTbox.Text,
-                                           NicknameTbox.Text,
-                                           UserAccessCbox.Text,
-                                           AUTONUMforuserNpass,
-                                           Encrypt(AUTONUMforuserNpass))
+
+        If FullnameTbox.Text = "" Or FullnameTbox.Text = Nothing Or NicknameTbox.Text = "" Or
+            NicknameTbox.Text = Nothing Or UserAccessCbox.Text = "" Or UserAccessCbox.Text = Nothing Then
+            MetroFramework.MetroMessageBox.Show(Me, "Fields cannot be empty", "", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+        Else
+
+            KMDI_ACCT_TB_INSERT_ManageAccounts(FullnameTbox.Text,
+                                               NicknameTbox.Text,
+                                               UserAccessCbox.Text,
+                                               AUTONUMforuserNpass,
+                                               Encrypt(AUTONUMforuserNpass))
+        End If
     End Sub
 
     Private Sub UpdateUserBtn_Click(sender As Object, e As EventArgs) Handles UpdateUserBtn.Click
-        KMDI_ACCT_TB_UPDATE_ManageAccounts(FullnameTbox.Text,
+        FullnameTbox.Text = Trim(FullnameTbox.Text)
+        NicknameTbox.Text = Trim(NicknameTbox.Text)
+        UserAccessCbox.Text = Trim(UserAccessCbox.Text)
+
+        If FullnameTbox.Text = "" Or FullnameTbox.Text = Nothing Or NicknameTbox.Text = "" Or
+            NicknameTbox.Text = Nothing Or UserAccessCbox.Text = "" Or UserAccessCbox.Text = Nothing Then
+            MetroFramework.MetroMessageBox.Show(Me, "Fields cannot be empty", "", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+        Else
+            KMDI_ACCT_TB_UPDATE_ManageAccounts(FullnameTbox.Text,
                                            NicknameTbox.Text,
                                            UserAccessCbox.Text,
                                            UsersAutonum)
+        End If
+
     End Sub
 
     Private Sub AcctTypeUpdate_Click(sender As Object, e As EventArgs) Handles AcctTypeUpdate.Click

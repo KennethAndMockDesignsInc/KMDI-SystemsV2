@@ -4,7 +4,7 @@ Imports System.Data.SqlClient
 Imports System.Security.Cryptography
 
 Module LoginModule
-    Public AccountType As String
+    Public AccountType, nickname, fullname, usernamePrint, PROFILEPATH, AcctPASSWORD As String
 
     Dim AccessPoint As String = KMDISystemsLogin.KMDISystemsLogin_AccessPoint
     Dim DBName As String = "HERETOSAVE"
@@ -19,7 +19,6 @@ Module LoginModule
     Public sqlBindingSource As BindingSource
     Public Query As String
 
-    Public nickname As String
 
     Public Sub KMDISystems_Login(ByVal UserName As String,
                                  ByVal Password As String)
@@ -33,7 +32,13 @@ Module LoginModule
                 Exit Sub
             End Try
 
-            Query = "Select [ACCTTYPE], [AUTONUM], [NICKNAME]
+            Query = "Select    [AUTONUM]
+                              ,[FULLNAME]
+                              ,[NICKNAME]
+                              ,[ACCTTYPE]
+                              ,[USERNAME]
+                              ,[PASSWORD]
+                              ,[PROFILEPATH]
                      From KMDI_ACCT_TB
                      Where [username] = @UserName AND [password] COLLATE Latin1_General_CS_AS = @Password"
             sqlCommand = New SqlCommand(Query, sqlConnection)
@@ -45,6 +50,11 @@ Module LoginModule
                 AccountAutonum = Read.Item("AUTONUM").ToString
                 AccountType = Read.Item("ACCTTYPE").ToString
                 nickname = Read.Item("NICKNAME").ToString
+                fullname = Read.Item("FULLNAME").ToString
+                usernamePrint = Read.Item("USERNAME").ToString
+                PROFILEPATH = Read.Item("PROFILEPATH").ToString
+                AcctPASSWORD = Decrypt(Read.Item("PASSWORD").ToString)
+
                 If Read("ACCTTYPE").ToString() = "Admin" Then
                     With KMDI_MainFRM
                         .Show()
@@ -134,5 +144,39 @@ Module LoginModule
             sqlConnection.Close()
         End Try
     End Sub
+
+    Private Function Decrypt(cipherText As String) As String
+
+        Dim EncryptionKey As String = "MAKV2SPBNI99212"
+
+        Dim cipherBytes As Byte() = Convert.FromBase64String(cipherText)
+
+        Using encryptor As Aes = Aes.Create()
+
+            Dim pdb As New Rfc2898DeriveBytes(EncryptionKey, New Byte() {&H49, &H76, &H61, &H6E, &H20, &H4D, &H65, &H64, &H76, &H65, &H64, &H65, &H76})
+
+            encryptor.Key = pdb.GetBytes(32)
+
+            encryptor.IV = pdb.GetBytes(16)
+
+            Using ms As New MemoryStream()
+
+                Using cs As New CryptoStream(ms, encryptor.CreateDecryptor(), CryptoStreamMode.Write)
+
+                    cs.Write(cipherBytes, 0, cipherBytes.Length)
+
+                    cs.Close()
+
+                End Using
+
+                cipherText = Encoding.Unicode.GetString(ms.ToArray())
+
+            End Using
+
+        End Using
+
+        Return cipherText
+
+    End Function
 
 End Module
