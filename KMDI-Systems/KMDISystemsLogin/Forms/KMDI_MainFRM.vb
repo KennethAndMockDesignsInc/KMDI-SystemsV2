@@ -343,4 +343,9 @@
         KMDI_MainFRM_Load(sender, e)
     End Sub
 
+    Private Sub WinDoorMakerTile_Click(sender As Object, e As EventArgs) Handles WinDoorMakerTile.Click
+        WinDoorMaker.Show()
+        WinDoorMaker.BringToFront()
+        WinDoorMaker.MaximizeBox = True
+    End Sub
 End Class
