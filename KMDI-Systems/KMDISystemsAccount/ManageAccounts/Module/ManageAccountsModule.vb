@@ -214,7 +214,8 @@ Module ManageAccountsModule
             Query = "SELECT [AUTONUM],
                             [FULLNAME],
                             [NICKNAME],
-                            [ACCTTYPE]
+                            [ACCTTYPE],
+                            [PASSWORD]
                      FROM [KMDI_ACCT_TB]
                      where NOT ACCTTYPE = 'Admin' or AUTONUM = @AccountAutonum "
             sqlCommand = New SqlCommand(Query, sqlConnection)
@@ -230,7 +231,7 @@ Module ManageAccountsModule
                 .AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke
             End With
 
-            'ManageAccounts.UserAcctDGV.Columns("AUTONUM").Visible = False
+            'ManageAccounts.UserAcctDGV.Columns("PASSWORD").Visible = False
 
         Catch ex As Exception
             MessageBox.Show(ex.ToString)

@@ -54,6 +54,8 @@ Partial Class ChangeTilePermision
         Me.DeliveryRecieptsChk = New MetroFramework.Controls.MetroCheckBox()
         Me.EngrSDRequestChk = New MetroFramework.Controls.MetroCheckBox()
         Me.SaveManageBtn = New MetroFramework.Controls.MetroTextBox.MetroTextButton()
+        Me.PasswordCharChk = New MetroFramework.Controls.MetroCheckBox()
+        Me.PwdDecryptTbox = New MetroFramework.Controls.MetroTextBox()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
@@ -64,6 +66,8 @@ Partial Class ChangeTilePermision
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.PwdDecryptTbox)
+        Me.GroupBox1.Controls.Add(Me.PasswordCharChk)
         Me.GroupBox1.Controls.Add(Me.GroupBox6)
         Me.GroupBox1.Controls.Add(Me.GroupBox5)
         Me.GroupBox1.Controls.Add(Me.GroupBox4)
@@ -72,7 +76,7 @@ Partial Class ChangeTilePermision
         Me.GroupBox1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.GroupBox1.Location = New System.Drawing.Point(20, 60)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(538, 257)
+        Me.GroupBox1.Size = New System.Drawing.Size(538, 277)
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Manage Tiles"
@@ -434,17 +438,57 @@ Partial Class ChangeTilePermision
         Me.SaveManageBtn.UseSelectable = True
         Me.SaveManageBtn.UseVisualStyleBackColor = True
         '
+        'PasswordCharChk
+        '
+        Me.PasswordCharChk.AutoSize = True
+        Me.PasswordCharChk.Location = New System.Drawing.Point(375, 250)
+        Me.PasswordCharChk.Name = "PasswordCharChk"
+        Me.PasswordCharChk.Size = New System.Drawing.Size(26, 15)
+        Me.PasswordCharChk.TabIndex = 2
+        Me.PasswordCharChk.Text = " "
+        Me.PasswordCharChk.UseSelectable = True
+        '
+        'PwdDecryptTbox
+        '
+        '
+        '
+        '
+        Me.PwdDecryptTbox.CustomButton.Image = Nothing
+        Me.PwdDecryptTbox.CustomButton.Location = New System.Drawing.Point(112, 1)
+        Me.PwdDecryptTbox.CustomButton.Name = ""
+        Me.PwdDecryptTbox.CustomButton.Size = New System.Drawing.Size(21, 21)
+        Me.PwdDecryptTbox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
+        Me.PwdDecryptTbox.CustomButton.TabIndex = 1
+        Me.PwdDecryptTbox.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
+        Me.PwdDecryptTbox.CustomButton.UseSelectable = True
+        Me.PwdDecryptTbox.CustomButton.Visible = False
+        Me.PwdDecryptTbox.Lines = New String(-1) {}
+        Me.PwdDecryptTbox.Location = New System.Drawing.Point(393, 245)
+        Me.PwdDecryptTbox.MaxLength = 32767
+        Me.PwdDecryptTbox.Name = "PwdDecryptTbox"
+        Me.PwdDecryptTbox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(36)
+        Me.PwdDecryptTbox.ScrollBars = System.Windows.Forms.ScrollBars.None
+        Me.PwdDecryptTbox.SelectedText = ""
+        Me.PwdDecryptTbox.SelectionLength = 0
+        Me.PwdDecryptTbox.SelectionStart = 0
+        Me.PwdDecryptTbox.Size = New System.Drawing.Size(134, 23)
+        Me.PwdDecryptTbox.TabIndex = 6
+        Me.PwdDecryptTbox.UseSelectable = True
+        Me.PwdDecryptTbox.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
+        Me.PwdDecryptTbox.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
+        '
         'ChangeTilePermision
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(578, 337)
+        Me.ClientSize = New System.Drawing.Size(578, 357)
         Me.Controls.Add(Me.SaveManageBtn)
         Me.Controls.Add(Me.GroupBox1)
         Me.MaximizeBox = False
         Me.Name = "ChangeTilePermision"
         Me.Resizable = False
         Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
         Me.GroupBox6.ResumeLayout(False)
         Me.GroupBox6.PerformLayout()
         Me.GroupBox5.ResumeLayout(False)
@@ -491,4 +535,6 @@ Partial Class ChangeTilePermision
     Friend WithEvents AccessoriesChk As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents SaveManageBtn As MetroFramework.Controls.MetroTextBox.MetroTextButton
     Friend WithEvents WinDoorChk As MetroFramework.Controls.MetroCheckBox
+    Friend WithEvents PwdDecryptTbox As MetroFramework.Controls.MetroTextBox
+    Friend WithEvents PasswordCharChk As MetroFramework.Controls.MetroCheckBox
 End Class

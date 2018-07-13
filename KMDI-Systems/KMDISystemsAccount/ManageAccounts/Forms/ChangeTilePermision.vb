@@ -255,6 +255,7 @@
 
         LoggedAcctPermissions()
         CheckCHKBOX()
+        PwdDecryptTbox.Text = ManageAccounts.password_ManageAccounts
     End Sub
 
     Private Sub ChangeTilePermision_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
@@ -1031,6 +1032,14 @@
 
         End If
 
+    End Sub
+
+    Private Sub PasswordCharChk_CheckedChanged(sender As Object, e As EventArgs) Handles PasswordCharChk.CheckedChanged
+        If PasswordCharChk.CheckState = CheckState.Checked Then
+            PwdDecryptTbox.PasswordChar = Nothing
+        ElseIf PasswordCharChk.CheckState = CheckState.Unchecked Then
+            PwdDecryptTbox.PasswordChar = "*"
+        End If
     End Sub
 
     Private Sub SaveManageBtn_Click(sender As Object, e As EventArgs) Handles SaveManageBtn.Click

@@ -145,7 +145,7 @@ Module LoginModule
         End Try
     End Sub
 
-    Private Function Decrypt(cipherText As String) As String
+    Public Function Decrypt(cipherText As String) As String
 
         Dim EncryptionKey As String = "MAKV2SPBNI99212"
 

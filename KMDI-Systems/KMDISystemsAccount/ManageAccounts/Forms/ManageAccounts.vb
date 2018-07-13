@@ -1,6 +1,6 @@
 ﻿Public Class ManageAccounts
     Public UsersAutonum As Integer
-    Public userAccess As String
+    Public userAccess, password_ManageAccounts As String
 
     Private Sub ManageAccounts_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         KMDI_ACCT_TB_READ(AccountAutonum)
@@ -47,6 +47,7 @@
                     userAccess = UserAcctDGV.Item("ACCTTYPE", e.RowIndex).Value.ToString
                     UserAccessCbox.Text = UserAcctDGV.Item("ACCTTYPE", e.RowIndex).Value.ToString
                     UsersAutonum = UserAcctDGV.Item("AUTONUM", e.RowIndex).Value.ToString
+                    password_ManageAccounts = Decrypt(UserAcctDGV.Item("PASSWORD", e.RowIndex).Value.ToString)
                 Catch ex As Exception
                     MessageBox.Show(ex.Message)
                 End Try
