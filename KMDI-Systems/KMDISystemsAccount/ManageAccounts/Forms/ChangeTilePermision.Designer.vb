@@ -23,6 +23,8 @@ Partial Class ChangeTilePermision
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.PwdDecryptTbox = New MetroFramework.Controls.MetroTextBox()
+        Me.PasswordCharChk = New MetroFramework.Controls.MetroCheckBox()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
         Me.WinDoorChk = New MetroFramework.Controls.MetroCheckBox()
         Me.MyListChk = New MetroFramework.Controls.MetroCheckBox()
@@ -54,8 +56,6 @@ Partial Class ChangeTilePermision
         Me.DeliveryRecieptsChk = New MetroFramework.Controls.MetroCheckBox()
         Me.EngrSDRequestChk = New MetroFramework.Controls.MetroCheckBox()
         Me.SaveManageBtn = New MetroFramework.Controls.MetroTextBox.MetroTextButton()
-        Me.PasswordCharChk = New MetroFramework.Controls.MetroCheckBox()
-        Me.PwdDecryptTbox = New MetroFramework.Controls.MetroTextBox()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
@@ -80,6 +80,46 @@ Partial Class ChangeTilePermision
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Manage Tiles"
+        '
+        'PwdDecryptTbox
+        '
+        '
+        '
+        '
+        Me.PwdDecryptTbox.CustomButton.Image = Nothing
+        Me.PwdDecryptTbox.CustomButton.Location = New System.Drawing.Point(112, 1)
+        Me.PwdDecryptTbox.CustomButton.Name = ""
+        Me.PwdDecryptTbox.CustomButton.Size = New System.Drawing.Size(21, 21)
+        Me.PwdDecryptTbox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
+        Me.PwdDecryptTbox.CustomButton.TabIndex = 1
+        Me.PwdDecryptTbox.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
+        Me.PwdDecryptTbox.CustomButton.UseSelectable = True
+        Me.PwdDecryptTbox.CustomButton.Visible = False
+        Me.PwdDecryptTbox.Enabled = False
+        Me.PwdDecryptTbox.Lines = New String(-1) {}
+        Me.PwdDecryptTbox.Location = New System.Drawing.Point(393, 245)
+        Me.PwdDecryptTbox.MaxLength = 32767
+        Me.PwdDecryptTbox.Name = "PwdDecryptTbox"
+        Me.PwdDecryptTbox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
+        Me.PwdDecryptTbox.ScrollBars = System.Windows.Forms.ScrollBars.None
+        Me.PwdDecryptTbox.SelectedText = ""
+        Me.PwdDecryptTbox.SelectionLength = 0
+        Me.PwdDecryptTbox.SelectionStart = 0
+        Me.PwdDecryptTbox.Size = New System.Drawing.Size(134, 23)
+        Me.PwdDecryptTbox.TabIndex = 6
+        Me.PwdDecryptTbox.UseSelectable = True
+        Me.PwdDecryptTbox.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
+        Me.PwdDecryptTbox.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
+        '
+        'PasswordCharChk
+        '
+        Me.PasswordCharChk.AutoSize = True
+        Me.PasswordCharChk.Location = New System.Drawing.Point(375, 250)
+        Me.PasswordCharChk.Name = "PasswordCharChk"
+        Me.PasswordCharChk.Size = New System.Drawing.Size(26, 15)
+        Me.PasswordCharChk.TabIndex = 2
+        Me.PasswordCharChk.Text = " "
+        Me.PasswordCharChk.UseSelectable = True
         '
         'GroupBox6
         '
@@ -437,45 +477,6 @@ Partial Class ChangeTilePermision
         Me.SaveManageBtn.Text = "&Save"
         Me.SaveManageBtn.UseSelectable = True
         Me.SaveManageBtn.UseVisualStyleBackColor = True
-        '
-        'PasswordCharChk
-        '
-        Me.PasswordCharChk.AutoSize = True
-        Me.PasswordCharChk.Location = New System.Drawing.Point(375, 250)
-        Me.PasswordCharChk.Name = "PasswordCharChk"
-        Me.PasswordCharChk.Size = New System.Drawing.Size(26, 15)
-        Me.PasswordCharChk.TabIndex = 2
-        Me.PasswordCharChk.Text = " "
-        Me.PasswordCharChk.UseSelectable = True
-        '
-        'PwdDecryptTbox
-        '
-        '
-        '
-        '
-        Me.PwdDecryptTbox.CustomButton.Image = Nothing
-        Me.PwdDecryptTbox.CustomButton.Location = New System.Drawing.Point(112, 1)
-        Me.PwdDecryptTbox.CustomButton.Name = ""
-        Me.PwdDecryptTbox.CustomButton.Size = New System.Drawing.Size(21, 21)
-        Me.PwdDecryptTbox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
-        Me.PwdDecryptTbox.CustomButton.TabIndex = 1
-        Me.PwdDecryptTbox.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
-        Me.PwdDecryptTbox.CustomButton.UseSelectable = True
-        Me.PwdDecryptTbox.CustomButton.Visible = False
-        Me.PwdDecryptTbox.Lines = New String(-1) {}
-        Me.PwdDecryptTbox.Location = New System.Drawing.Point(393, 245)
-        Me.PwdDecryptTbox.MaxLength = 32767
-        Me.PwdDecryptTbox.Name = "PwdDecryptTbox"
-        Me.PwdDecryptTbox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(36)
-        Me.PwdDecryptTbox.ScrollBars = System.Windows.Forms.ScrollBars.None
-        Me.PwdDecryptTbox.SelectedText = ""
-        Me.PwdDecryptTbox.SelectionLength = 0
-        Me.PwdDecryptTbox.SelectionStart = 0
-        Me.PwdDecryptTbox.Size = New System.Drawing.Size(134, 23)
-        Me.PwdDecryptTbox.TabIndex = 6
-        Me.PwdDecryptTbox.UseSelectable = True
-        Me.PwdDecryptTbox.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
-        Me.PwdDecryptTbox.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
         '
         'ChangeTilePermision
         '
