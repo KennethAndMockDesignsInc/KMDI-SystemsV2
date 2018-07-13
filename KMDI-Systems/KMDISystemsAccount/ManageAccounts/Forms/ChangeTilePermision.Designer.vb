@@ -97,7 +97,7 @@ Partial Class ChangeTilePermision
         Me.PwdDecryptTbox.CustomButton.Visible = False
         Me.PwdDecryptTbox.Enabled = False
         Me.PwdDecryptTbox.Lines = New String(-1) {}
-        Me.PwdDecryptTbox.Location = New System.Drawing.Point(393, 245)
+        Me.PwdDecryptTbox.Location = New System.Drawing.Point(293, 245)
         Me.PwdDecryptTbox.MaxLength = 32767
         Me.PwdDecryptTbox.Name = "PwdDecryptTbox"
         Me.PwdDecryptTbox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
@@ -105,7 +105,7 @@ Partial Class ChangeTilePermision
         Me.PwdDecryptTbox.SelectedText = ""
         Me.PwdDecryptTbox.SelectionLength = 0
         Me.PwdDecryptTbox.SelectionStart = 0
-        Me.PwdDecryptTbox.Size = New System.Drawing.Size(134, 23)
+        Me.PwdDecryptTbox.Size = New System.Drawing.Size(234, 23)
         Me.PwdDecryptTbox.TabIndex = 6
         Me.PwdDecryptTbox.UseSelectable = True
         Me.PwdDecryptTbox.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
@@ -114,7 +114,7 @@ Partial Class ChangeTilePermision
         'PasswordCharChk
         '
         Me.PasswordCharChk.AutoSize = True
-        Me.PasswordCharChk.Location = New System.Drawing.Point(375, 250)
+        Me.PasswordCharChk.Location = New System.Drawing.Point(275, 250)
         Me.PasswordCharChk.Name = "PasswordCharChk"
         Me.PasswordCharChk.Size = New System.Drawing.Size(26, 15)
         Me.PasswordCharChk.TabIndex = 2

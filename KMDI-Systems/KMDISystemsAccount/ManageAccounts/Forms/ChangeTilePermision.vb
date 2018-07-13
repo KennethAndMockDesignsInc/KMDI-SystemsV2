@@ -1049,7 +1049,6 @@
 
             For searchingTileAccess As Integer = 0 To AddedAccess.Length - 1 Step 3
                 Tcode = AddedAccess.Substring(searchingTileAccess + 1, 2)
-                'MsgBox(ManageAccounts.userAccess & vbCrLf & Tcode & vbCrLf & ManageAccounts.UsersAutonum)
                 KMDI_ACCT_ACCESS_TB_INSERT(ManageAccounts.userAccess, Tcode, "0", ManageAccounts.UsersAutonum, "Inserted by: " & nickname & " " & Date.Now)
             Next
 
@@ -1061,7 +1060,6 @@
                 For IndexToRemove As Integer = 0 To RemovedTileAccess.Length - 1 Step 3
                     Dim Temp As String = RemovedTileAccess.Substring(IndexToRemove + 1, 2)
                     If tileAccess.Contains(Temp) = True Then
-                        'MsgBox(Temp & vbCrLf & ManageAccounts.UsersAutonum)
                         KMDI_ACCT_ACCESS_TB_DELETE(Temp, ManageAccounts.UsersAutonum)
                     End If
                 Next
