@@ -215,6 +215,7 @@ Module ManageAccountsModule
                             [FULLNAME],
                             [NICKNAME],
                             [ACCTTYPE],
+                            [USERNAME],
                             [PASSWORD]
                      FROM [KMDI_ACCT_TB]
                      where NOT ACCTTYPE = 'Admin' or AUTONUM = @AccountAutonum "
@@ -231,7 +232,8 @@ Module ManageAccountsModule
                 .AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke
             End With
 
-            'ManageAccounts.UserAcctDGV.Columns("PASSWORD").Visible = False
+            ManageAccounts.UserAcctDGV.Columns("PASSWORD").Visible = False
+            ManageAccounts.UserAcctDGV.Columns("AUTONUM").Visible = False
 
         Catch ex As Exception
             MessageBox.Show(ex.ToString)

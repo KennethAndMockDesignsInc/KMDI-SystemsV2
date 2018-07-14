@@ -30,17 +30,17 @@ Partial Class KMDI_MainFRM
         Me.FlowLayoutPanel9 = New System.Windows.Forms.FlowLayoutPanel()
         Me.NewConTile = New MetroFramework.Controls.MetroTile()
         Me.RecycleTile = New MetroFramework.Controls.MetroTile()
-        Me.ProductionPanel = New MetroFramework.Controls.MetroPanel()
-        Me.FlowLayoutPanel6 = New System.Windows.Forms.FlowLayoutPanel()
-        Me.StatusMonitoringTile = New MetroFramework.Controls.MetroTile()
-        Me.CuttingListTile = New MetroFramework.Controls.MetroTile()
-        Me.GlassSpecsTile = New MetroFramework.Controls.MetroTile()
-        Me.ProdSDRequestTile = New MetroFramework.Controls.MetroTile()
-        Me.ProdSDSubmittalTile = New MetroFramework.Controls.MetroTile()
-        Me.ProdLBL = New MetroFramework.Controls.MetroLabel()
+        Me.AccountsPanel = New MetroFramework.Controls.MetroPanel()
+        Me.FlowLayoutPanel8 = New System.Windows.Forms.FlowLayoutPanel()
+        Me.InboxTile = New MetroFramework.Controls.MetroTile()
+        Me.NotifTile = New MetroFramework.Controls.MetroTile()
+        Me.UpdSecTile = New MetroFramework.Controls.MetroTile()
+        Me.MngeAccTile = New MetroFramework.Controls.MetroTile()
+        Me.LogoutTile = New MetroFramework.Controls.MetroTile()
+        Me.AcctsLBL = New MetroFramework.Controls.MetroLabel()
         Me.SNOpanel = New MetroFramework.Controls.MetroPanel()
         Me.FlowLayoutPanel4 = New System.Windows.Forms.FlowLayoutPanel()
-        Me.AddendumTile = New MetroFramework.Controls.MetroTile()
+        Me.ProjAssignmentTile = New MetroFramework.Controls.MetroTile()
         Me.CheckBalTile = New MetroFramework.Controls.MetroTile()
         Me.SUSTile = New MetroFramework.Controls.MetroTile()
         Me.CallerInfoTile = New MetroFramework.Controls.MetroTile()
@@ -49,6 +49,14 @@ Partial Class KMDI_MainFRM
         Me.SalesMonitoringTile = New MetroFramework.Controls.MetroTile()
         Me.SalesItineraryTile = New MetroFramework.Controls.MetroTile()
         Me.SalesNOperationLBL = New MetroFramework.Controls.MetroLabel()
+        Me.ProductionPanel = New MetroFramework.Controls.MetroPanel()
+        Me.FlowLayoutPanel6 = New System.Windows.Forms.FlowLayoutPanel()
+        Me.StatusMonitoringTile = New MetroFramework.Controls.MetroTile()
+        Me.CuttingListTile = New MetroFramework.Controls.MetroTile()
+        Me.GlassSpecsTile = New MetroFramework.Controls.MetroTile()
+        Me.ProdSDRequestTile = New MetroFramework.Controls.MetroTile()
+        Me.ProdSDSubmittalTile = New MetroFramework.Controls.MetroTile()
+        Me.ProdLBL = New MetroFramework.Controls.MetroLabel()
         Me.EngrPanel = New MetroFramework.Controls.MetroPanel()
         Me.FlowLayoutPanel7 = New System.Windows.Forms.FlowLayoutPanel()
         Me.DeliveryRecieptsTile = New MetroFramework.Controls.MetroTile()
@@ -70,32 +78,27 @@ Partial Class KMDI_MainFRM
         Me.AccessoriesTile = New MetroFramework.Controls.MetroTile()
         Me.WinDoorMakerTile = New MetroFramework.Controls.MetroTile()
         Me.MetroLabel1 = New MetroFramework.Controls.MetroLabel()
-        Me.AccountsPanel = New MetroFramework.Controls.MetroPanel()
-        Me.FlowLayoutPanel8 = New System.Windows.Forms.FlowLayoutPanel()
-        Me.InboxTile = New MetroFramework.Controls.MetroTile()
-        Me.NotifTile = New MetroFramework.Controls.MetroTile()
-        Me.UpdSecTile = New MetroFramework.Controls.MetroTile()
-        Me.MngeAccTile = New MetroFramework.Controls.MetroTile()
-        Me.LogoutTile = New MetroFramework.Controls.MetroTile()
-        Me.AcctsLBL = New MetroFramework.Controls.MetroLabel()
         Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
         Me.NicknameLbl = New MetroFramework.Controls.MetroLabel()
         Me.ReloadMainFrm = New MetroFramework.Controls.MetroProgressSpinner()
+        Me.MetroButton1 = New MetroFramework.Controls.MetroButton()
+        Me.MetroButton2 = New MetroFramework.Controls.MetroButton()
+        Me.MetroButton3 = New MetroFramework.Controls.MetroButton()
         Me.FlowLayoutPanel3.SuspendLayout()
         Me.ContractsPanel.SuspendLayout()
         Me.FlowLayoutPanel9.SuspendLayout()
-        Me.ProductionPanel.SuspendLayout()
-        Me.FlowLayoutPanel6.SuspendLayout()
+        Me.AccountsPanel.SuspendLayout()
+        Me.FlowLayoutPanel8.SuspendLayout()
         Me.SNOpanel.SuspendLayout()
         Me.FlowLayoutPanel4.SuspendLayout()
+        Me.ProductionPanel.SuspendLayout()
+        Me.FlowLayoutPanel6.SuspendLayout()
         Me.EngrPanel.SuspendLayout()
         Me.FlowLayoutPanel7.SuspendLayout()
         Me.MarketingPanel.SuspendLayout()
         Me.FlowLayoutPanel5.SuspendLayout()
         Me.CostingPanel.SuspendLayout()
         Me.FlowLayoutPanel10.SuspendLayout()
-        Me.AccountsPanel.SuspendLayout()
-        Me.FlowLayoutPanel8.SuspendLayout()
         Me.SuspendLayout()
         '
         'DbNameCbox
@@ -121,12 +124,12 @@ Partial Class KMDI_MainFRM
         '
         Me.FlowLayoutPanel3.AutoScroll = True
         Me.FlowLayoutPanel3.Controls.Add(Me.ContractsPanel)
-        Me.FlowLayoutPanel3.Controls.Add(Me.ProductionPanel)
+        Me.FlowLayoutPanel3.Controls.Add(Me.AccountsPanel)
         Me.FlowLayoutPanel3.Controls.Add(Me.SNOpanel)
+        Me.FlowLayoutPanel3.Controls.Add(Me.ProductionPanel)
         Me.FlowLayoutPanel3.Controls.Add(Me.EngrPanel)
         Me.FlowLayoutPanel3.Controls.Add(Me.MarketingPanel)
         Me.FlowLayoutPanel3.Controls.Add(Me.CostingPanel)
-        Me.FlowLayoutPanel3.Controls.Add(Me.AccountsPanel)
         Me.FlowLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill
         Me.FlowLayoutPanel3.FlowDirection = System.Windows.Forms.FlowDirection.TopDown
         Me.FlowLayoutPanel3.Location = New System.Drawing.Point(40, 60)
@@ -201,118 +204,117 @@ Partial Class KMDI_MainFRM
         Me.RecycleTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
         Me.RecycleTile.UseSelectable = True
         '
-        'ProductionPanel
+        'AccountsPanel
         '
-        Me.ProductionPanel.Controls.Add(Me.FlowLayoutPanel6)
-        Me.ProductionPanel.Controls.Add(Me.ProdLBL)
-        Me.ProductionPanel.HorizontalScrollbarBarColor = True
-        Me.ProductionPanel.HorizontalScrollbarHighlightOnWheel = False
-        Me.ProductionPanel.HorizontalScrollbarSize = 10
-        Me.ProductionPanel.Location = New System.Drawing.Point(3, 179)
-        Me.ProductionPanel.Name = "ProductionPanel"
-        Me.ProductionPanel.Size = New System.Drawing.Size(620, 170)
-        Me.ProductionPanel.TabIndex = 8
-        Me.ProductionPanel.Theme = MetroFramework.MetroThemeStyle.Dark
-        Me.ProductionPanel.VerticalScrollbarBarColor = True
-        Me.ProductionPanel.VerticalScrollbarHighlightOnWheel = False
-        Me.ProductionPanel.VerticalScrollbarSize = 10
-        Me.ProductionPanel.Visible = False
+        Me.AccountsPanel.Controls.Add(Me.MetroButton3)
+        Me.AccountsPanel.Controls.Add(Me.MetroButton2)
+        Me.AccountsPanel.Controls.Add(Me.MetroButton1)
+        Me.AccountsPanel.Controls.Add(Me.FlowLayoutPanel8)
+        Me.AccountsPanel.Controls.Add(Me.AcctsLBL)
+        Me.AccountsPanel.HorizontalScrollbarBarColor = True
+        Me.AccountsPanel.HorizontalScrollbarHighlightOnWheel = False
+        Me.AccountsPanel.HorizontalScrollbarSize = 10
+        Me.AccountsPanel.Location = New System.Drawing.Point(3, 179)
+        Me.AccountsPanel.Name = "AccountsPanel"
+        Me.AccountsPanel.Size = New System.Drawing.Size(620, 170)
+        Me.AccountsPanel.TabIndex = 16
+        Me.AccountsPanel.Theme = MetroFramework.MetroThemeStyle.Dark
+        Me.AccountsPanel.VerticalScrollbarBarColor = True
+        Me.AccountsPanel.VerticalScrollbarHighlightOnWheel = False
+        Me.AccountsPanel.VerticalScrollbarSize = 10
         '
-        'FlowLayoutPanel6
+        'FlowLayoutPanel8
         '
-        Me.FlowLayoutPanel6.Controls.Add(Me.StatusMonitoringTile)
-        Me.FlowLayoutPanel6.Controls.Add(Me.CuttingListTile)
-        Me.FlowLayoutPanel6.Controls.Add(Me.GlassSpecsTile)
-        Me.FlowLayoutPanel6.Controls.Add(Me.ProdSDRequestTile)
-        Me.FlowLayoutPanel6.Controls.Add(Me.ProdSDSubmittalTile)
-        Me.FlowLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.FlowLayoutPanel6.Location = New System.Drawing.Point(0, 30)
-        Me.FlowLayoutPanel6.Name = "FlowLayoutPanel6"
-        Me.FlowLayoutPanel6.Padding = New System.Windows.Forms.Padding(66, 0, 0, 0)
-        Me.FlowLayoutPanel6.Size = New System.Drawing.Size(620, 140)
-        Me.FlowLayoutPanel6.TabIndex = 18
+        Me.FlowLayoutPanel8.Controls.Add(Me.InboxTile)
+        Me.FlowLayoutPanel8.Controls.Add(Me.NotifTile)
+        Me.FlowLayoutPanel8.Controls.Add(Me.UpdSecTile)
+        Me.FlowLayoutPanel8.Controls.Add(Me.MngeAccTile)
+        Me.FlowLayoutPanel8.Controls.Add(Me.LogoutTile)
+        Me.FlowLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.FlowLayoutPanel8.Location = New System.Drawing.Point(0, 30)
+        Me.FlowLayoutPanel8.Name = "FlowLayoutPanel8"
+        Me.FlowLayoutPanel8.Padding = New System.Windows.Forms.Padding(66, 0, 0, 0)
+        Me.FlowLayoutPanel8.Size = New System.Drawing.Size(620, 140)
+        Me.FlowLayoutPanel8.TabIndex = 25
         '
-        'StatusMonitoringTile
+        'InboxTile
         '
-        Me.StatusMonitoringTile.ActiveControl = Nothing
-        Me.StatusMonitoringTile.Location = New System.Drawing.Point(69, 3)
-        Me.StatusMonitoringTile.Name = "StatusMonitoringTile"
-        Me.StatusMonitoringTile.Size = New System.Drawing.Size(172, 63)
-        Me.StatusMonitoringTile.Style = MetroFramework.MetroColorStyle.Orange
-        Me.StatusMonitoringTile.TabIndex = 27
-        Me.StatusMonitoringTile.Text = "Status" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Monitoring"
-        Me.StatusMonitoringTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
-        Me.StatusMonitoringTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
-        Me.StatusMonitoringTile.UseSelectable = True
-        Me.StatusMonitoringTile.Visible = False
+        Me.InboxTile.ActiveControl = Nothing
+        Me.InboxTile.Location = New System.Drawing.Point(69, 3)
+        Me.InboxTile.Name = "InboxTile"
+        Me.InboxTile.Size = New System.Drawing.Size(172, 63)
+        Me.InboxTile.Style = MetroFramework.MetroColorStyle.Blue
+        Me.InboxTile.TabIndex = 34
+        Me.InboxTile.Text = "Inbox"
+        Me.InboxTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
+        Me.InboxTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
+        Me.InboxTile.UseSelectable = True
         '
-        'CuttingListTile
+        'NotifTile
         '
-        Me.CuttingListTile.ActiveControl = Nothing
-        Me.CuttingListTile.Location = New System.Drawing.Point(247, 3)
-        Me.CuttingListTile.Name = "CuttingListTile"
-        Me.CuttingListTile.Size = New System.Drawing.Size(173, 63)
-        Me.CuttingListTile.Style = MetroFramework.MetroColorStyle.Orange
-        Me.CuttingListTile.TabIndex = 25
-        Me.CuttingListTile.Text = "Cutting list"
-        Me.CuttingListTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
-        Me.CuttingListTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
-        Me.CuttingListTile.UseSelectable = True
-        Me.CuttingListTile.Visible = False
+        Me.NotifTile.ActiveControl = Nothing
+        Me.NotifTile.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(174, Byte), Integer), CType(CType(219, Byte), Integer))
+        Me.NotifTile.Location = New System.Drawing.Point(247, 3)
+        Me.NotifTile.Name = "NotifTile"
+        Me.NotifTile.Size = New System.Drawing.Size(172, 63)
+        Me.NotifTile.TabIndex = 32
+        Me.NotifTile.Text = "Notification"
+        Me.NotifTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
+        Me.NotifTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
+        Me.NotifTile.UseCustomBackColor = True
+        Me.NotifTile.UseSelectable = True
         '
-        'GlassSpecsTile
+        'UpdSecTile
         '
-        Me.GlassSpecsTile.ActiveControl = Nothing
-        Me.GlassSpecsTile.Location = New System.Drawing.Point(426, 3)
-        Me.GlassSpecsTile.Name = "GlassSpecsTile"
-        Me.GlassSpecsTile.Size = New System.Drawing.Size(173, 63)
-        Me.GlassSpecsTile.Style = MetroFramework.MetroColorStyle.Orange
-        Me.GlassSpecsTile.TabIndex = 26
-        Me.GlassSpecsTile.Text = "Glass Specs"
-        Me.GlassSpecsTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
-        Me.GlassSpecsTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
-        Me.GlassSpecsTile.UseSelectable = True
-        Me.GlassSpecsTile.Visible = False
+        Me.UpdSecTile.ActiveControl = Nothing
+        Me.UpdSecTile.Location = New System.Drawing.Point(425, 3)
+        Me.UpdSecTile.Name = "UpdSecTile"
+        Me.UpdSecTile.Size = New System.Drawing.Size(172, 63)
+        Me.UpdSecTile.Style = MetroFramework.MetroColorStyle.Blue
+        Me.UpdSecTile.TabIndex = 31
+        Me.UpdSecTile.Text = "Account Update"
+        Me.UpdSecTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
+        Me.UpdSecTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
+        Me.UpdSecTile.UseSelectable = True
         '
-        'ProdSDRequestTile
+        'MngeAccTile
         '
-        Me.ProdSDRequestTile.ActiveControl = Nothing
-        Me.ProdSDRequestTile.Location = New System.Drawing.Point(69, 72)
-        Me.ProdSDRequestTile.Name = "ProdSDRequestTile"
-        Me.ProdSDRequestTile.Size = New System.Drawing.Size(262, 63)
-        Me.ProdSDRequestTile.Style = MetroFramework.MetroColorStyle.Orange
-        Me.ProdSDRequestTile.TabIndex = 24
-        Me.ProdSDRequestTile.Text = "SD Request"
-        Me.ProdSDRequestTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
-        Me.ProdSDRequestTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
-        Me.ProdSDRequestTile.UseSelectable = True
-        Me.ProdSDRequestTile.Visible = False
+        Me.MngeAccTile.ActiveControl = Nothing
+        Me.MngeAccTile.Location = New System.Drawing.Point(69, 72)
+        Me.MngeAccTile.Name = "MngeAccTile"
+        Me.MngeAccTile.Size = New System.Drawing.Size(262, 63)
+        Me.MngeAccTile.Style = MetroFramework.MetroColorStyle.Blue
+        Me.MngeAccTile.TabIndex = 36
+        Me.MngeAccTile.Text = "Manage" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Accounts"
+        Me.MngeAccTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
+        Me.MngeAccTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
+        Me.MngeAccTile.UseSelectable = True
+        Me.MngeAccTile.Visible = False
         '
-        'ProdSDSubmittalTile
+        'LogoutTile
         '
-        Me.ProdSDSubmittalTile.ActiveControl = Nothing
-        Me.ProdSDSubmittalTile.Location = New System.Drawing.Point(337, 72)
-        Me.ProdSDSubmittalTile.Name = "ProdSDSubmittalTile"
-        Me.ProdSDSubmittalTile.Size = New System.Drawing.Size(262, 63)
-        Me.ProdSDSubmittalTile.Style = MetroFramework.MetroColorStyle.Orange
-        Me.ProdSDSubmittalTile.TabIndex = 28
-        Me.ProdSDSubmittalTile.Text = "SD Submittal"
-        Me.ProdSDSubmittalTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
-        Me.ProdSDSubmittalTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
-        Me.ProdSDSubmittalTile.UseSelectable = True
-        Me.ProdSDSubmittalTile.Visible = False
+        Me.LogoutTile.ActiveControl = Nothing
+        Me.LogoutTile.Location = New System.Drawing.Point(337, 72)
+        Me.LogoutTile.Name = "LogoutTile"
+        Me.LogoutTile.Size = New System.Drawing.Size(262, 63)
+        Me.LogoutTile.Style = MetroFramework.MetroColorStyle.Blue
+        Me.LogoutTile.TabIndex = 35
+        Me.LogoutTile.Text = "Logout"
+        Me.LogoutTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
+        Me.LogoutTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
+        Me.LogoutTile.UseSelectable = True
         '
-        'ProdLBL
+        'AcctsLBL
         '
-        Me.ProdLBL.AutoSize = True
-        Me.ProdLBL.ForeColor = System.Drawing.Color.White
-        Me.ProdLBL.Location = New System.Drawing.Point(15, 10)
-        Me.ProdLBL.Name = "ProdLBL"
-        Me.ProdLBL.Size = New System.Drawing.Size(73, 19)
-        Me.ProdLBL.TabIndex = 17
-        Me.ProdLBL.Text = "Production"
-        Me.ProdLBL.Theme = MetroFramework.MetroThemeStyle.Dark
-        Me.ProdLBL.UseCustomForeColor = True
+        Me.AcctsLBL.AutoSize = True
+        Me.AcctsLBL.ForeColor = System.Drawing.Color.White
+        Me.AcctsLBL.Location = New System.Drawing.Point(25, 9)
+        Me.AcctsLBL.Name = "AcctsLBL"
+        Me.AcctsLBL.Size = New System.Drawing.Size(61, 19)
+        Me.AcctsLBL.TabIndex = 24
+        Me.AcctsLBL.Text = "Accounts"
+        Me.AcctsLBL.Theme = MetroFramework.MetroThemeStyle.Dark
+        Me.AcctsLBL.UseCustomForeColor = True
         '
         'SNOpanel
         '
@@ -324,7 +326,7 @@ Partial Class KMDI_MainFRM
         Me.SNOpanel.Location = New System.Drawing.Point(3, 355)
         Me.SNOpanel.Name = "SNOpanel"
         Me.SNOpanel.Size = New System.Drawing.Size(620, 170)
-        Me.SNOpanel.TabIndex = 7
+        Me.SNOpanel.TabIndex = 24
         Me.SNOpanel.Theme = MetroFramework.MetroThemeStyle.Dark
         Me.SNOpanel.VerticalScrollbarBarColor = True
         Me.SNOpanel.VerticalScrollbarHighlightOnWheel = False
@@ -333,7 +335,7 @@ Partial Class KMDI_MainFRM
         '
         'FlowLayoutPanel4
         '
-        Me.FlowLayoutPanel4.Controls.Add(Me.AddendumTile)
+        Me.FlowLayoutPanel4.Controls.Add(Me.ProjAssignmentTile)
         Me.FlowLayoutPanel4.Controls.Add(Me.CheckBalTile)
         Me.FlowLayoutPanel4.Controls.Add(Me.SUSTile)
         Me.FlowLayoutPanel4.Controls.Add(Me.CallerInfoTile)
@@ -348,19 +350,19 @@ Partial Class KMDI_MainFRM
         Me.FlowLayoutPanel4.Size = New System.Drawing.Size(620, 140)
         Me.FlowLayoutPanel4.TabIndex = 4
         '
-        'AddendumTile
+        'ProjAssignmentTile
         '
-        Me.AddendumTile.ActiveControl = Nothing
-        Me.AddendumTile.Location = New System.Drawing.Point(69, 3)
-        Me.AddendumTile.Name = "AddendumTile"
-        Me.AddendumTile.Size = New System.Drawing.Size(128, 63)
-        Me.AddendumTile.Style = MetroFramework.MetroColorStyle.Green
-        Me.AddendumTile.TabIndex = 19
-        Me.AddendumTile.Text = "Addendum"
-        Me.AddendumTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
-        Me.AddendumTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
-        Me.AddendumTile.UseSelectable = True
-        Me.AddendumTile.Visible = False
+        Me.ProjAssignmentTile.ActiveControl = Nothing
+        Me.ProjAssignmentTile.Location = New System.Drawing.Point(69, 3)
+        Me.ProjAssignmentTile.Name = "ProjAssignmentTile"
+        Me.ProjAssignmentTile.Size = New System.Drawing.Size(128, 63)
+        Me.ProjAssignmentTile.Style = MetroFramework.MetroColorStyle.Green
+        Me.ProjAssignmentTile.TabIndex = 19
+        Me.ProjAssignmentTile.Text = "Project" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Assignment"
+        Me.ProjAssignmentTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
+        Me.ProjAssignmentTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
+        Me.ProjAssignmentTile.UseSelectable = True
+        Me.ProjAssignmentTile.Visible = False
         '
         'CheckBalTile
         '
@@ -472,6 +474,119 @@ Partial Class KMDI_MainFRM
         Me.SalesNOperationLBL.Theme = MetroFramework.MetroThemeStyle.Dark
         Me.SalesNOperationLBL.UseCustomForeColor = True
         '
+        'ProductionPanel
+        '
+        Me.ProductionPanel.Controls.Add(Me.FlowLayoutPanel6)
+        Me.ProductionPanel.Controls.Add(Me.ProdLBL)
+        Me.ProductionPanel.HorizontalScrollbarBarColor = True
+        Me.ProductionPanel.HorizontalScrollbarHighlightOnWheel = False
+        Me.ProductionPanel.HorizontalScrollbarSize = 10
+        Me.ProductionPanel.Location = New System.Drawing.Point(629, 3)
+        Me.ProductionPanel.Name = "ProductionPanel"
+        Me.ProductionPanel.Size = New System.Drawing.Size(620, 170)
+        Me.ProductionPanel.TabIndex = 28
+        Me.ProductionPanel.Theme = MetroFramework.MetroThemeStyle.Dark
+        Me.ProductionPanel.VerticalScrollbarBarColor = True
+        Me.ProductionPanel.VerticalScrollbarHighlightOnWheel = False
+        Me.ProductionPanel.VerticalScrollbarSize = 10
+        Me.ProductionPanel.Visible = False
+        '
+        'FlowLayoutPanel6
+        '
+        Me.FlowLayoutPanel6.Controls.Add(Me.StatusMonitoringTile)
+        Me.FlowLayoutPanel6.Controls.Add(Me.CuttingListTile)
+        Me.FlowLayoutPanel6.Controls.Add(Me.GlassSpecsTile)
+        Me.FlowLayoutPanel6.Controls.Add(Me.ProdSDRequestTile)
+        Me.FlowLayoutPanel6.Controls.Add(Me.ProdSDSubmittalTile)
+        Me.FlowLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.FlowLayoutPanel6.Location = New System.Drawing.Point(0, 30)
+        Me.FlowLayoutPanel6.Name = "FlowLayoutPanel6"
+        Me.FlowLayoutPanel6.Padding = New System.Windows.Forms.Padding(66, 0, 0, 0)
+        Me.FlowLayoutPanel6.Size = New System.Drawing.Size(620, 140)
+        Me.FlowLayoutPanel6.TabIndex = 18
+        '
+        'StatusMonitoringTile
+        '
+        Me.StatusMonitoringTile.ActiveControl = Nothing
+        Me.StatusMonitoringTile.Location = New System.Drawing.Point(69, 3)
+        Me.StatusMonitoringTile.Name = "StatusMonitoringTile"
+        Me.StatusMonitoringTile.Size = New System.Drawing.Size(172, 63)
+        Me.StatusMonitoringTile.Style = MetroFramework.MetroColorStyle.Orange
+        Me.StatusMonitoringTile.TabIndex = 27
+        Me.StatusMonitoringTile.Text = "Status" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Monitoring"
+        Me.StatusMonitoringTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
+        Me.StatusMonitoringTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
+        Me.StatusMonitoringTile.UseSelectable = True
+        Me.StatusMonitoringTile.Visible = False
+        '
+        'CuttingListTile
+        '
+        Me.CuttingListTile.ActiveControl = Nothing
+        Me.CuttingListTile.Location = New System.Drawing.Point(247, 3)
+        Me.CuttingListTile.Name = "CuttingListTile"
+        Me.CuttingListTile.Size = New System.Drawing.Size(173, 63)
+        Me.CuttingListTile.Style = MetroFramework.MetroColorStyle.Orange
+        Me.CuttingListTile.TabIndex = 25
+        Me.CuttingListTile.Text = "Cutting list"
+        Me.CuttingListTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
+        Me.CuttingListTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
+        Me.CuttingListTile.UseSelectable = True
+        Me.CuttingListTile.Visible = False
+        '
+        'GlassSpecsTile
+        '
+        Me.GlassSpecsTile.ActiveControl = Nothing
+        Me.GlassSpecsTile.Location = New System.Drawing.Point(426, 3)
+        Me.GlassSpecsTile.Name = "GlassSpecsTile"
+        Me.GlassSpecsTile.Size = New System.Drawing.Size(173, 63)
+        Me.GlassSpecsTile.Style = MetroFramework.MetroColorStyle.Orange
+        Me.GlassSpecsTile.TabIndex = 26
+        Me.GlassSpecsTile.Text = "Glass Specs"
+        Me.GlassSpecsTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
+        Me.GlassSpecsTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
+        Me.GlassSpecsTile.UseSelectable = True
+        Me.GlassSpecsTile.Visible = False
+        '
+        'ProdSDRequestTile
+        '
+        Me.ProdSDRequestTile.ActiveControl = Nothing
+        Me.ProdSDRequestTile.Location = New System.Drawing.Point(69, 72)
+        Me.ProdSDRequestTile.Name = "ProdSDRequestTile"
+        Me.ProdSDRequestTile.Size = New System.Drawing.Size(262, 63)
+        Me.ProdSDRequestTile.Style = MetroFramework.MetroColorStyle.Orange
+        Me.ProdSDRequestTile.TabIndex = 24
+        Me.ProdSDRequestTile.Text = "SD Request"
+        Me.ProdSDRequestTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
+        Me.ProdSDRequestTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
+        Me.ProdSDRequestTile.UseSelectable = True
+        Me.ProdSDRequestTile.Visible = False
+        '
+        'ProdSDSubmittalTile
+        '
+        Me.ProdSDSubmittalTile.ActiveControl = Nothing
+        Me.ProdSDSubmittalTile.Location = New System.Drawing.Point(337, 72)
+        Me.ProdSDSubmittalTile.Name = "ProdSDSubmittalTile"
+        Me.ProdSDSubmittalTile.Size = New System.Drawing.Size(262, 63)
+        Me.ProdSDSubmittalTile.Style = MetroFramework.MetroColorStyle.Orange
+        Me.ProdSDSubmittalTile.TabIndex = 28
+        Me.ProdSDSubmittalTile.Text = "SD Submittal"
+        Me.ProdSDSubmittalTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
+        Me.ProdSDSubmittalTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
+        Me.ProdSDSubmittalTile.UseSelectable = True
+        Me.ProdSDSubmittalTile.Visible = False
+        '
+        'ProdLBL
+        '
+        Me.ProdLBL.AutoSize = True
+        Me.ProdLBL.ForeColor = System.Drawing.Color.White
+        Me.ProdLBL.Location = New System.Drawing.Point(15, 10)
+        Me.ProdLBL.Name = "ProdLBL"
+        Me.ProdLBL.Size = New System.Drawing.Size(73, 19)
+        Me.ProdLBL.TabIndex = 17
+        Me.ProdLBL.Text = "Production"
+        Me.ProdLBL.Theme = MetroFramework.MetroThemeStyle.Dark
+        Me.ProdLBL.UseCustomForeColor = True
+        '
         'EngrPanel
         '
         Me.EngrPanel.Controls.Add(Me.FlowLayoutPanel7)
@@ -479,10 +594,10 @@ Partial Class KMDI_MainFRM
         Me.EngrPanel.HorizontalScrollbarBarColor = True
         Me.EngrPanel.HorizontalScrollbarHighlightOnWheel = False
         Me.EngrPanel.HorizontalScrollbarSize = 10
-        Me.EngrPanel.Location = New System.Drawing.Point(629, 3)
+        Me.EngrPanel.Location = New System.Drawing.Point(629, 179)
         Me.EngrPanel.Name = "EngrPanel"
         Me.EngrPanel.Size = New System.Drawing.Size(620, 170)
-        Me.EngrPanel.TabIndex = 12
+        Me.EngrPanel.TabIndex = 29
         Me.EngrPanel.Theme = MetroFramework.MetroThemeStyle.Dark
         Me.EngrPanel.VerticalScrollbarBarColor = True
         Me.EngrPanel.VerticalScrollbarHighlightOnWheel = False
@@ -607,10 +722,10 @@ Partial Class KMDI_MainFRM
         Me.MarketingPanel.HorizontalScrollbarBarColor = True
         Me.MarketingPanel.HorizontalScrollbarHighlightOnWheel = False
         Me.MarketingPanel.HorizontalScrollbarSize = 10
-        Me.MarketingPanel.Location = New System.Drawing.Point(629, 179)
+        Me.MarketingPanel.Location = New System.Drawing.Point(629, 355)
         Me.MarketingPanel.Name = "MarketingPanel"
         Me.MarketingPanel.Size = New System.Drawing.Size(620, 170)
-        Me.MarketingPanel.TabIndex = 13
+        Me.MarketingPanel.TabIndex = 30
         Me.MarketingPanel.Theme = MetroFramework.MetroThemeStyle.Dark
         Me.MarketingPanel.VerticalScrollbarBarColor = True
         Me.MarketingPanel.VerticalScrollbarHighlightOnWheel = False
@@ -693,10 +808,10 @@ Partial Class KMDI_MainFRM
         Me.CostingPanel.HorizontalScrollbarBarColor = True
         Me.CostingPanel.HorizontalScrollbarHighlightOnWheel = False
         Me.CostingPanel.HorizontalScrollbarSize = 10
-        Me.CostingPanel.Location = New System.Drawing.Point(629, 355)
+        Me.CostingPanel.Location = New System.Drawing.Point(1255, 3)
         Me.CostingPanel.Name = "CostingPanel"
         Me.CostingPanel.Size = New System.Drawing.Size(620, 170)
-        Me.CostingPanel.TabIndex = 15
+        Me.CostingPanel.TabIndex = 31
         Me.CostingPanel.Theme = MetroFramework.MetroThemeStyle.Dark
         Me.CostingPanel.VerticalScrollbarBarColor = True
         Me.CostingPanel.VerticalScrollbarHighlightOnWheel = False
@@ -718,22 +833,25 @@ Partial Class KMDI_MainFRM
         'MyListTile
         '
         Me.MyListTile.ActiveControl = Nothing
-        Me.MyListTile.ForeColor = System.Drawing.Color.Black
+        Me.MyListTile.BackColor = System.Drawing.Color.SlateBlue
+        Me.MyListTile.ForeColor = System.Drawing.Color.DarkGray
         Me.MyListTile.Location = New System.Drawing.Point(69, 3)
         Me.MyListTile.Name = "MyListTile"
         Me.MyListTile.Size = New System.Drawing.Size(128, 63)
-        Me.MyListTile.Style = MetroFramework.MetroColorStyle.Red
+        Me.MyListTile.Style = MetroFramework.MetroColorStyle.Teal
         Me.MyListTile.TabIndex = 31
         Me.MyListTile.Text = "My List"
         Me.MyListTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
         Me.MyListTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
+        Me.MyListTile.UseCustomBackColor = True
         Me.MyListTile.UseSelectable = True
         Me.MyListTile.Visible = False
         '
         'AccessoriesTile
         '
         Me.AccessoriesTile.ActiveControl = Nothing
-        Me.AccessoriesTile.ForeColor = System.Drawing.Color.Black
+        Me.AccessoriesTile.BackColor = System.Drawing.Color.SlateBlue
+        Me.AccessoriesTile.ForeColor = System.Drawing.Color.DarkGray
         Me.AccessoriesTile.Location = New System.Drawing.Point(203, 3)
         Me.AccessoriesTile.Name = "AccessoriesTile"
         Me.AccessoriesTile.Size = New System.Drawing.Size(128, 63)
@@ -742,13 +860,15 @@ Partial Class KMDI_MainFRM
         Me.AccessoriesTile.Text = "Accessories"
         Me.AccessoriesTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
         Me.AccessoriesTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
+        Me.AccessoriesTile.UseCustomBackColor = True
         Me.AccessoriesTile.UseSelectable = True
         Me.AccessoriesTile.Visible = False
         '
         'WinDoorMakerTile
         '
         Me.WinDoorMakerTile.ActiveControl = Nothing
-        Me.WinDoorMakerTile.ForeColor = System.Drawing.Color.Black
+        Me.WinDoorMakerTile.BackColor = System.Drawing.Color.SlateBlue
+        Me.WinDoorMakerTile.ForeColor = System.Drawing.Color.DarkGray
         Me.WinDoorMakerTile.Location = New System.Drawing.Point(337, 3)
         Me.WinDoorMakerTile.Name = "WinDoorMakerTile"
         Me.WinDoorMakerTile.Size = New System.Drawing.Size(128, 63)
@@ -757,6 +877,7 @@ Partial Class KMDI_MainFRM
         Me.WinDoorMakerTile.Text = "WinDoor Maker"
         Me.WinDoorMakerTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
         Me.WinDoorMakerTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
+        Me.WinDoorMakerTile.UseCustomBackColor = True
         Me.WinDoorMakerTile.UseSelectable = True
         Me.WinDoorMakerTile.Visible = False
         '
@@ -771,114 +892,6 @@ Partial Class KMDI_MainFRM
         Me.MetroLabel1.Text = "Costing"
         Me.MetroLabel1.Theme = MetroFramework.MetroThemeStyle.Dark
         Me.MetroLabel1.UseCustomForeColor = True
-        '
-        'AccountsPanel
-        '
-        Me.AccountsPanel.Controls.Add(Me.FlowLayoutPanel8)
-        Me.AccountsPanel.Controls.Add(Me.AcctsLBL)
-        Me.AccountsPanel.HorizontalScrollbarBarColor = True
-        Me.AccountsPanel.HorizontalScrollbarHighlightOnWheel = False
-        Me.AccountsPanel.HorizontalScrollbarSize = 10
-        Me.AccountsPanel.Location = New System.Drawing.Point(1255, 3)
-        Me.AccountsPanel.Name = "AccountsPanel"
-        Me.AccountsPanel.Size = New System.Drawing.Size(620, 170)
-        Me.AccountsPanel.TabIndex = 16
-        Me.AccountsPanel.Theme = MetroFramework.MetroThemeStyle.Dark
-        Me.AccountsPanel.VerticalScrollbarBarColor = True
-        Me.AccountsPanel.VerticalScrollbarHighlightOnWheel = False
-        Me.AccountsPanel.VerticalScrollbarSize = 10
-        '
-        'FlowLayoutPanel8
-        '
-        Me.FlowLayoutPanel8.Controls.Add(Me.InboxTile)
-        Me.FlowLayoutPanel8.Controls.Add(Me.NotifTile)
-        Me.FlowLayoutPanel8.Controls.Add(Me.UpdSecTile)
-        Me.FlowLayoutPanel8.Controls.Add(Me.MngeAccTile)
-        Me.FlowLayoutPanel8.Controls.Add(Me.LogoutTile)
-        Me.FlowLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.FlowLayoutPanel8.Location = New System.Drawing.Point(0, 30)
-        Me.FlowLayoutPanel8.Name = "FlowLayoutPanel8"
-        Me.FlowLayoutPanel8.Padding = New System.Windows.Forms.Padding(66, 0, 0, 0)
-        Me.FlowLayoutPanel8.Size = New System.Drawing.Size(620, 140)
-        Me.FlowLayoutPanel8.TabIndex = 25
-        '
-        'InboxTile
-        '
-        Me.InboxTile.ActiveControl = Nothing
-        Me.InboxTile.Location = New System.Drawing.Point(69, 3)
-        Me.InboxTile.Name = "InboxTile"
-        Me.InboxTile.Size = New System.Drawing.Size(172, 63)
-        Me.InboxTile.Style = MetroFramework.MetroColorStyle.Blue
-        Me.InboxTile.TabIndex = 34
-        Me.InboxTile.Text = "Inbox"
-        Me.InboxTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
-        Me.InboxTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
-        Me.InboxTile.UseSelectable = True
-        '
-        'NotifTile
-        '
-        Me.NotifTile.ActiveControl = Nothing
-        Me.NotifTile.Location = New System.Drawing.Point(247, 3)
-        Me.NotifTile.Name = "NotifTile"
-        Me.NotifTile.Size = New System.Drawing.Size(172, 63)
-        Me.NotifTile.Style = MetroFramework.MetroColorStyle.Blue
-        Me.NotifTile.TabIndex = 32
-        Me.NotifTile.Text = "Notification"
-        Me.NotifTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
-        Me.NotifTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
-        Me.NotifTile.UseSelectable = True
-        '
-        'UpdSecTile
-        '
-        Me.UpdSecTile.ActiveControl = Nothing
-        Me.UpdSecTile.Location = New System.Drawing.Point(425, 3)
-        Me.UpdSecTile.Name = "UpdSecTile"
-        Me.UpdSecTile.Size = New System.Drawing.Size(172, 63)
-        Me.UpdSecTile.Style = MetroFramework.MetroColorStyle.Blue
-        Me.UpdSecTile.TabIndex = 31
-        Me.UpdSecTile.Text = "Account Update"
-        Me.UpdSecTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
-        Me.UpdSecTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
-        Me.UpdSecTile.UseSelectable = True
-        '
-        'MngeAccTile
-        '
-        Me.MngeAccTile.ActiveControl = Nothing
-        Me.MngeAccTile.Location = New System.Drawing.Point(69, 72)
-        Me.MngeAccTile.Name = "MngeAccTile"
-        Me.MngeAccTile.Size = New System.Drawing.Size(262, 63)
-        Me.MngeAccTile.Style = MetroFramework.MetroColorStyle.Blue
-        Me.MngeAccTile.TabIndex = 36
-        Me.MngeAccTile.Text = "Manage" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Accounts"
-        Me.MngeAccTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
-        Me.MngeAccTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
-        Me.MngeAccTile.UseSelectable = True
-        Me.MngeAccTile.Visible = False
-        '
-        'LogoutTile
-        '
-        Me.LogoutTile.ActiveControl = Nothing
-        Me.LogoutTile.Location = New System.Drawing.Point(337, 72)
-        Me.LogoutTile.Name = "LogoutTile"
-        Me.LogoutTile.Size = New System.Drawing.Size(262, 63)
-        Me.LogoutTile.Style = MetroFramework.MetroColorStyle.Blue
-        Me.LogoutTile.TabIndex = 35
-        Me.LogoutTile.Text = "Logout"
-        Me.LogoutTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
-        Me.LogoutTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
-        Me.LogoutTile.UseSelectable = True
-        '
-        'AcctsLBL
-        '
-        Me.AcctsLBL.AutoSize = True
-        Me.AcctsLBL.ForeColor = System.Drawing.Color.White
-        Me.AcctsLBL.Location = New System.Drawing.Point(25, 9)
-        Me.AcctsLBL.Name = "AcctsLBL"
-        Me.AcctsLBL.Size = New System.Drawing.Size(61, 19)
-        Me.AcctsLBL.TabIndex = 24
-        Me.AcctsLBL.Text = "Accounts"
-        Me.AcctsLBL.Theme = MetroFramework.MetroThemeStyle.Dark
-        Me.AcctsLBL.UseCustomForeColor = True
         '
         'FlowLayoutPanel1
         '
@@ -917,6 +930,33 @@ Partial Class KMDI_MainFRM
         Me.ReloadMainFrm.UseStyleColors = True
         Me.ReloadMainFrm.Value = 100
         '
+        'MetroButton1
+        '
+        Me.MetroButton1.Location = New System.Drawing.Point(236, 5)
+        Me.MetroButton1.Name = "MetroButton1"
+        Me.MetroButton1.Size = New System.Drawing.Size(95, 23)
+        Me.MetroButton1.TabIndex = 26
+        Me.MetroButton1.Text = "MetroButton1"
+        Me.MetroButton1.UseSelectable = True
+        '
+        'MetroButton2
+        '
+        Me.MetroButton2.Location = New System.Drawing.Point(335, 5)
+        Me.MetroButton2.Name = "MetroButton2"
+        Me.MetroButton2.Size = New System.Drawing.Size(95, 23)
+        Me.MetroButton2.TabIndex = 27
+        Me.MetroButton2.Text = "MetroButton2"
+        Me.MetroButton2.UseSelectable = True
+        '
+        'MetroButton3
+        '
+        Me.MetroButton3.Location = New System.Drawing.Point(436, 5)
+        Me.MetroButton3.Name = "MetroButton3"
+        Me.MetroButton3.Size = New System.Drawing.Size(95, 23)
+        Me.MetroButton3.TabIndex = 28
+        Me.MetroButton3.Text = "MetroButton3"
+        Me.MetroButton3.UseSelectable = True
+        '
         'KMDI_MainFRM
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -938,12 +978,15 @@ Partial Class KMDI_MainFRM
         Me.ContractsPanel.ResumeLayout(False)
         Me.ContractsPanel.PerformLayout()
         Me.FlowLayoutPanel9.ResumeLayout(False)
-        Me.ProductionPanel.ResumeLayout(False)
-        Me.ProductionPanel.PerformLayout()
-        Me.FlowLayoutPanel6.ResumeLayout(False)
+        Me.AccountsPanel.ResumeLayout(False)
+        Me.AccountsPanel.PerformLayout()
+        Me.FlowLayoutPanel8.ResumeLayout(False)
         Me.SNOpanel.ResumeLayout(False)
         Me.SNOpanel.PerformLayout()
         Me.FlowLayoutPanel4.ResumeLayout(False)
+        Me.ProductionPanel.ResumeLayout(False)
+        Me.ProductionPanel.PerformLayout()
+        Me.FlowLayoutPanel6.ResumeLayout(False)
         Me.EngrPanel.ResumeLayout(False)
         Me.EngrPanel.PerformLayout()
         Me.FlowLayoutPanel7.ResumeLayout(False)
@@ -953,9 +996,6 @@ Partial Class KMDI_MainFRM
         Me.CostingPanel.ResumeLayout(False)
         Me.CostingPanel.PerformLayout()
         Me.FlowLayoutPanel10.ResumeLayout(False)
-        Me.AccountsPanel.ResumeLayout(False)
-        Me.AccountsPanel.PerformLayout()
-        Me.FlowLayoutPanel8.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -965,17 +1005,23 @@ Partial Class KMDI_MainFRM
     Friend WithEvents FlowLayoutPanel3 As FlowLayoutPanel
     Friend WithEvents ContractsPanel As MetroFramework.Controls.MetroPanel
     Friend WithEvents ContractsLBL As MetroFramework.Controls.MetroLabel
-    Friend WithEvents ProductionPanel As MetroFramework.Controls.MetroPanel
-    Friend WithEvents FlowLayoutPanel6 As FlowLayoutPanel
-    Friend WithEvents StatusMonitoringTile As MetroFramework.Controls.MetroTile
-    Friend WithEvents CuttingListTile As MetroFramework.Controls.MetroTile
-    Friend WithEvents GlassSpecsTile As MetroFramework.Controls.MetroTile
-    Friend WithEvents ProdSDRequestTile As MetroFramework.Controls.MetroTile
-    Friend WithEvents ProdSDSubmittalTile As MetroFramework.Controls.MetroTile
-    Friend WithEvents ProdLBL As MetroFramework.Controls.MetroLabel
+    Friend WithEvents FlowLayoutPanel1 As FlowLayoutPanel
+    Friend WithEvents FlowLayoutPanel9 As FlowLayoutPanel
+    Friend WithEvents NewConTile As MetroFramework.Controls.MetroTile
+    Friend WithEvents NicknameLbl As MetroFramework.Controls.MetroLabel
+    Friend WithEvents AccountsPanel As MetroFramework.Controls.MetroPanel
+    Friend WithEvents FlowLayoutPanel8 As FlowLayoutPanel
+    Friend WithEvents InboxTile As MetroFramework.Controls.MetroTile
+    Friend WithEvents NotifTile As MetroFramework.Controls.MetroTile
+    Friend WithEvents UpdSecTile As MetroFramework.Controls.MetroTile
+    Friend WithEvents MngeAccTile As MetroFramework.Controls.MetroTile
+    Friend WithEvents LogoutTile As MetroFramework.Controls.MetroTile
+    Friend WithEvents AcctsLBL As MetroFramework.Controls.MetroLabel
+    Friend WithEvents ReloadMainFrm As MetroFramework.Controls.MetroProgressSpinner
+    Friend WithEvents RecycleTile As MetroFramework.Controls.MetroTile
     Friend WithEvents SNOpanel As MetroFramework.Controls.MetroPanel
     Friend WithEvents FlowLayoutPanel4 As FlowLayoutPanel
-    Friend WithEvents AddendumTile As MetroFramework.Controls.MetroTile
+    Friend WithEvents ProjAssignmentTile As MetroFramework.Controls.MetroTile
     Friend WithEvents CheckBalTile As MetroFramework.Controls.MetroTile
     Friend WithEvents SUSTile As MetroFramework.Controls.MetroTile
     Friend WithEvents CallerInfoTile As MetroFramework.Controls.MetroTile
@@ -984,6 +1030,14 @@ Partial Class KMDI_MainFRM
     Friend WithEvents SalesMonitoringTile As MetroFramework.Controls.MetroTile
     Friend WithEvents SalesItineraryTile As MetroFramework.Controls.MetroTile
     Friend WithEvents SalesNOperationLBL As MetroFramework.Controls.MetroLabel
+    Friend WithEvents ProductionPanel As MetroFramework.Controls.MetroPanel
+    Friend WithEvents FlowLayoutPanel6 As FlowLayoutPanel
+    Friend WithEvents StatusMonitoringTile As MetroFramework.Controls.MetroTile
+    Friend WithEvents CuttingListTile As MetroFramework.Controls.MetroTile
+    Friend WithEvents GlassSpecsTile As MetroFramework.Controls.MetroTile
+    Friend WithEvents ProdSDRequestTile As MetroFramework.Controls.MetroTile
+    Friend WithEvents ProdSDSubmittalTile As MetroFramework.Controls.MetroTile
+    Friend WithEvents ProdLBL As MetroFramework.Controls.MetroLabel
     Friend WithEvents EngrPanel As MetroFramework.Controls.MetroPanel
     Friend WithEvents FlowLayoutPanel7 As FlowLayoutPanel
     Friend WithEvents DeliveryRecieptsTile As MetroFramework.Controls.MetroTile
@@ -999,24 +1053,13 @@ Partial Class KMDI_MainFRM
     Friend WithEvents InventoryTile As MetroFramework.Controls.MetroTile
     Friend WithEvents ArchiFirmTile As MetroFramework.Controls.MetroTile
     Friend WithEvents MarketingLabel As MetroFramework.Controls.MetroLabel
-    Friend WithEvents FlowLayoutPanel1 As FlowLayoutPanel
-    Friend WithEvents FlowLayoutPanel9 As FlowLayoutPanel
-    Friend WithEvents NewConTile As MetroFramework.Controls.MetroTile
-    Friend WithEvents NicknameLbl As MetroFramework.Controls.MetroLabel
     Friend WithEvents CostingPanel As MetroFramework.Controls.MetroPanel
     Friend WithEvents FlowLayoutPanel10 As FlowLayoutPanel
     Friend WithEvents MyListTile As MetroFramework.Controls.MetroTile
     Friend WithEvents AccessoriesTile As MetroFramework.Controls.MetroTile
     Friend WithEvents WinDoorMakerTile As MetroFramework.Controls.MetroTile
     Friend WithEvents MetroLabel1 As MetroFramework.Controls.MetroLabel
-    Friend WithEvents AccountsPanel As MetroFramework.Controls.MetroPanel
-    Friend WithEvents FlowLayoutPanel8 As FlowLayoutPanel
-    Friend WithEvents InboxTile As MetroFramework.Controls.MetroTile
-    Friend WithEvents NotifTile As MetroFramework.Controls.MetroTile
-    Friend WithEvents UpdSecTile As MetroFramework.Controls.MetroTile
-    Friend WithEvents MngeAccTile As MetroFramework.Controls.MetroTile
-    Friend WithEvents LogoutTile As MetroFramework.Controls.MetroTile
-    Friend WithEvents AcctsLBL As MetroFramework.Controls.MetroLabel
-    Friend WithEvents ReloadMainFrm As MetroFramework.Controls.MetroProgressSpinner
-    Friend WithEvents RecycleTile As MetroFramework.Controls.MetroTile
+    Friend WithEvents MetroButton3 As MetroFramework.Controls.MetroButton
+    Friend WithEvents MetroButton2 As MetroFramework.Controls.MetroButton
+    Friend WithEvents MetroButton1 As MetroFramework.Controls.MetroButton
 End Class

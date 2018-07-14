@@ -135,6 +135,12 @@
     <Compile Include="KMDISystemsAccount\ManageAccounts\Forms\ChangeWritePermision.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="KMDISystemsSnO\Project Assignment\Forms\ProjectAssignment.Designer.vb">
+      <DependentUpon>ProjectAssignment.vb</DependentUpon>
+    </Compile>
+    <Compile Include="KMDISystemsSnO\Project Assignment\Forms\ProjectAssignment.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Module\KMDISystemsGlobalModule.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -177,6 +183,9 @@
     <EmbeddedResource Include="KMDISystemsAccount\ManageAccounts\Forms\ChangeWritePermision.resx">
       <DependentUpon>ChangeWritePermision.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="KMDISystemsSnO\Project Assignment\Forms\ProjectAssignment.resx">
+      <DependentUpon>ProjectAssignment.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
@@ -201,6 +210,8 @@
     <Folder Include="KMDISystemsAccount\Module\" />
     <Folder Include="KMDISystemsCosting\Module\" />
     <Folder Include="KMDISystemsCosting\WinDoorMaker\Module\" />
+    <Folder Include="KMDISystemsSnO\Module\" />
+    <Folder Include="KMDISystemsSnO\Project Assignment\Module\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

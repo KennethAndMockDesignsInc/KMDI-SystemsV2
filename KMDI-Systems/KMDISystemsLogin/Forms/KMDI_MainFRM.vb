@@ -35,7 +35,7 @@
                             ToVisibleEngrPaneL = 1
 
                         Case addendum
-                            AddendumTile.Visible = True
+                            ProjAssignmentTile.Visible = True
                             ToVisibleSNOPaneL = 1
                         Case SalesItinerary
                             SalesItineraryTile.Visible = True
@@ -188,7 +188,7 @@
                 CallerInfoTile.Visible = True
                 ExterrnalDamagesTile.Visible = True
                 SalesItineraryTile.Visible = True
-                AddendumTile.Visible = True
+                ProjAssignmentTile.Visible = True
 
                 ToVisibleSNOPaneL = 1
 
@@ -209,7 +209,7 @@
                 CallerInfoTile.Visible = True
                 ExterrnalDamagesTile.Visible = True
                 SalesItineraryTile.Visible = True
-                AddendumTile.Visible = True
+                ProjAssignmentTile.Visible = True
 
                 ToVisibleSNOPaneL = 1
 
@@ -222,7 +222,7 @@
                 EngrSDSubmittalTile.Visible = True
                 ExterrnalDamagesTile.Visible = True
                 SalesItineraryTile.Visible = True
-                AddendumTile.Visible = True
+                ProjAssignmentTile.Visible = True
 
                 ToVisibleSNOPaneL = 1
                 ToVisibleEngrPaneL = 1
@@ -237,7 +237,7 @@
             EngrsItineraryTIle.Visible = True
             EngrSDSubmittalTile.Visible = True
 
-            AddendumTile.Visible = True
+            ProjAssignmentTile.Visible = True
             SalesItineraryTile.Visible = True
             SalesMonitoringTile.Visible = True
             SUSTile.Visible = True
@@ -352,5 +352,25 @@
     Private Sub UpdSecTile_Click(sender As Object, e As EventArgs) Handles UpdSecTile.Click
         AccountUpdate.Show()
         Me.Enabled = False
+    End Sub
+
+    Private Sub ProjAssignmentTile_Click(sender As Object, e As EventArgs) Handles ProjAssignmentTile.Click
+        Me.Enabled = False
+        ProjectAssignment.Show()
+    End Sub
+
+    Private Sub MetroButton1_Click(sender As Object, e As EventArgs) Handles MetroButton1.Click
+        NotifTile.UseCustomBackColor = True
+        NotifTile.BackColor = Color.FromArgb(0, 174, 219)
+    End Sub
+
+    Private Sub MetroButton2_Click(sender As Object, e As EventArgs) Handles MetroButton2.Click
+        NotifTile.UseCustomBackColor = True
+        NotifTile.BackColor = Color.Goldenrod
+    End Sub
+
+    Private Sub MetroButton3_Click(sender As Object, e As EventArgs) Handles MetroButton3.Click
+        NotifTile.UseCustomBackColor = True
+        NotifTile.BackColor = Color.Red
     End Sub
 End Class
