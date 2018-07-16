@@ -359,18 +359,4 @@
         ProjectAssignment.Show()
     End Sub
 
-    Private Sub MetroButton1_Click(sender As Object, e As EventArgs) Handles MetroButton1.Click
-        NotifTile.UseCustomBackColor = True
-        NotifTile.BackColor = Color.FromArgb(0, 174, 219)
-    End Sub
-
-    Private Sub MetroButton2_Click(sender As Object, e As EventArgs) Handles MetroButton2.Click
-        NotifTile.UseCustomBackColor = True
-        NotifTile.BackColor = Color.Goldenrod
-    End Sub
-
-    Private Sub MetroButton3_Click(sender As Object, e As EventArgs) Handles MetroButton3.Click
-        NotifTile.UseCustomBackColor = True
-        NotifTile.BackColor = Color.Red
-    End Sub
 End Class

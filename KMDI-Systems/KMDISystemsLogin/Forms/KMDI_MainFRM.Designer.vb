@@ -81,9 +81,6 @@ Partial Class KMDI_MainFRM
         Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
         Me.NicknameLbl = New MetroFramework.Controls.MetroLabel()
         Me.ReloadMainFrm = New MetroFramework.Controls.MetroProgressSpinner()
-        Me.MetroButton1 = New MetroFramework.Controls.MetroButton()
-        Me.MetroButton2 = New MetroFramework.Controls.MetroButton()
-        Me.MetroButton3 = New MetroFramework.Controls.MetroButton()
         Me.FlowLayoutPanel3.SuspendLayout()
         Me.ContractsPanel.SuspendLayout()
         Me.FlowLayoutPanel9.SuspendLayout()
@@ -206,9 +203,6 @@ Partial Class KMDI_MainFRM
         '
         'AccountsPanel
         '
-        Me.AccountsPanel.Controls.Add(Me.MetroButton3)
-        Me.AccountsPanel.Controls.Add(Me.MetroButton2)
-        Me.AccountsPanel.Controls.Add(Me.MetroButton1)
         Me.AccountsPanel.Controls.Add(Me.FlowLayoutPanel8)
         Me.AccountsPanel.Controls.Add(Me.AcctsLBL)
         Me.AccountsPanel.HorizontalScrollbarBarColor = True
@@ -930,33 +924,6 @@ Partial Class KMDI_MainFRM
         Me.ReloadMainFrm.UseStyleColors = True
         Me.ReloadMainFrm.Value = 100
         '
-        'MetroButton1
-        '
-        Me.MetroButton1.Location = New System.Drawing.Point(236, 5)
-        Me.MetroButton1.Name = "MetroButton1"
-        Me.MetroButton1.Size = New System.Drawing.Size(95, 23)
-        Me.MetroButton1.TabIndex = 26
-        Me.MetroButton1.Text = "MetroButton1"
-        Me.MetroButton1.UseSelectable = True
-        '
-        'MetroButton2
-        '
-        Me.MetroButton2.Location = New System.Drawing.Point(335, 5)
-        Me.MetroButton2.Name = "MetroButton2"
-        Me.MetroButton2.Size = New System.Drawing.Size(95, 23)
-        Me.MetroButton2.TabIndex = 27
-        Me.MetroButton2.Text = "MetroButton2"
-        Me.MetroButton2.UseSelectable = True
-        '
-        'MetroButton3
-        '
-        Me.MetroButton3.Location = New System.Drawing.Point(436, 5)
-        Me.MetroButton3.Name = "MetroButton3"
-        Me.MetroButton3.Size = New System.Drawing.Size(95, 23)
-        Me.MetroButton3.TabIndex = 28
-        Me.MetroButton3.Text = "MetroButton3"
-        Me.MetroButton3.UseSelectable = True
-        '
         'KMDI_MainFRM
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1059,7 +1026,4 @@ Partial Class KMDI_MainFRM
     Friend WithEvents AccessoriesTile As MetroFramework.Controls.MetroTile
     Friend WithEvents WinDoorMakerTile As MetroFramework.Controls.MetroTile
     Friend WithEvents MetroLabel1 As MetroFramework.Controls.MetroLabel
-    Friend WithEvents MetroButton3 As MetroFramework.Controls.MetroButton
-    Friend WithEvents MetroButton2 As MetroFramework.Controls.MetroButton
-    Friend WithEvents MetroButton1 As MetroFramework.Controls.MetroButton
 End Class
