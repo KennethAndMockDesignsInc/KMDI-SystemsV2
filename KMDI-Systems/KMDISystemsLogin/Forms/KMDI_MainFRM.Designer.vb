@@ -74,8 +74,6 @@ Partial Class KMDI_MainFRM
         Me.MarketingLabel = New MetroFramework.Controls.MetroLabel()
         Me.CostingPanel = New MetroFramework.Controls.MetroPanel()
         Me.FlowLayoutPanel10 = New System.Windows.Forms.FlowLayoutPanel()
-        Me.MyListTile = New MetroFramework.Controls.MetroTile()
-        Me.AccessoriesTile = New MetroFramework.Controls.MetroTile()
         Me.WinDoorMakerTile = New MetroFramework.Controls.MetroTile()
         Me.MetroLabel1 = New MetroFramework.Controls.MetroLabel()
         Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
@@ -814,8 +812,6 @@ Partial Class KMDI_MainFRM
         '
         'FlowLayoutPanel10
         '
-        Me.FlowLayoutPanel10.Controls.Add(Me.MyListTile)
-        Me.FlowLayoutPanel10.Controls.Add(Me.AccessoriesTile)
         Me.FlowLayoutPanel10.Controls.Add(Me.WinDoorMakerTile)
         Me.FlowLayoutPanel10.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.FlowLayoutPanel10.Location = New System.Drawing.Point(0, 30)
@@ -824,48 +820,14 @@ Partial Class KMDI_MainFRM
         Me.FlowLayoutPanel10.Size = New System.Drawing.Size(620, 140)
         Me.FlowLayoutPanel10.TabIndex = 19
         '
-        'MyListTile
-        '
-        Me.MyListTile.ActiveControl = Nothing
-        Me.MyListTile.BackColor = System.Drawing.Color.SlateBlue
-        Me.MyListTile.ForeColor = System.Drawing.Color.DarkGray
-        Me.MyListTile.Location = New System.Drawing.Point(69, 3)
-        Me.MyListTile.Name = "MyListTile"
-        Me.MyListTile.Size = New System.Drawing.Size(128, 63)
-        Me.MyListTile.Style = MetroFramework.MetroColorStyle.Teal
-        Me.MyListTile.TabIndex = 31
-        Me.MyListTile.Text = "My List"
-        Me.MyListTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
-        Me.MyListTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
-        Me.MyListTile.UseCustomBackColor = True
-        Me.MyListTile.UseSelectable = True
-        Me.MyListTile.Visible = False
-        '
-        'AccessoriesTile
-        '
-        Me.AccessoriesTile.ActiveControl = Nothing
-        Me.AccessoriesTile.BackColor = System.Drawing.Color.SlateBlue
-        Me.AccessoriesTile.ForeColor = System.Drawing.Color.DarkGray
-        Me.AccessoriesTile.Location = New System.Drawing.Point(203, 3)
-        Me.AccessoriesTile.Name = "AccessoriesTile"
-        Me.AccessoriesTile.Size = New System.Drawing.Size(128, 63)
-        Me.AccessoriesTile.Style = MetroFramework.MetroColorStyle.Red
-        Me.AccessoriesTile.TabIndex = 30
-        Me.AccessoriesTile.Text = "Accessories"
-        Me.AccessoriesTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
-        Me.AccessoriesTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
-        Me.AccessoriesTile.UseCustomBackColor = True
-        Me.AccessoriesTile.UseSelectable = True
-        Me.AccessoriesTile.Visible = False
-        '
         'WinDoorMakerTile
         '
         Me.WinDoorMakerTile.ActiveControl = Nothing
         Me.WinDoorMakerTile.BackColor = System.Drawing.Color.SlateBlue
         Me.WinDoorMakerTile.ForeColor = System.Drawing.Color.DarkGray
-        Me.WinDoorMakerTile.Location = New System.Drawing.Point(337, 3)
+        Me.WinDoorMakerTile.Location = New System.Drawing.Point(69, 3)
         Me.WinDoorMakerTile.Name = "WinDoorMakerTile"
-        Me.WinDoorMakerTile.Size = New System.Drawing.Size(128, 63)
+        Me.WinDoorMakerTile.Size = New System.Drawing.Size(262, 132)
         Me.WinDoorMakerTile.Style = MetroFramework.MetroColorStyle.Red
         Me.WinDoorMakerTile.TabIndex = 32
         Me.WinDoorMakerTile.Text = "WinDoor Maker"
@@ -1022,8 +984,6 @@ Partial Class KMDI_MainFRM
     Friend WithEvents MarketingLabel As MetroFramework.Controls.MetroLabel
     Friend WithEvents CostingPanel As MetroFramework.Controls.MetroPanel
     Friend WithEvents FlowLayoutPanel10 As FlowLayoutPanel
-    Friend WithEvents MyListTile As MetroFramework.Controls.MetroTile
-    Friend WithEvents AccessoriesTile As MetroFramework.Controls.MetroTile
     Friend WithEvents WinDoorMakerTile As MetroFramework.Controls.MetroTile
     Friend WithEvents MetroLabel1 As MetroFramework.Controls.MetroLabel
 End Class

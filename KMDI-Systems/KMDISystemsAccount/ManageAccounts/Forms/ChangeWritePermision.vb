@@ -78,10 +78,6 @@
                     Case Request
                         TileAccessCode.Text = "Marketing Request"
 
-                    Case Accesories
-                        TileAccessCode.Text = "Accesories"
-                    Case myList
-                        TileAccessCode.Text = "My List"
                     Case WinDoor
                         TileAccessCode.Text = "WinDoor Maker"
                 End Select

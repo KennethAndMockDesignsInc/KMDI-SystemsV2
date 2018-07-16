@@ -78,12 +78,6 @@
                         Case Request
                             MarketingRequestTile.Visible = True
                             ToVisibleMarketingPanel = 1
-                        Case myList
-                            MyListTile.Visible = True
-                            ToVisibleCostingPanel = 1
-                        Case Accesories
-                            AccessoriesTile.Visible = True
-                            ToVisibleCostingPanel = 1
                         Case Inventory
                             InventoryTile.Visible = True
                             ToVisibleMarketingPanel = 1
@@ -117,8 +111,6 @@
                 MarketingRequestTile.Visible = True
                 InventoryTile.Visible = True
                 ArchiFirmTile.Visible = True
-                MyListTile.Visible = True
-                AccessoriesTile.Visible = True
 
                 ToVisibleMarketingPanel = 1
                 ToVisibleCostingPanel = 1
@@ -132,8 +124,6 @@
                 ToVisibleSNOPaneL = 1
 
             Case "Costing"
-                MyListTile.Visible = True
-                AccessoriesTile.Visible = True
                 WinDoorMakerTile.Visible = True
 
                 ToVisibleMarketingPanel = 1
@@ -196,8 +186,6 @@
                 MarketingRequestTile.Visible = True
                 InventoryTile.Visible = True
                 ArchiFirmTile.Visible = True
-                MyListTile.Visible = True
-                AccessoriesTile.Visible = True
 
                 ToVisibleMarketingPanel = 1
 
@@ -210,6 +198,8 @@
                 ExterrnalDamagesTile.Visible = True
                 SalesItineraryTile.Visible = True
                 ProjAssignmentTile.Visible = True
+                MngeAccTile.Visible = True
+
 
                 ToVisibleSNOPaneL = 1
 
@@ -253,8 +243,6 @@
             ProdSDSubmittalTile.Visible = True
 
             MarketingRequestTile.Visible = True
-            MyListTile.Visible = True
-            AccessoriesTile.Visible = True
             InventoryTile.Visible = True
             ArchiFirmTile.Visible = True
             WinDoorMakerTile.Visible = True
@@ -300,10 +288,45 @@
         ElseIf ToVisibleSNOPaneL = 0 Then
             SNOpanel.Visible = False
         End If
+
+    End Sub
+
+    Public Sub TileInvisibility()
+        EngrSDRequestTile.Visible = False
+        DeliveryRecieptsTile.Visible = False
+        DRTile.Visible = False
+        DRReportTile.Visible = False
+        EngrsItineraryTIle.Visible = False
+        EngrSDSubmittalTile.Visible = False
+        ProjAssignmentTile.Visible = False
+        SalesItineraryTile.Visible = False
+        SalesMonitoringTile.Visible = False
+        SUSTile.Visible = False
+        CallerInfoTile.Visible = False
+        CollectionTile.Visible = False
+        ExterrnalDamagesTile.Visible = False
+        CheckBalTile.Visible = False
+        ProdSDRequestTile.Visible = False
+        CuttingListTile.Visible = False
+        StatusMonitoringTile.Visible = False
+        GlassSpecsTile.Visible = False
+        ProdSDSubmittalTile.Visible = False
+        MarketingRequestTile.Visible = False
+        InventoryTile.Visible = False
+        ArchiFirmTile.Visible = False
+        WinDoorMakerTile.Visible = False
+
+        ToVisibleCostingPanel = 0
+        ToVisibleEngrPaneL = 0
+        ToVisibleMarketingPanel = 0
+        ToVisibleProdPaneL = 0
+        ToVisibleSNOPaneL = 0
+
     End Sub
 
     Private Sub KMDI_MainFRM_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
+        TileAccessOfLoggedAccount = Nothing
+        TileInvisibility()
         KMDI_ACCT_ACCESS_TB_READ_FOR_KMDI_MainFRM(AccountAutonum)
 
         CheckCHKBOX()

@@ -7,7 +7,7 @@ Module KMDISystemsGlobalModule
      addendum = "|07", SalesItinerary = "|08", SalesMoni = "|09", SUS = "|10", CallerInfo = "|11", Collection = "|12", ExtDMGs = "|13", CheckBalance = "|14", 'Sales and OP
      ProdSDreq = "|15", CuttList = "|16", StatsMoni = "|17", GlassSpecs = "|18", ProdSDSubm = "|19", ' Production
      ArchiFirm = "|20", Inventory = "|21", Request = "|22", 'Marketing
-     Accesories = "|23", myList As String = "|24", WinDoor As String = "|25" ' Costing
+     WinDoor As String = "|25" ' Costing
 
 
     Public Sub rowpostpaint(ByVal sender As Object, ByVal e As DataGridViewRowPostPaintEventArgs)
@@ -54,6 +54,7 @@ Module KMDISystemsGlobalModule
                         TileAccessOfLoggedAccount += "|" + tileAccessHere
 
                     End If
+
                 End While
 
             ElseIf Read.HasRows = False Then

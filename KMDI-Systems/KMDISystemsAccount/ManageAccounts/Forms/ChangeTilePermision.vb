@@ -64,10 +64,6 @@
                         Case Request
                             RequestChk.CheckState = CheckState.Checked
 
-                        Case Accesories
-                            AccessoriesChk.CheckState = CheckState.Checked
-                        Case myList
-                            MyListChk.CheckState = CheckState.Checked
                         Case WinDoor
                             WinDoorChk.CheckState = CheckState.Checked
                     End Select
@@ -85,14 +81,10 @@
                 RequestChk.CheckState = CheckState.Checked
                 InventoryChk.CheckState = CheckState.Checked
                 ArchFirmChk.CheckState = CheckState.Checked
-                MyListChk.CheckState = CheckState.Checked
-                AccessoriesChk.CheckState = CheckState.Checked
 
                 RequestChk.Enabled = False
                 InventoryChk.Enabled = False
                 ArchFirmChk.Enabled = False
-                MyListChk.Enabled = False
-                AccessoriesChk.Enabled = False
 
             Case "AEIC"
                 ChkBalanaceCHK.CheckState = CheckState.Checked
@@ -106,12 +98,8 @@
                 SalesMonitoringChk.Enabled = False
 
             Case "Costing"
-                MyListChk.CheckState = CheckState.Checked
-                AccessoriesChk.CheckState = CheckState.Checked
                 WinDoorChk.CheckState = CheckState.Checked
 
-                MyListChk.Enabled = False
-                AccessoriesChk.Enabled = False
                 WinDoorChk.Enabled = False
 
             Case "Cutting"
@@ -191,14 +179,10 @@
                 RequestChk.CheckState = CheckState.Checked
                 InventoryChk.CheckState = CheckState.Checked
                 ArchFirmChk.CheckState = CheckState.Checked
-                MyListChk.CheckState = CheckState.Checked
-                AccessoriesChk.CheckState = CheckState.Checked
 
                 RequestChk.Enabled = False
                 InventoryChk.Enabled = False
                 ArchFirmChk.Enabled = False
-                MyListChk.Enabled = False
-                AccessoriesChk.Enabled = False
 
             Case "Sales"
                 CallerInfoChk.CheckState = CheckState.Checked
@@ -961,71 +945,6 @@
             Select Case containsTIleCode
                 Case True
                     indexofTileAccessCodes = RemovedTileAccess.IndexOf(Request)
-                    RemovedTileAccess = RemovedTileAccess.Remove(indexofTileAccessCodes, 3)
-
-            End Select
-
-        End If
-
-    End Sub
-
-    Private Sub AccessoriesChk_Click(sender As Object, e As EventArgs) Handles AccessoriesChk.Click
-        If AccessoriesChk.Checked = False Then
-            RemovedTileAccess += Accesories
-            containsTIleCode = AddedAccess.Contains(Accesories)
-            Select Case containsTIleCode
-                Case True
-                    indexofTileAccessCodes = AddedAccess.IndexOf(Accesories)
-                    AddedAccess = AddedAccess.Remove(indexofTileAccessCodes, 3)
-
-            End Select
-
-        Else
-            If tileAccess Is Nothing Then
-                AddedAccess += Accesories
-            Else
-                If tileAccess.Contains(Accesories) = False Then
-                    AddedAccess += Accesories
-                End If
-            End If
-
-            containsTIleCode = RemovedTileAccess.Contains(Accesories)
-            Select Case containsTIleCode
-                Case True
-                    indexofTileAccessCodes = RemovedTileAccess.IndexOf(Accesories)
-                    RemovedTileAccess = RemovedTileAccess.Remove(indexofTileAccessCodes, 3)
-
-            End Select
-
-        End If
-
-    End Sub
-
-    Private Sub MyListChk_Click(sender As Object, e As EventArgs) Handles MyListChk.Click
-        If MyListChk.Checked = False Then
-
-            RemovedTileAccess += myList
-            containsTIleCode = AddedAccess.Contains(myList)
-            Select Case containsTIleCode
-                Case True
-                    indexofTileAccessCodes = AddedAccess.IndexOf(myList)
-                    AddedAccess = AddedAccess.Remove(indexofTileAccessCodes, 3)
-
-            End Select
-
-        Else
-            If tileAccess Is Nothing Then
-                AddedAccess += myList
-            Else
-                If tileAccess.Contains(myList) = False Then
-                    AddedAccess += myList
-                End If
-            End If
-
-            containsTIleCode = RemovedTileAccess.Contains(myList)
-            Select Case containsTIleCode
-                Case True
-                    indexofTileAccessCodes = RemovedTileAccess.IndexOf(myList)
                     RemovedTileAccess = RemovedTileAccess.Remove(indexofTileAccessCodes, 3)
 
             End Select

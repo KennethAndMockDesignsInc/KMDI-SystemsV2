@@ -27,8 +27,6 @@ Partial Class ChangeTilePermision
         Me.PasswordCharChk = New MetroFramework.Controls.MetroCheckBox()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
         Me.WinDoorChk = New MetroFramework.Controls.MetroCheckBox()
-        Me.MyListChk = New MetroFramework.Controls.MetroCheckBox()
-        Me.AccessoriesChk = New MetroFramework.Controls.MetroCheckBox()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
         Me.RequestChk = New MetroFramework.Controls.MetroCheckBox()
         Me.InventoryChk = New MetroFramework.Controls.MetroCheckBox()
@@ -87,7 +85,7 @@ Partial Class ChangeTilePermision
         '
         '
         Me.PwdDecryptTbox.CustomButton.Image = Nothing
-        Me.PwdDecryptTbox.CustomButton.Location = New System.Drawing.Point(112, 1)
+        Me.PwdDecryptTbox.CustomButton.Location = New System.Drawing.Point(212, 1)
         Me.PwdDecryptTbox.CustomButton.Name = ""
         Me.PwdDecryptTbox.CustomButton.Size = New System.Drawing.Size(21, 21)
         Me.PwdDecryptTbox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
@@ -124,8 +122,6 @@ Partial Class ChangeTilePermision
         'GroupBox6
         '
         Me.GroupBox6.Controls.Add(Me.WinDoorChk)
-        Me.GroupBox6.Controls.Add(Me.MyListChk)
-        Me.GroupBox6.Controls.Add(Me.AccessoriesChk)
         Me.GroupBox6.Location = New System.Drawing.Point(399, 130)
         Me.GroupBox6.Name = "GroupBox6"
         Me.GroupBox6.Size = New System.Drawing.Size(128, 111)
@@ -136,35 +132,13 @@ Partial Class ChangeTilePermision
         'WinDoorChk
         '
         Me.WinDoorChk.AutoSize = True
-        Me.WinDoorChk.Location = New System.Drawing.Point(6, 76)
+        Me.WinDoorChk.Location = New System.Drawing.Point(6, 24)
         Me.WinDoorChk.Name = "WinDoorChk"
         Me.WinDoorChk.Size = New System.Drawing.Size(106, 15)
         Me.WinDoorChk.Style = MetroFramework.MetroColorStyle.Blue
         Me.WinDoorChk.TabIndex = 3
         Me.WinDoorChk.Text = "WinDoor Maker"
         Me.WinDoorChk.UseSelectable = True
-        '
-        'MyListChk
-        '
-        Me.MyListChk.AutoSize = True
-        Me.MyListChk.Location = New System.Drawing.Point(6, 50)
-        Me.MyListChk.Name = "MyListChk"
-        Me.MyListChk.Size = New System.Drawing.Size(61, 15)
-        Me.MyListChk.Style = MetroFramework.MetroColorStyle.Blue
-        Me.MyListChk.TabIndex = 2
-        Me.MyListChk.Text = "My List"
-        Me.MyListChk.UseSelectable = True
-        '
-        'AccessoriesChk
-        '
-        Me.AccessoriesChk.AutoSize = True
-        Me.AccessoriesChk.Location = New System.Drawing.Point(6, 24)
-        Me.AccessoriesChk.Name = "AccessoriesChk"
-        Me.AccessoriesChk.Size = New System.Drawing.Size(84, 15)
-        Me.AccessoriesChk.Style = MetroFramework.MetroColorStyle.Blue
-        Me.AccessoriesChk.TabIndex = 1
-        Me.AccessoriesChk.Text = "Accessories"
-        Me.AccessoriesChk.UseSelectable = True
         '
         'GroupBox5
         '
@@ -532,8 +506,6 @@ Partial Class ChangeTilePermision
     Friend WithEvents InventoryChk As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents ArchFirmChk As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents GroupBox6 As GroupBox
-    Friend WithEvents MyListChk As MetroFramework.Controls.MetroCheckBox
-    Friend WithEvents AccessoriesChk As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents SaveManageBtn As MetroFramework.Controls.MetroTextBox.MetroTextButton
     Friend WithEvents WinDoorChk As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents PwdDecryptTbox As MetroFramework.Controls.MetroTextBox
