@@ -109,6 +109,12 @@
     <Compile Include="KMDISystemsContracts\Contracts\Forms\Contracts.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="KMDISystemsContracts\Contracts\Forms\Recycle.Designer.vb">
+      <DependentUpon>Recycle.vb</DependentUpon>
+    </Compile>
+    <Compile Include="KMDISystemsContracts\Contracts\Forms\Recycle.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="KMDISystemsContracts\Contracts\Forms\SearchContract.Designer.vb">
       <DependentUpon>SearchContract.vb</DependentUpon>
     </Compile>
@@ -183,6 +189,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="KMDISystemsContracts\Contracts\Forms\Contracts.resx">
       <DependentUpon>Contracts.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KMDISystemsContracts\Contracts\Forms\Recycle.resx">
+      <DependentUpon>Recycle.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KMDISystemsContracts\Contracts\Forms\SearchContract.resx">
+      <DependentUpon>SearchContract.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="KMDISystemsCosting\WinDoorMaker\Forms\WinDoorMaker.resx">
       <DependentUpon>WinDoorMaker.vb</DependentUpon>

@@ -385,4 +385,8 @@
         Contracts.Show()
         Me.Enabled = False
     End Sub
+
+    Private Sub RecycleTile_Click(sender As Object, e As EventArgs) Handles RecycleTile.Click
+        Recycle.Show()
+    End Sub
 End Class

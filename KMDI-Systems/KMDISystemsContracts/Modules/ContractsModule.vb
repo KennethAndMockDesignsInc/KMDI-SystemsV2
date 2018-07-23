@@ -2,7 +2,10 @@
 
 Module ContractsModule
 
-    Public Sub ADDENDUM_TO_CONTRACT_TB_READ_FOR_Contracts() 'ByVal UserAcctAutonum As String)
+    Public Lock_search_string As String
+
+    Public Sub ADDENDUM_TO_CONTRACT_TB_SEARCH_FOR_Contracts(ByVal SearchString As String,
+                                                            ByVal LockNotLock As String)
         Try
             Dim sqlDataAdapter As New SqlDataAdapter
             Dim sqlDataSet As New DataSet
@@ -12,11 +15,106 @@ Module ContractsModule
             sqlConnection.Open()
 
             sqlDataSet.Clear()
-            Query = "SELECT TOP 100 *
-                     FROM [KMDIDATA].[dbo].[ADDENDUM_TO_CONTRACT_TB]"
-            sqlCommand = New SqlCommand(Query, sqlConnection)
-            'sqlCommand.Parameters.AddWithValue("@UserAcctAutonum", UserAcctAutonum)
+            Query = "SELECT TOP 100    [JOB_ORDER_NO]
+                                      ,[CLIENTS_NAME]
+                                      ,[OWNERS_NAME]
+                                      ,[OWNERRES]
+                                      ,[OWNERSOFFICE]
+                                      ,[OWNERSMOBILE]
+                                      ,[PROJECT_CLASSIFICATION]
+                                      ,[PROJECT_SOURCE]
+                                      ,[CONTRACT_INCLUSIONS]
+                                      ,[PROFILE_FINISH]
+                                      ,[PRODUCT_TYPE]
+                                      ,[CONSTRUCTION_STAGE]
+                                      ,[SITEMEETING]
+                                      ,[ESTD_DEL_DATE]
+                                      ,[ACCT_EXEC_INCHARGE]
+                                      ,[PROJECT_ENGR_INCHARGE]
+                                      ,[JOB_ORDER_NO_DATE]
+                                      ,[QUOTE_REF_NO]
+                                      ,[QUOTATION_DATE]
+                                      ,[CUST_REF_NO]
+                                      ,[FILE_LABEL_AS]
+                                      ,[EFFECTIVE_DISCOUNT]
+                                      ,[VAT]
+                                      ,[CONTRACT_TYPE]
+                                      ,[PREV_JOB_ORDER_NO]
+                                      ,[PREV_QUOTE_NO]
+                                      ,[PREV_QUOTATION_DATE]
+                                      ,[PREV_ACCT_EXEC_INCHARGE]
+                                      ,[OTHER_PERTINENT_INFO]
+                                      ,[LOCK]
+                                      ,[REF_JONO]
+                                      ,[AUTONUM]
+                                      ,[CLASS]
+                                      ,[CONTRACT_PRICE]
+                                      ,[JOB_ORDER_DESC]
+                                      ,[PARENTJONO]
+                                      ,[SUB_JO]
+                                      ,[JO_ATTACHMENT]
+                                      ,[MODE_OF_DEL]
+                                      ,[MODE_OF_SHIP]
+                                      ,[OUT_OF_TOWN_CHARGES]
+                                      ,[DEL_GOODS]
+                                      ,[CONTRACT_VAT_PROFILE]
+                                      ,[ADDRESS_BILLING]
+                                      ,[PROJECT_TYPE]
+                                      ,[COMPANY_NAME]
+                                      ,[PREV_OWNER]
+                                      ,[CONTRACT_POINTS]
+                                      ,[FRMPOINTS]
+                                      ,[SCRPOINTS]
+                                      ,[PROJECT_LABEL]
+                                      ,[E_NICKNAME]
+                                      ,[ADDRESS_TO]
+                                      ,[DELGOODS_TO]
+                                      ,[INPUTTED]
+                                      ,[UPDATED]
+                                      ,[POINTS_DATE]
+                                      ,[EMAIL]
+                                      ,[LISTPRICE]
+                                      ,[DISCOUNTEDPRICE]
+                                      ,[REPAIR_COST]
+                                      ,[SALES_CREDIT]
+                                      ,[ALLOCATED]
+                                      ,[AREA]
+                                      ,[NETCONTRACTPRICE]
+                                      ,[FREEOFCHARGE]
+                                      ,[TOTALADDITIONAL]
+                                      ,[FULLADD]
+                                      ,[TOTALLISTPRICE]
+                                      ,[EFF]
+                                      ,[STATUS]
+                                      ,[ADDON]
+                                      ,[FDELSTAT]
+                                      ,[GDELSTAT]
+                                      ,[COLLECTION]
+                     FROM     [ADDENDUM_TO_CONTRACT_TB]
 
+                     WHERE    [LOCK] like @LockNotLock AND
+							  ([JOB_ORDER_NO] like @SearchString OR
+                              [CLIENTS_NAME] like @SearchString OR
+                              [UNITNO] like @SearchString OR
+                              [ESTABLISHMENT] like @SearchString OR
+                              [NO] like @SearchString OR
+                              [STREET] like @SearchString OR
+                              [VILLAGE] like @SearchString OR
+                              [BRGY_MUNICIPALITY] like @SearchString OR
+                              [TOWN_DISTRICT] like @SearchString OR
+                              [PROVINCE] like @SearchString OR
+                              [OWNERS_NAME] like @SearchString OR
+                              [ACCT_EXEC_INCHARGE] like @SearchString OR
+                              [PROJECT_ENGR_INCHARGE] like @SearchString OR
+                              [QUOTE_REF_NO] like @SearchString OR
+                              [CUST_REF_NO] like @SearchString OR
+                              [COMPANY_NAME] like @SearchString OR
+                              [PROJECT_LABEL] like @SearchString OR
+                              [AREA] like @SearchString OR
+                              [FULLADD] like @SearchString)"
+            sqlCommand = New SqlCommand(Query, sqlConnection)
+            sqlCommand.Parameters.AddWithValue("@SearchString", "%" & SearchString & "%")
+            sqlCommand.Parameters.AddWithValue("@LockNotLock", "%" & LockNotLock & "%")
             sqlDataAdapter.SelectCommand = sqlCommand
             sqlDataAdapter.Fill(sqlDataSet, "KMDI_ACCT_ACCESS_TB")
             sqlBindingSource.DataSource = sqlDataSet
@@ -28,13 +126,13 @@ Module ContractsModule
                 .AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke
             End With
 
-            'ChangeWritePermision.UserAccessDGV.Columns("Autonumber").Visible = False
-
         Catch ex As Exception
             MessageBox.Show(ex.ToString)
         Finally
             sqlConnection.Close()
         End Try
     End Sub
+
+
 
 End Module
