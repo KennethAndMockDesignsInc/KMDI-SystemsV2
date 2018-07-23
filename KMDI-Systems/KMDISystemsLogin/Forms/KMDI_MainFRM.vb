@@ -198,7 +198,6 @@
                 ExterrnalDamagesTile.Visible = True
                 SalesItineraryTile.Visible = True
                 ProjAssignmentTile.Visible = True
-                MngeAccTile.Visible = True
 
 
                 ToVisibleSNOPaneL = 1
@@ -382,4 +381,8 @@
         ProjectAssignment.Show()
     End Sub
 
+    Private Sub ContractListTile_Click(sender As Object, e As EventArgs) Handles ContractListTile.Click
+        Contracts.Show()
+        Me.Enabled = False
+    End Sub
 End Class

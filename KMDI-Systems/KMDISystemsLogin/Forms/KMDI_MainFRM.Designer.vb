@@ -28,7 +28,7 @@ Partial Class KMDI_MainFRM
         Me.ContractsPanel = New MetroFramework.Controls.MetroPanel()
         Me.ContractsLBL = New MetroFramework.Controls.MetroLabel()
         Me.FlowLayoutPanel9 = New System.Windows.Forms.FlowLayoutPanel()
-        Me.NewConTile = New MetroFramework.Controls.MetroTile()
+        Me.ContractListTile = New MetroFramework.Controls.MetroTile()
         Me.RecycleTile = New MetroFramework.Controls.MetroTile()
         Me.AccountsPanel = New MetroFramework.Controls.MetroPanel()
         Me.FlowLayoutPanel8 = New System.Windows.Forms.FlowLayoutPanel()
@@ -162,7 +162,7 @@ Partial Class KMDI_MainFRM
         '
         'FlowLayoutPanel9
         '
-        Me.FlowLayoutPanel9.Controls.Add(Me.NewConTile)
+        Me.FlowLayoutPanel9.Controls.Add(Me.ContractListTile)
         Me.FlowLayoutPanel9.Controls.Add(Me.RecycleTile)
         Me.FlowLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.FlowLayoutPanel9.Location = New System.Drawing.Point(0, 30)
@@ -171,20 +171,20 @@ Partial Class KMDI_MainFRM
         Me.FlowLayoutPanel9.Size = New System.Drawing.Size(620, 140)
         Me.FlowLayoutPanel9.TabIndex = 22
         '
-        'NewConTile
+        'ContractListTile
         '
-        Me.NewConTile.ActiveControl = Nothing
-        Me.NewConTile.ForeColor = System.Drawing.Color.Black
-        Me.NewConTile.Location = New System.Drawing.Point(69, 3)
-        Me.NewConTile.Name = "NewConTile"
-        Me.NewConTile.Size = New System.Drawing.Size(262, 132)
-        Me.NewConTile.Style = MetroFramework.MetroColorStyle.Pink
-        Me.NewConTile.TabIndex = 21
-        Me.NewConTile.Text = "New"
-        Me.NewConTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
-        Me.NewConTile.Theme = MetroFramework.MetroThemeStyle.Dark
-        Me.NewConTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
-        Me.NewConTile.UseSelectable = True
+        Me.ContractListTile.ActiveControl = Nothing
+        Me.ContractListTile.ForeColor = System.Drawing.Color.Black
+        Me.ContractListTile.Location = New System.Drawing.Point(69, 3)
+        Me.ContractListTile.Name = "ContractListTile"
+        Me.ContractListTile.Size = New System.Drawing.Size(262, 132)
+        Me.ContractListTile.Style = MetroFramework.MetroColorStyle.Pink
+        Me.ContractListTile.TabIndex = 21
+        Me.ContractListTile.Text = "Contract Records"
+        Me.ContractListTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
+        Me.ContractListTile.Theme = MetroFramework.MetroThemeStyle.Dark
+        Me.ContractListTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
+        Me.ContractListTile.UseSelectable = True
         '
         'RecycleTile
         '
@@ -936,7 +936,7 @@ Partial Class KMDI_MainFRM
     Friend WithEvents ContractsLBL As MetroFramework.Controls.MetroLabel
     Friend WithEvents FlowLayoutPanel1 As FlowLayoutPanel
     Friend WithEvents FlowLayoutPanel9 As FlowLayoutPanel
-    Friend WithEvents NewConTile As MetroFramework.Controls.MetroTile
+    Friend WithEvents ContractListTile As MetroFramework.Controls.MetroTile
     Friend WithEvents NicknameLbl As MetroFramework.Controls.MetroLabel
     Friend WithEvents AccountsPanel As MetroFramework.Controls.MetroPanel
     Friend WithEvents FlowLayoutPanel8 As FlowLayoutPanel
