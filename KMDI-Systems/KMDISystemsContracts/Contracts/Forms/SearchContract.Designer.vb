@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class SearchContract
     Inherits MetroFramework.Forms.MetroForm
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class SearchContract
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.SearchAllTbox = New MetroFramework.Controls.MetroTextBox()
         Me.FindBtn = New MetroFramework.Controls.MetroTextBox.MetroTextButton()
@@ -93,6 +93,7 @@ Partial Class SearchContract
         Me.Name = "SearchContract"
         Me.Resizable = False
         Me.Style = MetroFramework.MetroColorStyle.Pink
+        Me.TopMost = True
         Me.ResumeLayout(False)
 
     End Sub

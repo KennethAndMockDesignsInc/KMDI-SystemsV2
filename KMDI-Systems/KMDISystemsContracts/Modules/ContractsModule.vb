@@ -2,7 +2,7 @@
 
 Module ContractsModule
 
-    Public Lock_search_string As String
+    Public Lock_search_string, ShowLock_Status As String
 
     Public Sub ADDENDUM_TO_CONTRACT_TB_SEARCH_FOR_Contracts(ByVal SearchString As String,
                                                             ByVal LockNotLock As String)
@@ -125,6 +125,17 @@ Module ContractsModule
                 .DefaultCellStyle.BackColor = Color.White
                 .AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke
             End With
+
+            If Contracts.LockedContractsToolStripMenuItem.Checked = True Then
+                For i = 0 To Contracts.ContractsDGV.Rows.Count - 1
+                    Dim LOCK As String = Contracts.ContractsDGV.Rows(i).Cells("LOCK").Value.ToString
+
+                    If LOCK = "1" And Contracts.LockedContractsToolStripMenuItem.Checked = True Then
+                        Contracts.ContractsDGV.Rows(i).DefaultCellStyle.BackColor = Color.DarkGray
+                    End If
+                Next
+
+            End If
 
         Catch ex As Exception
             MessageBox.Show(ex.ToString)

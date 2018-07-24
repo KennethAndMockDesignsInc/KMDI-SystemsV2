@@ -5,51 +5,32 @@
     End Sub
 
     Private Sub Contracts_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        ADDENDUM_TO_CONTRACT_TB_SEARCH_FOR_Contracts("", "0")
-
-    End Sub
-
-    Private Sub ContractsDGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs) Handles ContractsDGV.RowPostPaint
-        rowpostpaint(sender, e)
+        ShowLock_Status = "0"
+        ADDENDUM_TO_CONTRACT_TB_SEARCH_FOR_Contracts("", ShowLock_Status)
     End Sub
 
     Private Sub ContractsDGV_KeyDown(sender As Object, e As KeyEventArgs) Handles ContractsDGV.KeyDown
-        If e.KeyCode = Keys.F5 Then
-            Me.Enabled = False
-            SearchContract.Show()
-        End If
+        Objects_Keydown(sender, e)
     End Sub
 
     Private Sub Contracts_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
-        If e.KeyCode = Keys.F5 Then
-            Me.Enabled = False
-            SearchContract.Show()
-        End If
+        Objects_Keydown(sender, e)
     End Sub
-
-    Private Sub ContractsDGV_CellFormatting(sender As Object, e As DataGridViewCellFormattingEventArgs) Handles ContractsDGV.CellFormatting
-        For i = 0 To ContractsDGV.Rows.Count - 1
-            Dim LOCK As String = ContractsDGV.Rows(i).Cells("LOCK").Value.ToString
-
-            If LOCK = "1" Then
-                ContractsDGV.Rows(i).DefaultCellStyle.BackColor = Color.Gray
-            Else
-                ContractsDGV.Rows(i).DefaultCellStyle.BackColor = Color.White
-            End If
-        Next
-    End Sub
-
     Private Sub LockedContractsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LockedContractsToolStripMenuItem.Click
         If LockedContractsToolStripMenuItem.Checked = True Then
-            ADDENDUM_TO_CONTRACT_TB_SEARCH_FOR_Contracts(Lock_search_string, "")
+            ShowLock_Status = ""
+            ADDENDUM_TO_CONTRACT_TB_SEARCH_FOR_Contracts(Lock_search_string, ShowLock_Status)
         Else
-            ADDENDUM_TO_CONTRACT_TB_SEARCH_FOR_Contracts(Lock_search_string, "0")
+            ShowLock_Status = "0"
+            ADDENDUM_TO_CONTRACT_TB_SEARCH_FOR_Contracts(Lock_search_string, ShowLock_Status)
         End If
     End Sub
 
     Private Sub ResetToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ResetToolStripMenuItem.Click
-        ADDENDUM_TO_CONTRACT_TB_SEARCH_FOR_Contracts("", "0")
+        ShowLock_Status = "0"
         Lock_search_string = ""
+        ADDENDUM_TO_CONTRACT_TB_SEARCH_FOR_Contracts(Lock_search_string, ShowLock_Status)
+        LockedContractsToolStripMenuItem.Checked = False
     End Sub
 
     Private Sub ContractsDGV_CellMouseClick(sender As Object, e As DataGridViewCellMouseEventArgs) Handles ContractsDGV.CellMouseClick
@@ -58,7 +39,28 @@
 
             ViewLockedContracts.Location = New Point(MousePosition.X, MousePosition.Y)
 
+
         End If
 
     End Sub
+
+    Private Sub ContractsDGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs) Handles ContractsDGV.RowPostPaint
+        rowpostpaint(sender, e)
+    End Sub
+
+    Private Sub ContractsDGV_Panel_KeyDown(sender As Object, e As KeyEventArgs) Handles ContractsDGV_Panel.KeyDown
+        Objects_Keydown(sender, e)
+    End Sub
+
+    Public Sub Objects_Keydown(sender As Object, e As KeyEventArgs)
+        If e.KeyCode = Keys.F2 Then
+            SearchContract.Show()
+        End If
+
+        If e.KeyCode = Keys.F5 Then
+            ResetToolStripMenuItem_Click(sender, e)
+            LockedContractsToolStripMenuItem.Checked = False
+        End If
+    End Sub
+
 End Class
