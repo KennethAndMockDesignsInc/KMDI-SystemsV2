@@ -11,4 +11,25 @@
         Me.Close()
     End Sub
 
+    Private Sub FindBtn_KeyDown(sender As Object, e As KeyEventArgs) Handles FindBtn.KeyDown
+        Escape_Keydown(sender, e)
+    End Sub
+
+    Public Sub Escape_Keydown(sender As Object, e As KeyEventArgs)
+        If e.KeyCode = Keys.Escape Then
+            Me.Close()
+        End If
+    End Sub
+
+    Private Sub SearchAllTbox_KeyDown(sender As Object, e As KeyEventArgs) Handles SearchAllTbox.KeyDown
+        Escape_Keydown(sender, e)
+    End Sub
+
+    Private Sub SearchContract_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
+        Escape_Keydown(sender, e)
+    End Sub
+
+    Private Sub SearchContract_Click(sender As Object, e As EventArgs) Handles MyBase.Click
+        SearchAllTbox.Focus()
+    End Sub
 End Class
