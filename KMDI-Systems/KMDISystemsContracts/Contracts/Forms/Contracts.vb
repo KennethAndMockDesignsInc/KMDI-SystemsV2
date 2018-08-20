@@ -1,4 +1,6 @@
 ﻿Public Class Contracts
+    Public JO_no As String
+
     Private Sub Contracts_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
         KMDI_MainFRM.Enabled = True
         Me.Dispose()
@@ -34,12 +36,20 @@
     End Sub
 
     Private Sub ContractsDGV_CellMouseClick(sender As Object, e As DataGridViewCellMouseEventArgs) Handles ContractsDGV.CellMouseClick
-        If e.Button = MouseButtons.Right Then
-            ViewLockedContracts.Show()
 
-            ViewLockedContracts.Location = New Point(MousePosition.X, MousePosition.Y)
+        If (e.RowIndex >= 0 And e.ColumnIndex >= 0) Then
+            If e.Button = MouseButtons.Right Then
+                ContractsDGV.Rows(e.RowIndex).Selected = True
+                Dim r As New Rectangle
+                r = ContractsDGV.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, True)
+                ViewLockedContracts.Show()
+                ViewLockedContracts.Location = New Point(MousePosition.X, MousePosition.Y)
+            End If
 
+            If ContractsDGV.RowCount >= 0 And e.RowIndex >= 0 Then
 
+                JO_no = ContractsDGV.Item("JOB_ORDER_NO", e.RowIndex).Value.ToString
+            End If
         End If
 
     End Sub
@@ -63,4 +73,7 @@
         End If
     End Sub
 
+    Private Sub AsPerContractToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AsPerContractToolStripMenuItem.Click
+
+    End Sub
 End Class

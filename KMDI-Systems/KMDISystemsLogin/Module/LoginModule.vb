@@ -7,10 +7,10 @@ Module LoginModule
     Public AccountType, nickname, fullname, usernamePrint, PROFILEPATH, AcctPASSWORD As String
 
     Dim AccessPoint As String = KMDISystemsLogin.KMDISystemsLogin_AccessPoint
-    Dim DBName As String = "HERETOSAVE"
+    Public DBName As String
     Dim DBUserName As String = "kmdiadmin"
     Dim DBPassword As String = "kmdiadmin"
-    Public sqlConnection As New SqlConnection With {.ConnectionString = "Data Source='" & AccessPoint & "';Network Library=DBMSSOCN;Initial Catalog='" & DBName & "';User ID='" & DBUserName & "';Password='" & DBPassword & "';"}
+    Public sqlConnection As New SqlConnection
     Public sqlCommand As SqlCommand
     Public Read As SqlDataReader
 
@@ -19,12 +19,24 @@ Module LoginModule
     Public sqlBindingSource As BindingSource
     Public Query As String
 
+    Public sqlconnString As String
+
+    Public KMDISystems_UserName As String
+    Public KMDISystems_Password As String
+
+    Public Sub KMDISystems_Login_SERVER(ByVal DBName As String)
+        sqlConnection.Close()
+        sqlconnString = "Data Source='" & AccessPoint & "';Network Library=DBMSSOCN;Initial Catalog='" & DBName & "';User ID='" & DBUserName & "';Password='" & DBPassword & "';"
+        sqlConnection.ConnectionString = sqlconnString
+    End Sub
 
     Public Sub KMDISystems_Login(ByVal UserName As String,
-                                 ByVal Password As String)
+                                 ByVal Password As String,
+                                 ByVal LoginType As String,
+                                 ByVal DBnameCboxSelectedIndex As Integer,
+                                 ByVal PrevDBnameCboxSelectedIndex As Integer)
         Try
             sqlConnection.Close()
-
             Try
                 sqlConnection.Open()
             Catch ex As Exception
@@ -58,22 +70,40 @@ Module LoginModule
                 If Read("ACCTTYPE").ToString() = "Admin" Then
                     With KMDI_MainFRM
                         .Show()
+                        .DbNameCbox.Items.Clear()
                         .DbNameCbox.Items.Insert(0, "KMDIDATA")
                         .DbNameCbox.Items.Insert(1, "HAUSERDB")
                         .DbNameCbox.Items.Insert(2, "HERETOSAVE")
-                        .DbNameCbox.SelectedIndex = 0
+                        .DbNameCbox.Items.Insert(3, "KMDI_Systems")
+                        .DbNameCbox.SelectedIndex = DBnameCboxSelectedIndex
                     End With
                 Else
                     With KMDI_MainFRM
                         .Show()
+                        .DbNameCbox.Items.Clear()
                         .DbNameCbox.Items.Insert(0, "KMDIDATA")
                         .DbNameCbox.Items.Insert(1, "HAUSERDB")
-                        .DbNameCbox.SelectedIndex = 0
+                        .DbNameCbox.Items.Insert(2, "KMDI_Systems")
+                        .DbNameCbox.SelectedIndex = DBnameCboxSelectedIndex
                     End With
                 End If
-                KMDISystemsLogin.Close()
+                If LoginType = "Fresh" Then
+                    KMDISystemsLogin.Hide()
+                ElseIf LoginType = "Relog" Then
+                End If
             Else
-                MetroFramework.MetroMessageBox.Show(KMDISystemsLogin, "Login failed! Please Try again", "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
+                With KMDI_MainFRM
+                    MetroFramework.MetroMessageBox.Show(KMDISystemsLogin, "Login failed! Please Try again", "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
+                    If Application.OpenForms().OfType(Of KMDI_MainFRM).Any Then
+
+                        .DbNameCbox.SelectedIndex = PrevDBnameCboxSelectedIndex
+
+                        KMDISystems_Login_SERVER(.DbNameCbox.Text)
+                        KMDISystems_Login(KMDISystems_UserName,
+                              KMDISystems_Password, "Relog", .DbNameCbox.SelectedIndex, .PrevDBNameCboxSelectedIndex)
+                    End If
+
+                End With
             End If
 
         Catch ex As Exception

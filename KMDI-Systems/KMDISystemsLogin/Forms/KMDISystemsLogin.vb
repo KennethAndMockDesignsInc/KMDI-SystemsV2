@@ -1,21 +1,17 @@
 ﻿Public Class KMDISystemsLogin
     Public KMDISystemsLogin_AccessPoint As String = "192.168.1.21,49107"
-    Dim KMDISystems_UserName As String
-    Dim KMDISystems_Password As String
 
     Private Sub KMDISystemsLogin_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ConnectionTypeCbox.SelectedIndex = 0
         MaximizeBox = False
     End Sub
 
-    Public Sub LoginChecker()
-
-    End Sub
-
     Public Sub Login()
         Try
+            KMDISystems_Login_SERVER("KMDIDATA")
+
             KMDISystems_Login(KMDISystems_UserName,
-                  KMDISystems_Password)
+                  KMDISystems_Password, "Fresh", 0, 0)
         Catch ex As Exception
             MetroFramework.MetroMessageBox.Show(Me, ex.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
         End Try
@@ -68,10 +64,12 @@
     End Sub
 
     Private Sub CloseBtn_Click(sender As Object, e As EventArgs) Handles CloseBtn.Click
+        KMDI_MainFRM.Dispose()
         Me.Close()
     End Sub
 
     Private Sub KMDISystemsLogin_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
+        KMDI_MainFRM.Dispose()
         Me.Dispose()
     End Sub
 

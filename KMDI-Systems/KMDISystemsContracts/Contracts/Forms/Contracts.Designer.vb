@@ -31,6 +31,7 @@ Partial Class Contracts
         Me.ResetToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ContractsDGV = New MetroFramework.Controls.MetroGrid()
         Me.ContractsDGV_Panel = New System.Windows.Forms.Panel()
+        Me.AsPerContractToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ViewLockedContracts.SuspendLayout()
         CType(Me.ContractsDGV, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.ContractsDGV_Panel.SuspendLayout()
@@ -38,9 +39,9 @@ Partial Class Contracts
         '
         'ViewLockedContracts
         '
-        Me.ViewLockedContracts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LockedContractsToolStripMenuItem, Me.ResetToolStripMenuItem})
+        Me.ViewLockedContracts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AsPerContractToolStripMenuItem, Me.LockedContractsToolStripMenuItem, Me.ResetToolStripMenuItem})
         Me.ViewLockedContracts.Name = "MetroContextMenu1"
-        Me.ViewLockedContracts.Size = New System.Drawing.Size(199, 48)
+        Me.ViewLockedContracts.Size = New System.Drawing.Size(199, 92)
         Me.ViewLockedContracts.Text = "View Locked Contracts"
         '
         'LockedContractsToolStripMenuItem
@@ -118,6 +119,12 @@ Partial Class Contracts
         Me.ContractsDGV_Panel.Size = New System.Drawing.Size(747, 410)
         Me.ContractsDGV_Panel.TabIndex = 9
         '
+        'AsPerContractToolStripMenuItem
+        '
+        Me.AsPerContractToolStripMenuItem.Name = "AsPerContractToolStripMenuItem"
+        Me.AsPerContractToolStripMenuItem.Size = New System.Drawing.Size(198, 22)
+        Me.AsPerContractToolStripMenuItem.Text = "As Per Contract"
+        '
         'Contracts
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -140,4 +147,5 @@ Partial Class Contracts
     Friend WithEvents ResetToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ContractsDGV As MetroFramework.Controls.MetroGrid
     Friend WithEvents ContractsDGV_Panel As Panel
+    Friend WithEvents AsPerContractToolStripMenuItem As ToolStripMenuItem
 End Class

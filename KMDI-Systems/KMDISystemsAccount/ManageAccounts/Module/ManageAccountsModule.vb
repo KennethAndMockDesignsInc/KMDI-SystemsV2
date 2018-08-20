@@ -147,7 +147,8 @@ Module ManageAccountsModule
         End Try
     End Sub
 
-    Public Sub KMDI_ACCT_TB_INSERT_ManageAccounts(ByVal fullname As String,
+    Public Sub KMDI_ACCT_TB_INSERT_ManageAccounts(ByVal AUTONUM As String,
+                                                  ByVal fullname As String,
                                                   ByVal nickname As String,
                                                   ByVal acctype As String,
                                                   ByVal username As String,
@@ -169,17 +170,20 @@ Module ManageAccountsModule
                 Read.Close()
 
                 sqlConnection.Open()
-                Dim strsInsert As String = "INSERT INTO KMDI_ACCT_TB (FULLNAME,
+                Dim strsInsert As String = "INSERT INTO KMDI_ACCT_TB (AUTONUM,
+                                                                      FULLNAME,
                                                                       NICKNAME,
                                                                       ACCTTYPE,
                                                                       USERNAME,
                                                                       PASSWORD)
-                                                              VALUES (@FULLNAME,
+                                                              VALUES (@AUTONUM,
+                                                                      @FULLNAME,
                                                                       @NICKNAME,
                                                                       @ACCTTYPE,
                                                                       @USERNAME,
                                                                       @PASSWORD)"
                 sqlCommand = New SqlCommand(strsInsert, sqlConnection)
+                sqlCommand.Parameters.AddWithValue("@AUTONUM", AUTONUM)
                 sqlCommand.Parameters.AddWithValue("@FULLNAME", fullname)
                 sqlCommand.Parameters.AddWithValue("@NICKNAME", nickname)
                 sqlCommand.Parameters.AddWithValue("@ACCTTYPE", acctype)
@@ -188,7 +192,7 @@ Module ManageAccountsModule
                 confirmQuery = sqlCommand.ExecuteNonQuery()
                 If confirmQuery <> 0 Then
                     MetroFramework.MetroMessageBox.Show(ManageAccounts, "Saved!", "", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                    KMDI_ACCT_TB_READ(AccountAutonum)
+                    KMDI_ACCT_TB_READ(AccountAutonum, "")
                 End If
                 sqlConnection.Close()
             End If
@@ -200,7 +204,8 @@ Module ManageAccountsModule
         End Try
     End Sub
 
-    Public Sub KMDI_ACCT_TB_READ(ByVal AccountAutonum As String)
+    Public Sub KMDI_ACCT_TB_READ(ByVal AccountAutonum As String,
+                                 ByVal Searchdis As String)
         Dim sqlDataAdapter As New SqlDataAdapter
         Dim sqlDataSet As New DataSet
         Dim sqlBindingSource As New BindingSource
@@ -209,8 +214,8 @@ Module ManageAccountsModule
         Try
             sqlConnection.Close()
             sqlConnection.Open()
-
             sqlDataSet.Clear()
+            sqlBindingSource.Clear()
             Query = "SELECT [AUTONUM],
                             [FULLNAME],
                             [NICKNAME],
@@ -218,9 +223,13 @@ Module ManageAccountsModule
                             [USERNAME],
                             [PASSWORD]
                      FROM [KMDI_ACCT_TB]
-                     where NOT ACCTTYPE = 'Admin' or AUTONUM = @AccountAutonum "
+                     where  (not ACCTTYPE = 'Admin' or AUTONUM = @AccountAutonum) AND
+                            ([FULLNAME] like @Searchdis or
+                            [NICKNAME] like @Searchdis or 
+                            [USERNAME] like @Searchdis )"
             sqlCommand = New SqlCommand(Query, sqlConnection)
             sqlCommand.Parameters.AddWithValue("@AccountAutonum", AccountAutonum)
+            sqlCommand.Parameters.AddWithValue("@Searchdis", "%" & Searchdis & "%")
             sqlDataAdapter.SelectCommand = sqlCommand
             sqlDataAdapter.Fill(sqlDataSet, "KMDI_ACCT_TB")
             sqlBindingSource.DataSource = sqlDataSet
@@ -234,7 +243,6 @@ Module ManageAccountsModule
 
             ManageAccounts.UserAcctDGV.Columns("PASSWORD").Visible = False
             ManageAccounts.UserAcctDGV.Columns("AUTONUM").Visible = False
-
         Catch ex As Exception
             MessageBox.Show(ex.ToString)
         Finally
@@ -246,7 +254,7 @@ Module ManageAccountsModule
         Try
             sqlConnection.Close()
             sqlConnection.Open()
-            Query = "SELECT MAX(AUTONUM)+1 as AUTONUMinc FROM [KMDI_ACCT_TB]"
+            Query = "SELECT max(cast(AUTONUM as int)+1) as AUTONUMinc FROM [KMDI_ACCT_TB]"
             sqlCommand = New SqlCommand(Query, sqlConnection)
             Read = sqlCommand.ExecuteReader
             Read.Read()
@@ -294,7 +302,7 @@ Module ManageAccountsModule
                 confirmQuery = sqlCommand.ExecuteNonQuery
                 If confirmQuery <> 0 Then
                     MetroFramework.MetroMessageBox.Show(ManageAccounts, "Updated!", "", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                    KMDI_ACCT_TB_READ(AccountAutonum)
+                    KMDI_ACCT_TB_READ(AccountAutonum, "")
                 End If
             End If
         Catch ex As Exception

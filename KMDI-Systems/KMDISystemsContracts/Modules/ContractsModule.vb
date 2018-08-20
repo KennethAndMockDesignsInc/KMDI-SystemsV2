@@ -135,7 +135,15 @@ Module ContractsModule
                     End If
                 Next
 
+
+                For ImageCounter As Integer = 0 To Contracts.ContractsDGV.Rows.Count - 1 Step +1
+                    If Not Contracts.ContractsDGV.Rows(ImageCounter).Cells("IMG").Value = "" Then
+                        Contracts.ContractsDGV.Rows(ImageCounter).Cells("JOB_ORDER_NO").Style.Font = New Font("Segoe UI", 12.0!, FontStyle.Bold)
+                    End If
+                Next
+
             End If
+
 
         Catch ex As Exception
             MessageBox.Show(ex.ToString)

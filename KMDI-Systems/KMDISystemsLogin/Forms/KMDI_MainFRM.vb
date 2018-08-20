@@ -6,6 +6,8 @@
     Dim ToVisibleProdPaneL As Integer = 0
     Dim ToVisibleSNOPaneL As Integer = 0
     Dim ToVisibleEngrPaneL As Integer = 0
+    Public PrevDBNameCboxSelectedIndex As Integer
+
 
     Public Sub CheckCHKBOX()
 
@@ -332,8 +334,10 @@
         PanelVisibility()
         LoggedAcctPermissions()
         PanelVisibility()
-        NicknameLbl.Text = "Hi I'm " & """" & nickname.ToUpper & """" & " At your Service!"
-
+        NicknameLbl.Text = "Hi I'm " & "" & nickname.ToUpper & "" & " At your Service!"
+        PrevDBNameCboxSelectedIndex = DbNameCbox.SelectedIndex
+        Me.Width = 800
+        Me.Height = 600
     End Sub
 
     Private Sub MngeAccTile_Click(sender As Object, e As EventArgs) Handles MngeAccTile.Click
@@ -346,7 +350,7 @@
                                                MessageBoxDefaultButton.Button1) = DialogResult.Yes Then
 
             KMDISystemsLogin.Show()
-            Me.Close()
+            Me.Hide()
         Else
 
         End If
@@ -362,6 +366,14 @@
             ReloadMainFrm.Value = i
             System.Threading.Thread.Sleep(1)
         Next
+        If DbNameCbox.Text = Nothing Or DbNameCbox.Text = "" Then
+
+        Else
+            KMDISystems_Login_SERVER(DbNameCbox.Text)
+            KMDISystems_Login(KMDISystems_UserName,
+                  KMDISystems_Password, "Relog", DbNameCbox.SelectedIndex, PrevDBNameCboxSelectedIndex)
+        End If
+
         KMDI_MainFRM_Load(sender, e)
     End Sub
 
@@ -377,16 +389,23 @@
     End Sub
 
     Private Sub ProjAssignmentTile_Click(sender As Object, e As EventArgs) Handles ProjAssignmentTile.Click
-        Me.Enabled = False
         ProjectAssignment.Show()
     End Sub
 
     Private Sub ContractListTile_Click(sender As Object, e As EventArgs) Handles ContractListTile.Click
         Contracts.Show()
-        Me.Enabled = False
     End Sub
 
     Private Sub RecycleTile_Click(sender As Object, e As EventArgs) Handles RecycleTile.Click
         Recycle.Show()
+    End Sub
+
+    Private Sub KMDI_MainFRM_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        If MetroFramework.MetroMessageBox.Show(Me, "Are you sure you want to QUIT?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Error) = DialogResult.Yes Then
+            KMDISystemsLogin.Show()
+            Me.Hide()
+        Else
+            e.Cancel = True
+        End If
     End Sub
 End Class

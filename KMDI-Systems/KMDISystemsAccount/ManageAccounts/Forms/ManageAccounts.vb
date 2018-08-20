@@ -3,7 +3,7 @@
     Public userAccess, password_ManageAccounts As String
 
     Private Sub ManageAccounts_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        KMDI_ACCT_TB_READ(AccountAutonum)
+        KMDI_ACCT_TB_READ(AccountAutonum, "")
         KMDI_ACCT_TB_READ_MAXAutonum()
         UserAccessCbox_Popolate()
         MaximizeBox = False
@@ -68,8 +68,9 @@
             NicknameTbox.Text = Nothing Or UserAccessCbox.Text = "" Or UserAccessCbox.Text = Nothing Then
             MetroFramework.MetroMessageBox.Show(Me, "Fields cannot be empty", "", MessageBoxButtons.OK, MessageBoxIcon.Stop)
         Else
-
-            KMDI_ACCT_TB_INSERT_ManageAccounts(FullnameTbox.Text,
+            KMDI_ACCT_TB_READ_MAXAutonum()
+            KMDI_ACCT_TB_INSERT_ManageAccounts(AUTONUMforuserNpass,
+                                               FullnameTbox.Text,
                                                NicknameTbox.Text,
                                                UserAccessCbox.Text,
                                                AUTONUMforuserNpass,
@@ -91,6 +92,13 @@
                                            UserAccessCbox.Text,
                                            UsersAutonum)
         End If
+
+    End Sub
+    Private Sub SearchAccts_TextChanged(sender As Object, e As EventArgs) Handles SearchAccts.TextChanged
+        KMDI_ACCT_TB_READ(AccountAutonum, SearchAccts.Text)
+    End Sub
+
+    Private Sub SearchAccts_Click(sender As Object, e As EventArgs) Handles SearchAccts.Click
 
     End Sub
 

@@ -26,6 +26,7 @@ Partial Class ManageAccounts
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ManageAccounts))
         Me.FullnameTbox = New MetroFramework.Controls.MetroTextBox()
         Me.AddUserBtn = New MetroFramework.Controls.MetroTextBox.MetroTextButton()
         Me.UserAcctDGV = New MetroFramework.Controls.MetroGrid()
@@ -36,6 +37,7 @@ Partial Class ManageAccounts
         Me.WritePermisionMenu = New System.Windows.Forms.ToolStripMenuItem()
         Me.UpdateUserBtn = New MetroFramework.Controls.MetroTextBox.MetroTextButton()
         Me.AcctTypeUpdate = New MetroFramework.Controls.MetroTextBox.MetroTextButton()
+        Me.SearchAccts = New MetroFramework.Controls.MetroTextBox()
         CType(Me.UserAcctDGV, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PermisionMenu.SuspendLayout()
         Me.SuspendLayout()
@@ -233,9 +235,9 @@ Partial Class ManageAccounts
         Me.AcctTypeUpdate.BackColor = System.Drawing.Color.Black
         Me.AcctTypeUpdate.ForeColor = System.Drawing.Color.Black
         Me.AcctTypeUpdate.Image = Nothing
-        Me.AcctTypeUpdate.Location = New System.Drawing.Point(680, 43)
+        Me.AcctTypeUpdate.Location = New System.Drawing.Point(677, 43)
         Me.AcctTypeUpdate.Name = "AcctTypeUpdate"
-        Me.AcctTypeUpdate.Size = New System.Drawing.Size(13, 29)
+        Me.AcctTypeUpdate.Size = New System.Drawing.Size(19, 29)
         Me.AcctTypeUpdate.Style = MetroFramework.MetroColorStyle.Teal
         Me.AcctTypeUpdate.TabIndex = 7
         Me.AcctTypeUpdate.UseCustomBackColor = True
@@ -244,11 +246,49 @@ Partial Class ManageAccounts
         Me.AcctTypeUpdate.UseStyleColors = True
         Me.AcctTypeUpdate.UseVisualStyleBackColor = False
         '
+        'SearchAccts
+        '
+        Me.SearchAccts.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        '
+        '
+        '
+        Me.SearchAccts.CustomButton.Font = New System.Drawing.Font("Century Gothic", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SearchAccts.CustomButton.Image = CType(resources.GetObject("resource.Image"), System.Drawing.Image)
+        Me.SearchAccts.CustomButton.Location = New System.Drawing.Point(340, 1)
+        Me.SearchAccts.CustomButton.Name = ""
+        Me.SearchAccts.CustomButton.Size = New System.Drawing.Size(25, 25)
+        Me.SearchAccts.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
+        Me.SearchAccts.CustomButton.TabIndex = 1
+        Me.SearchAccts.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
+        Me.SearchAccts.CustomButton.UseSelectable = True
+        Me.SearchAccts.FontSize = MetroFramework.MetroTextBoxSize.Medium
+        Me.SearchAccts.ForeColor = System.Drawing.Color.Black
+        Me.SearchAccts.Lines = New String(-1) {}
+        Me.SearchAccts.Location = New System.Drawing.Point(20, 14)
+        Me.SearchAccts.MaxLength = 32767
+        Me.SearchAccts.Name = "SearchAccts"
+        Me.SearchAccts.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
+        Me.SearchAccts.ScrollBars = System.Windows.Forms.ScrollBars.None
+        Me.SearchAccts.SelectedText = ""
+        Me.SearchAccts.SelectionLength = 0
+        Me.SearchAccts.SelectionStart = 0
+        Me.SearchAccts.ShowButton = True
+        Me.SearchAccts.ShowClearButton = True
+        Me.SearchAccts.Size = New System.Drawing.Size(366, 27)
+        Me.SearchAccts.Style = MetroFramework.MetroColorStyle.Blue
+        Me.SearchAccts.TabIndex = 826
+        Me.SearchAccts.UseCustomForeColor = True
+        Me.SearchAccts.UseSelectable = True
+        Me.SearchAccts.WaterMark = "Search Here"
+        Me.SearchAccts.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
+        Me.SearchAccts.WaterMarkFont = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        '
         'ManageAccounts
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(862, 407)
+        Me.Controls.Add(Me.SearchAccts)
         Me.Controls.Add(Me.AcctTypeUpdate)
         Me.Controls.Add(Me.UpdateUserBtn)
         Me.Controls.Add(Me.UserAccessCbox)
@@ -275,4 +315,5 @@ Partial Class ManageAccounts
     Friend WithEvents WritePermisionMenu As ToolStripMenuItem
     Friend WithEvents UpdateUserBtn As MetroFramework.Controls.MetroTextBox.MetroTextButton
     Friend WithEvents AcctTypeUpdate As MetroFramework.Controls.MetroTextBox.MetroTextButton
+    Public WithEvents SearchAccts As MetroFramework.Controls.MetroTextBox
 End Class
