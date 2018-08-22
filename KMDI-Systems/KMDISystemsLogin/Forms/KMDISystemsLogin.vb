@@ -4,8 +4,8 @@
     Private Sub KMDISystemsLogin_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ConnectionTypeCbox.SelectedIndex = 0
         MaximizeBox = False
-    End Sub
 
+    End Sub
     Public Sub Login()
         Try
             KMDISystems_Login_SERVER("KMDIDATA")
@@ -15,6 +15,7 @@
         Catch ex As Exception
             MetroFramework.MetroMessageBox.Show(Me, ex.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
         End Try
+
     End Sub
 
     Private Sub ConnectionTypeCbox_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ConnectionTypeCbox.SelectionChangeCommitted

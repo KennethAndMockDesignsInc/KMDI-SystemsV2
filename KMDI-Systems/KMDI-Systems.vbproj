@@ -161,6 +161,7 @@
     <Compile Include="KMDISystemsSnO\Project Assignment\Forms\ProjectAssignment.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="KMDISystemsSnO\Project Assignment\Module\ProjectAssignmentModule.vb" />
     <Compile Include="Module\KMDISystemsGlobalModule.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -241,7 +242,9 @@
     <Folder Include="KMDISystemsCosting\Module\" />
     <Folder Include="KMDISystemsCosting\WinDoorMaker\Module\" />
     <Folder Include="KMDISystemsSnO\Module\" />
-    <Folder Include="KMDISystemsSnO\Project Assignment\Module\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\loading-page.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

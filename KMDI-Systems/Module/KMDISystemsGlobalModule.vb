@@ -30,9 +30,7 @@ Module KMDISystemsGlobalModule
 
     Public Sub KMDI_ACCT_ACCESS_TB_READ_FOR_KMDI_MainFRM(ByVal UserAcctAutonum As String)
         Try
-            Dim sqlDataAdapter As New SqlDataAdapter
-            Dim sqlDataSet As New DataSet
-            Dim sqlBindingSource As New BindingSource
+            sqlDataSet = New DataSet
             Dim tileAccessHere As String
 
             sqlConnection.Close()
