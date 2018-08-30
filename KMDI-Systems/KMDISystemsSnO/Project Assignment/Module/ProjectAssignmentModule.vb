@@ -1,18 +1,20 @@
 ﻿Imports System.Data.SqlClient
 
 Module ProjectAssignmentModule
-    Public Sub SearchORLoadProjAssignDGV()
+    Public Sub SearchORLoadProjAssignDGV(ByVal SearchString As String)
 
         sqlDataSet = New DataSet
         sqlDataAdapter = New SqlDataAdapter
         sqlBindingSource = New BindingSource
 
+        'sqlConnection = New SqlConnection
         sqlConnection.Close()
         sqlConnection.Open()
 
+
         sqlDataSet.Clear()
         sqlBindingSource.Clear()
-        Query = "SELECT DISTINCT   PD.[PA_AUTONUMBER]
+        Query = "SELECT DISTINCT TOP 50  PD.[PA_AUTONUMBER]
                                   ,PD.[JOB_ORDER_NO_PARENT]
                                   ,PD.[QUOTE_NO]
                                   ,PD.[QUOTE_DATE]
@@ -21,7 +23,6 @@ Module ProjectAssignmentModule
                                   ,PD.[PROJECT_TYPE]
                                   ,PD.[SOURCE]
                                   ,PD.[REFFERED_BY]
-                                  ,PD.[CLIENTS_NAME]
                                   ,PD.[CLIENTS_CONTACT_NO]
                                   ,PD.[CLIENTS_CONTACT_NO_OFFICE]
                                   ,PD.[CLIENTS_CONTACT_NO_MOBILE]
@@ -35,7 +36,6 @@ Module ProjectAssignmentModule
                                   ,PD.[TOWN]
                                   ,PD.[PROVINCE]
                                   ,PD.[AREA]
-                                  ,PD.[CLIENTS_ADDRESS]
                                   ,PD.[PROJECT_STATUS]
                                   ,PD.[PRESENTATION]
                                   ,PD.[SITE_MEETINGS]
@@ -48,21 +48,60 @@ Module ProjectAssignmentModule
                                   ,PD.[CLOSED_FULL_PARTIAL]
                                   ,PD.[AE_ASSIGNED_CODE]
                                   ,PD.[COMPETITORS]
-                                  ,PD.[COMPANY_NAME]
                                   ,PD.[PROFILE_FINISH]
                                   ,PD.[PROJECT_CLASSIFICATION]
                                   ,PD.[CONSTRUCTION_STAGE]
                                   ,PD.[SITE_MEETING_SCHEDULE]
                                   ,PD.[WIP]
+                                  ,PD.[CLIENTS_NAME] as [CLIENTS NAME]
+                                  ,PD.[CLIENTS_ADDRESS] as [CLIENTS ADDRESS]
+                                  ,PD.[COMPANY_NAME] as [COMPANY NAME]
                             from PERTINENT_DETAILS PD
-                            JOIN PROJECT_ASSIGNMENT PA on PD.PA_AUTONUMBER = PA.PERTINENT_DETAILS_REF_NO"
+                            JOIN PROJECT_ASSIGNMENT PA on PD.PA_AUTONUMBER = PA.PERTINENT_DETAILS_REF_NO
+                            WHERE [CLIENTS_NAME] like @SearchString or
+                                  [CLIENTS_ADDRESS] like @SearchString or
+                                  [COMPANY_NAME] like @SearchString"
 
         sqlCommand = New SqlCommand(Query, sqlConnection)
+        sqlCommand.Parameters.AddWithValue("@SearchString", "%" & SearchString & "%")
         sqlDataAdapter.SelectCommand = sqlCommand
-        sqlDataAdapter.Fill(sqlDataSet, "MARKETING_INVENTORY_V2")
+        sqlDataAdapter.Fill(sqlDataSet, "PROJ_ASSIGN")
         sqlBindingSource.DataSource = sqlDataSet
-        sqlBindingSource.DataMember = "MARKETING_INVENTORY_V2"
+        sqlBindingSource.DataMember = "PROJ_ASSIGN"
 
     End Sub
 
+    Public archSqlds As DataSet
+    Public archsqlDataAdapter As SqlDataAdapter
+    Public archsqlBindingSource As BindingSource
+    Public archsqlConnection As SqlConnection
+    Public Sub SearchORLoadArchDesignDGV(ByVal SearchStringArch As String)
+
+        archsqlConnection = New SqlConnection(sqlconnString)
+        archsqlDataAdapter = New SqlDataAdapter
+        archsqlBindingSource = New BindingSource
+        archSqlds = New DataSet
+
+        archsqlConnection.Close()
+        archsqlConnection.Open()
+
+        archSqlds.Clear()
+        archsqlBindingSource.Clear()
+        Query = "SELECT TOP 50     [AUTONUM]
+                                  ,[OFFICENAME]
+                                  ,[NAME]
+                                  ,[POSITION]
+                              FROM [ARCHITECTURAL_EMP]
+                             WHERE [OFFICENAME] like @SearchStringArch or
+                                   [NAME] like @SearchStringArch or
+                                   [POSITION] like @SearchStringArch"
+
+        sqlCommand = New SqlCommand(Query, archsqlConnection)
+        sqlCommand.Parameters.AddWithValue("@SearchStringArch", "%" & SearchStringArch & "%")
+        archsqlDataAdapter.SelectCommand = sqlCommand
+        archsqlDataAdapter.Fill(archSqlds, "ARCH_DESIGN")
+        archsqlBindingSource.DataSource = archSqlds
+        archsqlBindingSource.DataMember = "ARCH_DESIGN"
+
+    End Sub
 End Module

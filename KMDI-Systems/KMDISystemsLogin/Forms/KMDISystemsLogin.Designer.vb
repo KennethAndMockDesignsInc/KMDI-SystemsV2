@@ -41,7 +41,7 @@ Partial Class KMDISystemsLogin
         Me.ConnectionTypeCbox.Location = New System.Drawing.Point(173, 40)
         Me.ConnectionTypeCbox.Name = "ConnectionTypeCbox"
         Me.ConnectionTypeCbox.Size = New System.Drawing.Size(184, 29)
-        Me.ConnectionTypeCbox.TabIndex = 2
+        Me.ConnectionTypeCbox.TabIndex = 3
         Me.ConnectionTypeCbox.Theme = MetroFramework.MetroThemeStyle.Dark
         Me.ConnectionTypeCbox.UseSelectable = True
         '
@@ -71,7 +71,7 @@ Partial Class KMDISystemsLogin
         Me.PasswordTbox.SelectionLength = 0
         Me.PasswordTbox.SelectionStart = 0
         Me.PasswordTbox.Size = New System.Drawing.Size(184, 23)
-        Me.PasswordTbox.TabIndex = 1
+        Me.PasswordTbox.TabIndex = 2
         Me.PasswordTbox.Theme = MetroFramework.MetroThemeStyle.Dark
         Me.PasswordTbox.UseSelectable = True
         Me.PasswordTbox.WaterMark = "Password"
@@ -104,7 +104,7 @@ Partial Class KMDISystemsLogin
         Me.UserNameTbox.SelectionLength = 0
         Me.UserNameTbox.SelectionStart = 0
         Me.UserNameTbox.Size = New System.Drawing.Size(184, 23)
-        Me.UserNameTbox.TabIndex = 0
+        Me.UserNameTbox.TabIndex = 1
         Me.UserNameTbox.Theme = MetroFramework.MetroThemeStyle.Dark
         Me.UserNameTbox.UseSelectable = True
         Me.UserNameTbox.WaterMark = "User Name"
@@ -181,6 +181,7 @@ Partial Class KMDISystemsLogin
         '
         'KMDISystemsLogin
         '
+        Me.AcceptButton = Me.LoginBtn
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(419, 215)

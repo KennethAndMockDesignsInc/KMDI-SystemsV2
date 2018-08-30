@@ -3,14 +3,35 @@
     Public Delegate Sub PBVisibilityDelegate(ByVal Visibility As Boolean)
     Dim ChangeVisibility As PBVisibilityDelegate
 
+
+    Public Delegate Sub ArchDesignPBVisibilityDelegate(ByVal ArchDesignVisibility As Boolean)
+    Dim ArchDesignChangeVisibility As ArchDesignPBVisibilityDelegate
+
+    Dim BGWReported As Boolean = True   'Flag to check progress report completed or not
+    Public SearchPATboxString As String = ""
+    Public SearchADTboxString As String = ""
+
     Sub StartLoadProjAssignDGV_BGW()
         If LoadProjAssignDGV_BGW.IsBusy <> True Then
             ProjAssignDGV.Columns.Clear()
             ProjAssignDGV.DataSource = Nothing
             ProjAssignDGV.DataMember = Nothing
-            LoadProjAssignDGV_BGW.WorkerSupportsCancellation = True
             LoadProjAssignDGV_BGW.RunWorkerAsync()
         End If
+    End Sub
+    Sub StartLoadArchDesignDGV_BGW()
+        If LoadArchDesignDGV_BGW.IsBusy <> True Then
+            ArchDesignDGV.Columns.Clear()
+            ArchDesignDGV.DataSource = Nothing
+            ArchDesignDGV.DataMember = Nothing
+            LoadArchDesignDGV_BGW.RunWorkerAsync()
+        End If
+    End Sub
+
+    Public Sub ArchLoadingPbox_LBL_VISIBILITY(ByVal ArchDesignVisibility As Boolean)
+        ArchLoadingPbox.Enabled = ArchDesignVisibility
+        ArchLoadingPbox.Visible = ArchDesignVisibility
+        ArchLoadingLBL.Visible = ArchDesignVisibility
     End Sub
 
     Public Sub LoadingPBOX_LBL_VISIBILITY(ByVal Visibility As Boolean)
@@ -20,8 +41,8 @@
     End Sub
 
     Private Sub ProjectAssignment_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
-        KMDI_MainFRM.Enabled = True
         Me.Dispose()
+        KMDI_MainFRM.Enabled = True
     End Sub
 
     Private Sub ProjectAssignment_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -31,21 +52,58 @@
         '' call this method to start your asynchronous Task.
         ChangeVisibility = AddressOf LoadingPBOX_LBL_VISIBILITY
         StartLoadProjAssignDGV_BGW()
+
+        ArchDesignChangeVisibility = AddressOf ArchLoadingPbox_LBL_VISIBILITY
+        StartLoadArchDesignDGV_BGW()
     End Sub
 
+    Public ColumnToInvi As Integer = 0
     Private Sub LoadProjAssignDGV_BGW_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles LoadProjAssignDGV_BGW.DoWork
         Me.Invoke(ChangeVisibility, True)
+
         Try
-            SearchORLoadProjAssignDGV()
+            SearchORLoadProjAssignDGV(SearchPATboxString)
+            For ColumnToInvi = -1 To sqlDataSet.Tables("PROJ_ASSIGN").Columns.Count - 5
+                If LoadProjAssignDGV_BGW.CancellationPending Then
+                    'LoadProjAssignDGV_BGW.ReportProgress(ColumnToInvi)
+                    e.Cancel = True
+                Else
+                    While Not BGWReported
+                        Application.DoEvents()
+                    End While
+
+                    'Add some sleep to simulate a long running operation
+                    Threading.Thread.Sleep(10)
+
+                    BGWReported = False
+                End If
+                LoadProjAssignDGV_BGW.ReportProgress(ColumnToInvi)
+            Next
         Catch ex As Exception
-            MsgBox(ex.ToString)
-            LoadProjAssignDGV_BGW.WorkerSupportsCancellation = True
             LoadProjAssignDGV_BGW.CancelAsync()
+            MsgBox(ex.ToString)
+        Finally
+            sqlConnection.Close()
         End Try
 
         If LoadProjAssignDGV_BGW.CancellationPending Then
             e.Cancel = True
         End If
+    End Sub
+
+    Private Sub LoadArchDesignDGV_BGW_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles LoadArchDesignDGV_BGW.DoWork
+        Me.Invoke(ArchDesignChangeVisibility, True)
+        Try
+            SearchORLoadArchDesignDGV(SearchADTboxString)
+            If LoadArchDesignDGV_BGW.CancellationPending Then
+                e.Cancel = True
+            End If
+        Catch ex As Exception
+            LoadArchDesignDGV_BGW.CancelAsync()
+            MsgBox(ex.ToString)
+        Finally
+            archsqlConnection.Close()
+        End Try
     End Sub
 
     Private Sub LoadProjAssignDGV_BGW_RunWorkerCompleted(sender As Object, e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles LoadProjAssignDGV_BGW.RunWorkerCompleted
@@ -62,53 +120,44 @@
                 LoadingLBL.Text = "An error occured"
             Else
                 '' otherwise it completed normally
-
                 With ProjAssignDGV
                     .DataSource = sqlBindingSource
                     .DefaultCellStyle.BackColor = Color.White
                     .AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke
-                    .Columns("PA_AUTONUMBER").Visible = False
-                    .Columns("JOB_ORDER_NO_PARENT").Visible = False
-                    .Columns("QUOTE_NO").Visible = False
-                    .Columns("QUOTE_DATE").Visible = False
-                    .Columns("CUST_REF_NO").Visible = False
-                    .Columns("PROJECT_LABEL").Visible = False
-                    .Columns("PROJECT_TYPE").Visible = False
-                    .Columns("SOURCE").Visible = False
-                    .Columns("REFFERED_BY").Visible = False
-                    .Columns("CLIENTS_CONTACT_NO").Visible = False
-                    .Columns("CLIENTS_CONTACT_NO_OFFICE").Visible = False
-                    .Columns("CLIENTS_CONTACT_NO_MOBILE").Visible = False
-                    .Columns("CLIENTS_EMAIL_ADD").Visible = False
-                    .Columns("UNIT_NO").Visible = False
-                    .Columns("ESTABLISHMENT").Visible = False
-                    .Columns("HOUSE_NO").Visible = False
-                    .Columns("STREET").Visible = False
-                    .Columns("VILLAGE").Visible = False
-                    .Columns("BARANGAY").Visible = False
-                    .Columns("TOWN").Visible = False
-                    .Columns("PROVINCE").Visible = False
-                    .Columns("AREA").Visible = False
-                    .Columns("PROJECT_STATUS").Visible = False
-                    .Columns("PRESENTATION").Visible = False
-                    .Columns("SITE_MEETINGS").Visible = False
-                    .Columns("ARCHITECTURAL_DISCUSSIONS").Visible = False
-                    .Columns("SUBMITTAL_REVISION_OF_QUOTES").Visible = False
-                    .Columns("TRIAL_CLOSING").Visible = False
-                    .Columns("CLOSING_NEGOTIATION").Visible = False
-                    .Columns("CLOSED").Visible = False
-                    .Columns("CLOSED_OPTION").Visible = False
-                    .Columns("CLOSED_FULL_PARTIAL").Visible = False
-                    .Columns("AE_ASSIGNED_CODE").Visible = False
-                    .Columns("COMPETITORS").Visible = False
-                    .Columns("PROFILE_FINISH").Visible = False
-                    .Columns("PROJECT_CLASSIFICATION").Visible = False
-                    .Columns("CONSTRUCTION_STAGE").Visible = False
-                    .Columns("SITE_MEETING_SCHEDULE").Visible = False
-                    .Columns("WIP").Visible = False
+                    .Visible = True
                 End With
 
                 Me.Invoke(ChangeVisibility, False)
+            End If
+
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
+    End Sub
+
+    Private Sub LoadArchDesignDGV_BGW_RunWorkerCompleted(sender As Object, e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles LoadArchDesignDGV_BGW.RunWorkerCompleted
+        Try
+
+            If e.Error IsNot Nothing Then
+                '' if BackgroundWorker terminated due to error
+                ArchLoadingPbox.Enabled = False
+                LoadingLBL.Text = "Error Occured"
+            ElseIf e.Cancelled Then
+                '' otherwise if it was cancelled
+                ArchLoadingPbox.Enabled = False
+                ArchLoadingLBL.Text = "An error occured"
+            Else
+                '' otherwise it completed normally
+
+                With ArchDesignDGV
+                    .DataSource = archsqlBindingSource
+                    .Columns(0).Visible = False
+                    .DefaultCellStyle.BackColor = Color.White
+                    .AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke
+                    .Visible = True
+                End With
+
+                Me.Invoke(ArchDesignChangeVisibility, False)
             End If
 
         Catch ex As Exception
@@ -120,8 +169,61 @@
         rowpostpaint(sender, e)
     End Sub
 
-    Private Sub MetroButton1_Click(sender As Object, e As EventArgs)
-        LoadProjAssignDGV_BGW.CancelAsync()
+    Private Sub LoadProjAssignDGV_BGW_ProgressChanged(sender As Object, e As System.ComponentModel.ProgressChangedEventArgs) Handles LoadProjAssignDGV_BGW.ProgressChanged
+        Try
+            If ProjAssignDGV.DataSource Is Nothing Then
+                ProjAssignDGV.DataSource = sqlBindingSource
+            End If
+
+            ProjAssignDGV.Columns(ColumnToInvi).Visible = False
+            BGWReported = True
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
     End Sub
 
+    Private Sub ProjectAssignment_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        If LoadProjAssignDGV_BGW.IsBusy Or LoadArchDesignDGV_BGW.IsBusy Then
+            If MetroFramework.MetroMessageBox.Show(Me, "Are you sure you want to Exit?" & vbCrLf & "Current Operation will be cancelled!", "", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) = DialogResult.Yes Then
+                LoadProjAssignDGV_BGW.CancelAsync()
+                LoadArchDesignDGV_BGW.CancelAsync()
+                BGWReported = True
+            Else
+                e.Cancel = True
+            End If
+        Else
+            If MetroFramework.MetroMessageBox.Show(Me, "Are you sure you want to Exit?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Error) = DialogResult.Yes Then
+                e.Cancel = False
+            Else
+                e.Cancel = True
+            End If
+        End If
+
+    End Sub
+
+    Private Sub SearchPATbox_ButtonClick(sender As Object, e As EventArgs) Handles SearchPATbox.ButtonClick
+        ProjAssignDGV.Visible = False
+        ChangeVisibility = AddressOf LoadingPBOX_LBL_VISIBILITY
+        StartLoadProjAssignDGV_BGW()
+    End Sub
+
+    Private Sub SearchPATbox_TextChanged(sender As Object, e As EventArgs) Handles SearchPATbox.TextChanged
+        SearchPATboxString = SearchPATbox.Text
+    End Sub
+
+    Private Sub SearchPATbox_KeyDown(sender As Object, e As KeyEventArgs) Handles SearchPATbox.KeyDown
+        If e.KeyCode = Keys.Enter Then
+            ProjAssignDGV.Visible = False
+            ChangeVisibility = AddressOf LoadingPBOX_LBL_VISIBILITY
+            StartLoadProjAssignDGV_BGW()
+        End If
+    End Sub
+
+    Private Sub SearchArch_TextChanged(sender As Object, e As EventArgs) Handles SearchArch.TextChanged
+        SearchADTboxString = SearchArch.Text
+    End Sub
+
+    Private Sub ArchDesignDGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs) Handles ArchDesignDGV.RowPostPaint
+        rowpostpaint(sender, e)
+    End Sub
 End Class

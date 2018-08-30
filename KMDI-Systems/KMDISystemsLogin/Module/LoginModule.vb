@@ -6,7 +6,8 @@ Imports System.Security.Cryptography
 Module LoginModule
     Public AccountType, nickname, fullname, usernamePrint, PROFILEPATH, AcctPASSWORD As String
 
-    Dim AccessPoint As String = KMDISystemsLogin.KMDISystemsLogin_AccessPoint
+    Public KMDISystemsLogin_AccessPoint As String
+    'Dim AccessPoint As String = KMDISystemsLogin.KMDISystemsLogin_AccessPoint
     Public DBName As String
     Dim DBUserName As String = "kmdiadmin"
     Dim DBPassword As String = "kmdiadmin"
@@ -26,7 +27,7 @@ Module LoginModule
 
     Public Sub KMDISystems_Login_SERVER(ByVal DBName As String)
         sqlConnection.Close()
-        sqlconnString = "Data Source='" & AccessPoint & "';Network Library=DBMSSOCN;Initial Catalog='" & DBName & "';User ID='" & DBUserName & "';Password='" & DBPassword & "';"
+        sqlconnString = "Data Source='" & KMDISystemsLogin_AccessPoint & "';Network Library=DBMSSOCN;Initial Catalog='" & DBName & "';User ID='" & DBUserName & "';Password='" & DBPassword & "';"
         sqlConnection.ConnectionString = sqlconnString
     End Sub
 
@@ -39,12 +40,7 @@ Module LoginModule
             sqlConnection.Close()
             Try
                 sqlConnection.Open()
-            Catch ex As Exception
-                MetroFramework.MetroMessageBox.Show(KMDISystemsLogin, "Error connecting to server. Please check your connection.", "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
-                Exit Sub
-            End Try
-
-            Query = "Select    [AUTONUM]
+                Query = "Select    [AUTONUM]
                               ,[FULLNAME]
                               ,[NICKNAME]
                               ,[ACCTTYPE]
@@ -53,58 +49,63 @@ Module LoginModule
                               ,[PROFILEPATH]
                      From KMDI_ACCT_TB
                      Where [username] = @UserName AND [password] COLLATE Latin1_General_CS_AS = @Password"
-            sqlCommand = New SqlCommand(Query, sqlConnection)
-            sqlCommand.Parameters.AddWithValue("@UserName", UserName)
-            sqlCommand.Parameters.AddWithValue("@Password", Encrypt(Password))
-            Read = sqlCommand.ExecuteReader
-            Read.Read()
-            If Read.HasRows Then
-                AccountAutonum = Read.Item("AUTONUM").ToString
-                AccountType = Read.Item("ACCTTYPE").ToString
-                nickname = Read.Item("NICKNAME").ToString
-                fullname = Read.Item("FULLNAME").ToString
-                usernamePrint = Read.Item("USERNAME").ToString
-                PROFILEPATH = Read.Item("PROFILEPATH").ToString
-                AcctPASSWORD = Decrypt(Read.Item("PASSWORD").ToString)
+                sqlCommand = New SqlCommand(Query, sqlConnection)
+                sqlCommand.Parameters.AddWithValue("@UserName", UserName)
+                sqlCommand.Parameters.AddWithValue("@Password", Encrypt(Password))
+                Read = sqlCommand.ExecuteReader
+                Read.Read()
+                If Read.HasRows Then
+                    AccountAutonum = Read.Item("AUTONUM").ToString
+                    AccountType = Read.Item("ACCTTYPE").ToString
+                    nickname = Read.Item("NICKNAME").ToString
+                    fullname = Read.Item("FULLNAME").ToString
+                    usernamePrint = Read.Item("USERNAME").ToString
+                    PROFILEPATH = Read.Item("PROFILEPATH").ToString
+                    AcctPASSWORD = Decrypt(Read.Item("PASSWORD").ToString)
 
-                If Read("ACCTTYPE").ToString() = "Admin" Then
-                    With KMDI_MainFRM
-                        .Show()
-                        .DbNameCbox.Items.Clear()
-                        .DbNameCbox.Items.Insert(0, "KMDIDATA")
-                        .DbNameCbox.Items.Insert(1, "HAUSERDB")
-                        .DbNameCbox.Items.Insert(2, "HERETOSAVE")
-                        .DbNameCbox.Items.Insert(3, "KMDI_Systems")
-                        .DbNameCbox.SelectedIndex = DBnameCboxSelectedIndex
-                    End With
+                    If Read("ACCTTYPE").ToString() = "Admin" Then
+                        With KMDI_MainFRM
+                            .Show()
+                            .DbNameCbox.Items.Clear()
+                            .DbNameCbox.Items.Insert(0, "KMDIDATA")
+                            .DbNameCbox.Items.Insert(1, "HAUSERDB")
+                            .DbNameCbox.Items.Insert(2, "HERETOSAVE")
+                            .DbNameCbox.Items.Insert(3, "KMDI_Systems")
+                            .DbNameCbox.SelectedIndex = DBnameCboxSelectedIndex
+                        End With
+                    Else
+                        With KMDI_MainFRM
+                            .Show()
+                            .DbNameCbox.Items.Clear()
+                            .DbNameCbox.Items.Insert(0, "KMDIDATA")
+                            .DbNameCbox.Items.Insert(1, "HAUSERDB")
+                            .DbNameCbox.Items.Insert(2, "KMDI_Systems")
+                            .DbNameCbox.SelectedIndex = DBnameCboxSelectedIndex
+                        End With
+                    End If
+                    If LoginType = "Fresh" Then
+                        KMDISystemsLogin.Hide()
+                    ElseIf LoginType = "Relog" Then
+                    End If
                 Else
                     With KMDI_MainFRM
-                        .Show()
-                        .DbNameCbox.Items.Clear()
-                        .DbNameCbox.Items.Insert(0, "KMDIDATA")
-                        .DbNameCbox.Items.Insert(1, "HAUSERDB")
-                        .DbNameCbox.Items.Insert(2, "KMDI_Systems")
-                        .DbNameCbox.SelectedIndex = DBnameCboxSelectedIndex
+                        MetroFramework.MetroMessageBox.Show(KMDISystemsLogin, "Login failed! Please Try again", "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
+                        If Application.OpenForms().OfType(Of KMDI_MainFRM).Any Then
+
+                            .DbNameCbox.SelectedIndex = PrevDBnameCboxSelectedIndex
+
+                            KMDISystems_Login_SERVER(.DbNameCbox.Text)
+                            KMDISystems_Login(KMDISystems_UserName,
+                                  KMDISystems_Password, "Relog", .DbNameCbox.SelectedIndex, .PrevDBNameCboxSelectedIndex)
+                        End If
+
                     End With
                 End If
-                If LoginType = "Fresh" Then
-                    KMDISystemsLogin.Hide()
-                ElseIf LoginType = "Relog" Then
-                End If
-            Else
-                With KMDI_MainFRM
-                    MetroFramework.MetroMessageBox.Show(KMDISystemsLogin, "Login failed! Please Try again", "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
-                    If Application.OpenForms().OfType(Of KMDI_MainFRM).Any Then
 
-                        .DbNameCbox.SelectedIndex = PrevDBnameCboxSelectedIndex
-
-                        KMDISystems_Login_SERVER(.DbNameCbox.Text)
-                        KMDISystems_Login(KMDISystems_UserName,
-                              KMDISystems_Password, "Relog", .DbNameCbox.SelectedIndex, .PrevDBNameCboxSelectedIndex)
-                    End If
-
-                End With
-            End If
+            Catch ex As Exception
+                MetroFramework.MetroMessageBox.Show(KMDISystemsLogin, "Error connecting to server. Please check your connection.", "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
+                Exit Sub
+            End Try
 
         Catch ex As Exception
             MessageBox.Show(ex.ToString)

@@ -1,7 +1,7 @@
 ﻿Public Class KMDISystemsLogin
-    Public KMDISystemsLogin_AccessPoint As String = "192.168.1.21,49107"
 
     Private Sub KMDISystemsLogin_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        KMDISystemsLogin_AccessPoint = "192.168.1.21,49107"
         ConnectionTypeCbox.SelectedIndex = 0
         MaximizeBox = False
 
@@ -30,20 +30,8 @@
         KMDISystems_UserName = UserNameTbox.Text
     End Sub
 
-    Private Sub UserNameTbox_KeyDown(sender As Object, e As KeyEventArgs) Handles UserNameTbox.KeyDown
-        If e.KeyCode = Keys.Enter Then
-            LoginBtn.PerformClick()
-        End If
-    End Sub
-
     Private Sub PasswordTbox_TextChanged(sender As Object, e As EventArgs) Handles PasswordTbox.TextChanged
         KMDISystems_Password = PasswordTbox.Text
-    End Sub
-
-    Private Sub PasswordTbox_KeyDown(sender As Object, e As KeyEventArgs) Handles PasswordTbox.KeyDown
-        If e.KeyCode = Keys.Enter Then
-            LoginBtn.PerformClick()
-        End If
     End Sub
 
     Private Sub LoginBtn_Click(sender As Object, e As EventArgs) Handles LoginBtn.Click
@@ -56,12 +44,13 @@
             ElseIf KMDISystems_Password = Nothing Then
                 MetroFramework.MetroMessageBox.Show(Me, "Please enter password", "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
                 Exit Sub
+            Else
+                Login()
             End If
         Catch ex As Exception
             MetroFramework.MetroMessageBox.Show(Me, ex.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
         End Try
 
-        Login()
     End Sub
 
     Private Sub CloseBtn_Click(sender As Object, e As EventArgs) Handles CloseBtn.Click

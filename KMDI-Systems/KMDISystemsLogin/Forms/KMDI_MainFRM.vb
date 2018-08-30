@@ -334,7 +334,7 @@
         PanelVisibility()
         LoggedAcctPermissions()
         PanelVisibility()
-        NicknameLbl.Text = "Hi I'm " & "" & nickname.ToUpper & "" & " At your Service!"
+        NicknameLbl.Text = "Hi I'm " & "" & nickname.ToUpper & "" & " at your Service!"
         PrevDBNameCboxSelectedIndex = DbNameCbox.SelectedIndex
         Me.Width = 800
         Me.Height = 600
@@ -346,19 +346,7 @@
     End Sub
 
     Private Sub LogoutTile_Click(sender As Object, e As EventArgs) Handles LogoutTile.Click
-        If MetroFramework.MetroMessageBox.Show(Me, "Are you sure you want to Logout?", "Logout", MessageBoxButtons.YesNo, MessageBoxIcon.Question,
-                                               MessageBoxDefaultButton.Button1) = DialogResult.Yes Then
-
-            KMDISystemsLogin.Show()
-            Me.Hide()
-        Else
-
-        End If
-    End Sub
-
-    Private Sub KMDI_MainFRM_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
-
-        Me.Dispose()
+        Me.Close()
     End Sub
 
     Private Sub ReloadMainFrm_Click(sender As Object, e As EventArgs) Handles ReloadMainFrm.Click
@@ -402,10 +390,17 @@
 
     Private Sub KMDI_MainFRM_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         If MetroFramework.MetroMessageBox.Show(Me, "Are you sure you want to QUIT?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Error) = DialogResult.Yes Then
+            sqlConnection.Close()
+            KMDISystemsLogin.UserNameTbox.Clear()
+            KMDISystemsLogin.PasswordTbox.Clear()
+            KMDISystemsLogin.UserNameTbox.Select()
             KMDISystemsLogin.Show()
-            Me.Hide()
         Else
             e.Cancel = True
         End If
+    End Sub
+
+    Private Sub DbNameCbox_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles DbNameCbox.SelectionChangeCommitted
+        ReloadMainFrm_Click(sender, e)
     End Sub
 End Class
