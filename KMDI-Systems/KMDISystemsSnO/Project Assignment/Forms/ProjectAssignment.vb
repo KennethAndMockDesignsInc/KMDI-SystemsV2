@@ -178,7 +178,7 @@
             ProjAssignDGV.Columns(ColumnToInvi).Visible = False
             BGWReported = True
         Catch ex As Exception
-            MsgBox(ex.Message)
+            ' MsgBox(ex.Message)
         End Try
     End Sub
 
