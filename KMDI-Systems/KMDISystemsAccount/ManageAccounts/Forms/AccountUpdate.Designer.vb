@@ -184,7 +184,7 @@ Partial Class AccountUpdate
         Me.NewUserTbox.SelectedText = ""
         Me.NewUserTbox.SelectionLength = 0
         Me.NewUserTbox.SelectionStart = 0
-        Me.NewUserTbox.Size = New System.Drawing.Size(308, 23)
+        Me.NewUserTbox.Size = New System.Drawing.Size(400, 23)
         Me.NewUserTbox.Style = MetroFramework.MetroColorStyle.Blue
         Me.NewUserTbox.TabIndex = 12
         Me.NewUserTbox.UseCustomBackColor = True
@@ -220,7 +220,7 @@ Partial Class AccountUpdate
         Me.OldPasswordTbox.SelectedText = ""
         Me.OldPasswordTbox.SelectionLength = 0
         Me.OldPasswordTbox.SelectionStart = 0
-        Me.OldPasswordTbox.Size = New System.Drawing.Size(308, 23)
+        Me.OldPasswordTbox.Size = New System.Drawing.Size(400, 23)
         Me.OldPasswordTbox.Style = MetroFramework.MetroColorStyle.Blue
         Me.OldPasswordTbox.TabIndex = 14
         Me.OldPasswordTbox.UseCustomBackColor = True
@@ -267,7 +267,7 @@ Partial Class AccountUpdate
         Me.NewPassTbox.SelectedText = ""
         Me.NewPassTbox.SelectionLength = 0
         Me.NewPassTbox.SelectionStart = 0
-        Me.NewPassTbox.Size = New System.Drawing.Size(308, 23)
+        Me.NewPassTbox.Size = New System.Drawing.Size(400, 23)
         Me.NewPassTbox.Style = MetroFramework.MetroColorStyle.Blue
         Me.NewPassTbox.TabIndex = 15
         Me.NewPassTbox.UseCustomBackColor = True
@@ -304,7 +304,7 @@ Partial Class AccountUpdate
         Me.RetypePassTbox.SelectedText = ""
         Me.RetypePassTbox.SelectionLength = 0
         Me.RetypePassTbox.SelectionStart = 0
-        Me.RetypePassTbox.Size = New System.Drawing.Size(308, 23)
+        Me.RetypePassTbox.Size = New System.Drawing.Size(400, 23)
         Me.RetypePassTbox.Style = MetroFramework.MetroColorStyle.Blue
         Me.RetypePassTbox.TabIndex = 16
         Me.RetypePassTbox.UseCustomBackColor = True
@@ -331,7 +331,7 @@ Partial Class AccountUpdate
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(373, 473)
+        Me.ClientSize = New System.Drawing.Size(446, 473)
         Me.Controls.Add(Me.UpdateUserBtn)
         Me.Controls.Add(Me.RetypePassTbox)
         Me.Controls.Add(Me.NewPassTbox)

@@ -24,7 +24,7 @@ Partial Class KMDI_MainFRM
     Private Sub InitializeComponent()
         Me.DbNameCbox = New MetroFramework.Controls.MetroComboBox()
         Me.FlowLayoutPanel2 = New System.Windows.Forms.FlowLayoutPanel()
-        Me.FlowLayoutPanel3 = New System.Windows.Forms.FlowLayoutPanel()
+        Me.MainFRMBody_FLP = New System.Windows.Forms.FlowLayoutPanel()
         Me.ContractsPanel = New MetroFramework.Controls.MetroPanel()
         Me.ContractsLBL = New MetroFramework.Controls.MetroLabel()
         Me.FlowLayoutPanel9 = New System.Windows.Forms.FlowLayoutPanel()
@@ -78,8 +78,9 @@ Partial Class KMDI_MainFRM
         Me.MetroLabel1 = New MetroFramework.Controls.MetroLabel()
         Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
         Me.NicknameLbl = New MetroFramework.Controls.MetroLabel()
-        Me.ReloadMainFrm = New MetroFramework.Controls.MetroProgressSpinner()
-        Me.FlowLayoutPanel3.SuspendLayout()
+        Me.ChangeDB_BGW = New System.ComponentModel.BackgroundWorker()
+        Me.LoadingPBOX = New System.Windows.Forms.PictureBox()
+        Me.MainFRMBody_FLP.SuspendLayout()
         Me.ContractsPanel.SuspendLayout()
         Me.FlowLayoutPanel9.SuspendLayout()
         Me.AccountsPanel.SuspendLayout()
@@ -94,6 +95,7 @@ Partial Class KMDI_MainFRM
         Me.FlowLayoutPanel5.SuspendLayout()
         Me.CostingPanel.SuspendLayout()
         Me.FlowLayoutPanel10.SuspendLayout()
+        CType(Me.LoadingPBOX, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'DbNameCbox
@@ -115,22 +117,22 @@ Partial Class KMDI_MainFRM
         Me.FlowLayoutPanel2.Size = New System.Drawing.Size(20, 680)
         Me.FlowLayoutPanel2.TabIndex = 4
         '
-        'FlowLayoutPanel3
+        'MainFRMBody_FLP
         '
-        Me.FlowLayoutPanel3.AutoScroll = True
-        Me.FlowLayoutPanel3.Controls.Add(Me.ContractsPanel)
-        Me.FlowLayoutPanel3.Controls.Add(Me.AccountsPanel)
-        Me.FlowLayoutPanel3.Controls.Add(Me.SNOpanel)
-        Me.FlowLayoutPanel3.Controls.Add(Me.ProductionPanel)
-        Me.FlowLayoutPanel3.Controls.Add(Me.EngrPanel)
-        Me.FlowLayoutPanel3.Controls.Add(Me.MarketingPanel)
-        Me.FlowLayoutPanel3.Controls.Add(Me.CostingPanel)
-        Me.FlowLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.FlowLayoutPanel3.FlowDirection = System.Windows.Forms.FlowDirection.TopDown
-        Me.FlowLayoutPanel3.Location = New System.Drawing.Point(40, 60)
-        Me.FlowLayoutPanel3.Name = "FlowLayoutPanel3"
-        Me.FlowLayoutPanel3.Size = New System.Drawing.Size(1280, 680)
-        Me.FlowLayoutPanel3.TabIndex = 5
+        Me.MainFRMBody_FLP.AutoScroll = True
+        Me.MainFRMBody_FLP.Controls.Add(Me.ContractsPanel)
+        Me.MainFRMBody_FLP.Controls.Add(Me.AccountsPanel)
+        Me.MainFRMBody_FLP.Controls.Add(Me.SNOpanel)
+        Me.MainFRMBody_FLP.Controls.Add(Me.ProductionPanel)
+        Me.MainFRMBody_FLP.Controls.Add(Me.EngrPanel)
+        Me.MainFRMBody_FLP.Controls.Add(Me.MarketingPanel)
+        Me.MainFRMBody_FLP.Controls.Add(Me.CostingPanel)
+        Me.MainFRMBody_FLP.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.MainFRMBody_FLP.FlowDirection = System.Windows.Forms.FlowDirection.TopDown
+        Me.MainFRMBody_FLP.Location = New System.Drawing.Point(20, 60)
+        Me.MainFRMBody_FLP.Name = "MainFRMBody_FLP"
+        Me.MainFRMBody_FLP.Size = New System.Drawing.Size(1320, 680)
+        Me.MainFRMBody_FLP.TabIndex = 5
         '
         'ContractsPanel
         '
@@ -870,21 +872,22 @@ Partial Class KMDI_MainFRM
         Me.NicknameLbl.Theme = MetroFramework.MetroThemeStyle.Dark
         Me.NicknameLbl.UseStyleColors = True
         '
-        'ReloadMainFrm
+        'ChangeDB_BGW
         '
-        Me.ReloadMainFrm.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ReloadMainFrm.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.ReloadMainFrm.Location = New System.Drawing.Point(1108, 36)
-        Me.ReloadMainFrm.Maximum = 100
-        Me.ReloadMainFrm.Name = "ReloadMainFrm"
-        Me.ReloadMainFrm.Size = New System.Drawing.Size(26, 29)
-        Me.ReloadMainFrm.Spinning = False
-        Me.ReloadMainFrm.Style = MetroFramework.MetroColorStyle.White
-        Me.ReloadMainFrm.TabIndex = 17
-        Me.ReloadMainFrm.Theme = MetroFramework.MetroThemeStyle.Dark
-        Me.ReloadMainFrm.UseSelectable = True
-        Me.ReloadMainFrm.UseStyleColors = True
-        Me.ReloadMainFrm.Value = 100
+        Me.ChangeDB_BGW.WorkerReportsProgress = True
+        Me.ChangeDB_BGW.WorkerSupportsCancellation = True
+        '
+        'LoadingPBOX
+        '
+        Me.LoadingPBOX.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.LoadingPBOX.Image = Global.KMDI_Systems.My.Resources.Resources.loading_page
+        Me.LoadingPBOX.Location = New System.Drawing.Point(1050, 13)
+        Me.LoadingPBOX.Name = "LoadingPBOX"
+        Me.LoadingPBOX.Size = New System.Drawing.Size(117, 46)
+        Me.LoadingPBOX.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.LoadingPBOX.TabIndex = 7
+        Me.LoadingPBOX.TabStop = False
+        Me.LoadingPBOX.Visible = False
         '
         'KMDI_MainFRM
         '
@@ -892,18 +895,18 @@ Partial Class KMDI_MainFRM
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1360, 760)
         Me.ControlBox = False
-        Me.Controls.Add(Me.ReloadMainFrm)
-        Me.Controls.Add(Me.NicknameLbl)
         Me.Controls.Add(Me.DbNameCbox)
-        Me.Controls.Add(Me.FlowLayoutPanel3)
+        Me.Controls.Add(Me.LoadingPBOX)
+        Me.Controls.Add(Me.NicknameLbl)
         Me.Controls.Add(Me.FlowLayoutPanel2)
         Me.Controls.Add(Me.FlowLayoutPanel1)
+        Me.Controls.Add(Me.MainFRMBody_FLP)
         Me.Cursor = System.Windows.Forms.Cursors.Default
         Me.Name = "KMDI_MainFRM"
         Me.Resizable = False
         Me.Theme = MetroFramework.MetroThemeStyle.Dark
         Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
-        Me.FlowLayoutPanel3.ResumeLayout(False)
+        Me.MainFRMBody_FLP.ResumeLayout(False)
         Me.ContractsPanel.ResumeLayout(False)
         Me.ContractsPanel.PerformLayout()
         Me.FlowLayoutPanel9.ResumeLayout(False)
@@ -925,13 +928,14 @@ Partial Class KMDI_MainFRM
         Me.CostingPanel.ResumeLayout(False)
         Me.CostingPanel.PerformLayout()
         Me.FlowLayoutPanel10.ResumeLayout(False)
+        CType(Me.LoadingPBOX, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
     Friend WithEvents DbNameCbox As MetroFramework.Controls.MetroComboBox
     Friend WithEvents FlowLayoutPanel2 As FlowLayoutPanel
-    Friend WithEvents FlowLayoutPanel3 As FlowLayoutPanel
+    Friend WithEvents MainFRMBody_FLP As FlowLayoutPanel
     Friend WithEvents ContractsPanel As MetroFramework.Controls.MetroPanel
     Friend WithEvents ContractsLBL As MetroFramework.Controls.MetroLabel
     Friend WithEvents FlowLayoutPanel1 As FlowLayoutPanel
@@ -946,7 +950,6 @@ Partial Class KMDI_MainFRM
     Friend WithEvents MngeAccTile As MetroFramework.Controls.MetroTile
     Friend WithEvents LogoutTile As MetroFramework.Controls.MetroTile
     Friend WithEvents AcctsLBL As MetroFramework.Controls.MetroLabel
-    Friend WithEvents ReloadMainFrm As MetroFramework.Controls.MetroProgressSpinner
     Friend WithEvents RecycleTile As MetroFramework.Controls.MetroTile
     Friend WithEvents SNOpanel As MetroFramework.Controls.MetroPanel
     Friend WithEvents FlowLayoutPanel4 As FlowLayoutPanel
@@ -986,4 +989,6 @@ Partial Class KMDI_MainFRM
     Friend WithEvents FlowLayoutPanel10 As FlowLayoutPanel
     Friend WithEvents WinDoorMakerTile As MetroFramework.Controls.MetroTile
     Friend WithEvents MetroLabel1 As MetroFramework.Controls.MetroLabel
+    Friend WithEvents ChangeDB_BGW As System.ComponentModel.BackgroundWorker
+    Friend WithEvents LoadingPBOX As PictureBox
 End Class

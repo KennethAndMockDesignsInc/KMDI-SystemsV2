@@ -25,6 +25,10 @@ Module LoginModule
     Public KMDISystems_UserName As String
     Public KMDISystems_Password As String
 
+    Public LoginType As String
+    Public DBnameCboxSelectedIndex As Integer
+    Public PrevDBnameCboxSelectedIndex As Integer
+
     Public Sub KMDISystems_Login_SERVER(ByVal DBName As String)
         sqlConnection.Close()
         sqlconnString = "Data Source='" & KMDISystemsLogin_AccessPoint & "';Network Library=DBMSSOCN;Initial Catalog='" & DBName & "';User ID='" & DBUserName & "';Password='" & DBPassword & "';"
@@ -32,120 +36,53 @@ Module LoginModule
     End Sub
 
     Public Sub KMDISystems_Login(ByVal UserName As String,
-                                 ByVal Password As String,
-                                 ByVal LoginType As String,
-                                 ByVal DBnameCboxSelectedIndex As Integer,
-                                 ByVal PrevDBnameCboxSelectedIndex As Integer)
-        Try
-            sqlConnection.Close()
-            Try
-                sqlConnection.Open()
-                Query = "Select    [AUTONUM]
-                              ,[FULLNAME]
-                              ,[NICKNAME]
-                              ,[ACCTTYPE]
-                              ,[USERNAME]
-                              ,[PASSWORD]
-                              ,[PROFILEPATH]
+                                 ByVal Password As String)
+        sqlConnection.Close()
+        sqlConnection.Open()
+        Query = "Select    [AUTONUM]
+                                  ,[FULLNAME]
+                                  ,[NICKNAME]
+                                  ,[ACCTTYPE]
+                                  ,[USERNAME]
+                                  ,[PASSWORD]
+                                  ,[PROFILEPATH]
                      From KMDI_ACCT_TB
                      Where [username] = @UserName AND [password] COLLATE Latin1_General_CS_AS = @Password"
-                sqlCommand = New SqlCommand(Query, sqlConnection)
-                sqlCommand.Parameters.AddWithValue("@UserName", UserName)
-                sqlCommand.Parameters.AddWithValue("@Password", Encrypt(Password))
-                Read = sqlCommand.ExecuteReader
-                Read.Read()
-                If Read.HasRows Then
-                    AccountAutonum = Read.Item("AUTONUM").ToString
-                    AccountType = Read.Item("ACCTTYPE").ToString
-                    nickname = Read.Item("NICKNAME").ToString
-                    fullname = Read.Item("FULLNAME").ToString
-                    usernamePrint = Read.Item("USERNAME").ToString
-                    PROFILEPATH = Read.Item("PROFILEPATH").ToString
-                    AcctPASSWORD = Decrypt(Read.Item("PASSWORD").ToString)
-
-                    If Read("ACCTTYPE").ToString() = "Admin" Then
-                        With KMDI_MainFRM
-                            .Show()
-                            .DbNameCbox.Items.Clear()
-                            .DbNameCbox.Items.Insert(0, "KMDIDATA")
-                            .DbNameCbox.Items.Insert(1, "HAUSERDB")
-                            .DbNameCbox.Items.Insert(2, "HERETOSAVE")
-                            .DbNameCbox.Items.Insert(3, "KMDI_Systems")
-                            .DbNameCbox.SelectedIndex = DBnameCboxSelectedIndex
-                        End With
-                    Else
-                        With KMDI_MainFRM
-                            .Show()
-                            .DbNameCbox.Items.Clear()
-                            .DbNameCbox.Items.Insert(0, "KMDIDATA")
-                            .DbNameCbox.Items.Insert(1, "HAUSERDB")
-                            .DbNameCbox.Items.Insert(2, "KMDI_Systems")
-                            .DbNameCbox.SelectedIndex = DBnameCboxSelectedIndex
-                        End With
-                    End If
-                    If LoginType = "Fresh" Then
-                        KMDISystemsLogin.Hide()
-                    ElseIf LoginType = "Relog" Then
-                    End If
-                Else
-                    With KMDI_MainFRM
-                        MetroFramework.MetroMessageBox.Show(KMDISystemsLogin, "Login failed! Please Try again", "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
-                        If Application.OpenForms().OfType(Of KMDI_MainFRM).Any Then
-
-                            .DbNameCbox.SelectedIndex = PrevDBnameCboxSelectedIndex
-
-                            KMDISystems_Login_SERVER(.DbNameCbox.Text)
-                            KMDISystems_Login(KMDISystems_UserName,
-                                  KMDISystems_Password, "Relog", .DbNameCbox.SelectedIndex, .PrevDBNameCboxSelectedIndex)
-                        End If
-
-                    End With
-                End If
-
-            Catch ex As Exception
-                MetroFramework.MetroMessageBox.Show(KMDISystemsLogin, "Error connecting to server. Please check your connection.", "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
-                Exit Sub
-            End Try
-
-        Catch ex As Exception
-            MessageBox.Show(ex.ToString)
-        Finally
-            sqlConnection.Close()
-        End Try
+        sqlCommand = New SqlCommand(Query, sqlConnection)
+        sqlCommand.Parameters.AddWithValue("@UserName", UserName)
+        sqlCommand.Parameters.AddWithValue("@Password", Encrypt(Password))
+        Read = sqlCommand.ExecuteReader
+        Read.Read()
+        If Read.HasRows Then
+            AccountAutonum = Read.Item("AUTONUM").ToString
+            AccountType = Read.Item("ACCTTYPE").ToString
+            nickname = Read.Item("NICKNAME").ToString
+            fullname = Read.Item("FULLNAME").ToString
+            usernamePrint = Read.Item("USERNAME").ToString
+            PROFILEPATH = Read.Item("PROFILEPATH").ToString
+            AcctPASSWORD = Decrypt(Read.Item("PASSWORD").ToString)
+        Else
+            KMDISystemsLogin.Login_BGW.CancelAsync()
+            AccountAutonum = Nothing
+        End If
     End Sub
 
     Public Function Encrypt(clearText As String) As String
-
         Dim EncryptionKey As String = "MAKV2SPBNI99212"
-
         Dim clearBytes As Byte() = Encoding.Unicode.GetBytes(clearText)
-
         Using encryptor As Aes = Aes.Create()
-
             Dim pdb As New Rfc2898DeriveBytes(EncryptionKey, New Byte() {&H49, &H76, &H61, &H6E, &H20, &H4D, &H65, &H64, &H76, &H65, &H64, &H65, &H76})
-
             encryptor.Key = pdb.GetBytes(32)
-
             encryptor.IV = pdb.GetBytes(16)
-
             Using ms As New MemoryStream()
-
                 Using cs As New CryptoStream(ms, encryptor.CreateEncryptor(), CryptoStreamMode.Write)
-
                     cs.Write(clearBytes, 0, clearBytes.Length)
-
                     cs.Close()
-
                 End Using
-
                 clearText = Convert.ToBase64String(ms.ToArray())
-
             End Using
-
         End Using
-
         Return clearText
-
     End Function
 
     Public Sub UserAccessCbox_Popolate()

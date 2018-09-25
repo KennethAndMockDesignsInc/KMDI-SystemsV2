@@ -28,8 +28,15 @@ Partial Class KMDISystemsLogin
         Me.PasswordLbl = New MetroFramework.Controls.MetroLabel()
         Me.UserNameLbl = New MetroFramework.Controls.MetroLabel()
         Me.ConnectionTypeLbl = New MetroFramework.Controls.MetroLabel()
-        Me.LoginBtn = New MetroFramework.Controls.MetroTextBox.MetroTextButton()
+        Me.Login_BGW = New System.ComponentModel.BackgroundWorker()
+        Me.Loading_Pnl = New MetroFramework.Controls.MetroPanel()
+        Me.LoadingPBOX = New System.Windows.Forms.PictureBox()
+        Me.Login_Pnl = New MetroFramework.Controls.MetroPanel()
         Me.CloseBtn = New MetroFramework.Controls.MetroTextBox.MetroTextButton()
+        Me.LoginBtn = New MetroFramework.Controls.MetroTextBox.MetroTextButton()
+        Me.Loading_Pnl.SuspendLayout()
+        CType(Me.LoadingPBOX, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Login_Pnl.SuspendLayout()
         Me.SuspendLayout()
         '
         'ConnectionTypeCbox
@@ -157,21 +164,59 @@ Partial Class KMDISystemsLogin
         Me.ConnectionTypeLbl.UseCustomForeColor = True
         Me.ConnectionTypeLbl.UseStyleColors = True
         '
-        'LoginBtn
+        'Login_BGW
         '
-        Me.LoginBtn.Image = Nothing
-        Me.LoginBtn.Location = New System.Drawing.Point(341, 169)
-        Me.LoginBtn.Name = "LoginBtn"
-        Me.LoginBtn.Size = New System.Drawing.Size(63, 23)
-        Me.LoginBtn.TabIndex = 4
-        Me.LoginBtn.Text = "Login"
-        Me.LoginBtn.UseSelectable = True
-        Me.LoginBtn.UseVisualStyleBackColor = True
+        Me.Login_BGW.WorkerReportsProgress = True
+        Me.Login_BGW.WorkerSupportsCancellation = True
+        '
+        'Loading_Pnl
+        '
+        Me.Loading_Pnl.Controls.Add(Me.LoadingPBOX)
+        Me.Loading_Pnl.HorizontalScrollbarBarColor = True
+        Me.Loading_Pnl.HorizontalScrollbarHighlightOnWheel = False
+        Me.Loading_Pnl.HorizontalScrollbarSize = 10
+        Me.Loading_Pnl.Location = New System.Drawing.Point(115, 155)
+        Me.Loading_Pnl.Name = "Loading_Pnl"
+        Me.Loading_Pnl.Size = New System.Drawing.Size(242, 47)
+        Me.Loading_Pnl.TabIndex = 11
+        Me.Loading_Pnl.Theme = MetroFramework.MetroThemeStyle.Dark
+        Me.Loading_Pnl.UseCustomBackColor = True
+        Me.Loading_Pnl.VerticalScrollbarBarColor = True
+        Me.Loading_Pnl.VerticalScrollbarHighlightOnWheel = False
+        Me.Loading_Pnl.VerticalScrollbarSize = 10
+        '
+        'LoadingPBOX
+        '
+        Me.LoadingPBOX.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.LoadingPBOX.Image = Global.KMDI_Systems.My.Resources.Resources.loading_page
+        Me.LoadingPBOX.Location = New System.Drawing.Point(125, 1)
+        Me.LoadingPBOX.Name = "LoadingPBOX"
+        Me.LoadingPBOX.Size = New System.Drawing.Size(117, 46)
+        Me.LoadingPBOX.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.LoadingPBOX.TabIndex = 3
+        Me.LoadingPBOX.TabStop = False
+        '
+        'Login_Pnl
+        '
+        Me.Login_Pnl.Controls.Add(Me.CloseBtn)
+        Me.Login_Pnl.Controls.Add(Me.LoginBtn)
+        Me.Login_Pnl.HorizontalScrollbarBarColor = True
+        Me.Login_Pnl.HorizontalScrollbarHighlightOnWheel = False
+        Me.Login_Pnl.HorizontalScrollbarSize = 10
+        Me.Login_Pnl.Location = New System.Drawing.Point(115, 155)
+        Me.Login_Pnl.Name = "Login_Pnl"
+        Me.Login_Pnl.Size = New System.Drawing.Size(242, 47)
+        Me.Login_Pnl.TabIndex = 12
+        Me.Login_Pnl.Theme = MetroFramework.MetroThemeStyle.Dark
+        Me.Login_Pnl.UseCustomBackColor = True
+        Me.Login_Pnl.VerticalScrollbarBarColor = True
+        Me.Login_Pnl.VerticalScrollbarHighlightOnWheel = False
+        Me.Login_Pnl.VerticalScrollbarSize = 10
         '
         'CloseBtn
         '
         Me.CloseBtn.Image = Nothing
-        Me.CloseBtn.Location = New System.Drawing.Point(272, 169)
+        Me.CloseBtn.Location = New System.Drawing.Point(100, 13)
         Me.CloseBtn.Name = "CloseBtn"
         Me.CloseBtn.Size = New System.Drawing.Size(63, 23)
         Me.CloseBtn.TabIndex = 3
@@ -179,24 +224,38 @@ Partial Class KMDISystemsLogin
         Me.CloseBtn.UseSelectable = True
         Me.CloseBtn.UseVisualStyleBackColor = True
         '
+        'LoginBtn
+        '
+        Me.LoginBtn.Image = Nothing
+        Me.LoginBtn.Location = New System.Drawing.Point(169, 13)
+        Me.LoginBtn.Name = "LoginBtn"
+        Me.LoginBtn.Size = New System.Drawing.Size(63, 23)
+        Me.LoginBtn.TabIndex = 4
+        Me.LoginBtn.Text = "Login"
+        Me.LoginBtn.UseSelectable = True
+        Me.LoginBtn.UseVisualStyleBackColor = True
+        '
         'KMDISystemsLogin
         '
         Me.AcceptButton = Me.LoginBtn
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(419, 215)
-        Me.Controls.Add(Me.CloseBtn)
-        Me.Controls.Add(Me.LoginBtn)
+        Me.ClientSize = New System.Drawing.Size(394, 215)
         Me.Controls.Add(Me.ConnectionTypeCbox)
         Me.Controls.Add(Me.PasswordTbox)
         Me.Controls.Add(Me.UserNameTbox)
         Me.Controls.Add(Me.PasswordLbl)
         Me.Controls.Add(Me.UserNameLbl)
         Me.Controls.Add(Me.ConnectionTypeLbl)
+        Me.Controls.Add(Me.Login_Pnl)
+        Me.Controls.Add(Me.Loading_Pnl)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.Name = "KMDISystemsLogin"
         Me.Resizable = False
         Me.Theme = MetroFramework.MetroThemeStyle.Dark
+        Me.Loading_Pnl.ResumeLayout(False)
+        CType(Me.LoadingPBOX, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Login_Pnl.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -208,6 +267,10 @@ Partial Class KMDISystemsLogin
     Friend WithEvents PasswordLbl As MetroFramework.Controls.MetroLabel
     Friend WithEvents UserNameLbl As MetroFramework.Controls.MetroLabel
     Friend WithEvents ConnectionTypeLbl As MetroFramework.Controls.MetroLabel
+    Friend WithEvents Login_BGW As System.ComponentModel.BackgroundWorker
+    Friend WithEvents Loading_Pnl As MetroFramework.Controls.MetroPanel
+    Friend WithEvents LoadingPBOX As PictureBox
+    Friend WithEvents Login_Pnl As MetroFramework.Controls.MetroPanel
     Friend WithEvents LoginBtn As MetroFramework.Controls.MetroTextBox.MetroTextButton
     Friend WithEvents CloseBtn As MetroFramework.Controls.MetroTextBox.MetroTextButton
 End Class

@@ -39,16 +39,10 @@
         LoadingPBOX.Visible = Visibility
         LoadingLBL.Visible = Visibility
     End Sub
-
-    Private Sub ProjectAssignment_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
-        Me.Dispose()
-        KMDI_MainFRM.Enabled = True
-    End Sub
-
     Private Sub ProjectAssignment_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Width = 800
         Me.Height = 600
-
+        Populate_AEAssignedCBox()
         '' call this method to start your asynchronous Task.
         ChangeVisibility = AddressOf LoadingPBOX_LBL_VISIBILITY
         StartLoadProjAssignDGV_BGW()
@@ -66,6 +60,7 @@
             For ColumnToInvi = -1 To sqlDataSet.Tables("PROJ_ASSIGN").Columns.Count - 5
                 If LoadProjAssignDGV_BGW.CancellationPending Then
                     'LoadProjAssignDGV_BGW.ReportProgress(ColumnToInvi)
+                    Exit For
                     e.Cancel = True
                 Else
                     While Not BGWReported
@@ -95,15 +90,16 @@
         Me.Invoke(ArchDesignChangeVisibility, True)
         Try
             SearchORLoadArchDesignDGV(SearchADTboxString)
-            If LoadArchDesignDGV_BGW.CancellationPending Then
-                e.Cancel = True
-            End If
         Catch ex As Exception
             LoadArchDesignDGV_BGW.CancelAsync()
             MsgBox(ex.ToString)
         Finally
             archsqlConnection.Close()
         End Try
+
+        If LoadArchDesignDGV_BGW.CancellationPending Then
+            e.Cancel = True
+        End If
     End Sub
 
     Private Sub LoadProjAssignDGV_BGW_RunWorkerCompleted(sender As Object, e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles LoadProjAssignDGV_BGW.RunWorkerCompleted
@@ -141,7 +137,7 @@
             If e.Error IsNot Nothing Then
                 '' if BackgroundWorker terminated due to error
                 ArchLoadingPbox.Enabled = False
-                LoadingLBL.Text = "Error Occured"
+                ArchLoadingLBL.Text = "Error Occured"
             ElseIf e.Cancelled Then
                 '' otherwise if it was cancelled
                 ArchLoadingPbox.Enabled = False
@@ -178,17 +174,13 @@
             ProjAssignDGV.Columns(ColumnToInvi).Visible = False
             BGWReported = True
         Catch ex As Exception
-            ' MsgBox(ex.Message)
+            MsgBox(ex.Message)
         End Try
     End Sub
 
     Private Sub ProjectAssignment_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         If LoadProjAssignDGV_BGW.IsBusy Or LoadArchDesignDGV_BGW.IsBusy Then
-            If MetroFramework.MetroMessageBox.Show(Me, "Are you sure you want to Exit?" & vbCrLf & "Current Operation will be cancelled!", "", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) = DialogResult.Yes Then
-                LoadProjAssignDGV_BGW.CancelAsync()
-                LoadArchDesignDGV_BGW.CancelAsync()
-                BGWReported = True
-            Else
+            If MetroFramework.MetroMessageBox.Show(Me, "Currently loading, Please wait!", "", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) = DialogResult.Yes Then
                 e.Cancel = True
             End If
         Else
@@ -225,5 +217,122 @@
 
     Private Sub ArchDesignDGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs) Handles ArchDesignDGV.RowPostPaint
         rowpostpaint(sender, e)
+    End Sub
+
+    Private Sub SearchArch_ButtonClick(sender As Object, e As EventArgs) Handles SearchArch.ButtonClick
+        ArchDesignDGV.Visible = False
+        ArchDesignChangeVisibility = AddressOf ArchLoadingPbox_LBL_VISIBILITY
+        StartLoadArchDesignDGV_BGW()
+    End Sub
+
+    Private Sub SearchArch_KeyDown(sender As Object, e As KeyEventArgs) Handles SearchArch.KeyDown
+        If e.KeyCode = Keys.Enter Then
+            ArchDesignDGV.Visible = False
+            ArchDesignChangeVisibility = AddressOf ArchLoadingPbox_LBL_VISIBILITY
+            StartLoadArchDesignDGV_BGW()
+        End If
+    End Sub
+
+    Dim PA_AUTONUMBER, SOURCE, REFFERED_BY, CLIENTS_NAME, CLIENTS_CONTACT_NO, CLIENTS_CONTACT_NO_OFFICE, CLIENTS_CONTACT_NO_MOBILE,
+        CLIENTS_EMAIL_ADD, UNIT_NO, ESTABLISHMENT, HOUSE_NO, STREET, VILLAGE, BARANGAY, TOWN, PROVINCE, AREA, CLIENTS_ADDRESS, PROJECT_STATUS,
+        PRESENTATION, SITE_MEETINGS, ARCHITECTURAL_DISCUSSIONS, SUBMITTAL_REVISION_OF_QUOTES, TRIAL_CLOSING, CLOSING_NEGOTIATION, CLOSED_PA, CLOSED_OPTION,
+        CLOSED_FULL_PARTIAL, AE_ASSIGNED_CODE, COMPETITORS, COMPANY_NAME, QUOTE_NO, QUOTE_DATE, CUST_REF_NO, PROFILE_FINISH, PROJECT_CLASSIFICATION, CONSTRUCTION_STAGE,
+        SITE_MEETING_SCHEDULE, WIP As String
+
+    Private Sub ProjAssignDGV_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles ProjAssignDGV.CellClick
+        If ProjAssignDGV.RowCount >= 0 And e.RowIndex >= 0 Then
+            PA_AUTONUMBER = ProjAssignDGV.Item("PA_AUTONUMBER", e.RowIndex).Value.ToString
+            SOURCE = ProjAssignDGV.Item("SOURCE", e.RowIndex).Value.ToString
+            REFFERED_BY = ProjAssignDGV.Item("REFFERED_BY", e.RowIndex).Value.ToString
+            CLIENTS_NAME = ProjAssignDGV.Item("CLIENTS NAME", e.RowIndex).Value.ToString
+            CLIENTS_CONTACT_NO = ProjAssignDGV.Item("CLIENTS_CONTACT_NO", e.RowIndex).Value.ToString
+            CLIENTS_CONTACT_NO_OFFICE = ProjAssignDGV.Item("CLIENTS_CONTACT_NO_OFFICE", e.RowIndex).Value.ToString
+            CLIENTS_CONTACT_NO_MOBILE = ProjAssignDGV.Item("CLIENTS_CONTACT_NO_MOBILE", e.RowIndex).Value.ToString
+            CLIENTS_EMAIL_ADD = ProjAssignDGV.Item("CLIENTS_EMAIL_ADD", e.RowIndex).Value.ToString
+            UNIT_NO = ProjAssignDGV.Item("UNIT_NO", e.RowIndex).Value.ToString
+            ESTABLISHMENT = ProjAssignDGV.Item("ESTABLISHMENT", e.RowIndex).Value.ToString
+            HOUSE_NO = ProjAssignDGV.Item("HOUSE_NO", e.RowIndex).Value.ToString
+            STREET = ProjAssignDGV.Item("STREET", e.RowIndex).Value.ToString
+            VILLAGE = ProjAssignDGV.Item("VILLAGE", e.RowIndex).Value.ToString
+            BARANGAY = ProjAssignDGV.Item("BARANGAY", e.RowIndex).Value.ToString
+            TOWN = ProjAssignDGV.Item("TOWN", e.RowIndex).Value.ToString
+            PROVINCE = ProjAssignDGV.Item("PROVINCE", e.RowIndex).Value.ToString
+            AREA = ProjAssignDGV.Item("AREA", e.RowIndex).Value.ToString
+            CLIENTS_ADDRESS = ProjAssignDGV.Item("CLIENTS ADDRESS", e.RowIndex).Value.ToString
+            PROJECT_STATUS = ProjAssignDGV.Item("PROJECT_STATUS", e.RowIndex).Value.ToString
+            PRESENTATION = ProjAssignDGV.Item("PRESENTATION", e.RowIndex).Value.ToString
+            SITE_MEETINGS = ProjAssignDGV.Item("SITE_MEETINGS", e.RowIndex).Value.ToString
+            ARCHITECTURAL_DISCUSSIONS = ProjAssignDGV.Item("ARCHITECTURAL_DISCUSSIONS", e.RowIndex).Value.ToString
+            SUBMITTAL_REVISION_OF_QUOTES = ProjAssignDGV.Item("SUBMITTAL_REVISION_OF_QUOTES", e.RowIndex).Value.ToString
+            TRIAL_CLOSING = ProjAssignDGV.Item("TRIAL_CLOSING", e.RowIndex).Value.ToString
+            CLOSING_NEGOTIATION = ProjAssignDGV.Item("CLOSING_NEGOTIATION", e.RowIndex).Value.ToString
+            CLOSED_PA = ProjAssignDGV.Item("CLOSED", e.RowIndex).Value.ToString
+            CLOSED_OPTION = ProjAssignDGV.Item("CLOSED_OPTION", e.RowIndex).Value.ToString
+            CLOSED_FULL_PARTIAL = ProjAssignDGV.Item("CLOSED_FULL_PARTIAL", e.RowIndex).Value.ToString
+            AE_ASSIGNED_CODE = ProjAssignDGV.Item("AE_ASSIGNED_CODE", e.RowIndex).Value.ToString
+            COMPETITORS = ProjAssignDGV.Item("COMPETITORS", e.RowIndex).Value.ToString
+            COMPANY_NAME = ProjAssignDGV.Item("COMPANY NAME", e.RowIndex).Value.ToString
+            QUOTE_NO = ProjAssignDGV.Item("QUOTE_NO", e.RowIndex).Value.ToString
+            QUOTE_DATE = ProjAssignDGV.Item("QUOTE_DATE", e.RowIndex).Value.ToString
+            CUST_REF_NO = ProjAssignDGV.Item("CUST_REF_NO", e.RowIndex).Value.ToString
+            PROFILE_FINISH = ProjAssignDGV.Item("PROFILE_FINISH", e.RowIndex).Value.ToString
+            PROJECT_CLASSIFICATION = ProjAssignDGV.Item("PROJECT_CLASSIFICATION", e.RowIndex).Value.ToString
+            CONSTRUCTION_STAGE = ProjAssignDGV.Item("CONSTRUCTION_STAGE", e.RowIndex).Value.ToString
+            SITE_MEETING_SCHEDULE = ProjAssignDGV.Item("SITE_MEETING_SCHEDULE", e.RowIndex).Value.ToString
+            WIP = ProjAssignDGV.Item("WIP", e.RowIndex).Value.ToString
+
+            SourceCbox.Text = SOURCE
+            RefferedByTbox.Text = REFFERED_BY
+            CustNameTbox.Text = CLIENTS_NAME
+            CompanyNameTbox.Text = COMPANY_NAME
+            ClientsContactNoTbox.Text = CLIENTS_CONTACT_NO
+            ClientsContactNoOfficeTbox.Text = CLIENTS_CONTACT_NO_OFFICE
+            ClientsContactNoMobileTbox.Text = CLIENTS_CONTACT_NO_MOBILE
+            ClientsEmailAddTbox.Text = CLIENTS_EMAIL_ADD
+            UnitNoTbox.Text = UNIT_NO
+            EstablishmentTbox.Text = ESTABLISHMENT
+            HouseNoTbox.Text = HOUSE_NO
+            StreetTbox.Text = STREET
+            VillageTbox.Text = VILLAGE
+            BrgyTbox.Text = BARANGAY
+            TownTbox.Text = TOWN
+            ProvinceTbox.Text = PROVINCE
+            AreaCbox.Text = AREA
+            'AES_AssignedTBox.Text = AE_ASSIGNED_CODE
+
+            GetAE_ASSIGNED()
+        End If
+    End Sub
+
+    Sub GetAE_ASSIGNED()
+        Try
+
+            Dim loopnum As Integer = 0
+
+            AES_AssignedTBox.Clear()
+
+            SearchAE_AssignedCode(PA_AUTONUMBER)
+
+            Dim sqldsrowCount As Integer = sqlDataSet.Tables("AE_ASSIGNED").Rows.Count
+
+            For Each row As DataRow In sqlDataSet.Tables("AE_ASSIGNED").Rows
+                loopnum +=1
+                Dim AE_ASSIGNED_CODE As String = row.Item(0)
+                SearchAE_AssignedFULLNAME(AE_ASSIGNED_CODE)
+
+                If sqldsrowCount > 1 Then
+                    If loopnum < sqldsrowCount Then
+                        AES_AssignedTBox.Text += AE_ASSIGNED_FULLNAME + " & "
+                    ElseIf loopnum = sqldsrowCount Then
+                        AES_AssignedTBox.Text += AE_ASSIGNED_FULLNAME
+                    End If
+                Else
+                    AES_AssignedTBox.Text = AE_ASSIGNED_FULLNAME
+                End If
+
+            Next
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
     End Sub
 End Class

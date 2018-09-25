@@ -1,4 +1,7 @@
-﻿Public Class KMDI_MainFRM
+﻿Imports System.ComponentModel
+Imports System.Data.SqlClient
+
+Public Class KMDI_MainFRM
 
     Dim Tilecode As String
     Dim ToVisibleMarketingPanel As Integer = 0
@@ -326,6 +329,7 @@
     End Sub
 
     Private Sub KMDI_MainFRM_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
         TileAccessOfLoggedAccount = Nothing
         TileInvisibility()
         KMDI_ACCT_ACCESS_TB_READ_FOR_KMDI_MainFRM(AccountAutonum)
@@ -338,6 +342,7 @@
         PrevDBNameCboxSelectedIndex = DbNameCbox.SelectedIndex
         Me.Width = 800
         Me.Height = 600
+
     End Sub
 
     Private Sub MngeAccTile_Click(sender As Object, e As EventArgs) Handles MngeAccTile.Click
@@ -347,22 +352,6 @@
 
     Private Sub LogoutTile_Click(sender As Object, e As EventArgs) Handles LogoutTile.Click
         Me.Close()
-    End Sub
-
-    Private Sub ReloadMainFrm_Click(sender As Object, e As EventArgs) Handles ReloadMainFrm.Click
-        For i As Integer = 0 To 100
-            ReloadMainFrm.Value = i
-            System.Threading.Thread.Sleep(1)
-        Next
-        If DbNameCbox.Text = Nothing Or DbNameCbox.Text = "" Then
-
-        Else
-            KMDISystems_Login_SERVER(DbNameCbox.Text)
-            KMDISystems_Login(KMDISystems_UserName,
-                  KMDISystems_Password, "Relog", DbNameCbox.SelectedIndex, PrevDBNameCboxSelectedIndex)
-        End If
-
-        KMDI_MainFRM_Load(sender, e)
     End Sub
 
     Private Sub WinDoorMakerTile_Click(sender As Object, e As EventArgs) Handles WinDoorMakerTile.Click
@@ -381,26 +370,105 @@
     End Sub
 
     Private Sub ContractListTile_Click(sender As Object, e As EventArgs) Handles ContractListTile.Click
-        Contracts.Show()
+        Dim frm_Contracts As New Contracts
+        frm_Contracts.Show()
     End Sub
 
     Private Sub RecycleTile_Click(sender As Object, e As EventArgs) Handles RecycleTile.Click
-        Recycle.Show()
+        Dim frm_Recycle As New Recycle
+        frm_Recycle.Show()
     End Sub
 
-    Private Sub KMDI_MainFRM_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        If MetroFramework.MetroMessageBox.Show(Me, "Are you sure you want to QUIT?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Error) = DialogResult.Yes Then
-            sqlConnection.Close()
-            KMDISystemsLogin.UserNameTbox.Clear()
-            KMDISystemsLogin.PasswordTbox.Clear()
-            KMDISystemsLogin.UserNameTbox.Select()
-            KMDISystemsLogin.Show()
-        Else
+    Public DBNameStr_Cbox As String
+    Private Sub DbNameCbox_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles DbNameCbox.SelectionChangeCommitted
+        If ChangeDB_BGW.IsBusy <> True Then
+            LoadingPBOX.Visible = True
+            DBNameStr_Cbox = DbNameCbox.Text
+            DBnameCboxSelectedIndex = DbNameCbox.SelectedIndex
+            MainFRMBody_FLP.Enabled = False
+            ChangeDB_BGW.RunWorkerAsync()
+        End If
+    End Sub
+
+    Private Sub ChangeDB_BGW_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles ChangeDB_BGW.DoWork
+
+        Try
+            For i As Integer = 0 To 100
+                System.Threading.Thread.Sleep(1)
+                ChangeDB_BGW.ReportProgress(i)
+            Next
+            If DBNameStr_Cbox = Nothing Or DBNameStr_Cbox = "" Then
+
+            Else
+                KMDISystems_Login_SERVER(DBNameStr_Cbox)
+                LoginType = "Relog"
+                LoginModule.PrevDBnameCboxSelectedIndex = PrevDBNameCboxSelectedIndex
+                KMDISystems_Login(KMDISystems_UserName,
+                                  KMDISystems_Password)
+            End If
+
+        Catch ex As SqlException
+            'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
+            If ex.Number = -2 Then
+                MetroFramework.MetroMessageBox.Show(Me, "Click ok to Reconnect", "Request Timeout", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            ElseIf ex.Number = 1232 Then
+                MetroFramework.MetroMessageBox.Show(Me, "Please check internet connection", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            ElseIf ex.Number <> -2 And ex.Number <> 1232 Then
+                MetroFramework.MetroMessageBox.Show(Me, "Contact the Programmers now", "You need some help?", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+                MetroFramework.MetroMessageBox.Show(Me, ex.Message)
+            End If
+        Catch ex2 As Exception
+            MetroFramework.MetroMessageBox.Show(Me, ex2.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
+        End Try
+
+        If ChangeDB_BGW.CancellationPending = True Then
             e.Cancel = True
         End If
     End Sub
 
-    Private Sub DbNameCbox_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles DbNameCbox.SelectionChangeCommitted
-        ReloadMainFrm_Click(sender, e)
+    Private Sub ChangeDB_BGW_RunWorkerCompleted(sender As Object, e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles ChangeDB_BGW.RunWorkerCompleted
+        Try
+
+            If e.Error IsNot Nothing Then
+                '' if BackgroundWorker terminated due to error
+                MetroFramework.MetroMessageBox.Show(Me, "Error Occured", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            ElseIf e.Cancelled = True Then
+                '' otherwise if it was cancelled
+                MetroFramework.MetroMessageBox.Show(Me, "Cancelled", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Else
+                '' otherwise it completed normally
+                MainFRMBody_FLP.Enabled = True
+                LoadingPBOX.Visible = False
+                KMDI_MainFRM_Load(sender, e)
+            End If
+
+        Catch ex As Exception
+            MetroFramework.MetroMessageBox.Show(Me, ex.Message)
+        End Try
+    End Sub
+
+    Private Sub KMDI_MainFRM_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        If MetroFramework.MetroMessageBox.Show(Me, "Are you sure you want to Exit?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Error) = DialogResult.Yes Then
+
+            sqlConnection.Close()
+            KMDISystemsLogin.UserNameTbox.Clear()
+            'LoginModule.KMDISystems_UserName = Nothing
+            KMDISystemsLogin.PasswordTbox.Clear()
+            'LoginModule.KMDISystems_Password = Nothing
+            'KMDISystemsGlobalModule.AccountAutonum = Nothing
+            KMDISystemsLogin.UserNameTbox.Select()
+            KMDISystemsLogin.Show()
+
+            For Each Form In My.Application.OpenForms
+                If Form.name.ToString <> "KMDISystemsLogin" Then
+                    Form.hide()
+                End If
+            Next
+
+            Me.Dispose()
+
+        Else
+            e.Cancel = True
+        End If
     End Sub
 End Class

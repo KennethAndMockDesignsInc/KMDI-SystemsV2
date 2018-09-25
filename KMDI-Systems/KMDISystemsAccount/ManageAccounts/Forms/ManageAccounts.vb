@@ -98,10 +98,6 @@
         KMDI_ACCT_TB_READ(AccountAutonum, SearchAccts.Text)
     End Sub
 
-    Private Sub SearchAccts_Click(sender As Object, e As EventArgs) Handles SearchAccts.Click
-
-    End Sub
-
     Private Sub AcctTypeUpdate_Click(sender As Object, e As EventArgs) Handles AcctTypeUpdate.Click
         UpdateAcctType.Show()
         Me.Enabled = False

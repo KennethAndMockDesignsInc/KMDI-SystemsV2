@@ -60,7 +60,8 @@ Module ProjectAssignmentModule
                             JOIN PROJECT_ASSIGNMENT PA on PD.PA_AUTONUMBER = PA.PERTINENT_DETAILS_REF_NO
                             WHERE [CLIENTS_NAME] like @SearchString or
                                   [CLIENTS_ADDRESS] like @SearchString or
-                                  [COMPANY_NAME] like @SearchString"
+                                  [COMPANY_NAME] like @SearchString or
+                                  [PROJECT_LABEL] like @SearchString"
 
         sqlCommand = New SqlCommand(Query, sqlConnection)
         sqlCommand.Parameters.AddWithValue("@SearchString", "%" & SearchString & "%")
@@ -103,5 +104,81 @@ Module ProjectAssignmentModule
         archsqlBindingSource.DataSource = archSqlds
         archsqlBindingSource.DataMember = "ARCH_DESIGN"
 
+    End Sub
+
+    Public Sub SearchAE_AssignedCode(ByVal PA_AUTONUMBER As String)
+
+        sqlDataSet = New DataSet
+        sqlDataAdapter = New SqlDataAdapter
+        sqlBindingSource = New BindingSource
+
+        'sqlConnection = New SqlConnection
+        sqlConnection.Close()
+        sqlConnection.Open()
+
+
+        sqlDataSet.Clear()
+        sqlBindingSource.Clear()
+        Query = "SELECT     PA.AE_ASSIGNED_CODE as [AE_ASSIGNED_CODE]
+                            from PERTINENT_DETAILS PD
+                            JOIN PROJECT_ASSIGNMENT PA on PD.PA_AUTONUMBER = PA.PERTINENT_DETAILS_REF_NO
+                            WHERE [PA_AUTONUMBER] = @PA_AUTONUMBER"
+
+        sqlCommand = New SqlCommand(Query, sqlConnection)
+        sqlCommand.Parameters.AddWithValue("@PA_AUTONUMBER", PA_AUTONUMBER)
+        sqlDataAdapter.SelectCommand = sqlCommand
+        sqlDataAdapter.Fill(sqlDataSet, "AE_ASSIGNED")
+        sqlBindingSource.DataSource = sqlDataSet
+        sqlBindingSource.DataMember = "AE_ASSIGNED"
+
+    End Sub
+
+    Public Sub Populate_AEAssignedCBox()
+
+        sqlDataSet = New DataSet
+        sqlDataAdapter = New SqlDataAdapter
+        sqlBindingSource = New BindingSource
+
+        'sqlConnection = New SqlConnection
+        sqlConnection.Close()
+        sqlConnection.Open()
+
+
+        sqlDataSet.Clear()
+        sqlBindingSource.Clear()
+        Query = "SELECT [AUTONUM]
+                       ,[FULLNAME]
+                 FROM [KMDI_Systems].[dbo].[KMDI_ACCT_TB] where ACCTTYPE = 'AEIC' and IS_ACTIVE = 1"
+
+        sqlCommand = New SqlCommand(Query, sqlConnection)
+        sqlDataAdapter.SelectCommand = sqlCommand
+        sqlDataAdapter.Fill(sqlDataSet, "AE_ASSIGNED")
+        sqlBindingSource.DataSource = sqlDataSet
+        sqlBindingSource.DataMember = "AE_ASSIGNED"
+
+        ProjectAssignment.AEAssignedCBox.DataSource = sqlBindingSource
+        ProjectAssignment.AEAssignedCBox.ValueMember = "AUTONUM"
+        ProjectAssignment.AEAssignedCBox.DisplayMember = "FULLNAME"
+        ProjectAssignment.AEAssignedCBox.SelectedIndex = -1
+    End Sub
+
+    Public AE_ASSIGNED_FULLNAME As String
+    Public Sub SearchAE_AssignedFULLNAME(ByVal AUTONUM As String)
+
+        'sqlConnection = New SqlConnection
+        sqlConnection.Close()
+        sqlConnection.Open()
+
+        Query = "SELECT     [FULLNAME]
+                            FROM [KMDI_ACCT_TB]
+                            WHERE [AUTONUM] = @AUTONUM"
+        sqlCommand = New SqlCommand(Query, sqlConnection)
+        sqlCommand.Parameters.AddWithValue("@AUTONUM", AUTONUM)
+        sqlDataAdapter.SelectCommand = sqlCommand
+        Read = sqlCommand.ExecuteReader
+        Read.Read()
+        If Read.HasRows Then
+            AE_ASSIGNED_FULLNAME = Read.Item("FULLNAME").ToString
+        End If
     End Sub
 End Module
