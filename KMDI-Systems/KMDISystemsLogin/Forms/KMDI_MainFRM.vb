@@ -382,8 +382,8 @@ Public Class KMDI_MainFRM
     End Sub
 
     Private Sub RecycleTile_Click(sender As Object, e As EventArgs) Handles RecycleTile.Click
-        Dim frm_Recycle As New Recycle
-        frm_Recycle.Show()
+        'Dim frm_Recycle As New Recycle
+        'frm_Recycle.Show()
     End Sub
 
     Public DBNameStr_Cbox As String

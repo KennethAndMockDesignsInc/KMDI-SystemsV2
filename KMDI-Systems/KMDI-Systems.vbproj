@@ -202,25 +202,6 @@
     <Compile Include="KMDISystemsBackload\Forms\BackloadUpdateFRM.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="KMDISystemsContracts\Contracts\Forms\Contracts.Designer.vb">
-      <DependentUpon>Contracts.vb</DependentUpon>
-    </Compile>
-    <Compile Include="KMDISystemsContracts\Contracts\Forms\Contracts.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="KMDISystemsContracts\Contracts\Forms\Recycle.Designer.vb">
-      <DependentUpon>Recycle.vb</DependentUpon>
-    </Compile>
-    <Compile Include="KMDISystemsContracts\Contracts\Forms\Recycle.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="KMDISystemsContracts\Contracts\Forms\SearchContract.Designer.vb">
-      <DependentUpon>SearchContract.vb</DependentUpon>
-    </Compile>
-    <Compile Include="KMDISystemsContracts\Contracts\Forms\SearchContract.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="KMDISystemsContracts\Modules\ContractsModule.vb" />
     <Compile Include="KMDISystemsCosting\WinDoorMaker\Forms\WinDoorMaker.Designer.vb">
       <DependentUpon>WinDoorMaker.vb</DependentUpon>
     </Compile>
@@ -396,15 +377,6 @@
     <EmbeddedResource Include="KMDISystemsBackload\Forms\BackloadUpdateFRM.resx">
       <DependentUpon>BackloadUpdateFRM.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="KMDISystemsContracts\Contracts\Forms\Contracts.resx">
-      <DependentUpon>Contracts.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="KMDISystemsContracts\Contracts\Forms\Recycle.resx">
-      <DependentUpon>Recycle.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="KMDISystemsContracts\Contracts\Forms\SearchContract.resx">
-      <DependentUpon>SearchContract.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="KMDISystemsCosting\WinDoorMaker\Forms\WinDoorMaker.resx">
       <DependentUpon>WinDoorMaker.vb</DependentUpon>
     </EmbeddedResource>
@@ -478,7 +450,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="KMDISystemsAccount\Module\" />
-    <Folder Include="KMDISystemsContracts\Contracts\Modules\" />
     <Folder Include="KMDISystemsCosting\Module\" />
     <Folder Include="KMDISystemsCosting\WinDoorMaker\Module\" />
     <Folder Include="KMDISystemsSnO\Module\" />
