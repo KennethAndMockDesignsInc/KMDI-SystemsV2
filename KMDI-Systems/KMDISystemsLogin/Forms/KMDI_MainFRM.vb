@@ -361,22 +361,42 @@ Public Class KMDI_MainFRM
     End Sub
 
     Private Sub UpdSecTile_Click(sender As Object, e As EventArgs) Handles UpdSecTile.Click
-        AccountUpdate.Show()
-        Me.Enabled = False
+        If Application.OpenForms().OfType(Of AccountUpdate).Any Then
+            AccountUpdate.Dispose()
+            AccountUpdate.Close()
+            AccountUpdate.Show()
+            Me.Enabled = False
+        Else
+            AccountUpdate.Show()
+            Me.Enabled = False
+        End If
     End Sub
 
     Private Sub ProjAssignmentTile_Click(sender As Object, e As EventArgs) Handles ProjAssignmentTile.Click
+        If Application.OpenForms().OfType(Of ProjectAssignment).Any Then
+            ProjectAssignment.Dispose()
+        End If
         ProjectAssignment.Show()
     End Sub
 
     Private Sub ContractListTile_Click(sender As Object, e As EventArgs) Handles ContractListTile.Click
-        Dim frm_Contracts As New Contracts
-        frm_Contracts.Show()
+        If Application.OpenForms().OfType(Of Contracts).Any Then
+            Contracts.Dispose()
+            Contracts.Close()
+            Contracts.Show()
+        Else
+            Contracts.Show()
+        End If
     End Sub
 
     Private Sub RecycleTile_Click(sender As Object, e As EventArgs) Handles RecycleTile.Click
-        Dim frm_Recycle As New Recycle
-        frm_Recycle.Show()
+        If Application.OpenForms().OfType(Of Recycle).Any Then
+            Recycle.Dispose()
+            Recycle.Close()
+            Recycle.Show()
+        Else
+            Recycle.Show()
+        End If
     End Sub
 
     Public DBNameStr_Cbox As String
@@ -437,6 +457,11 @@ Public Class KMDI_MainFRM
                 MetroFramework.MetroMessageBox.Show(Me, "Cancelled", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Else
                 '' otherwise it completed normally
+                For i = 1 To Application.OpenForms.Count - 1
+                    If Not Application.OpenForms.Item(i).ToString.Contains("KMDI_MainFRM") And Not Application.OpenForms.Item(i).ToString.Contains("KMDISystemsLogin") Then
+                        Application.OpenForms.Item(i).Hide()
+                    End If
+                Next
                 MainFRMBody_FLP.Enabled = True
                 LoadingPBOX.Visible = False
                 KMDI_MainFRM_Load(sender, e)
@@ -471,4 +496,5 @@ Public Class KMDI_MainFRM
             e.Cancel = True
         End If
     End Sub
+
 End Class

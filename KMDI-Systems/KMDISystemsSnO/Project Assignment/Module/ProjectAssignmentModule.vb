@@ -46,7 +46,7 @@ Module ProjectAssignmentModule
                                   ,PD.[CLOSED]
                                   ,PD.[CLOSED_OPTION]
                                   ,PD.[CLOSED_FULL_PARTIAL]
-                                  ,PD.[AE_ASSIGNED_CODE]
+                                  ,PA.[AE_ASSIGNED_CODE]
                                   ,PD.[COMPETITORS]
                                   ,PD.[PROFILE_FINISH]
                                   ,PD.[PROJECT_CLASSIFICATION]

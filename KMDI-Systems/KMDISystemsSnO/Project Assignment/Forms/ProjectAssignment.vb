@@ -1,4 +1,5 @@
-﻿Public Class ProjectAssignment
+﻿Imports System.ComponentModel
+Public Class ProjectAssignment
 
     Public Delegate Sub PBVisibilityDelegate(ByVal Visibility As Boolean)
     Dim ChangeVisibility As PBVisibilityDelegate
@@ -52,7 +53,7 @@
     End Sub
 
     Public ColumnToInvi As Integer = 0
-    Private Sub LoadProjAssignDGV_BGW_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles LoadProjAssignDGV_BGW.DoWork
+    Private Sub LoadProjAssignDGV_BGW_DoWork(sender As Object, e As DoWorkEventArgs) Handles LoadProjAssignDGV_BGW.DoWork
         Me.Invoke(ChangeVisibility, True)
 
         Try
@@ -86,7 +87,7 @@
         End If
     End Sub
 
-    Private Sub LoadArchDesignDGV_BGW_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles LoadArchDesignDGV_BGW.DoWork
+    Private Sub LoadArchDesignDGV_BGW_DoWork(sender As Object, e As DoWorkEventArgs) Handles LoadArchDesignDGV_BGW.DoWork
         Me.Invoke(ArchDesignChangeVisibility, True)
         Try
             SearchORLoadArchDesignDGV(SearchADTboxString)
@@ -102,7 +103,7 @@
         End If
     End Sub
 
-    Private Sub LoadProjAssignDGV_BGW_RunWorkerCompleted(sender As Object, e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles LoadProjAssignDGV_BGW.RunWorkerCompleted
+    Private Sub LoadProjAssignDGV_BGW_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles LoadProjAssignDGV_BGW.RunWorkerCompleted
         Try
 
 
@@ -116,14 +117,23 @@
                 LoadingLBL.Text = "An error occured"
             Else
                 '' otherwise it completed normally
-                With ProjAssignDGV
-                    .DataSource = sqlBindingSource
-                    .DefaultCellStyle.BackColor = Color.White
-                    .AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke
-                    .Visible = True
-                End With
 
-                Me.Invoke(ChangeVisibility, False)
+                If ProjAssignDGV.Columns("CLIENTS NAME").Visible = True AndAlso
+                   ProjAssignDGV.Columns("CLIENTS ADDRESS").Visible = True AndAlso
+                   ProjAssignDGV.Columns("COMPANY NAME").Visible = True Then
+                    With ProjAssignDGV
+                        .DataSource = sqlBindingSource
+                        .DefaultCellStyle.BackColor = Color.White
+                        .AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke
+                        .Visible = True
+                    End With
+
+                    Me.Invoke(ChangeVisibility, False)
+                Else
+                    LoadingPBOX.Enabled = False
+                    LoadingLBL.Text = "An error occured"
+                End If
+
             End If
 
         Catch ex As Exception
@@ -131,7 +141,7 @@
         End Try
     End Sub
 
-    Private Sub LoadArchDesignDGV_BGW_RunWorkerCompleted(sender As Object, e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles LoadArchDesignDGV_BGW.RunWorkerCompleted
+    Private Sub LoadArchDesignDGV_BGW_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles LoadArchDesignDGV_BGW.RunWorkerCompleted
         Try
 
             If e.Error IsNot Nothing Then
@@ -165,7 +175,7 @@
         rowpostpaint(sender, e)
     End Sub
 
-    Private Sub LoadProjAssignDGV_BGW_ProgressChanged(sender As Object, e As System.ComponentModel.ProgressChangedEventArgs) Handles LoadProjAssignDGV_BGW.ProgressChanged
+    Private Sub LoadProjAssignDGV_BGW_ProgressChanged(sender As Object, e As ProgressChangedEventArgs) Handles LoadProjAssignDGV_BGW.ProgressChanged
         Try
             If ProjAssignDGV.DataSource Is Nothing Then
                 ProjAssignDGV.DataSource = sqlBindingSource
@@ -180,9 +190,8 @@
 
     Private Sub ProjectAssignment_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         If LoadProjAssignDGV_BGW.IsBusy Or LoadArchDesignDGV_BGW.IsBusy Then
-            If MetroFramework.MetroMessageBox.Show(Me, "Currently loading, Please wait!", "", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) = DialogResult.Yes Then
-                e.Cancel = True
-            End If
+            MetroFramework.MetroMessageBox.Show(Me, "Currently loading, Please wait!", "", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            e.Cancel = True
         Else
             If MetroFramework.MetroMessageBox.Show(Me, "Are you sure you want to Exit?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Error) = DialogResult.Yes Then
                 e.Cancel = False
@@ -239,6 +248,22 @@
         CLOSED_FULL_PARTIAL, AE_ASSIGNED_CODE, COMPETITORS, COMPANY_NAME, QUOTE_NO, QUOTE_DATE, CUST_REF_NO, PROFILE_FINISH, PROJECT_CLASSIFICATION, CONSTRUCTION_STAGE,
         SITE_MEETING_SCHEDULE, WIP As String
 
+    Private Sub RenovRBTN_CheckedChanged(sender As Object, e As EventArgs) Handles RenovRBTN.CheckedChanged
+        If RenovRBTN.Checked = True Then
+            Renov_PNL.Visible = True
+        Else
+            Renov_PNL.Visible = False
+        End If
+    End Sub
+
+    Private Sub NewConRBTN_CheckedChanged(sender As Object, e As EventArgs) Handles NewConRBTN.CheckedChanged
+        If NewConRBTN.Checked = True Then
+            Renov_PNL.Visible = False
+        Else
+            Renov_PNL.Visible = True
+        End If
+    End Sub
+
     Private Sub ProjAssignDGV_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles ProjAssignDGV.CellClick
         If ProjAssignDGV.RowCount >= 0 And e.RowIndex >= 0 Then
             PA_AUTONUMBER = ProjAssignDGV.Item("PA_AUTONUMBER", e.RowIndex).Value.ToString
@@ -269,7 +294,7 @@
             CLOSED_PA = ProjAssignDGV.Item("CLOSED", e.RowIndex).Value.ToString
             CLOSED_OPTION = ProjAssignDGV.Item("CLOSED_OPTION", e.RowIndex).Value.ToString
             CLOSED_FULL_PARTIAL = ProjAssignDGV.Item("CLOSED_FULL_PARTIAL", e.RowIndex).Value.ToString
-            AE_ASSIGNED_CODE = ProjAssignDGV.Item("AE_ASSIGNED_CODE", e.RowIndex).Value.ToString
+            'AE_ASSIGNED_CODE = ProjAssignDGV.Item("AE_ASSIGNED_CODE", e.RowIndex).Value.ToString
             COMPETITORS = ProjAssignDGV.Item("COMPETITORS", e.RowIndex).Value.ToString
             COMPANY_NAME = ProjAssignDGV.Item("COMPANY NAME", e.RowIndex).Value.ToString
             QUOTE_NO = ProjAssignDGV.Item("QUOTE_NO", e.RowIndex).Value.ToString
@@ -284,7 +309,9 @@
             SourceCbox.Text = SOURCE
             RefferedByTbox.Text = REFFERED_BY
             CustNameTbox.Text = CLIENTS_NAME
+            ClientsNameLbl.Text = CLIENTS_NAME
             CompanyNameTbox.Text = COMPANY_NAME
+            CompanyNameLbl.Text = COMPANY_NAME
             ClientsContactNoTbox.Text = CLIENTS_CONTACT_NO
             ClientsContactNoOfficeTbox.Text = CLIENTS_CONTACT_NO_OFFICE
             ClientsContactNoMobileTbox.Text = CLIENTS_CONTACT_NO_MOBILE
@@ -298,9 +325,53 @@
             TownTbox.Text = TOWN
             ProvinceTbox.Text = PROVINCE
             AreaCbox.Text = AREA
-            'AES_AssignedTBox.Text = AE_ASSIGNED_CODE
+            Competitors_Tbox.Text = COMPETITORS
+            CustRefNo_Tbox.Text = CUST_REF_NO
+            ConstructionStageTbox.Text = CONSTRUCTION_STAGE
+            SiteMeetingScheduleTbox.Text = SITE_MEETING_SCHEDULE
 
             GetAE_ASSIGNED()
+            ProjStatsLbl.Text = PROJECT_STATUS
+            Select Case PROJECT_STATUS
+                Case "Presentation"
+                    PresentationRBtn.Checked = True
+                    ProjStatsTbox.Text = PRESENTATION
+                Case "Site Meetings"
+                    SiteMeetingRBtn.Checked = True
+                    ProjStatsTbox.Text = SITE_MEETINGS
+                Case "Architectural Discussions"
+                    ArchDisRBTN.Checked = True
+                    ProjStatsTbox.Text = ARCHITECTURAL_DISCUSSIONS
+                Case "Submittal/Revision of Quotes"
+                    SubmitRevQuotesRBTN.Checked = True
+                    ProjStatsTbox.Text = SUBMITTAL_REVISION_OF_QUOTES
+                Case "Trial Closing"
+                    TrialClosingRBtn.Checked = True
+                    ProjStatsTbox.Text = TRIAL_CLOSING
+                Case "Closing Negotiation"
+                    ClosingRBtn.Checked = True
+                    ProjStatsTbox.Text = CLOSING_NEGOTIATION
+                Case "Closed"
+                    ClosedRBTN.Checked = True
+                    ProjStatsTbox.Text = CLOSED_PA
+                    If CLOSED_OPTION = "Yes" Then
+                        Closed_PNL.Visible = True
+                        If CLOSED_FULL_PARTIAL = "Full" Then
+                            ClosedFull_RBtn.Checked = True
+                        ElseIf CLOSED_FULL_PARTIAL = "Partial" Then
+                            ClosedPartial_RBtn.Checked = True
+                        End If
+                    Else
+                        Closed_PNL.Visible = False
+                    End If
+                Case "Work in progress"
+                    WIPRBtn.Checked = True
+                    ProjStatsTbox.Text = WIP
+            End Select
+
+            If PROJECT_STATUS <> "Closed" Then
+                Closed_PNL.Visible = False
+            End If
         End If
     End Sub
 
@@ -316,7 +387,7 @@
             Dim sqldsrowCount As Integer = sqlDataSet.Tables("AE_ASSIGNED").Rows.Count
 
             For Each row As DataRow In sqlDataSet.Tables("AE_ASSIGNED").Rows
-                loopnum +=1
+                loopnum += 1
                 Dim AE_ASSIGNED_CODE As String = row.Item(0)
                 SearchAE_AssignedFULLNAME(AE_ASSIGNED_CODE)
 
