@@ -380,23 +380,18 @@ Public Class KMDI_MainFRM
     End Sub
 
     Private Sub ContractListTile_Click(sender As Object, e As EventArgs) Handles ContractListTile.Click
-        If Application.OpenForms().OfType(Of Contracts).Any Then
-            Contracts.Dispose()
-            Contracts.Close()
-            Contracts.Show()
-        Else
-            Contracts.Show()
-        End If
+        Try
+            ContractRecordsFRM.Show()
+            ContractRecordsFRM.BringToFront()
+        Catch ex As Exception
+
+        End Try
+
     End Sub
 
     Private Sub RecycleTile_Click(sender As Object, e As EventArgs) Handles RecycleTile.Click
-        If Application.OpenForms().OfType(Of Recycle).Any Then
-            Recycle.Dispose()
-            Recycle.Close()
-            Recycle.Show()
-        Else
-            Recycle.Show()
-        End If
+        'Dim frm_Recycle As New Recycle
+        'frm_Recycle.Show()
     End Sub
 
     Public DBNameStr_Cbox As String
