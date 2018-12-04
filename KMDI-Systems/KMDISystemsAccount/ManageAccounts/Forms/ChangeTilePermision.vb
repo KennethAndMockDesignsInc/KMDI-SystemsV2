@@ -56,7 +56,6 @@
                             GlassSpecsChk.CheckState = CheckState.Checked
                         Case ProdSDSubm
                             ProdSDSubmittalChk.CheckState = CheckState.Checked
-
                         Case ArchiFirm
                             ArchFirmChk.CheckState = CheckState.Checked
                         Case Inventory

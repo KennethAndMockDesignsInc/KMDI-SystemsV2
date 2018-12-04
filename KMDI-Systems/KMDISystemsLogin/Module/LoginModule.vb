@@ -18,7 +18,6 @@ Module LoginModule
     Public sqlDataAdapter As SqlDataAdapter
     Public sqlDataSet As DataSet
     Public sqlBindingSource As BindingSource
-    Public Query As String
 
     Public sqlconnString As String
 

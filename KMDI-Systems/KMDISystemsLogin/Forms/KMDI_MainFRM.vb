@@ -370,8 +370,15 @@ Public Class KMDI_MainFRM
     End Sub
 
     Private Sub ContractListTile_Click(sender As Object, e As EventArgs) Handles ContractListTile.Click
-        Dim frm_Contracts As New Contracts
-        frm_Contracts.Show()
+        'Dim frm_Contracts As New Contracts
+        'frm_Contracts.Show()
+        Try
+            ContractRecordsFRM.Show()
+            ContractRecordsFRM.BringToFront()
+        Catch ex As Exception
+
+        End Try
+
     End Sub
 
     Private Sub RecycleTile_Click(sender As Object, e As EventArgs) Handles RecycleTile.Click
