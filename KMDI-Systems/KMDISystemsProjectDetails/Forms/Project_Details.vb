@@ -257,6 +257,29 @@ Public Class Project_Details
         'End If
     End Sub
 
+    Private Sub ProjectDetailsDGV_CellMouseClick(sender As Object, e As DataGridViewCellMouseEventArgs) Handles ProjectDetailsDGV.CellMouseClick
+        If (e.RowIndex >= 0 And e.ColumnIndex >= 0) Then
+            If e.Button = MouseButtons.Right Then
+                ProjectDetailsDGV.Rows(e.RowIndex).Selected = True
+                PD_ContextMenu.Show()
+                PD_ContextMenu.Location = New Point(MousePosition.X, MousePosition.Y)
+            End If
+            If is_CTD_bool = True And is_SalesJobOrder_bool = False Then
+                SearchStr = ProjectDetailsDGV.Item("PD_ID", e.RowIndex).Value.ToString
+                'FULLADDRESS = ProjectDetailsDGV.Item("ADDRESS", e.RowIndex).Value.ToString
+                PD_ID = SearchStr
+            ElseIf is_CTD_bool = False Or is_SalesJobOrder_bool = False Then
+                SearchStr = ProjectDetailsDGV.Item("PD_ID", e.RowIndex).Value.ToString
+                PD_ID = SearchStr
+            ElseIf is_CTD_bool = False Or is_SalesJobOrder_bool = True Then
+                SearchStr = ProjectDetailsDGV.Item("ID", e.RowIndex).Value.ToString
+                C_ID = SearchStr
+                JO = ProjectDetailsDGV.Item("JO#", e.RowIndex).Value.ToString
+            End If
+            FULLADDRESS = ProjectDetailsDGV.Item("ADDRESS", e.RowIndex).Value.ToString
+        End If
+    End Sub
+
     Private Sub ProjectDetailsDGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs) Handles ProjectDetailsDGV.RowEnter
         Try
             If (e.RowIndex >= 0 And e.ColumnIndex >= 0) Then

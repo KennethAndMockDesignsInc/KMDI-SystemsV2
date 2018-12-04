@@ -16,6 +16,15 @@ Module ProjectDetailsModule
 
     Public PD_ID, CUST_ID, C_ID As Integer
 
+    Public ArchDesignBS, IntrDesignBS, ConsMngmtBS, GenConBS As New BindingSource
+
+    Public ADDTCols, IDDTCols, CMDTCols, GCDTCols As DataColumn
+    Public ArchDesignDT As DataTable = New DataTable("ArchDesignDT")
+    Public IntrDesignDT As DataTable = New DataTable("IntrDesignDT")
+    Public ConsMngmtDT As DataTable = New DataTable("ConsMngmtDT")
+    Public GenConDT As DataTable = New DataTable("GenConDT")
+
+
     Public COMP_ID As String = Nothing,
         COMP_NAME As String = Nothing,
         EMP_ID As String = Nothing,
@@ -616,6 +625,59 @@ Module ProjectDetailsModule
                 sqlCommand.Parameters.AddWithValue("@AFRELEASING", AFRELEASING)
                 If Operation_Type = "Update" Or Operation_Type = "Delete" Then
                     sqlCommand.Parameters.AddWithValue("@EMP_ID", EMP_ID)
+                End If
+
+                confirmQuery = sqlCommand.ExecuteNonQuery()
+                If confirmQuery <> 0 Then
+                    PD_CountSuccess = 1
+                Else
+                    MetroFramework.MetroMessageBox.Show(FormName, "Failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                End If
+            End Using
+        End Using
+    End Sub
+
+    Public Sub PD_UpdateComp_Operations(ByVal FormName As Form,
+                                        ByVal Operation_Type As String,
+                                        Optional COMP_ID As String = "",
+                                        Optional OFFICENAME As String = "",
+                                        Optional OFFICEADDRESS As String = "",
+                                        Optional CONTACTNO As String = "",
+                                        Optional OFFICEASSISTANT As String = "",
+                                        Optional REMARKS As String = "")
+        If Operation_Type = "Add" Then
+            Query = "INSERT INTO [A_NEW_COMPANY_DETAILS] (  [OFFICENAME]
+                                                           ,[OFFICEADDRESS]
+                                                           ,[CONTACTNO]
+                                                           ,[OFFICEASSISTANT]
+                                                           ,[REMARKS])
+                                                     VALUES
+                                                           (@OFFICENAME
+                                                           ,@OFFICEADDRESS
+                                                           ,@CONTACTNO
+                                                           ,@OFFICEASSISTANT
+                                                           ,@REMARKS)"
+        ElseIf Operation_Type = "Update" Then
+            Query = "UPDATE [A_NEW_COMPANY_DETAILS] SET  [OFFICENAME] = @OFFICENAME
+                                                        ,[OFFICEADDRESS] = @OFFICEADDRESS
+                                                        ,[CONTACTNO] =  @CONTACTNO
+                                                        ,[OFFICEASSISTANT] = @OFFICEASSISTANT
+                                                        ,[REMARKS] = @REMARKS
+                    WHERE [COMP_ID] = @COMP_ID"
+        ElseIf Operation_Type = "Delete" Then
+            Query = "UPDATE [A_NEW_COMPANY_DETAILS] SET [COMP_STATUS] = 0
+                     WHERE [COMP_ID] = @COMP_ID"
+        End If
+        Using sqlcon As New SqlConnection(sqlcnstr)
+            sqlcon.Open()
+            Using sqlCommand As New SqlCommand(Query, sqlcon)
+                sqlCommand.Parameters.AddWithValue("@OFFICENAME", OFFICENAME)
+                sqlCommand.Parameters.AddWithValue("@OFFICEADDRESS", OFFICEADDRESS)
+                sqlCommand.Parameters.AddWithValue("@CONTACTNO", CONTACTNO)
+                sqlCommand.Parameters.AddWithValue("@OFFICEASSISTANT", OFFICEASSISTANT)
+                sqlCommand.Parameters.AddWithValue("@REMARKS", REMARKS)
+                If Operation_Type = "Update" Or Operation_Type = "Delete" Then
+                    sqlCommand.Parameters.AddWithValue("@COMP_ID", COMP_ID)
                 End If
 
                 confirmQuery = sqlCommand.ExecuteNonQuery()

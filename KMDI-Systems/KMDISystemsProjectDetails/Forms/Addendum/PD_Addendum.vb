@@ -154,6 +154,10 @@ Public Class PD_Addendum
         PD_TechPartners.Show()
     End Sub
 
+    Private Sub ArchDesign_DGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs) Handles ArchDesign_DGV.RowPostPaint
+        rowpostpaint(sender, e)
+    End Sub
+
     Dim FIle_Label_As = Nothing, QuoteRefNo As String = Nothing
 
     Private Sub PD_Addendum_BGW_RunWorkerCompleted(ByVal sender As System.Object, ByVal e As RunWorkerCompletedEventArgs)
@@ -172,52 +176,41 @@ Public Class PD_Addendum
                 Dim rownum As Integer = sqlBindingSource.Count
                 Select Case ADDENDUM_BGW_TODO
                     Case "Onload"
-                    For Each row In sqlBindingSource
-                        FIle_Label_As = row("FILE_LABEL_AS")
-                        ProjectLabel = row("PROJECT_LABEL")
-                        JORefNo_Lbl.Text = row("SUB_JO")
-                        QuoteRefNo = row("QUOTE_NO")
-                        QuoteDate_Lbl.Text = row("QUOTE_DATE")
-                        ConStage_Tbox.Text = row("CONSTRUCTION_STAGE")
-                        SiteMeeting_Tbox.Text = row("ACTIVITIES")
+                        For Each row In sqlBindingSource
+                            FIle_Label_As = row("FILE_LABEL_AS")
+                            ProjectLabel = row("PROJECT_LABEL")
+                            JORefNo_Lbl.Text = row("SUB_JO")
+                            QuoteRefNo = row("QUOTE_NO")
+                            QuoteDate_Lbl.Text = row("QUOTE_DATE")
+                            ConStage_Tbox.Text = row("CONSTRUCTION_STAGE")
+                            SiteMeeting_Tbox.Text = row("ACTIVITIES")
 
-                        ProjClass_Lbl.Text = row("PROJECT_CLASSIFICATION")
-                        ProjSource_Lbl.Text = row("PROJECT_SOURCE")
-                        Competitors_Lbl.Text = row("COMPETITORS")
-                        ProfileFin_Lbl.Text = row("PROFILE_FINISH")
-                        SpInstr_RTbox.Text = row("OTHER_PERTINENT_INFO")
+                            ProjClass_Lbl.Text = row("PROJECT_CLASSIFICATION")
+                            ProjSource_Lbl.Text = row("PROJECT_SOURCE")
+                            Competitors_Lbl.Text = row("COMPETITORS")
+                            ProfileFin_Lbl.Text = row("PROFILE_FINISH")
+                            SpInstr_RTbox.Text = row("OTHER_PERTINENT_INFO")
 
-                        UnitNo = row("UnitNo")
-                        Establishment = row("ESTABLISHMENT")
-                        HouseNo = row("NO")
-                        Street = row("STREET")
-                        Village = row("VILLAGE")
-                        Brgy = row("BRGY_MUNICIPALITY")
-                        CityMunicipality = row("TOWN_DISTRICT")
-                        Province = row("PROVINCE")
-                        Area = row("AREA")
-                    Next row
+                            UnitNo = row("UnitNo")
+                            Establishment = row("ESTABLISHMENT")
+                            HouseNo = row("NO")
+                            Street = row("STREET")
+                            Village = row("VILLAGE")
+                            Brgy = row("BRGY_MUNICIPALITY")
+                            CityMunicipality = row("TOWN_DISTRICT")
+                            Province = row("PROVINCE")
+                            Area = row("AREA")
+                        Next row
 
-                    If FIle_Label_As.Contains("Proj/Client`s Name") Then
-                        ProjectLabel_Cbox.Text = OwnersName
-                    ElseIf FIle_Label_As.Contains("Company Name") Then
-                        ProjectLabel_Cbox.Text = CompanyName_Str
-                    ElseIf FIle_Label_As = Nothing Or FIle_Label_As = "" Then
-                        If OwnersName <> "" And OwnersName <> Nothing Then
-                            ProjectLabel_Cbox.Text = OwnersName
-                        ElseIf CompanyName_Str <> "" And CompanyName_Str <> Nothing Then
-                            ProjectLabel_Cbox.Text = CompanyName_Str
+                        If JORefNo_Lbl.Text <> "" Then
+                            Lock_Btn.Text = "Unlock"
+                            QuoteRefNo_Cbox.Enabled = False
+                        Else
+                            Lock_Btn.Text = "Lock"
+                            QuoteRefNo_Cbox.Enabled = True
                         End If
-                    End If
-                    If JORefNo_Lbl.Text <> "" Then
-                        Lock_Btn.Text = "Unlock"
-                        QuoteRefNo_Cbox.Enabled = False
-                    Else
-                        Lock_Btn.Text = "Lock"
-                        QuoteRefNo_Cbox.Enabled = True
-                    End If
 
-                    ADDENDUM_BGW_TODO = "AEIC_LBL_LOAD"
+                        ADDENDUM_BGW_TODO = "AEIC_LBL_LOAD"
                         Start_PD_Addendum_BGW()
                     Case "AEIC_LBL_LOAD"
                         Dim lbl_output_seq As Integer
@@ -257,6 +250,18 @@ Public Class PD_Addendum
                         ProjectLabel_Cbox.Items.Add(OwnersName)
                         ProjectLabel_Cbox.Items.Add(CompanyName_Str)
 
+                        If FIle_Label_As.Contains("Proj/Client`s Name") Then
+                            ProjectLabel_Cbox.Text = OwnersName
+                        ElseIf FIle_Label_As.Contains("Company Name") Then
+                            ProjectLabel_Cbox.Text = CompanyName_Str
+                        ElseIf FIle_Label_As = Nothing Or FIle_Label_As = "" Then
+                            If OwnersName <> "" And OwnersName <> Nothing Then
+                                ProjectLabel_Cbox.Text = OwnersName
+                            ElseIf CompanyName_Str <> "" And CompanyName_Str <> Nothing Then
+                                ProjectLabel_Cbox.Text = CompanyName_Str
+                            End If
+                        End If
+
                         ADDENDUM_BGW_TODO = "TechnicalPartners"
                         Start_PD_Addendum_BGW()
                     Case "TechnicalPartners"
@@ -273,17 +278,17 @@ Public Class PD_Addendum
                             End If
                         Next row3
 
-                        For Each DGV In TechPartners_Pnl.Controls
-                            If TypeOf DGV Is DataGridView Then
-                                With DGV
-                                    If .RowCount <> 0 Then
-                                        .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells
-                                    Else
-                                        .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
-                                    End If
-                                End With
-                            End If
-                        Next
+                        'For Each DGV In TechPartners_Pnl.Controls
+                        '    If TypeOf DGV Is DataGridView Then
+                        '        With DGV
+                        '            If .RowCount <> 0 Then
+                        '                .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells
+                        '            Else
+                        '                .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
+                        '            End If
+                        '        End With
+                        '    End If
+                        'Next
 
 
                         ADDENDUM_BGW_TODO = "QuoteRefNo"

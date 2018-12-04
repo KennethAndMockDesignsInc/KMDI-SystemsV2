@@ -17,6 +17,7 @@ Public Class PD_TechPartners
 
     Private Sub PD_TechPartners_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Nature_Cbox.SelectedIndex = 0
+        TechPartners_DGV.DataSource = ArchDesignBS
 
         PD_TechPartners_BGW.WorkerSupportsCancellation = True
         AddHandler PD_TechPartners_BGW.DoWork, AddressOf PD_TechPartners_BGW_DoWork
@@ -50,7 +51,11 @@ Public Class PD_TechPartners
                                                 [OFFICENAME] " & QueryMidArrays(9) & " AND [EMP_ID] = @EqualSearch "
                 SearchStr = EMP_ID
             ElseIf PD_TechPartners_BGW_TODO = "Delete_Emp" Then
-                PD_UpdateEmp_Operations(Me, "Delete", EMP_ID)
+                If DGV_CLICKED = "Emp_DGV" Then
+                    PD_UpdateEmp_Operations(Me, "Delete", EMP_ID)
+                ElseIf DGV_CLICKED = "Comp_DGV" Then
+                    PD_UpdateComp_Operations(Me, "Delete", COMP_ID)
+                End If
             End If
             Query_Select(SearchStr)
         Catch ex As SqlException
@@ -218,22 +223,13 @@ Public Class PD_TechPartners
         Start_PD_TechPartners_BGW()
     End Sub
 
-    Dim ADDTCols, IDDTCols, CMDTCols, GCDTCols As DataColumn
-
-    Dim ArchDesignDT As DataTable = New DataTable("ArchDesignDT")
-
-    Dim IntrDesignDT As DataTable = New DataTable("IntrDesignDT")
-
-    Dim ConsMngmtDT As DataTable = New DataTable("ConsMngmtDT")
-
-    Dim GenConDT As DataTable = New DataTable("GenConDT")
-
     Private Sub Emp_DGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs) Handles Emp_DGV.RowPostPaint
         rowpostpaint(sender, e)
     End Sub
 
     Private Sub AddToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AddToolStripMenuItem.Click
         If DGV_CLICKED = "Comp_DGV" Then
+            PD_UpdateCOMP.frm_open_thru = "Add"
             PD_UpdateCOMP.Show()
             PD_UpdateCOMP.BringToFront()
         ElseIf DGV_CLICKED = "Emp_DGV" Then
@@ -245,6 +241,7 @@ Public Class PD_TechPartners
 
     Private Sub UpdateToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UpdateToolStripMenuItem.Click
         If DGV_CLICKED = "Comp_DGV" Then
+            PD_UpdateCOMP.frm_open_thru = "Update"
             PD_UpdateCOMP.Show()
             PD_UpdateCOMP.BringToFront()
         ElseIf DGV_CLICKED = "Emp_DGV" Then
@@ -263,7 +260,14 @@ Public Class PD_TechPartners
     End Sub
 
     Private Sub Nature_Cbox_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles Nature_Cbox.SelectionChangeCommitted
+        'If ArchDesignDT.Rows.Count <> Nothing Or IntrDesignDT.Rows.Count <> Nothing Or
+        '   ConsMngmtDT.Rows.Count <> Nothing Or GenConDT.Rows.Count <> Nothing Then
+        '    col_invisi_bool = False
+        'End If
+        'If col_invisi_bool = True Then
         TechPartners_DGV.Columns.Clear()
+        'col_invisi_bool = False
+        'End If
         If Nature_Cbox.SelectedIndex = 0 Then
             ArchDesignBS.DataSource = ArchDesignDT
             TechPartners_DGV.DataSource = ArchDesignBS
@@ -277,20 +281,59 @@ Public Class PD_TechPartners
             GenConBS.DataSource = GenConDT
             TechPartners_DGV.DataSource = GenConBS
         End If
-
         TechPartners_DGV.Columns("COMP_ID").Visible = False
         TechPartners_DGV.Columns("EMP_ID").Visible = False
     End Sub
 
-    Dim ArchDesignBS, IntrDesignBS, ConsMngmtBS, GenConBS As New BindingSource
+    Private Sub Save_BTN_Click(sender As Object, e As EventArgs) Handles Save_BTN.Click
+        Try
+            PD_Addendum.ArchDesign_DGV.Rows.Clear()
+            PD_Addendum.IntrDesign_DGV.Rows.Clear()
+            PD_Addendum.ConsMngmt_DGV.Rows.Clear()
+            PD_Addendum.GenCon_DGV.Rows.Clear()
+
+            PD_Addendum.ArchDesign_DGV.DataSource = Nothing
+            PD_Addendum.IntrDesign_DGV.DataSource = Nothing
+            PD_Addendum.ConsMngmt_DGV.DataSource = Nothing
+            PD_Addendum.GenCon_DGV.DataSource = Nothing
+
+            For Each ArchROW In ArchDesignBS
+                PD_Addendum.ArchDesign_DGV.Rows.Add(ArchROW("OFFICENAME"), ArchROW("NAME"), ArchROW("POSITION"), ArchROW("CONTACT NUMBER"))
+            Next
+
+            For Each IntrROW In IntrDesignBS
+                PD_Addendum.IntrDesign_DGV.Rows.Add(IntrROW("OFFICENAME"), IntrROW("NAME"), IntrROW("POSITION"), IntrROW("CONTACT NUMBER"))
+            Next
+
+            For Each ConsMngmtROW In ConsMngmtBS
+                PD_Addendum.ConsMngmt_DGV.Rows.Add(ConsMngmtROW("OFFICENAME"), ConsMngmtROW("NAME"), ConsMngmtROW("POSITION"), ConsMngmtROW("CONTACT NUMBER"))
+            Next
+
+            For Each GenConROW In GenConBS
+                PD_Addendum.GenCon_DGV.Rows.Add(GenConROW("OFFICENAME"), GenConROW("NAME"), GenConROW("POSITION"), GenConROW("CONTACT NUMBER"))
+            Next
+
+            Me.Close()
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
+    End Sub
 
     Private Sub DeleteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DeleteToolStripMenuItem.Click
-        PD_TechPartners_BGW_TODO = "Delete_EmP"
-        Start_PD_TechPartners_BGW()
+
+        If MetroFramework.MetroMessageBox.Show(Me, "Are you sure you want to Delete?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = 6 Then
+            PD_TechPartners_BGW_TODO = "Delete_Emp"
+            Start_PD_TechPartners_BGW()
+        End If
     End Sub
 
     Dim col_invisi_bool As Boolean = True
     Private Sub Operation_BTN_Click(sender As Object, e As EventArgs) Handles Operation_BTN.Click
+        If ArchDesignDT.Rows.Count <> Nothing Or IntrDesignDT.Rows.Count <> Nothing Or
+           ConsMngmtDT.Rows.Count <> Nothing Or GenConDT.Rows.Count <> Nothing Then
+            col_invisi_bool = False
+        End If
+
         If COMP_ID = Nothing Or COMP_NAME = Nothing Or EMP_ID = Nothing Or EMP_NAME = Nothing Or Position_Cbox.Text = "" Then
             MetroFramework.MetroMessageBox.Show(Me, "Please fill up the filled(s)", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
         Else
