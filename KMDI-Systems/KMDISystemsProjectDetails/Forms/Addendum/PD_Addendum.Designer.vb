@@ -1485,6 +1485,6 @@ Partial Class PD_Addendum
     Friend WithEvents DataGridViewTextBoxColumn12 As DataGridViewTextBoxColumn
     Friend WithEvents Addendum_CMenu As MetroFramework.Controls.MetroContextMenu
     Friend WithEvents EditHeaderPartToolStripMenuItem As ToolStripMenuItem
-    Friend Lock_Btn As MetroFramework.Controls.MetroTextBox.MetroTextButton
+    Friend WithEvents Lock_Btn As MetroFramework.Controls.MetroTextBox.MetroTextButton
     Friend WithEvents EditTechnicalPartnersToolStripMenuItem As ToolStripMenuItem
 End Class

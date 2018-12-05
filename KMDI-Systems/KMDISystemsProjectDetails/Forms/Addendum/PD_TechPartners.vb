@@ -17,7 +17,12 @@ Public Class PD_TechPartners
 
     Private Sub PD_TechPartners_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Nature_Cbox.SelectedIndex = 0
-        TechPartners_DGV.DataSource = ArchDesignBS
+        If ArchDesignDT.Rows.Count > 0 Then
+            TechPartners_DGV.Columns.Clear()
+            TechPartners_DGV.DataSource = ArchDesignBS
+            TechPartners_DGV.Columns("COMP_ID").Visible = False
+            TechPartners_DGV.Columns("EMP_ID").Visible = False
+        End If
 
         PD_TechPartners_BGW.WorkerSupportsCancellation = True
         AddHandler PD_TechPartners_BGW.DoWork, AddressOf PD_TechPartners_BGW_DoWork
@@ -78,7 +83,6 @@ Public Class PD_TechPartners
         End Try
     End Sub
 
-    Dim DTcols_str As String() = {"OFFICENAME", "NAME", "POSITION", "CONTACT NUMBER", "COMP_ID", "EMP_ID"}
 
     Private Sub PD_TechPartners_BGW_RunWorkerCompleted(ByVal sender As System.Object, ByVal e As RunWorkerCompletedEventArgs)
         Try
@@ -107,20 +111,20 @@ Public Class PD_TechPartners
 
                 If PD_TechPartners_BGW_TODO.Contains("Comp_DGV") Then
                     Comp_DGV.Columns("COMP_ID").Visible = False
-                    If ArchDesignDT.Columns.Count = 0 And ConsMngmtDT.Columns.Count = 0 And
-                        GenConDT.Columns.Count = 0 And IntrDesignDT.Columns.Count = 0 Then
-                        For i = 0 To UBound(DTcols_str)
-                            ADDTCols = New DataColumn(DTcols_str(i), GetType(String))
-                            IDDTCols = New DataColumn(DTcols_str(i), GetType(String))
-                            GCDTCols = New DataColumn(DTcols_str(i), GetType(String))
-                            CMDTCols = New DataColumn(DTcols_str(i), GetType(String))
+                    'If ArchDesignDT.Columns.Count = 0 And ConsMngmtDT.Columns.Count = 0 And
+                    '    GenConDT.Columns.Count = 0 And IntrDesignDT.Columns.Count = 0 Then
+                    '    For i = 0 To UBound(DTcols_str)
+                    '        ADDTCols = New DataColumn(DTcols_str(i), GetType(String))
+                    '        IDDTCols = New DataColumn(DTcols_str(i), GetType(String))
+                    '        GCDTCols = New DataColumn(DTcols_str(i), GetType(String))
+                    '        CMDTCols = New DataColumn(DTcols_str(i), GetType(String))
 
-                            ArchDesignDT.Columns.Add(ADDTCols)
-                            ConsMngmtDT.Columns.Add(CMDTCols)
-                            GenConDT.Columns.Add(GCDTCols)
-                            IntrDesignDT.Columns.Add(IDDTCols)
-                        Next
-                    End If
+                    '        ArchDesignDT.Columns.Add(ADDTCols)
+                    '        ConsMngmtDT.Columns.Add(CMDTCols)
+                    '        GenConDT.Columns.Add(GCDTCols)
+                    '        IntrDesignDT.Columns.Add(IDDTCols)
+                    '    Next
+                    'End If
 
                 ElseIf PD_TechPartners_BGW_TODO = "POSITION" Then
                     Position_Cbox.DataBindings.Clear()

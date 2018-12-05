@@ -82,7 +82,6 @@ Partial Class PD_TechPartners
         'TP_Tab
         '
         Me.TP_Tab.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TP_Tab.Controls.Add(Me.Save_BTN)
         Me.TP_Tab.Controls.Add(Me.Operation_BTN)
         Me.TP_Tab.Controls.Add(Me.Position_Cbox)
         Me.TP_Tab.Controls.Add(Me.TechPartners_DGV)
@@ -90,6 +89,7 @@ Partial Class PD_TechPartners
         Me.TP_Tab.Controls.Add(Me.Nature_Cbox)
         Me.TP_Tab.Controls.Add(Me.Search_Tbox)
         Me.TP_Tab.Controls.Add(Me.Emp_DGV)
+        Me.TP_Tab.Controls.Add(Me.Save_BTN)
         Me.TP_Tab.HorizontalScrollbarBarColor = True
         Me.TP_Tab.HorizontalScrollbarHighlightOnWheel = False
         Me.TP_Tab.HorizontalScrollbarSize = 10
@@ -116,7 +116,7 @@ Partial Class PD_TechPartners
         '
         'Operation_BTN
         '
-        Me.Operation_BTN.Location = New System.Drawing.Point(471, 47)
+        Me.Operation_BTN.Location = New System.Drawing.Point(554, 47)
         Me.Operation_BTN.Name = "Operation_BTN"
         Me.Operation_BTN.Size = New System.Drawing.Size(77, 30)
         Me.Operation_BTN.TabIndex = 4

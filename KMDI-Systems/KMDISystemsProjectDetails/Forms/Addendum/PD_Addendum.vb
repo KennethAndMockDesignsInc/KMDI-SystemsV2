@@ -3,6 +3,7 @@ Imports System.Data.SqlClient
 Public Class PD_Addendum
     Public PD_Addendum_BGW As BackgroundWorker = New BackgroundWorker
     Dim ADDENDUM_BGW_TODO As String
+    Dim WD_ID As String
     Sub Start_PD_Addendum_BGW()
         If PD_Addendum_BGW.IsBusy <> True Then
             PD_Addendum_Pnl.Visible = False
@@ -29,11 +30,13 @@ Public Class PD_Addendum
         QuoteDate_Lbl.Text = ""
         ProjectLabel_Cbox.Items.Clear()
 
-        For Each DGV In TechPartners_Pnl.Controls
-            If TypeOf DGV Is DataGridView Then
-                DGV.ROWS.CLEAR()
-            End If
-        Next
+        'For Each DGV In TechPartners_Pnl.Controls
+        '    If TypeOf DGV Is DataGridView Then
+        '        If DGV.Rows.Count > 0 Then
+        '            DGV.ROWS.CLEAR()
+        '        End If
+        '    End If
+        'Next
     End Sub
 
     Private Sub QuoteRefNo_Cbox_KeyPress(sender As Object, e As KeyPressEventArgs) Handles QuoteRefNo_Cbox.KeyPress
@@ -51,54 +54,94 @@ Public Class PD_Addendum
 
     Private Sub PD_Addendum_BGW_DoWork(ByVal sender As System.Object, ByVal e As DoWorkEventArgs)
         Try
-            If ADDENDUM_BGW_TODO = "Onload" Then
-                QUERY_INSTANCE = "Loading_using_EqualSearch"
-                QueryBUILD = QuerySearchHeadArrays(5) & QueryMidArrays(4) & QueryConditionArrays(1) & " AND [CTD].JOB_ORDER_NO = [CTD].PARENTJONO"
-                Query_Select(PD_ID)
-            ElseIf ADDENDUM_BGW_TODO = "AEIC_LBL_LOAD" Then
-                QUERY_INSTANCE = "Loading_using_EqualSearch"
-                QueryBUILD = "SELECT AE_TBL.FULLNAME FROM (" & QuerySearchHeadArrays(4) &
+            Select Case ADDENDUM_BGW_TODO
+                Case "Onload"
+                    QUERY_INSTANCE = "Loading_using_EqualSearch"
+                    QueryBUILD = QuerySearchHeadArrays(5) & QueryMidArrays(4) & QueryConditionArrays(1) & " AND [CTD].JOB_ORDER_NO = [CTD].PARENTJONO"
+                    Query_Select(PD_ID)
+                Case "AEIC_LBL_LOAD"
+                    QUERY_INSTANCE = "Loading_using_EqualSearch"
+                    QueryBUILD = "SELECT AE_TBL.FULLNAME FROM (" & QuerySearchHeadArrays(4) &
                         QueryMidArrays(3) & " ) AS AE_TBL
                     JOIN A_NEW_PROJECT_DETAILS [PD]
                     ON	AE_TBL.PD_ID_REF = PD.PD_ID
                     WHERE PD_ID = @EqualSearch AND AE_TBL.[AE_STATUS] = 1 AND PD.[PD_STATUS] = 1"
-                Query_Select(PD_ID)
-            ElseIf ADDENDUM_BGW_TODO = "CompanyName" Then
-                QUERY_INSTANCE = "Loading_using_EqualSearch"
-                QueryBUILD = QuerySearchHeadArrays(6) & QueryMidArrays(5) & QueryConditionArrays(1) & " AND OWN.[CLIENT_STATUS] = 'Current Owner'"
-                Query_Select(PD_ID)
-            ElseIf ADDENDUM_BGW_TODO = "TechnicalPartners" Then
-                QUERY_INSTANCE = "Loading_using_EqualSearch"
-                QueryBUILD = "SELECT	TP.OFFICENAME,
+                    Query_Select(PD_ID)
+                Case "CompanyName"
+                    QUERY_INSTANCE = "Loading_using_EqualSearch"
+                    QueryBUILD = QuerySearchHeadArrays(6) & QueryMidArrays(5) & QueryConditionArrays(1) & " AND OWN.[CLIENT_STATUS] = 'Current Owner'"
+                    Query_Select(PD_ID)
+                Case "TechnicalPartners"
+                    QUERY_INSTANCE = "Loading_using_EqualSearch"
+                    QueryBUILD = "SELECT	TP.OFFICENAME,
 		                                TP.NAME,
 		                                TP.POSITION,
 		                                TP.MOBILENO,
 		                                TP_NATURE.NATURE 
                               FROM    ( SELECT * " & QueryMidArrays(7) & ") AS [TP] " &
-                              QueryMidArrays(6) & " ON TP_NATURE.TP_ID_REF = TP.TP_ID " &
-                              QueryConditionArrays(1) & " AND CD.JOB_ORDER_NO = CD.PARENTJONO AND STATUS_AVAILABILITY = 1 AND EMP_STATUS = 1 AND COMP_STATUS = 1 AND PD_STATUS = 1"
-                Query_Select(PD_ID)
-            ElseIf ADDENDUM_BGW_TODO = "QuoteRefNo" Then
-                QueryBUILD = "SELECT QUOTE_NO FROM [A_NEW_WINDOOR_DETAILS]"
-                Query_Select("")
-            End If
+                                  QueryMidArrays(6) & " ON TP_NATURE.TP_ID_REF = TP.TP_ID " &
+                                  QueryConditionArrays(1) & " AND CD.JOB_ORDER_NO = CD.PARENTJONO AND STATUS_AVAILABILITY = 1 AND EMP_STATUS = 1 AND COMP_STATUS = 1 AND PD_STATUS = 1"
+                    Query_Select(PD_ID)
+                Case "QuoteRefNo"
+                    QueryBUILD = "SELECT WD_ID, QUOTE_NO FROM [A_NEW_WINDOOR_DETAILS]"
+                    Query_Select("")
+                Case "QuoteRefNo_Sel"
+                    QUERY_INSTANCE = "Loading_using_EqualSearch"
+                    QueryBUILD = "SELECT * FROM [A_NEW_WINDOOR_DETAILS] WHERE WD_ID = @EqualSearch AND [WD_STATUS] = 1"
+                    Query_Select(WD_ID)
+            End Select
+
+            'If ADDENDUM_BGW_TODO = "Onload" Then
+            '    QUERY_INSTANCE = "Loading_using_EqualSearch"
+            '    QueryBUILD = QuerySearchHeadArrays(5) & QueryMidArrays(4) & QueryConditionArrays(1) & " AND [CTD].JOB_ORDER_NO = [CTD].PARENTJONO"
+            '    Query_Select(PD_ID)
+            'ElseIf ADDENDUM_BGW_TODO = "AEIC_LBL_LOAD" Then
+            '    QUERY_INSTANCE = "Loading_using_EqualSearch"
+            '    QueryBUILD = "SELECT AE_TBL.FULLNAME FROM (" & QuerySearchHeadArrays(4) &
+            '            QueryMidArrays(3) & " ) AS AE_TBL
+            '        JOIN A_NEW_PROJECT_DETAILS [PD]
+            '        ON	AE_TBL.PD_ID_REF = PD.PD_ID
+            '        WHERE PD_ID = @EqualSearch AND AE_TBL.[AE_STATUS] = 1 AND PD.[PD_STATUS] = 1"
+            '    Query_Select(PD_ID)
+            'ElseIf ADDENDUM_BGW_TODO = "CompanyName" Then
+            '    QUERY_INSTANCE = "Loading_using_EqualSearch"
+            '    QueryBUILD = QuerySearchHeadArrays(6) & QueryMidArrays(5) & QueryConditionArrays(1) & " AND OWN.[CLIENT_STATUS] = 'Current Owner'"
+            '    Query_Select(PD_ID)
+            'ElseIf ADDENDUM_BGW_TODO = "TechnicalPartners" Then
+            '    QUERY_INSTANCE = "Loading_using_EqualSearch"
+            '    QueryBUILD = "SELECT	TP.OFFICENAME,
+            '                      TP.NAME,
+            '                      TP.POSITION,
+            '                      TP.MOBILENO,
+            '                      TP_NATURE.NATURE 
+            '                  FROM    ( SELECT * " & QueryMidArrays(7) & ") AS [TP] " &
+            '                  QueryMidArrays(6) & " ON TP_NATURE.TP_ID_REF = TP.TP_ID " &
+            '                  QueryConditionArrays(1) & " AND CD.JOB_ORDER_NO = CD.PARENTJONO AND STATUS_AVAILABILITY = 1 AND EMP_STATUS = 1 AND COMP_STATUS = 1 AND PD_STATUS = 1"
+            '    Query_Select(PD_ID)
+            'ElseIf ADDENDUM_BGW_TODO = "QuoteRefNo" Then
+            '    QueryBUILD = "SELECT QUOTE_NO FROM [A_NEW_WINDOOR_DETAILS]"
+            '    Query_Select("")
+            'ElseIf ADDENDUM_BGW_TODO = "QuoteRefNo" Then
+            '    QueryBUILD = "SELECT QUOTE_NO FROM [A_NEW_WINDOOR_DETAILS]"
+            '    Query_Select("")
+            'End If
         Catch ex As SqlException
-        'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
-        If ex.Number = -2 Then
-            MetroFramework.MetroMessageBox.Show(Me, "Click ok to Reconnect", "Request Timeout", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-        ElseIf ex.Number = 1232 Then
-            MetroFramework.MetroMessageBox.Show(Me, "Please check internet connection", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            PD_Addendum_BGW.CancelAsync()
-        ElseIf ex.Number = 19 Then
-            MetroFramework.MetroMessageBox.Show(Me, "Sorry our server is under maintenance." & vbCrLf & "Please be patient, will come back A.S.A.P", "Server is down", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            PD_Addendum_BGW.CancelAsync()
-        ElseIf ex.Number <> -2 And ex.Number <> 1232 And ex.Number <> 19 Then
-            MetroFramework.MetroMessageBox.Show(Me, "Contact the Programmers now", "You need some help?", MessageBoxButtons.OK, MessageBoxIcon.Stop)
-            MetroFramework.MetroMessageBox.Show(Me, ex.Message)
-            PD_Addendum_BGW.CancelAsync()
-        End If
+            'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
+            If ex.Number = -2 Then
+                MetroFramework.MetroMessageBox.Show(Me, "Click ok to Reconnect", "Request Timeout", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            ElseIf ex.Number = 1232 Then
+                MetroFramework.MetroMessageBox.Show(Me, "Please check internet connection", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                PD_Addendum_BGW.CancelAsync()
+            ElseIf ex.Number = 19 Then
+                MetroFramework.MetroMessageBox.Show(Me, "Sorry our server is under maintenance." & vbCrLf & "Please be patient, will come back A.S.A.P", "Server is down", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                PD_Addendum_BGW.CancelAsync()
+            ElseIf ex.Number <> -2 And ex.Number <> 1232 And ex.Number <> 19 Then
+                MetroFramework.MetroMessageBox.Show(Me, "Contact the Programmers now", "You need some help?", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+                MetroFramework.MetroMessageBox.Show(Me, ex.Message)
+                PD_Addendum_BGW.CancelAsync()
+            End If
         Catch ex2 As Exception
-        MessageBox.Show(Me, ex2.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
+            MessageBox.Show(Me, ex2.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
         End Try
     End Sub
 
@@ -158,11 +201,29 @@ Public Class PD_Addendum
         rowpostpaint(sender, e)
     End Sub
 
+    Private Sub Lock_Btn_Click(sender As Object, e As EventArgs) Handles Lock_Btn.Click
+        If Lock_Btn.Text = "Lock" Then
+            QuoteRefNo_Cbox.Enabled = False
+            Lock_Btn.Text = "Unlock"
+        ElseIf Lock_Btn.Text = "Unlock" Then
+            QuoteRefNo_Cbox.Enabled = True
+            Lock_Btn.Text = "Lock"
+        End If
+    End Sub
+
+    Private Sub QuoteRefNo_Cbox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles QuoteRefNo_Cbox.SelectedIndexChanged
+        If QuoteRefNo_Cbox.Enabled = True Then
+            WD_ID = QuoteRefNo_Cbox.SelectedValue.ToString
+            ADDENDUM_BGW_TODO = "QuoteRefNo_Sel"
+            Start_PD_Addendum_BGW()
+        End If
+    End Sub
+
     Dim FIle_Label_As = Nothing, QuoteRefNo As String = Nothing
 
     Private Sub PD_Addendum_BGW_RunWorkerCompleted(ByVal sender As System.Object, ByVal e As RunWorkerCompletedEventArgs)
-        Try
-            Me.Width = 800
+        'Try
+        Me.Width = 800
             Me.Height = 600
             If e.Error IsNot Nothing Then
                 '' if BackgroundWorker terminated due to error
@@ -208,6 +269,33 @@ Public Class PD_Addendum
                         Else
                             Lock_Btn.Text = "Lock"
                             QuoteRefNo_Cbox.Enabled = True
+                        End If
+                    If ArchDesignDT.Columns.Count > 0 Then
+                        ArchDesignDT.Columns.Clear()
+                    End If
+                    If ConsMngmtDT.Columns.Count > 0 Then
+                        ConsMngmtDT.Columns.Clear()
+                    End If
+                    If GenConDT.Columns.Count > 0 Then
+                        GenConDT.Columns.Clear()
+                    End If
+                    If IntrDesignDT.Columns.Count > 0 Then
+                        IntrDesignDT.Columns.Clear()
+                    End If
+
+                    If ArchDesignDT.Columns.Count = 0 And ConsMngmtDT.Columns.Count = 0 And
+                        GenConDT.Columns.Count = 0 And IntrDesignDT.Columns.Count = 0 Then
+                            For i = 0 To UBound(DTcols_str)
+                                ADDTCols = New DataColumn(DTcols_str(i), GetType(String))
+                                IDDTCols = New DataColumn(DTcols_str(i), GetType(String))
+                                GCDTCols = New DataColumn(DTcols_str(i), GetType(String))
+                                CMDTCols = New DataColumn(DTcols_str(i), GetType(String))
+
+                                ArchDesignDT.Columns.Add(ADDTCols)
+                                ConsMngmtDT.Columns.Add(CMDTCols)
+                                GenConDT.Columns.Add(GCDTCols)
+                                IntrDesignDT.Columns.Add(IDDTCols)
+                            Next
                         End If
 
                         ADDENDUM_BGW_TODO = "AEIC_LBL_LOAD"
@@ -268,47 +356,64 @@ Public Class PD_Addendum
                         For Each row3 In sqlBindingSource
                             Dim nature As String = row3("NATURE")
                             If nature = "Architectural Design" Then
-                                ArchDesign_DGV.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"))
+                                ArchDesignDT.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"))
+                                'ArchDesign_DGV.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"))
                             ElseIf nature = "Interior Design" Then
-                                IntrDesign_DGV.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"))
+                                IntrDesignDT.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"))
+                                'IntrDesign_DGV.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"))
                             ElseIf nature = "General Contractor" Then
-                                GenCon_DGV.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"))
+                                GenConDT.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"))
+                                'GenCon_DGV.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"))
                             ElseIf nature = "Construction Management" Then
-                                ConsMngmt_DGV.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"))
+                                ConsMngmtDT.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"))
+                                'ConsMngmt_DGV.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"))
                             End If
                         Next row3
+                        ArchDesign_DGV.Columns.Clear()
+                        ArchDesignBS.DataSource = ArchDesignDT
+                        ArchDesign_DGV.DataSource = ArchDesignBS
+                    ArchDesign_DGV.Columns("COMP_ID").Visible = False
+                    ArchDesign_DGV.Columns("EMP_ID").Visible = False
 
-                        'For Each DGV In TechPartners_Pnl.Controls
-                        '    If TypeOf DGV Is DataGridView Then
-                        '        With DGV
-                        '            If .RowCount <> 0 Then
-                        '                .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells
-                        '            Else
-                        '                .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
-                        '            End If
-                        '        End With
-                        '    End If
-                        'Next
+                    IntrDesign_DGV.Columns.Clear()
+                        IntrDesignBS.DataSource = IntrDesignDT
+                        IntrDesign_DGV.DataSource = IntrDesignBS
+                    IntrDesign_DGV.Columns("COMP_ID").Visible = False
+                    IntrDesign_DGV.Columns("EMP_ID").Visible = False
 
+                    ConsMngmt_DGV.Columns.Clear()
+                        ConsMngmtBS.DataSource = ConsMngmtDT
+                        ConsMngmt_DGV.DataSource = ConsMngmtBS
+                    ConsMngmt_DGV.Columns("COMP_ID").Visible = False
+                    ConsMngmt_DGV.Columns("EMP_ID").Visible = False
 
-                        ADDENDUM_BGW_TODO = "QuoteRefNo"
+                    GenCon_DGV.Columns.Clear()
+                        GenConBS.DataSource = GenConDT
+                        GenCon_DGV.DataSource = GenConBS
+                    GenCon_DGV.Columns("COMP_ID").Visible = False
+                    GenCon_DGV.Columns("EMP_ID").Visible = False
+
+                    ADDENDUM_BGW_TODO = "QuoteRefNo"
                         Start_PD_Addendum_BGW()
                     Case "QuoteRefNo"
                         QuoteRefNo_Cbox.DataBindings.Clear()
                         QuoteRefNo_Cbox.DataSource = sqlBindingSource
-                        QuoteRefNo_Cbox.ValueMember = "QUOTE_NO"
+                        QuoteRefNo_Cbox.ValueMember = "WD_ID"
+                        QuoteRefNo_Cbox.DisplayMember = "QUOTE_NO"
                         QuoteRefNo_Cbox.Text = QuoteRefNo
-
-                        'ADDENDUM_BGW_TODO = "Onload"
-                        'Start_PD_Addendum_BGW()
+                    Case "QuoteRefNo_Sel"
+                        For Each row In sqlBindingSource
+                            QuoteDate_Lbl.Text = row("QUOTE_DATE")
+                            ProfileFin_Lbl.Text = row("PROFILE_FINISH")
+                        Next
                 End Select
 
         End If
             PD_Addendum_Pnl.Visible = True
             LoadingPbox.Visible = False
-        Catch ex As Exception
-        MessageBox.Show(Me, ex.Message)
-        End Try
+        'Catch ex As Exception
+        'MessageBox.Show(Me, ex.Message)
+        'End Try
     End Sub
 
 End Class
