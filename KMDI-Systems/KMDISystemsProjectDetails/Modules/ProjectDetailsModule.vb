@@ -17,12 +17,14 @@ Module ProjectDetailsModule
     Public PD_ID, CUST_ID, C_ID As Integer
 
     Public ArchDesignBS, IntrDesignBS, ConsMngmtBS, GenConBS As New BindingSource
+    'Public QuoteNoBS As New BindingSource
 
     Public ADDTCols, IDDTCols, CMDTCols, GCDTCols As DataColumn
     Public ArchDesignDT As DataTable = New DataTable("ArchDesignDT")
     Public IntrDesignDT As DataTable = New DataTable("IntrDesignDT")
     Public ConsMngmtDT As DataTable = New DataTable("ConsMngmtDT")
     Public GenConDT As DataTable = New DataTable("GenConDT")
+    'Public QuoteNoDT As DataTable = New DataTable("QuoteNoDT")
     Public DTcols_str As String() = {"OFFICENAME", "NAME", "POSITION", "CONTACT NUMBER", "COMP_ID", "EMP_ID"}
 
 

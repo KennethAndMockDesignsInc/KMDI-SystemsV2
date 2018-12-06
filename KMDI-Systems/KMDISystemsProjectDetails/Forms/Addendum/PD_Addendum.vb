@@ -3,11 +3,16 @@ Imports System.Data.SqlClient
 Public Class PD_Addendum
     Public PD_Addendum_BGW As BackgroundWorker = New BackgroundWorker
     Dim ADDENDUM_BGW_TODO As String
-    Dim WD_ID As String
-    Sub Start_PD_Addendum_BGW()
+    Dim WD_ID, QUOTE_NO As String
+    Dim arr_Profile_finish As New List(Of String)
+    Dim arr_Quote_Date As New List(Of String)
+
+
+    Sub Start_PD_Addendum_BGW(ByVal Panel_bool As Boolean,
+                              ByVal Loading_bool As Boolean)
         If PD_Addendum_BGW.IsBusy <> True Then
-            PD_Addendum_Pnl.Visible = False
-            LoadingPbox.Visible = True
+            PD_Addendum_Pnl.Visible = Panel_bool
+            LoadingPbox.Visible = Loading_bool
             PD_Addendum_BGW.RunWorkerAsync()
         Else
             MetroFramework.MetroMessageBox.Show(Me, "Please Wait!", "Loading", MessageBoxButtons.OK, MessageBoxIcon.Stop)
@@ -17,7 +22,7 @@ Public Class PD_Addendum
     Sub onformLoad()
         Reset()
         ADDENDUM_BGW_TODO = "Onload"
-        Start_PD_Addendum_BGW()
+        Start_PD_Addendum_BGW(False, True)
     End Sub
 
     Sub Reset()
@@ -29,29 +34,21 @@ Public Class PD_Addendum
         ProjSource_Lbl.Text = ""
         QuoteDate_Lbl.Text = ""
         ProjectLabel_Cbox.Items.Clear()
-
-        'For Each DGV In TechPartners_Pnl.Controls
-        '    If TypeOf DGV Is DataGridView Then
-        '        If DGV.Rows.Count > 0 Then
-        '            DGV.ROWS.CLEAR()
-        '        End If
-        '    End If
-        'Next
-    End Sub
-
-    Private Sub QuoteRefNo_Cbox_KeyPress(sender As Object, e As KeyPressEventArgs) Handles QuoteRefNo_Cbox.KeyPress
-        If Char.IsLetter(e.KeyChar) Then
-            e.KeyChar = Char.ToUpper(e.KeyChar)
-        End If
+            
     End Sub
 
     Private Sub PD_Addendum_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         PD_Addendum_BGW.WorkerSupportsCancellation = True
+        PD_Addendum_BGW.WorkerReportsProgress = True
         AddHandler PD_Addendum_BGW.DoWork, AddressOf PD_Addendum_BGW_DoWork
         AddHandler PD_Addendum_BGW.RunWorkerCompleted, AddressOf PD_Addendum_BGW_RunWorkerCompleted
+        AddHandler PD_Addendum_BGW.ProgressChanged, AddressOf PD_Addendum_BGW_ProgressChanged
         onformLoad()
     End Sub
 
+    'Dim Populate_QuoteNoBS_bool As Boolean = False
+    'Dim WD_ID_forCbox, Quote_No_forCbox As String
+    'Dim i_forcbox As Integer = 0
     Private Sub PD_Addendum_BGW_DoWork(ByVal sender As System.Object, ByVal e As DoWorkEventArgs)
         Try
             Select Case ADDENDUM_BGW_TODO
@@ -62,7 +59,7 @@ Public Class PD_Addendum
                 Case "AEIC_LBL_LOAD"
                     QUERY_INSTANCE = "Loading_using_EqualSearch"
                     QueryBUILD = "SELECT AE_TBL.FULLNAME FROM (" & QuerySearchHeadArrays(4) &
-                        QueryMidArrays(3) & " ) AS AE_TBL
+                            QueryMidArrays(3) & " ) AS AE_TBL
                     JOIN A_NEW_PROJECT_DETAILS [PD]
                     ON	AE_TBL.PD_ID_REF = PD.PD_ID
                     WHERE PD_ID = @EqualSearch AND AE_TBL.[AE_STATUS] = 1 AND PD.[PD_STATUS] = 1"
@@ -79,52 +76,26 @@ Public Class PD_Addendum
 		                                TP.MOBILENO,
 		                                TP_NATURE.NATURE 
                               FROM    ( SELECT * " & QueryMidArrays(7) & ") AS [TP] " &
-                                  QueryMidArrays(6) & " ON TP_NATURE.TP_ID_REF = TP.TP_ID " &
-                                  QueryConditionArrays(1) & " AND CD.JOB_ORDER_NO = CD.PARENTJONO AND STATUS_AVAILABILITY = 1 AND EMP_STATUS = 1 AND COMP_STATUS = 1 AND PD_STATUS = 1"
+                                      QueryMidArrays(6) & " ON TP_NATURE.TP_ID_REF = TP.TP_ID " &
+                                      QueryConditionArrays(1) & " AND CD.JOB_ORDER_NO = CD.PARENTJONO AND STATUS_AVAILABILITY = 1 AND EMP_STATUS = 1 AND COMP_STATUS = 1 AND PD_STATUS = 1"
                     Query_Select(PD_ID)
-                Case "QuoteRefNo"
-                    QueryBUILD = "SELECT WD_ID, QUOTE_NO FROM [A_NEW_WINDOOR_DETAILS]"
-                    Query_Select("")
+                'Case "QuoteRefNo"
+                '    QueryBUILD = "SELECT WD_ID, QUOTE_NO FROM [A_NEW_WINDOOR_DETAILS]"
+                '    Query_Select("")
                 Case "QuoteRefNo_Sel"
                     QUERY_INSTANCE = "Loading_using_EqualSearch"
-                    QueryBUILD = "SELECT * FROM [A_NEW_WINDOOR_DETAILS] WHERE WD_ID = @EqualSearch AND [WD_STATUS] = 1"
-                    Query_Select(WD_ID)
+                    QueryBUILD = "SELECT * FROM [A_NEW_WINDOOR_DETAILS] WHERE QUOTE_NO = @EqualSearch AND [WD_STATUS] = 1"
+
+                    Dim Qnos() As String
+                    Qnos = QUOTE_NO.Split("&")
+                    For Each Qno As String In Qnos
+                        Dim i As Integer
+                        i += 1
+                        Query_Select(Qno)
+                        PD_Addendum_BGW.ReportProgress(i)
+                    Next
             End Select
 
-            'If ADDENDUM_BGW_TODO = "Onload" Then
-            '    QUERY_INSTANCE = "Loading_using_EqualSearch"
-            '    QueryBUILD = QuerySearchHeadArrays(5) & QueryMidArrays(4) & QueryConditionArrays(1) & " AND [CTD].JOB_ORDER_NO = [CTD].PARENTJONO"
-            '    Query_Select(PD_ID)
-            'ElseIf ADDENDUM_BGW_TODO = "AEIC_LBL_LOAD" Then
-            '    QUERY_INSTANCE = "Loading_using_EqualSearch"
-            '    QueryBUILD = "SELECT AE_TBL.FULLNAME FROM (" & QuerySearchHeadArrays(4) &
-            '            QueryMidArrays(3) & " ) AS AE_TBL
-            '        JOIN A_NEW_PROJECT_DETAILS [PD]
-            '        ON	AE_TBL.PD_ID_REF = PD.PD_ID
-            '        WHERE PD_ID = @EqualSearch AND AE_TBL.[AE_STATUS] = 1 AND PD.[PD_STATUS] = 1"
-            '    Query_Select(PD_ID)
-            'ElseIf ADDENDUM_BGW_TODO = "CompanyName" Then
-            '    QUERY_INSTANCE = "Loading_using_EqualSearch"
-            '    QueryBUILD = QuerySearchHeadArrays(6) & QueryMidArrays(5) & QueryConditionArrays(1) & " AND OWN.[CLIENT_STATUS] = 'Current Owner'"
-            '    Query_Select(PD_ID)
-            'ElseIf ADDENDUM_BGW_TODO = "TechnicalPartners" Then
-            '    QUERY_INSTANCE = "Loading_using_EqualSearch"
-            '    QueryBUILD = "SELECT	TP.OFFICENAME,
-            '                      TP.NAME,
-            '                      TP.POSITION,
-            '                      TP.MOBILENO,
-            '                      TP_NATURE.NATURE 
-            '                  FROM    ( SELECT * " & QueryMidArrays(7) & ") AS [TP] " &
-            '                  QueryMidArrays(6) & " ON TP_NATURE.TP_ID_REF = TP.TP_ID " &
-            '                  QueryConditionArrays(1) & " AND CD.JOB_ORDER_NO = CD.PARENTJONO AND STATUS_AVAILABILITY = 1 AND EMP_STATUS = 1 AND COMP_STATUS = 1 AND PD_STATUS = 1"
-            '    Query_Select(PD_ID)
-            'ElseIf ADDENDUM_BGW_TODO = "QuoteRefNo" Then
-            '    QueryBUILD = "SELECT QUOTE_NO FROM [A_NEW_WINDOOR_DETAILS]"
-            '    Query_Select("")
-            'ElseIf ADDENDUM_BGW_TODO = "QuoteRefNo" Then
-            '    QueryBUILD = "SELECT QUOTE_NO FROM [A_NEW_WINDOOR_DETAILS]"
-            '    Query_Select("")
-            'End If
         Catch ex As SqlException
             'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
             If ex.Number = -2 Then
@@ -142,6 +113,14 @@ Public Class PD_Addendum
             End If
         Catch ex2 As Exception
             MessageBox.Show(Me, ex2.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
+        End Try
+    End Sub
+
+    Private Sub PD_Addendum_BGW_ProgressChanged(sender As Object, e As ProgressChangedEventArgs)
+        Try
+
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
         End Try
     End Sub
 
@@ -201,29 +180,48 @@ Public Class PD_Addendum
         rowpostpaint(sender, e)
     End Sub
 
-    Private Sub Lock_Btn_Click(sender As Object, e As EventArgs) Handles Lock_Btn.Click
-        If Lock_Btn.Text = "Lock" Then
-            QuoteRefNo_Cbox.Enabled = False
-            Lock_Btn.Text = "Unlock"
-        ElseIf Lock_Btn.Text = "Unlock" Then
-            QuoteRefNo_Cbox.Enabled = True
-            Lock_Btn.Text = "Lock"
+    Private Sub IntrDesign_DGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs) Handles IntrDesign_DGV.RowPostPaint
+        rowpostpaint(sender, e)
+    End Sub
+
+    Private Sub ConsMngmt_DGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs) Handles ConsMngmt_DGV.RowPostPaint
+        rowpostpaint(sender, e)
+    End Sub
+
+    Private Sub GenCon_DGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs) Handles GenCon_DGV.RowPostPaint
+        rowpostpaint(sender, e)
+    End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        QUOTE_NO = Replace(QuoteRefNo_Tbox.Text, " ", "")
+
+        Dim Qnos() As String
+        Qnos = QUOTE_NO.Split("&")
+        For Each Qno As String In Qnos
+            MsgBox(Qno)
+        Next
+    End Sub
+
+    Private Sub QuoteRefNo_Tbox_KeyDown(sender As Object, e As KeyEventArgs) Handles QuoteRefNo_Tbox.KeyDown
+        QUOTE_NO = Replace(QuoteRefNo_Tbox.Text, " ", "")
+        If e.KeyCode = Keys.Enter Then
+            If QUOTE_NO <> Nothing And QUOTE_NO <> "" Then
+                QuoteDate_Lbl.Text = ""
+                ProfileFin_Lbl.Text = ""
+                ADDENDUM_BGW_TODO = "QuoteRefNo_Sel"
+                Start_PD_Addendum_BGW(False, True)
+
+            Else
+                MetroFramework.MetroMessageBox.Show(Me, "Please input a valid Quote reference number.")
+            End If
         End If
     End Sub
 
-    Private Sub QuoteRefNo_Cbox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles QuoteRefNo_Cbox.SelectedIndexChanged
-        If QuoteRefNo_Cbox.Enabled = True Then
-            WD_ID = QuoteRefNo_Cbox.SelectedValue.ToString
-            ADDENDUM_BGW_TODO = "QuoteRefNo_Sel"
-            Start_PD_Addendum_BGW()
-        End If
-    End Sub
-
-    Dim FIle_Label_As = Nothing, QuoteRefNo As String = Nothing
+    Dim FIle_Label_As As String = Nothing, QuoteRefNo As String = Nothing
 
     Private Sub PD_Addendum_BGW_RunWorkerCompleted(ByVal sender As System.Object, ByVal e As RunWorkerCompletedEventArgs)
-        'Try
-        Me.Width = 800
+        Try
+            Me.Width = 800
             Me.Height = 600
             If e.Error IsNot Nothing Then
                 '' if BackgroundWorker terminated due to error
@@ -263,28 +261,15 @@ Public Class PD_Addendum
                             Area = row("AREA")
                         Next row
 
-                        If JORefNo_Lbl.Text <> "" Then
-                            Lock_Btn.Text = "Unlock"
-                            QuoteRefNo_Cbox.Enabled = False
-                        Else
-                            Lock_Btn.Text = "Lock"
-                            QuoteRefNo_Cbox.Enabled = True
-                        End If
-                    If ArchDesignDT.Columns.Count > 0 Then
+                        'Lock_Btn.Text = "Unlock"
+                        'QuoteRefNo_Cbox.Enabled = False
                         ArchDesignDT.Columns.Clear()
-                    End If
-                    If ConsMngmtDT.Columns.Count > 0 Then
                         ConsMngmtDT.Columns.Clear()
-                    End If
-                    If GenConDT.Columns.Count > 0 Then
                         GenConDT.Columns.Clear()
-                    End If
-                    If IntrDesignDT.Columns.Count > 0 Then
                         IntrDesignDT.Columns.Clear()
-                    End If
 
-                    If ArchDesignDT.Columns.Count = 0 And ConsMngmtDT.Columns.Count = 0 And
-                        GenConDT.Columns.Count = 0 And IntrDesignDT.Columns.Count = 0 Then
+                        If ArchDesignDT.Columns.Count = 0 And ConsMngmtDT.Columns.Count = 0 And
+                            GenConDT.Columns.Count = 0 And IntrDesignDT.Columns.Count = 0 Then
                             For i = 0 To UBound(DTcols_str)
                                 ADDTCols = New DataColumn(DTcols_str(i), GetType(String))
                                 IDDTCols = New DataColumn(DTcols_str(i), GetType(String))
@@ -299,7 +284,7 @@ Public Class PD_Addendum
                         End If
 
                         ADDENDUM_BGW_TODO = "AEIC_LBL_LOAD"
-                        Start_PD_Addendum_BGW()
+                        Start_PD_Addendum_BGW(False, True)
                     Case "AEIC_LBL_LOAD"
                         Dim lbl_output_seq As Integer
                         For Each rowAEIC In sqlBindingSource
@@ -319,7 +304,7 @@ Public Class PD_Addendum
                             End If
                         Next rowAEIC
                         ADDENDUM_BGW_TODO = "CompanyName"
-                        Start_PD_Addendum_BGW()
+                        Start_PD_Addendum_BGW(False, True)
                     Case "CompanyName"
                         For Each row2 In sqlBindingSource
                             OwnersName_Tbox.Text = row2("CLIENTS_NAME")
@@ -338,20 +323,21 @@ Public Class PD_Addendum
                         ProjectLabel_Cbox.Items.Add(OwnersName)
                         ProjectLabel_Cbox.Items.Add(CompanyName_Str)
 
-                        If FIle_Label_As.Contains("Proj/Client`s Name") Then
-                            ProjectLabel_Cbox.Text = OwnersName
-                        ElseIf FIle_Label_As.Contains("Company Name") Then
-                            ProjectLabel_Cbox.Text = CompanyName_Str
-                        ElseIf FIle_Label_As = Nothing Or FIle_Label_As = "" Then
+
+                        If FIle_Label_As = Nothing Or FIle_Label_As = "" Then
                             If OwnersName <> "" And OwnersName <> Nothing Then
                                 ProjectLabel_Cbox.Text = OwnersName
                             ElseIf CompanyName_Str <> "" And CompanyName_Str <> Nothing Then
                                 ProjectLabel_Cbox.Text = CompanyName_Str
                             End If
+                        ElseIf FIle_Label_As.Contains("Proj/Client`s Name") Then
+                            ProjectLabel_Cbox.Text = OwnersName
+                        ElseIf FIle_Label_As.Contains("Company Name") Then
+                            ProjectLabel_Cbox.Text = CompanyName_Str
                         End If
 
                         ADDENDUM_BGW_TODO = "TechnicalPartners"
-                        Start_PD_Addendum_BGW()
+                        Start_PD_Addendum_BGW(False, True)
                     Case "TechnicalPartners"
                         For Each row3 In sqlBindingSource
                             Dim nature As String = row3("NATURE")
@@ -369,51 +355,87 @@ Public Class PD_Addendum
                                 'ConsMngmt_DGV.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"))
                             End If
                         Next row3
-                        ArchDesign_DGV.Columns.Clear()
+
+                        ArchDesign_DGV.DataSource = Nothing
                         ArchDesignBS.DataSource = ArchDesignDT
                         ArchDesign_DGV.DataSource = ArchDesignBS
-                    ArchDesign_DGV.Columns("COMP_ID").Visible = False
-                    ArchDesign_DGV.Columns("EMP_ID").Visible = False
+                        ArchDesign_DGV.Columns("COMP_ID").Visible = False
+                        ArchDesign_DGV.Columns("EMP_ID").Visible = False
 
-                    IntrDesign_DGV.Columns.Clear()
+                        IntrDesign_DGV.DataSource = Nothing
                         IntrDesignBS.DataSource = IntrDesignDT
                         IntrDesign_DGV.DataSource = IntrDesignBS
-                    IntrDesign_DGV.Columns("COMP_ID").Visible = False
-                    IntrDesign_DGV.Columns("EMP_ID").Visible = False
+                        IntrDesign_DGV.Columns("COMP_ID").Visible = False
+                        IntrDesign_DGV.Columns("EMP_ID").Visible = False
 
-                    ConsMngmt_DGV.Columns.Clear()
+                        ConsMngmt_DGV.DataSource = Nothing
                         ConsMngmtBS.DataSource = ConsMngmtDT
                         ConsMngmt_DGV.DataSource = ConsMngmtBS
-                    ConsMngmt_DGV.Columns("COMP_ID").Visible = False
-                    ConsMngmt_DGV.Columns("EMP_ID").Visible = False
+                        ConsMngmt_DGV.Columns("COMP_ID").Visible = False
+                        ConsMngmt_DGV.Columns("EMP_ID").Visible = False
 
-                    GenCon_DGV.Columns.Clear()
+                        GenCon_DGV.DataSource = Nothing
                         GenConBS.DataSource = GenConDT
                         GenCon_DGV.DataSource = GenConBS
-                    GenCon_DGV.Columns("COMP_ID").Visible = False
-                    GenCon_DGV.Columns("EMP_ID").Visible = False
+                        GenCon_DGV.Columns("COMP_ID").Visible = False
+                        GenCon_DGV.Columns("EMP_ID").Visible = False
 
-                    ADDENDUM_BGW_TODO = "QuoteRefNo"
-                        Start_PD_Addendum_BGW()
-                    Case "QuoteRefNo"
-                        QuoteRefNo_Cbox.DataBindings.Clear()
-                        QuoteRefNo_Cbox.DataSource = sqlBindingSource
-                        QuoteRefNo_Cbox.ValueMember = "WD_ID"
-                        QuoteRefNo_Cbox.DisplayMember = "QUOTE_NO"
-                        QuoteRefNo_Cbox.Text = QuoteRefNo
+                    'If QuoteRefNo_Cbox.Enabled = False Then
+                    '    QuoteRefNo_Cbox.Text = QuoteRefNo
+                    'Else
+                    '    ADDENDUM_BGW_TODO = "QuoteRefNo"
+                    '    Start_PD_Addendum_BGW(False, True)
+                    'End If
+                'Case "QuoteRefNo"
+                '    'MsgBox("sqlBindingSource.Count: " & sqlBindingSource.Count)
+                '    'MsgBox("QuoteNoDT.Rows.Count: " & QuoteNoDT.Rows.Count)
+                '    Populate_QuoteNoBS_bool = False
+                '    i_forcbox = 0
+
+                '    QuoteRefNo_Cbox.DataBindings.Clear()
+                '    QuoteRefNo_Cbox.DataSource = QuoteNoDT 'sqlBindingSource
+                '    QuoteRefNo_Cbox.ValueMember = "WD_ID"
+                '    QuoteRefNo_Cbox.DisplayMember = "QUOTE_NO"
+                '    If QuoteRefNo <> Nothing Or QuoteRefNo <> "" Then
+                '        QuoteRefNo_Cbox.Text = QuoteRefNo
+                '    Else
+                '        QuoteRefNo_Cbox.SelectedIndex = -1
+                '    End If
                     Case "QuoteRefNo_Sel"
                         For Each row In sqlBindingSource
-                            QuoteDate_Lbl.Text = row("QUOTE_DATE")
-                            ProfileFin_Lbl.Text = row("PROFILE_FINISH")
+                            Dim Qdate, Profile_fin As String
+                            Qdate = row("QUOTE_DATE")
+                            Profile_fin = row("PROFILE_FINISH")
+                            arr_Profile_finish.Add(Profile_fin)
+                            arr_Quote_Date.Add(Qdate)
+                            'arr_Quote_Date(1) = Qdate
+
+                            'QuoteDate_Lbl.Text = row("QUOTE_DATE")
+                            'ProfileFin_Lbl.Text = row("PROFILE_FINISH")
                         Next
+                        MsgBox(arr_Quote_Date.Count)
+
+                        For i = 0 To arr_Quote_Date.Count - 1
+                            MsgBox(arr_Quote_Date(i))
+                            If arr_Quote_Date.Count = 1 Then
+                                QuoteDate_Lbl.Text = arr_Quote_Date(0)
+                            ElseIf arr_Quote_Date.Count > 1 And i <> arr_Quote_Date.Count - 1 Then
+                                QuoteDate_Lbl.Text += arr_Quote_Date(i) & ", "
+                            ElseIf arr_Quote_Date.Count > 1 And i = arr_Quote_Date.Count - 1 Then
+                                QuoteDate_Lbl.Text += arr_Quote_Date(i)
+                            End If
+                        Next
+
+                        OwnersName_Tbox.Focus()
+
                 End Select
 
-        End If
+            End If
             PD_Addendum_Pnl.Visible = True
             LoadingPbox.Visible = False
-        'Catch ex As Exception
-        'MessageBox.Show(Me, ex.Message)
-        'End Try
+        Catch ex As Exception
+            MessageBox.Show(Me, ex.Message)
+        End Try
     End Sub
 
 End Class
