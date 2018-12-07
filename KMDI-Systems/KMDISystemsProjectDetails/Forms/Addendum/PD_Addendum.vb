@@ -32,7 +32,6 @@ Public Class PD_Addendum
         ProjSource_Lbl.Text = ""
         QuoteDate_Lbl.Text = ""
         ProjectLabel_Cbox.Items.Clear()
-            
     End Sub
 
     Private Sub PD_Addendum_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -110,12 +109,14 @@ Public Class PD_Addendum
         End Try
     End Sub
 
-    Dim CompanyName_Str, OwnersName, ProjectLabel As String
-
     Private Sub ProjectLabel_Cbox_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ProjectLabel_Cbox.SelectionChangeCommitted
-        Dim ProjectLabel As String
+        'Dim ProjectLabel As String
         ProjectLabel = ProjectLabel_Cbox.Text.Replace("&&", "&")
-        'MsgBox(ProjectLabel)
+        If ProjectLabel = OwnersName Then
+            FIle_Label_As = "Proj/Client`s Name"
+        ElseIf ProjectLabel = CompanyName_Str Then
+            FIle_Label_As = "Company Name"
+        End If
     End Sub
 
     Private Sub EditHeaderPartToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EditHeaderPartToolStripMenuItem.Click
@@ -136,6 +137,7 @@ Public Class PD_Addendum
         Try
             If e.Button = MouseButtons.Right Then
                 EditHeaderPartToolStripMenuItem.Visible = True
+                EditOwnerToolStripMenuItem.Visible = True
                 EditTechnicalPartnersToolStripMenuItem.Visible = False
                 Addendum_CMenu.Show()
                 Addendum_CMenu.Location = New Point(MousePosition.X, MousePosition.Y)
@@ -149,6 +151,7 @@ Public Class PD_Addendum
         Try
             If e.Button = MouseButtons.Right Then
                 EditHeaderPartToolStripMenuItem.Visible = False
+                EditOwnerToolStripMenuItem.Visible = False
                 EditTechnicalPartnersToolStripMenuItem.Visible = True
                 Addendum_CMenu.Show()
                 Addendum_CMenu.Location = New Point(MousePosition.X, MousePosition.Y)
@@ -178,6 +181,52 @@ Public Class PD_Addendum
         rowpostpaint(sender, e)
     End Sub
 
+    Private Sub PD_Addendum_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        Try
+            If MetroFramework.MetroMessageBox.Show(Me, "Are you sure you want to Exit?", " ", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+                Project_Details.BringToFront()
+                e.Cancel = False
+            Else
+                e.Cancel = True
+            End If
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
+    End Sub
+
+    Dim OwnersRep, OwnersRepHomeCno, OwnersRepOfficeCno, OwnersRepMobileCno, OwnersNameHomeCno,
+        OwnersNameOfficeCno, OwnersNameMobile, ConStage, SiteMeeting, SpInstr As String
+
+    Dim CompanyName_Str, OwnersName, ProjectLabel As String
+
+    Dim FIle_Label_As As String = Nothing, QuoteRefNo As String = Nothing
+
+    Private Sub Update_btn_Click(sender As Object, e As EventArgs) Handles Update_btn.Click
+        Try
+            ProjectLabel = ProjectLabel_Cbox.Text
+            QuoteRefNo = QuoteRefNo_Tbox.Text
+            OwnersName = OwnersName_Tbox.Text
+            OwnersNameHomeCno = OwnersNameHomeCno_Tbox.Text
+            OwnersNameOfficeCno = OwnersNameOfficeCno_Tbox.Text
+            OwnersNameMobile = OwnersNameMobile_Tbox.Text
+            OwnersRep = OwnersRep_Tbox.Text
+            OwnersRepHomeCno = OwnersRepHomeCno_Tbox.Text
+            OwnersRepOfficeCno = OwnersRepOfficeCno_Tbox.Text
+            OwnersRepMobileCno = OwnersRepMobileCno_Tbox.Text
+            ConStage = ConStage_Tbox.Text
+            SiteMeeting = SiteMeeting_Tbox.Text
+            SpInstr = SpInstr_RTbox.Text
+
+            If ProjectLabel = Nothing Or ProjectLabel = "" Then
+                MetroFramework.MetroMessageBox.Show(Me, "Please select Project Name.")
+            Else
+
+            End If
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
+    End Sub
+
     Private Sub QuoteRefNo_Tbox_KeyDown(sender As Object, e As KeyEventArgs) Handles QuoteRefNo_Tbox.KeyDown
         QUOTE_NO = Replace(QuoteRefNo_Tbox.Text, " ", "")
         If e.KeyCode = Keys.Enter Then
@@ -193,7 +242,6 @@ Public Class PD_Addendum
         End If
     End Sub
 
-    Dim FIle_Label_As As String = Nothing, QuoteRefNo As String = Nothing
 
     Private Sub PD_Addendum_BGW_RunWorkerCompleted(ByVal sender As System.Object, ByVal e As RunWorkerCompletedEventArgs)
         Try
@@ -290,10 +338,10 @@ Public Class PD_Addendum
                             CompanyName_Str = row2("COMPANY_NAME")
                             OwnersName = row2("OWNERS_NAME")
                         Next row2
-                        If OwnersName.Contains("&") Then
+                        If OwnersName <> Nothing AndAlso OwnersName.Contains("&") Then
                             OwnersName = OwnersName.Replace("&", "&&")
                         End If
-                        If CompanyName_Str.Contains("&") Then
+                        If CompanyName_Str <> Nothing AndAlso CompanyName_Str.Contains("&") Then
                             CompanyName_Str = CompanyName_Str.Replace("&", "&&")
                         End If
                         ProjectLabel_Cbox.Items.Add(OwnersName)
@@ -303,8 +351,10 @@ Public Class PD_Addendum
                         If FIle_Label_As = Nothing Or FIle_Label_As = "" Then
                             If OwnersName <> "" And OwnersName <> Nothing Then
                                 ProjectLabel_Cbox.Text = OwnersName
+                                FIle_Label_As = "Proj/Client`s Name"
                             ElseIf CompanyName_Str <> "" And CompanyName_Str <> Nothing Then
                                 ProjectLabel_Cbox.Text = CompanyName_Str
+                                FIle_Label_As = "Company Name"
                             End If
                         ElseIf FIle_Label_As.Contains("Proj/Client`s Name") Then
                             ProjectLabel_Cbox.Text = OwnersName
@@ -319,16 +369,12 @@ Public Class PD_Addendum
                             Dim nature As String = row3("NATURE")
                             If nature = "Architectural Design" Then
                                 ArchDesignDT.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"))
-                                'ArchDesign_DGV.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"))
                             ElseIf nature = "Interior Design" Then
                                 IntrDesignDT.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"))
-                                'IntrDesign_DGV.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"))
                             ElseIf nature = "General Contractor" Then
                                 GenConDT.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"))
-                                'GenCon_DGV.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"))
                             ElseIf nature = "Construction Management" Then
                                 ConsMngmtDT.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"))
-                                'ConsMngmt_DGV.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"))
                             End If
                         Next row3
 
@@ -376,7 +422,7 @@ Public Class PD_Addendum
                                 ProfileFin_Lbl.Text += arr_Profile_finish(i)
                             End If
                         Next
-                        OwnersName_Tbox.Focus()
+                        'OwnersName_Tbox.Focus()
 
                 End Select
 

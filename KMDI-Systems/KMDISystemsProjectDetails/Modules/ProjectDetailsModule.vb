@@ -27,6 +27,7 @@ Module ProjectDetailsModule
     'Public QuoteNoDT As DataTable = New DataTable("QuoteNoDT")
     Public DTcols_str As String() = {"OFFICENAME", "NAME", "POSITION", "CONTACT NUMBER", "COMP_ID", "EMP_ID"}
 
+    Public arr_WD_ID As New List(Of String)
     Public arr_Profile_finish As New List(Of String)
     Public arr_Quote_Date As New List(Of Date)
 
@@ -201,6 +202,7 @@ Module ProjectDetailsModule
                         QUERY_SELECT_WITH_READER_bool = True
                         Select Case ReadBy
                             Case "QuoteRefNo_Sel"
+                                arr_WD_ID.Add(read.Item("WD_ID"))
                                 arr_Quote_Date.Add(read.Item("QUOTE_DATE"))
                                 arr_Profile_finish.Add(read.Item("PROFILE_FINISH"))
                         End Select
@@ -697,6 +699,52 @@ Module ProjectDetailsModule
                 Else
                     MetroFramework.MetroMessageBox.Show(FormName, "Failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 End If
+            End Using
+        End Using
+    End Sub
+
+    Public Sub PD_Addendum_Update(ByVal FormName As Form)
+        Query = "
+Begin Transaction
+	Begin Try
+	UPDATE	[A_NEW_PROJECT_DETAILS]
+	SET		[PROJECT_LABEL] = @PROJECT_LABEL,
+			[CONSTRUCTION_STAGE] = @CONSTRUCTION_STAGE,
+			[ACTIVITIES] = @ACTIVITIES
+	WHERE	[PD_ID] = @PD_ID 
+
+    UPDATE  
+    SET     [OTHER_PERTINENT_INFO] = @OTHER_PERTINENT_INFO
+    WHERE   [PD_ID_REF] = @PD_ID
+
+	SELECT	ERROR_NUMBER() AS ErrorNumber,
+			ERROR_MESSAGE() AS ErrorMessage
+            Commit Transaction
+	End Try
+
+	Begin Catch
+	SELECT	ERROR_NUMBER() AS ErrorNumber,
+			ERROR_MESSAGE() AS ErrorMessage
+			ROLLBACK TRANSACTION;  
+	End Catch"
+        Using sqlcon As New SqlConnection(sqlcnstr)
+            sqlcon.Open()
+            Using sqlCommand As New SqlCommand(Query, sqlcon)
+                'sqlCommand.Parameters.AddWithValue("@OFFICENAME", OFFICENAME)
+                'sqlCommand.Parameters.AddWithValue("@OFFICEADDRESS", OFFICEADDRESS)
+                'sqlCommand.Parameters.AddWithValue("@CONTACTNO", CONTACTNO)
+                'sqlCommand.Parameters.AddWithValue("@OFFICEASSISTANT", OFFICEASSISTANT)
+                'sqlCommand.Parameters.AddWithValue("@REMARKS", REMARKS)
+                'If Operation_Type = "Update" Or Operation_Type = "Delete" Then
+                '    sqlCommand.Parameters.AddWithValue("@COMP_ID", COMP_ID)
+                'End If
+
+                'confirmQuery = sqlCommand.ExecuteNonQuery()
+                'If confirmQuery <> 0 Then
+                '    PD_CountSuccess = 1
+                'Else
+                '    MetroFramework.MetroMessageBox.Show(FormName, "Failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                'End If
             End Using
         End Using
     End Sub
