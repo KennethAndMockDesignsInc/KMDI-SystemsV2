@@ -4,8 +4,6 @@ Public Class PD_Addendum
     Public PD_Addendum_BGW As BackgroundWorker = New BackgroundWorker
     Dim ADDENDUM_BGW_TODO As String
     Dim WD_ID, QUOTE_NO As String
-    Dim arr_Profile_finish As New List(Of String)
-    Dim arr_Quote_Date As New List(Of String)
 
 
     Sub Start_PD_Addendum_BGW(ByVal Panel_bool As Boolean,
@@ -42,13 +40,11 @@ Public Class PD_Addendum
         PD_Addendum_BGW.WorkerReportsProgress = True
         AddHandler PD_Addendum_BGW.DoWork, AddressOf PD_Addendum_BGW_DoWork
         AddHandler PD_Addendum_BGW.RunWorkerCompleted, AddressOf PD_Addendum_BGW_RunWorkerCompleted
-        AddHandler PD_Addendum_BGW.ProgressChanged, AddressOf PD_Addendum_BGW_ProgressChanged
+        'AddHandler PD_Addendum_BGW.ProgressChanged, AddressOf PD_Addendum_BGW_ProgressChanged
         onformLoad()
     End Sub
 
-    'Dim Populate_QuoteNoBS_bool As Boolean = False
-    'Dim WD_ID_forCbox, Quote_No_forCbox As String
-    'Dim i_forcbox As Integer = 0
+    Dim Qnos() As String
     Private Sub PD_Addendum_BGW_DoWork(ByVal sender As System.Object, ByVal e As DoWorkEventArgs)
         Try
             Select Case ADDENDUM_BGW_TODO
@@ -79,21 +75,19 @@ Public Class PD_Addendum
                                       QueryMidArrays(6) & " ON TP_NATURE.TP_ID_REF = TP.TP_ID " &
                                       QueryConditionArrays(1) & " AND CD.JOB_ORDER_NO = CD.PARENTJONO AND STATUS_AVAILABILITY = 1 AND EMP_STATUS = 1 AND COMP_STATUS = 1 AND PD_STATUS = 1"
                     Query_Select(PD_ID)
-                'Case "QuoteRefNo"
-                '    QueryBUILD = "SELECT WD_ID, QUOTE_NO FROM [A_NEW_WINDOOR_DETAILS]"
-                '    Query_Select("")
                 Case "QuoteRefNo_Sel"
-                    QUERY_INSTANCE = "Loading_using_EqualSearch"
-                    QueryBUILD = "SELECT * FROM [A_NEW_WINDOOR_DETAILS] WHERE QUOTE_NO = @EqualSearch AND [WD_STATUS] = 1"
+                    QUERY_INSTANCE = "Read_using_SearchString"
+                    QueryBUILD = "SELECT * FROM [A_NEW_WINDOOR_DETAILS] WHERE QUOTE_NO = @SearchString AND [WD_STATUS] = 1"
 
-                    Dim Qnos() As String
                     Qnos = QUOTE_NO.Split("&")
+                    If arr_Profile_finish.Count <> 0 Or arr_Quote_Date.Count <> 0 Then
+                        arr_Profile_finish.Clear()
+                        arr_Quote_Date.Clear()
+                    End If
                     For Each Qno As String In Qnos
-                        Dim i As Integer
-                        i += 1
-                        Query_Select(Qno)
-                        PD_Addendum_BGW.ReportProgress(i)
+                        QUERY_SELECT_WITH_READER(Qno, ADDENDUM_BGW_TODO)
                     Next
+
             End Select
 
         Catch ex As SqlException
@@ -113,14 +107,6 @@ Public Class PD_Addendum
             End If
         Catch ex2 As Exception
             MessageBox.Show(Me, ex2.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
-        End Try
-    End Sub
-
-    Private Sub PD_Addendum_BGW_ProgressChanged(sender As Object, e As ProgressChangedEventArgs)
-        Try
-
-        Catch ex As Exception
-            MessageBox.Show(ex.Message)
         End Try
     End Sub
 
@@ -190,16 +176,6 @@ Public Class PD_Addendum
 
     Private Sub GenCon_DGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs) Handles GenCon_DGV.RowPostPaint
         rowpostpaint(sender, e)
-    End Sub
-
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        QUOTE_NO = Replace(QuoteRefNo_Tbox.Text, " ", "")
-
-        Dim Qnos() As String
-        Qnos = QUOTE_NO.Split("&")
-        For Each Qno As String In Qnos
-            MsgBox(Qno)
-        Next
     End Sub
 
     Private Sub QuoteRefNo_Tbox_KeyDown(sender As Object, e As KeyEventArgs) Handles QuoteRefNo_Tbox.KeyDown
@@ -380,52 +356,26 @@ Public Class PD_Addendum
                         GenCon_DGV.Columns("COMP_ID").Visible = False
                         GenCon_DGV.Columns("EMP_ID").Visible = False
 
-                    'If QuoteRefNo_Cbox.Enabled = False Then
-                    '    QuoteRefNo_Cbox.Text = QuoteRefNo
-                    'Else
-                    '    ADDENDUM_BGW_TODO = "QuoteRefNo"
-                    '    Start_PD_Addendum_BGW(False, True)
-                    'End If
-                'Case "QuoteRefNo"
-                '    'MsgBox("sqlBindingSource.Count: " & sqlBindingSource.Count)
-                '    'MsgBox("QuoteNoDT.Rows.Count: " & QuoteNoDT.Rows.Count)
-                '    Populate_QuoteNoBS_bool = False
-                '    i_forcbox = 0
-
-                '    QuoteRefNo_Cbox.DataBindings.Clear()
-                '    QuoteRefNo_Cbox.DataSource = QuoteNoDT 'sqlBindingSource
-                '    QuoteRefNo_Cbox.ValueMember = "WD_ID"
-                '    QuoteRefNo_Cbox.DisplayMember = "QUOTE_NO"
-                '    If QuoteRefNo <> Nothing Or QuoteRefNo <> "" Then
-                '        QuoteRefNo_Cbox.Text = QuoteRefNo
-                '    Else
-                '        QuoteRefNo_Cbox.SelectedIndex = -1
-                '    End If
                     Case "QuoteRefNo_Sel"
-                        For Each row In sqlBindingSource
-                            Dim Qdate, Profile_fin As String
-                            Qdate = row("QUOTE_DATE")
-                            Profile_fin = row("PROFILE_FINISH")
-                            arr_Profile_finish.Add(Profile_fin)
-                            arr_Quote_Date.Add(Qdate)
-                            'arr_Quote_Date(1) = Qdate
-
-                            'QuoteDate_Lbl.Text = row("QUOTE_DATE")
-                            'ProfileFin_Lbl.Text = row("PROFILE_FINISH")
-                        Next
-                        MsgBox(arr_Quote_Date.Count)
 
                         For i = 0 To arr_Quote_Date.Count - 1
-                            MsgBox(arr_Quote_Date(i))
                             If arr_Quote_Date.Count = 1 Then
-                                QuoteDate_Lbl.Text = arr_Quote_Date(0)
+                                QuoteDate_Lbl.Text = arr_Quote_Date(0).ToString("MMM-dd-yyyy")
                             ElseIf arr_Quote_Date.Count > 1 And i <> arr_Quote_Date.Count - 1 Then
-                                QuoteDate_Lbl.Text += arr_Quote_Date(i) & ", "
+                                QuoteDate_Lbl.Text += arr_Quote_Date(i).ToString("MMM-dd-yyyy") & ", "
                             ElseIf arr_Quote_Date.Count > 1 And i = arr_Quote_Date.Count - 1 Then
-                                QuoteDate_Lbl.Text += arr_Quote_Date(i)
+                                QuoteDate_Lbl.Text += arr_Quote_Date(i).ToString("MMM-dd-yyyy")
                             End If
                         Next
-
+                        For i = 0 To arr_Profile_finish.Count - 1
+                            If arr_Profile_finish.Count = 1 Then
+                                ProfileFin_Lbl.Text = arr_Profile_finish(0)
+                            ElseIf arr_Profile_finish.Count > 1 And i <> arr_Profile_finish.Count - 1 Then
+                                ProfileFin_Lbl.Text += arr_Profile_finish(i) & ", "
+                            ElseIf arr_Profile_finish.Count > 1 And i = arr_Profile_finish.Count - 1 Then
+                                ProfileFin_Lbl.Text += arr_Profile_finish(i)
+                            End If
+                        Next
                         OwnersName_Tbox.Focus()
 
                 End Select

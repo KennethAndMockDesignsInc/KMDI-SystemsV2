@@ -27,6 +27,8 @@ Module ProjectDetailsModule
     'Public QuoteNoDT As DataTable = New DataTable("QuoteNoDT")
     Public DTcols_str As String() = {"OFFICENAME", "NAME", "POSITION", "CONTACT NUMBER", "COMP_ID", "EMP_ID"}
 
+    Public arr_Profile_finish As New List(Of String)
+    Public arr_Quote_Date As New List(Of Date)
 
     Public COMP_ID As String = Nothing,
         COMP_NAME As String = Nothing,
@@ -184,7 +186,8 @@ Module ProjectDetailsModule
 
     Public QUERY_SELECT_WITH_READER_VAL As String
     Public QUERY_SELECT_WITH_READER_bool As Boolean
-    Public Sub QUERY_SELECT_WITH_READER(ByVal SearchString As String)
+    Public Sub QUERY_SELECT_WITH_READER(ByVal SearchString As String,
+                                        ByVal ReadBy As String)
         Using sqlcon As New SqlConnection(sqlcnstr)
             sqlcon.Open()
             Using sqlCommand As New SqlCommand(QueryBUILD, sqlcon)
@@ -196,6 +199,11 @@ Module ProjectDetailsModule
                     read.Read()
                     If read.HasRows Then
                         QUERY_SELECT_WITH_READER_bool = True
+                        Select Case ReadBy
+                            Case "QuoteRefNo_Sel"
+                                arr_Quote_Date.Add(read.Item("QUOTE_DATE"))
+                                arr_Profile_finish.Add(read.Item("PROFILE_FINISH"))
+                        End Select
                     Else
                         QUERY_SELECT_WITH_READER_bool = False
                     End If

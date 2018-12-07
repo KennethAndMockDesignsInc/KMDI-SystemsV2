@@ -84,7 +84,7 @@ Public Class PD_SalesJobOrder
             ElseIf BGW_Func_turn = "SEARCH_FOR_SUB_JO" Then
                 QUERY_INSTANCE = "Read_using_SearchString"
                 QueryBUILD = "SELECT SUB_JO FROM [A_NEW_CONTRACT_DETAILS] WHERE SUB_JO = @SearchString"
-                QUERY_SELECT_WITH_READER(JoRefNo)
+                QUERY_SELECT_WITH_READER(JoRefNo, BGW_Func_turn)
             ElseIf BGW_Func_turn = "Update_Me" Then
                 PD_SalesJobOrder_Update(Sub_Jo, JoRefNo, JoDate, FileLabelAs,
                                         JoDesc, JoAttach, Remarks, BlankPage,
