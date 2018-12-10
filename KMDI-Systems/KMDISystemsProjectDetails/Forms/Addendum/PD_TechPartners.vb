@@ -22,6 +22,7 @@ Public Class PD_TechPartners
             TechPartners_DGV.DataSource = ArchDesignBS
             TechPartners_DGV.Columns("COMP_ID").Visible = False
             TechPartners_DGV.Columns("EMP_ID").Visible = False
+            TechPartners_DGV.Columns("TP_ID").Visible = False
         End If
 
         PD_TechPartners_BGW.WorkerSupportsCancellation = True
@@ -55,6 +56,8 @@ Public Class PD_TechPartners
                 QueryBUILD = "SELECT DISTINCT   [COMP_ID],
                                                 [OFFICENAME] " & QueryMidArrays(9) & " AND [EMP_ID] = @EqualSearch "
                 SearchStr = EMP_ID
+            ElseIf PD_TechPartners_BGW_TODO = "Search_for_TP_ID" Then
+                SEARCH_TP_ID(COMP_ID, EMP_ID, EMP_POSITION)
             ElseIf PD_TechPartners_BGW_TODO = "Delete_Emp" Then
                 If DGV_CLICKED = "Emp_DGV" Then
                     PD_UpdateEmp_Operations(Me, "Delete", EMP_ID)
@@ -111,26 +114,11 @@ Public Class PD_TechPartners
 
                 If PD_TechPartners_BGW_TODO.Contains("Comp_DGV") Then
                     Comp_DGV.Columns("COMP_ID").Visible = False
-                    'If ArchDesignDT.Columns.Count = 0 And ConsMngmtDT.Columns.Count = 0 And
-                    '    GenConDT.Columns.Count = 0 And IntrDesignDT.Columns.Count = 0 Then
-                    '    For i = 0 To UBound(DTcols_str)
-                    '        ADDTCols = New DataColumn(DTcols_str(i), GetType(String))
-                    '        IDDTCols = New DataColumn(DTcols_str(i), GetType(String))
-                    '        GCDTCols = New DataColumn(DTcols_str(i), GetType(String))
-                    '        CMDTCols = New DataColumn(DTcols_str(i), GetType(String))
-
-                    '        ArchDesignDT.Columns.Add(ADDTCols)
-                    '        ConsMngmtDT.Columns.Add(CMDTCols)
-                    '        GenConDT.Columns.Add(GCDTCols)
-                    '        IntrDesignDT.Columns.Add(IDDTCols)
-                    '    Next
-                    'End If
 
                 ElseIf PD_TechPartners_BGW_TODO = "POSITION" Then
                     Position_Cbox.DataBindings.Clear()
                     Position_Cbox.DataSource = sqlBindingSource
                     Position_Cbox.ValueMember = "POSITION"
-                    'Position_Cbox.Text = POSITION
                     SearchStr = ""
                     PD_TechPartners_BGW_TODO = "Search_Emp_DGV"
                     Start_PD_TechPartners_BGW()
@@ -149,6 +137,51 @@ Public Class PD_TechPartners
                         PD_TechPartners_BGW_TODO = "POSITION"
                         Start_PD_TechPartners_BGW()
                     End If
+                ElseIf PD_TechPartners_BGW_TODO = "Search_for_TP_ID" Then
+                    If col_invisi_bool = True Then
+                        TechPartners_DGV.Columns.Clear()
+                        If Nature_Cbox.SelectedIndex = 0 Then
+                            ArchDesignDT.Rows.Add(COMP_NAME, EMP_NAME, Position_Cbox.Text, EMP_MOBILENO, COMP_ID, EMP_ID, TP_ID)
+                            ArchDesignBS.DataSource = ArchDesignDT
+                            TechPartners_DGV.DataSource = ArchDesignBS
+                        ElseIf Nature_Cbox.SelectedIndex = 1 Then
+                            IntrDesignDT.Rows.Add(COMP_NAME, EMP_NAME, Position_Cbox.Text, EMP_MOBILENO, COMP_ID, EMP_ID, TP_ID)
+                            IntrDesignBS.DataSource = IntrDesignDT
+                            TechPartners_DGV.DataSource = IntrDesignBS
+                        ElseIf Nature_Cbox.SelectedIndex = 2 Then
+                            ConsMngmtDT.Rows.Add(COMP_NAME, EMP_NAME, Position_Cbox.Text, EMP_MOBILENO, COMP_ID, EMP_ID, TP_ID)
+                            ConsMngmtBS.DataSource = ConsMngmtDT
+                            TechPartners_DGV.DataSource = ConsMngmtBS
+                        ElseIf Nature_Cbox.SelectedIndex = 3 Then
+                            GenConDT.Rows.Add(COMP_NAME, EMP_NAME, Position_Cbox.Text, EMP_MOBILENO, COMP_ID, EMP_ID, TP_ID)
+                            GenConBS.DataSource = GenConDT
+                            TechPartners_DGV.DataSource = GenConBS
+                        End If
+
+                        TechPartners_DGV.Columns("COMP_ID").Visible = False
+                        TechPartners_DGV.Columns("EMP_ID").Visible = False
+                        TechPartners_DGV.Columns("TP_ID").Visible = False
+                        col_invisi_bool = False
+                    Else
+                        If Nature_Cbox.SelectedIndex = 0 Then
+                            ArchDesignDT.Rows.Add(COMP_NAME, EMP_NAME, Position_Cbox.Text, EMP_MOBILENO, COMP_ID, EMP_ID, TP_ID)
+                            ArchDesignBS.DataSource = ArchDesignDT
+                            TechPartners_DGV.DataSource = ArchDesignBS
+                        ElseIf Nature_Cbox.SelectedIndex = 1 Then
+                            IntrDesignDT.Rows.Add(COMP_NAME, EMP_NAME, Position_Cbox.Text, EMP_MOBILENO, COMP_ID, EMP_ID, TP_ID)
+                            IntrDesignBS.DataSource = IntrDesignDT
+                            TechPartners_DGV.DataSource = IntrDesignBS
+                        ElseIf Nature_Cbox.SelectedIndex = 2 Then
+                            ConsMngmtDT.Rows.Add(COMP_NAME, EMP_NAME, Position_Cbox.Text, EMP_MOBILENO, COMP_ID, EMP_ID, TP_ID)
+                            ConsMngmtBS.DataSource = ConsMngmtDT
+                            TechPartners_DGV.DataSource = ConsMngmtBS
+                        ElseIf Nature_Cbox.SelectedIndex = 3 Then
+                            GenConDT.Rows.Add(COMP_NAME, EMP_NAME, Position_Cbox.Text, EMP_MOBILENO, COMP_ID, EMP_ID, TP_ID)
+                            GenConBS.DataSource = GenConDT
+                            TechPartners_DGV.DataSource = GenConBS
+                        End If
+                    End If
+
                 End If
             End If
             TP_TabControl.Enabled = True
@@ -287,6 +320,7 @@ Public Class PD_TechPartners
         End If
         TechPartners_DGV.Columns("COMP_ID").Visible = False
         TechPartners_DGV.Columns("EMP_ID").Visible = False
+        TechPartners_DGV.Columns("TP_ID").Visible = False
     End Sub
 
     Private Sub Save_BTN_Click(sender As Object, e As EventArgs) Handles Save_BTN.Click
@@ -341,51 +375,8 @@ Public Class PD_TechPartners
         If COMP_ID = Nothing Or COMP_NAME = Nothing Or EMP_ID = Nothing Or EMP_NAME = Nothing Or Position_Cbox.Text = "" Then
             MetroFramework.MetroMessageBox.Show(Me, "Please fill up the filled(s)", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
         Else
-            If col_invisi_bool = True Then
-                TechPartners_DGV.Columns.Clear()
-                If Nature_Cbox.SelectedIndex = 0 Then
-                    ArchDesignDT.Rows.Add(COMP_NAME, EMP_NAME, Position_Cbox.Text, EMP_MOBILENO, COMP_ID, EMP_ID)
-                    ArchDesignBS.DataSource = ArchDesignDT
-                    TechPartners_DGV.DataSource = ArchDesignBS
-                ElseIf Nature_Cbox.SelectedIndex = 1 Then
-                    IntrDesignDT.Rows.Add(COMP_NAME, EMP_NAME, Position_Cbox.Text, EMP_MOBILENO, COMP_ID, EMP_ID)
-                    IntrDesignBS.DataSource = IntrDesignDT
-                    TechPartners_DGV.DataSource = IntrDesignBS
-                ElseIf Nature_Cbox.SelectedIndex = 2 Then
-                    ConsMngmtDT.Rows.Add(COMP_NAME, EMP_NAME, Position_Cbox.Text, EMP_MOBILENO, COMP_ID, EMP_ID)
-                    ConsMngmtBS.DataSource = ConsMngmtDT
-                    TechPartners_DGV.DataSource = ConsMngmtBS
-                ElseIf Nature_Cbox.SelectedIndex = 3 Then
-                    GenConDT.Rows.Add(COMP_NAME, EMP_NAME, Position_Cbox.Text, EMP_MOBILENO, COMP_ID, EMP_ID)
-                    GenConBS.DataSource = GenConDT
-                    TechPartners_DGV.DataSource = GenConBS
-                End If
-
-                TechPartners_DGV.Columns("COMP_ID").Visible = False
-                TechPartners_DGV.Columns("EMP_ID").Visible = False
-                col_invisi_bool = False
-            Else
-
-                If Nature_Cbox.SelectedIndex = 0 Then
-                    ArchDesignDT.Rows.Add(COMP_NAME, EMP_NAME, Position_Cbox.Text, EMP_MOBILENO, COMP_ID, EMP_ID)
-                    ArchDesignBS.DataSource = ArchDesignDT
-                    TechPartners_DGV.DataSource = ArchDesignBS
-                ElseIf Nature_Cbox.SelectedIndex = 1 Then
-                    IntrDesignDT.Rows.Add(COMP_NAME, EMP_NAME, Position_Cbox.Text, EMP_MOBILENO, COMP_ID, EMP_ID)
-                    IntrDesignBS.DataSource = IntrDesignDT
-                    TechPartners_DGV.DataSource = IntrDesignBS
-                ElseIf Nature_Cbox.SelectedIndex = 2 Then
-                    ConsMngmtDT.Rows.Add(COMP_NAME, EMP_NAME, Position_Cbox.Text, EMP_MOBILENO, COMP_ID, EMP_ID)
-                    ConsMngmtBS.DataSource = ConsMngmtDT
-                    TechPartners_DGV.DataSource = ConsMngmtBS
-                ElseIf Nature_Cbox.SelectedIndex = 3 Then
-                    GenConDT.Rows.Add(COMP_NAME, EMP_NAME, Position_Cbox.Text, EMP_MOBILENO, COMP_ID, EMP_ID)
-                    GenConBS.DataSource = GenConDT
-                    TechPartners_DGV.DataSource = GenConBS
-                End If
-            End If
-
-
+            PD_TechPartners_BGW_TODO = "Search_for_TP_ID"
+            Start_PD_TechPartners_BGW()
         End If
     End Sub
 

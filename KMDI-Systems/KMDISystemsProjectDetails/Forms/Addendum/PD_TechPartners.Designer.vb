@@ -38,27 +38,28 @@ Partial Class PD_TechPartners
         Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.TP_TabControl = New MetroFramework.Controls.MetroTabControl()
         Me.TP_Tab = New MetroFramework.Controls.MetroTabPage()
-        Me.Save_BTN = New MetroFramework.Controls.MetroButton()
         Me.Operation_BTN = New MetroFramework.Controls.MetroButton()
         Me.Position_Cbox = New System.Windows.Forms.ComboBox()
         Me.TechPartners_DGV = New MetroFramework.Controls.MetroGrid()
-        Me.DataGridViewTextBoxColumn2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Column2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Column3 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Column4 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Column5 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Column6 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Comp_DGV = New MetroFramework.Controls.MetroGrid()
         Me.Column1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Nature_Cbox = New MetroFramework.Controls.MetroComboBox()
         Me.Search_Tbox = New MetroFramework.Controls.MetroTextBox()
         Me.Emp_DGV = New MetroFramework.Controls.MetroGrid()
         Me.DataGridViewTextBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Save_BTN = New MetroFramework.Controls.MetroButton()
         Me.TP_Cmenu = New MetroFramework.Controls.MetroContextMenu(Me.components)
         Me.AddToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.UpdateToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.LoadingPbox = New System.Windows.Forms.PictureBox()
+        Me.DataGridViewTextBoxColumn2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column3 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column4 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column5 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column6 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column7 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.TP_TabControl.SuspendLayout()
         Me.TP_Tab.SuspendLayout()
         CType(Me.TechPartners_DGV, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -105,15 +106,6 @@ Partial Class PD_TechPartners
         Me.TP_Tab.VerticalScrollbarHighlightOnWheel = False
         Me.TP_Tab.VerticalScrollbarSize = 10
         '
-        'Save_BTN
-        '
-        Me.Save_BTN.Location = New System.Drawing.Point(554, 47)
-        Me.Save_BTN.Name = "Save_BTN"
-        Me.Save_BTN.Size = New System.Drawing.Size(77, 30)
-        Me.Save_BTN.TabIndex = 832
-        Me.Save_BTN.Text = "SAVE"
-        Me.Save_BTN.UseSelectable = True
-        '
         'Operation_BTN
         '
         Me.Operation_BTN.Location = New System.Drawing.Point(554, 47)
@@ -157,7 +149,7 @@ Partial Class PD_TechPartners
         DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
         Me.TechPartners_DGV.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.TechPartners_DGV.ColumnHeadersHeight = 30
-        Me.TechPartners_DGV.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.DataGridViewTextBoxColumn2, Me.Column2, Me.Column3, Me.Column4, Me.Column5, Me.Column6})
+        Me.TechPartners_DGV.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.DataGridViewTextBoxColumn2, Me.Column2, Me.Column3, Me.Column4, Me.Column5, Me.Column6, Me.Column7})
         DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
         DataGridViewCellStyle2.Font = New System.Drawing.Font("Segoe UI", 15.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel)
@@ -191,50 +183,6 @@ Partial Class PD_TechPartners
         Me.TechPartners_DGV.TabIndex = 831
         Me.TechPartners_DGV.TabStop = False
         Me.TechPartners_DGV.UseStyleColors = True
-        '
-        'DataGridViewTextBoxColumn2
-        '
-        Me.DataGridViewTextBoxColumn2.HeaderText = "OFFICENAME"
-        Me.DataGridViewTextBoxColumn2.Name = "DataGridViewTextBoxColumn2"
-        Me.DataGridViewTextBoxColumn2.ReadOnly = True
-        Me.DataGridViewTextBoxColumn2.Width = 120
-        '
-        'Column2
-        '
-        Me.Column2.HeaderText = "NAME"
-        Me.Column2.Name = "Column2"
-        Me.Column2.ReadOnly = True
-        Me.Column2.Width = 74
-        '
-        'Column3
-        '
-        Me.Column3.HeaderText = "POSITION"
-        Me.Column3.Name = "Column3"
-        Me.Column3.ReadOnly = True
-        Me.Column3.Width = 97
-        '
-        'Column4
-        '
-        Me.Column4.HeaderText = "CONTACT NUMBER"
-        Me.Column4.Name = "Column4"
-        Me.Column4.ReadOnly = True
-        Me.Column4.Width = 161
-        '
-        'Column5
-        '
-        Me.Column5.HeaderText = "COMP_ID"
-        Me.Column5.Name = "Column5"
-        Me.Column5.ReadOnly = True
-        Me.Column5.Visible = False
-        Me.Column5.Width = 94
-        '
-        'Column6
-        '
-        Me.Column6.HeaderText = "EMP_ID"
-        Me.Column6.Name = "Column6"
-        Me.Column6.ReadOnly = True
-        Me.Column6.Visible = False
-        Me.Column6.Width = 82
         '
         'Comp_DGV
         '
@@ -407,6 +355,15 @@ Partial Class PD_TechPartners
         Me.DataGridViewTextBoxColumn1.Name = "DataGridViewTextBoxColumn1"
         Me.DataGridViewTextBoxColumn1.ReadOnly = True
         '
+        'Save_BTN
+        '
+        Me.Save_BTN.Location = New System.Drawing.Point(554, 47)
+        Me.Save_BTN.Name = "Save_BTN"
+        Me.Save_BTN.Size = New System.Drawing.Size(77, 30)
+        Me.Save_BTN.TabIndex = 832
+        Me.Save_BTN.Text = "SAVE"
+        Me.Save_BTN.UseSelectable = True
+        '
         'TP_Cmenu
         '
         Me.TP_Cmenu.Font = New System.Drawing.Font("Segoe UI", 9.0!)
@@ -445,6 +402,58 @@ Partial Class PD_TechPartners
         Me.LoadingPbox.TabStop = False
         Me.LoadingPbox.Visible = False
         '
+        'DataGridViewTextBoxColumn2
+        '
+        Me.DataGridViewTextBoxColumn2.HeaderText = "OFFICENAME"
+        Me.DataGridViewTextBoxColumn2.Name = "DataGridViewTextBoxColumn2"
+        Me.DataGridViewTextBoxColumn2.ReadOnly = True
+        Me.DataGridViewTextBoxColumn2.Width = 120
+        '
+        'Column2
+        '
+        Me.Column2.HeaderText = "NAME"
+        Me.Column2.Name = "Column2"
+        Me.Column2.ReadOnly = True
+        Me.Column2.Width = 74
+        '
+        'Column3
+        '
+        Me.Column3.HeaderText = "POSITION"
+        Me.Column3.Name = "Column3"
+        Me.Column3.ReadOnly = True
+        Me.Column3.Width = 97
+        '
+        'Column4
+        '
+        Me.Column4.HeaderText = "CONTACT NUMBER"
+        Me.Column4.Name = "Column4"
+        Me.Column4.ReadOnly = True
+        Me.Column4.Width = 161
+        '
+        'Column5
+        '
+        Me.Column5.HeaderText = "COMP_ID"
+        Me.Column5.Name = "Column5"
+        Me.Column5.ReadOnly = True
+        Me.Column5.Visible = False
+        Me.Column5.Width = 94
+        '
+        'Column6
+        '
+        Me.Column6.HeaderText = "EMP_ID"
+        Me.Column6.Name = "Column6"
+        Me.Column6.ReadOnly = True
+        Me.Column6.Visible = False
+        Me.Column6.Width = 82
+        '
+        'Column7
+        '
+        Me.Column7.HeaderText = "TP_ID"
+        Me.Column7.Name = "Column7"
+        Me.Column7.ReadOnly = True
+        Me.Column7.Visible = False
+        Me.Column7.Width = 69
+        '
         'PD_TechPartners
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -478,16 +487,17 @@ Partial Class PD_TechPartners
     Friend WithEvents Nature_Cbox As MetroFramework.Controls.MetroComboBox
     Public WithEvents Search_Tbox As MetroFramework.Controls.MetroTextBox
     Friend WithEvents Position_Cbox As ComboBox
-    Friend WithEvents DataGridViewTextBoxColumn2 As DataGridViewTextBoxColumn
-    Friend WithEvents Column2 As DataGridViewTextBoxColumn
-    Friend WithEvents Column3 As DataGridViewTextBoxColumn
-    Friend WithEvents Column4 As DataGridViewTextBoxColumn
-    Friend WithEvents Column5 As DataGridViewTextBoxColumn
-    Friend WithEvents Column6 As DataGridViewTextBoxColumn
     Friend WithEvents Operation_BTN As MetroFramework.Controls.MetroButton
     Friend WithEvents TP_Cmenu As MetroFramework.Controls.MetroContextMenu
     Friend WithEvents AddToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents UpdateToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents DeleteToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents Save_BTN As MetroFramework.Controls.MetroButton
+    Friend WithEvents DataGridViewTextBoxColumn2 As DataGridViewTextBoxColumn
+    Friend WithEvents Column2 As DataGridViewTextBoxColumn
+    Friend WithEvents Column3 As DataGridViewTextBoxColumn
+    Friend WithEvents Column4 As DataGridViewTextBoxColumn
+    Friend WithEvents Column5 As DataGridViewTextBoxColumn
+    Friend WithEvents Column6 As DataGridViewTextBoxColumn
+    Friend WithEvents Column7 As DataGridViewTextBoxColumn
 End Class

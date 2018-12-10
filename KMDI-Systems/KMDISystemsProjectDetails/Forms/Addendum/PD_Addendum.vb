@@ -44,7 +44,7 @@ Public Class PD_Addendum
     End Sub
 
     Dim Qnos() As String
-    Private Sub PD_Addendum_BGW_DoWork(ByVal sender As System.Object, ByVal e As DoWorkEventArgs)
+    Private Sub PD_Addendum_BGW_DoWork(ByVal sender As Object, ByVal e As DoWorkEventArgs)
         Try
             Select Case ADDENDUM_BGW_TODO
                 Case "Onload"
@@ -65,14 +65,10 @@ Public Class PD_Addendum
                     Query_Select(PD_ID)
                 Case "TechnicalPartners"
                     QUERY_INSTANCE = "Loading_using_EqualSearch"
-                    QueryBUILD = "SELECT	TP.OFFICENAME,
-		                                TP.NAME,
-		                                TP.POSITION,
-		                                TP.MOBILENO,
-		                                TP_NATURE.NATURE 
+                    QueryBUILD = "SELECT	*
                               FROM    ( SELECT * " & QueryMidArrays(7) & ") AS [TP] " &
-                                      QueryMidArrays(6) & " ON TP_NATURE.TP_ID_REF = TP.TP_ID " &
-                                      QueryConditionArrays(1) & " AND CD.JOB_ORDER_NO = CD.PARENTJONO AND STATUS_AVAILABILITY = 1 AND EMP_STATUS = 1 AND COMP_STATUS = 1 AND PD_STATUS = 1"
+                                          QueryMidArrays(6) & " ON TP_NATURE.TP_ID_REF = TP.TP_ID " &
+                                          QueryConditionArrays(1) & " AND CD.JOB_ORDER_NO = CD.PARENTJONO AND STATUS_AVAILABILITY = 1 AND EMP_STATUS = 1 AND COMP_STATUS = 1 AND PD_STATUS = 1"
                     Query_Select(PD_ID)
                 Case "QuoteRefNo_Sel"
                     QUERY_INSTANCE = "Read_using_SearchString"
@@ -86,26 +82,31 @@ Public Class PD_Addendum
                     For Each Qno As String In Qnos
                         QUERY_SELECT_WITH_READER(Qno, ADDENDUM_BGW_TODO)
                     Next
-
+                Case "INSERT_TECHNICAL_PARTNERS"
+                    For Each ROW In ArchDesignBS
+                        PD_Addendum_Update_TechPartners(Me, C_ID, "Architectural Design", ROW("COMP_ID"), ROW("EMP_ID"), ROW("POSITION"), ROW("TP_ID"))
+                    Next
+                Case "Search_for_TP_ID"
+                    SEARCH_TP_ID(COMP_ID, EMP_ID, EMP_POSITION)
             End Select
 
         Catch ex As SqlException
-            'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
-            If ex.Number = -2 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Click ok to Reconnect", "Request Timeout", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            ElseIf ex.Number = 1232 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Please check internet connection", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                PD_Addendum_BGW.CancelAsync()
-            ElseIf ex.Number = 19 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Sorry our server is under maintenance." & vbCrLf & "Please be patient, will come back A.S.A.P", "Server is down", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                PD_Addendum_BGW.CancelAsync()
-            ElseIf ex.Number <> -2 And ex.Number <> 1232 And ex.Number <> 19 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Contact the Programmers now", "You need some help?", MessageBoxButtons.OK, MessageBoxIcon.Stop)
-                MetroFramework.MetroMessageBox.Show(Me, ex.Message)
-                PD_Addendum_BGW.CancelAsync()
-            End If
+        'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
+        If ex.Number = -2 Then
+            MetroFramework.MetroMessageBox.Show(Me, "Click ok to Reconnect", "Request Timeout", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+        ElseIf ex.Number = 1232 Then
+            MetroFramework.MetroMessageBox.Show(Me, "Please check internet connection", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            PD_Addendum_BGW.CancelAsync()
+        ElseIf ex.Number = 19 Then
+            MetroFramework.MetroMessageBox.Show(Me, "Sorry our server is under maintenance." & vbCrLf & "Please be patient, will come back A.S.A.P", "Server is down", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            PD_Addendum_BGW.CancelAsync()
+        ElseIf ex.Number <> -2 And ex.Number <> 1232 And ex.Number <> 19 Then
+            MetroFramework.MetroMessageBox.Show(Me, "Contact the Programmers now", "You need some help?", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+            MetroFramework.MetroMessageBox.Show(Me, ex.Message)
+            PD_Addendum_BGW.CancelAsync()
+        End If
         Catch ex2 As Exception
-            MessageBox.Show(Me, ex2.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
+        MessageBox.Show(Me, ex2.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
         End Try
     End Sub
 
@@ -218,7 +219,8 @@ Public Class PD_Addendum
             If ProjectLabel = Nothing Or ProjectLabel = "" Then
                 MetroFramework.MetroMessageBox.Show(Me, "Please select Project Name.")
             Else
-
+                ADDENDUM_BGW_TODO = "Search_for_TP_ID"
+                Start_PD_Addendum_BGW(False, True)
             End If
         Catch ex As Exception
             MsgBox(ex.Message)
@@ -241,7 +243,7 @@ Public Class PD_Addendum
     End Sub
 
 
-    Private Sub PD_Addendum_BGW_RunWorkerCompleted(ByVal sender As System.Object, ByVal e As RunWorkerCompletedEventArgs)
+    Private Sub PD_Addendum_BGW_RunWorkerCompleted(ByVal sender As Object, ByVal e As RunWorkerCompletedEventArgs)
         Try
             Me.Width = 800
             Me.Height = 600
@@ -258,6 +260,7 @@ Public Class PD_Addendum
                 Select Case ADDENDUM_BGW_TODO
                     Case "Onload"
                         For Each row In sqlBindingSource
+                            C_ID = row("CD_ID")
                             FIle_Label_As = row("FILE_LABEL_AS")
                             ProjectLabel = row("PROJECT_LABEL")
                             JORefNo_Lbl.Text = row("SUB_JO")
@@ -283,14 +286,14 @@ Public Class PD_Addendum
                             Area = row("AREA")
                         Next row
 
-                        'Lock_Btn.Text = "Unlock"
-                        'QuoteRefNo_Cbox.Enabled = False
-                        ArchDesignDT.Columns.Clear()
-                        ConsMngmtDT.Columns.Clear()
-                        GenConDT.Columns.Clear()
-                        IntrDesignDT.Columns.Clear()
+                    'Lock_Btn.Text = "Unlock"
+                    'QuoteRefNo_Cbox.Enabled = False
+                    ArchDesignDT.Clear()
+                    ConsMngmtDT.Clear()
+                    GenConDT.Clear()
+                    IntrDesignDT.Clear()
 
-                        If ArchDesignDT.Columns.Count = 0 And ConsMngmtDT.Columns.Count = 0 And
+                    If ArchDesignDT.Columns.Count = 0 And ConsMngmtDT.Columns.Count = 0 And
                             GenConDT.Columns.Count = 0 And IntrDesignDT.Columns.Count = 0 Then
                             For i = 0 To UBound(DTcols_str)
                                 ADDTCols = New DataColumn(DTcols_str(i), GetType(String))
@@ -374,13 +377,13 @@ Public Class PD_Addendum
                         For Each row3 In sqlBindingSource
                             Dim nature As String = row3("NATURE")
                             If nature = "Architectural Design" Then
-                                ArchDesignDT.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"))
+                                ArchDesignDT.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"), row3("COMP_ID"), row3("EMP_ID"), row3("TP_ID"))
                             ElseIf nature = "Interior Design" Then
-                                IntrDesignDT.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"))
+                                IntrDesignDT.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"), row3("COMP_ID"), row3("EMP_ID"), row3("TP_ID"))
                             ElseIf nature = "General Contractor" Then
-                                GenConDT.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"))
+                                GenConDT.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"), row3("COMP_ID"), row3("EMP_ID"), row3("TP_ID"))
                             ElseIf nature = "Construction Management" Then
-                                ConsMngmtDT.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"))
+                                ConsMngmtDT.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"), row3("COMP_ID"), row3("EMP_ID"), row3("TP_ID"))
                             End If
                         Next row3
 
@@ -389,24 +392,28 @@ Public Class PD_Addendum
                         ArchDesign_DGV.DataSource = ArchDesignBS
                         ArchDesign_DGV.Columns("COMP_ID").Visible = False
                         ArchDesign_DGV.Columns("EMP_ID").Visible = False
+                        ArchDesign_DGV.Columns("TP_ID").Visible = False
 
                         IntrDesign_DGV.DataSource = Nothing
                         IntrDesignBS.DataSource = IntrDesignDT
                         IntrDesign_DGV.DataSource = IntrDesignBS
                         IntrDesign_DGV.Columns("COMP_ID").Visible = False
                         IntrDesign_DGV.Columns("EMP_ID").Visible = False
+                        IntrDesign_DGV.Columns("TP_ID").Visible = False
 
                         ConsMngmt_DGV.DataSource = Nothing
                         ConsMngmtBS.DataSource = ConsMngmtDT
                         ConsMngmt_DGV.DataSource = ConsMngmtBS
                         ConsMngmt_DGV.Columns("COMP_ID").Visible = False
                         ConsMngmt_DGV.Columns("EMP_ID").Visible = False
+                        ConsMngmt_DGV.Columns("TP_ID").Visible = False
 
                         GenCon_DGV.DataSource = Nothing
                         GenConBS.DataSource = GenConDT
                         GenCon_DGV.DataSource = GenConBS
                         GenCon_DGV.Columns("COMP_ID").Visible = False
                         GenCon_DGV.Columns("EMP_ID").Visible = False
+                        GenCon_DGV.Columns("TP_ID").Visible = False
 
                     Case "QuoteRefNo_Sel"
 
@@ -429,14 +436,18 @@ Public Class PD_Addendum
                             End If
                         Next
                         'OwnersName_Tbox.Focus()
-
+                    Case "INSERT_TECHNICAL_PARTNERS"
+                        If PD_CountSuccess = ArchDesignBS.Count Then
+                            MetroFramework.MetroMessageBox.Show(Me, "Success", " ", MessageBoxButtons.OK, MessageBoxIcon.None)
+                        End If
+                    Case "Search_for_TP_ID"
                 End Select
 
             End If
             PD_Addendum_Pnl.Visible = True
             LoadingPbox.Visible = False
         Catch ex As Exception
-            MessageBox.Show(Me, ex.Message)
+        MessageBox.Show(Me, ex.Message)
         End Try
     End Sub
 

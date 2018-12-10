@@ -25,7 +25,7 @@ Module ProjectDetailsModule
     Public ConsMngmtDT As DataTable = New DataTable("ConsMngmtDT")
     Public GenConDT As DataTable = New DataTable("GenConDT")
     'Public QuoteNoDT As DataTable = New DataTable("QuoteNoDT")
-    Public DTcols_str As String() = {"OFFICENAME", "NAME", "POSITION", "CONTACT NUMBER", "COMP_ID", "EMP_ID"}
+    Public DTcols_str As String() = {"OFFICENAME", "NAME", "POSITION", "CONTACT NUMBER", "COMP_ID", "EMP_ID", "TP_ID"}
 
     Public arr_WD_ID As New List(Of String)
     Public arr_Profile_finish As New List(Of String)
@@ -208,6 +208,30 @@ Module ProjectDetailsModule
                         End Select
                     Else
                         QUERY_SELECT_WITH_READER_bool = False
+                    End If
+                End Using
+            End Using
+        End Using
+    End Sub
+    Public TP_ID As String
+    Public Sub SEARCH_TP_ID(ByVal COMP_ID_REF As String,
+                            ByVal EMP_ID_REF As String,
+                            ByVal POSITION As String)
+        Query = "SELECT TP_ID FROM [A_NEW_TECHNICAL_PARTNERS] WHERE [COMP_ID_REF] = @COMP_ID_REF AND 
+                                                                    [EMP_ID_REF] = @EMP_ID_REF AND
+                                                                    [POSITION] = @POSITION"
+        Using sqlcon As New SqlConnection(sqlcnstr)
+            sqlcon.Open()
+            Using sqlCommand As New SqlCommand(Query, sqlcon)
+                sqlCommand.Parameters.AddWithValue("@COMP_ID_REF", COMP_ID_REF)
+                sqlCommand.Parameters.AddWithValue("@EMP_ID_REF", EMP_ID_REF)
+                sqlCommand.Parameters.AddWithValue("@POSITION", POSITION)
+                Using read As SqlDataReader = sqlCommand.ExecuteReader
+                    read.Read()
+                    If read.HasRows Then
+                        TP_ID = read.Item("TP_ID")
+                    Else
+                        TP_ID = Nothing
                     End If
                 End Using
             End Using
@@ -808,14 +832,75 @@ DECLARE @CUST_ID_REP AS INTEGER
             End Using
         End Using
     End Sub
-    Public Sub PD_Addendum_Update_TechPartners(ByVal Formname As Form)
-        Query = ""
+    Public Sub PD_Addendum_Update_TechPartners(ByVal Formname As Form,
+                                               ByVal CD_ID_REF As Integer,
+                                               ByVal NATURE As String,
+                                               Optional COMP_ID_REF As Integer = Nothing,
+                                               Optional EMP_ID_REF As Integer = Nothing,
+                                               Optional POSITION As String = "",
+                                               Optional TP_ID_REF As String = "")
+        Dim QUERY_PART1 As String = ""
 
+        Select Case TP_ID_REF
+            Case ""
+                QUERY_PART1 = " INSERT INTO [A_NEW_TECHNICAL_PARTNERS] ([COMP_ID_REF],
+                                                                        [EMP_ID_REF],
+                                                                        [POSITION]) 
+                                                                VALUES (@COMP_ID_REF,
+                                                                        @EMP_ID_REF,
+                                                                        @POSITION)
+                                SELECT @TP_ID = @@IDENTITY 
+                                INSERT INTO [A_NEW_TECHNICAL_PARTNERS_NATURE] ([TP_ID_REF],
+                                                                               [CD_ID_REF],
+                                                                               [NATURE])
+                                                                VALUES (@TP_ID,
+                                                                        @CD_ID_REF,
+                                                                        @NATURE) "
+            Case <> ""
+                QUERY_PART1 = " INSERT INTO [A_NEW_TECHNICAL_PARTNERS_NATURE] ([TP_ID_REF],
+                                                                               [CD_ID_REF],
+                                                                               [NATURE])
+                                                                VALUES (@TP_ID_REF,
+                                                                        @CD_ID_REF,
+                                                                        @NATURE) "
+        End Select
+        Query = "
+BEGIN TRANSACTION
 
+DECLARE @TP_ID AS INTEGER
+BEGIN TRY
+" & QUERY_PART1 & "
+	SELECT	ERROR_NUMBER() AS ErrorNumber,
+			ERROR_MESSAGE() AS ErrorMessage
+            Commit Transaction
+END TRY
+
+BEGIN CATCH
+	SELECT	ERROR_NUMBER() AS ErrorNumber,
+			ERROR_MESSAGE() AS ErrorMessage
+			ROLLBACK TRANSACTION
+END CATCH
+"
         Using sqlcon As New SqlConnection(sqlcnstr)
             sqlcon.Open()
             Using sqlCommand As New SqlCommand(Query, sqlcon)
+                sqlCommand.Parameters.AddWithValue("@NATURE", NATURE)
+                Select Case TP_ID_REF
+                    Case Nothing
+                        sqlCommand.Parameters.AddWithValue("@COMP_ID_REF", COMP_ID_REF)
+                        sqlCommand.Parameters.AddWithValue("@EMP_ID_REF", EMP_ID_REF)
+                        sqlCommand.Parameters.AddWithValue("@POSITION", POSITION)
+                    Case <> Nothing
+                        sqlCommand.Parameters.AddWithValue("@TP_ID_REF", TP_ID_REF)
+                        sqlCommand.Parameters.AddWithValue("@CD_ID_REF", CD_ID_REF)
+                End Select
 
+                confirmQuery = sqlCommand.ExecuteNonQuery()
+                If confirmQuery <> 0 Then
+                    PD_CountSuccess += 1
+                Else
+                    MetroFramework.MetroMessageBox.Show(Formname, "Failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                End If
             End Using
         End Using
     End Sub
