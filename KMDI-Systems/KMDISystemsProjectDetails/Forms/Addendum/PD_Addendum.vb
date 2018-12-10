@@ -137,7 +137,6 @@ Public Class PD_Addendum
         Try
             If e.Button = MouseButtons.Right Then
                 EditHeaderPartToolStripMenuItem.Visible = True
-                EditOwnerToolStripMenuItem.Visible = True
                 EditTechnicalPartnersToolStripMenuItem.Visible = False
                 Addendum_CMenu.Show()
                 Addendum_CMenu.Location = New Point(MousePosition.X, MousePosition.Y)
@@ -151,7 +150,6 @@ Public Class PD_Addendum
         Try
             If e.Button = MouseButtons.Right Then
                 EditHeaderPartToolStripMenuItem.Visible = False
-                EditOwnerToolStripMenuItem.Visible = False
                 EditTechnicalPartnersToolStripMenuItem.Visible = True
                 Addendum_CMenu.Show()
                 Addendum_CMenu.Location = New Point(MousePosition.X, MousePosition.Y)
@@ -195,7 +193,7 @@ Public Class PD_Addendum
     End Sub
 
     Dim OwnersRep, OwnersRepHomeCno, OwnersRepOfficeCno, OwnersRepMobileCno, OwnersNameHomeCno,
-        OwnersNameOfficeCno, OwnersNameMobile, ConStage, SiteMeeting, SpInstr As String
+        OwnersNameOfficeCno, OwnersNameMobile, ConStage, SiteMeeting, SpInstr, CUST_ID, CUST_ID_REP As String
 
     Dim CompanyName_Str, OwnersName, ProjectLabel As String
 
@@ -307,6 +305,13 @@ Public Class PD_Addendum
                             Next
                         End If
 
+                        If (QuoteRefNo <> Nothing Or QuoteRefNo <> "") And
+                           (JORefNo_Lbl.Text <> Nothing Or JORefNo_Lbl.Text <> "") Then
+                            QuoteRefNo_Tbox.Enabled = False
+                        Else
+                            QuoteRefNo_Tbox.Enabled = True
+                        End If
+
                         ADDENDUM_BGW_TODO = "AEIC_LBL_LOAD"
                         Start_PD_Addendum_BGW(False, True)
                     Case "AEIC_LBL_LOAD"
@@ -331,6 +336,7 @@ Public Class PD_Addendum
                         Start_PD_Addendum_BGW(False, True)
                     Case "CompanyName"
                         For Each row2 In sqlBindingSource
+                            CUST_ID = row2("CUST_ID")
                             OwnersName_Tbox.Text = row2("CLIENTS_NAME")
                             OwnersNameHomeCno_Tbox.Text = row2("CLIENTS_CONTACT_NO")
                             OwnersNameOfficeCno_Tbox.Text = row2("CLIENTS_CONTACT_OFFICE")

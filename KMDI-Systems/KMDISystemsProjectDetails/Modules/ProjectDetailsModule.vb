@@ -703,9 +703,67 @@ Module ProjectDetailsModule
         End Using
     End Sub
 
-    Public Sub PD_Addendum_Update(ByVal FormName As Form)
+    Public Sub PD_Addendum_Update(ByVal FormName As Form,
+                                  ByVal OWNER_AddorUpdate As String,
+                                  ByVal REP_AddorUpdate As String)
+
+        Dim QUERY_PART1 As String = "", QUERY_PART2 As String = ""
+        Select Case REP_AddorUpdate
+            Case "ADD"
+                QUERY_PART1 = " INSERT  INTO [A_NEW_CLIENT_DETAILS]
+                                        ([OWNERS_NAME],
+                                         [CLIENTS_CONTACT_NO],
+                                         [CLIENTS_CONTACT_OFFICE],
+                                         [CLIENTS_CONTACT_MOBILE])
+                                VALUES  (@OWNERS_NAME_REP,
+                                         @CLIENTS_CONTACT_NO_REP,
+                                         @CLIENTS_CONTACT_OFFICE_REP,
+                                         @CLIENTS_CONTACT_MOBILE_REP)
+
+	                            SELECT @CUST_ID = @@IDENTITY
+	                            INSERT INTO	[A_NEW_OWNERS_TBL]
+				                            ([PD_ID_REF]
+				                              ,[CUST_ID_REF]
+				                              ,[CLIENT_STATUS])
+			                            VALUES	(@PD_ID,@CUST_ID,'Current Owner') "
+            Case "UPDATE"
+                QUERY_PART1 = " UPDATE  [A_NEW_CLIENT_DETAILS]
+                              SET     [OWNERS_NAME] = @OWNERS_NAME_REP,
+                                      [CLIENTS_CONTACT_NO] = @CLIENTS_CONTACT_NO_REP,
+                                      [CLIENTS_CONTACT_OFFICE] = @CLIENTS_CONTACT_OFFICE_REP,
+                                      [CLIENTS_CONTACT_MOBILE] = @CLIENTS_CONTACT_MOBILE_REP
+                              WHERE   [CUST_ID] = @CUST_ID_REP "
+        End Select
+        Select Case OWNER_AddorUpdate
+            Case "ADD"
+                QUERY_PART2 = " INSERT INTO  [A_NEW_CLIENT_DETAILS]
+                                        ([OWNERS_NAME],
+                                         [CLIENTS_CONTACT_NO],
+                                         [CLIENTS_CONTACT_OFFICE],
+                                         [CLIENTS_CONTACT_MOBILE])
+                                VALUES  (@OWNERS_NAME,
+                                         @CLIENTS_CONTACT_NO,
+                                         @CLIENTS_CONTACT_OFFICE,
+                                         @CLIENTS_CONTACT_MOBILE)
+
+	                            SELECT @CUST_ID_REP = @@IDENTITY
+	                            INSERT	INTO	[A_NEW_OWNERS_REP]
+					                            ([PD_ID_REF]
+					                            ,[CUST_ID_REF])
+			                            VALUES	(@PD_ID,@CUST_ID_REP) "
+            Case "UPDATE"
+                QUERY_PART2 = " UPDATE  [A_NEW_CLIENT_DETAILS]
+                               SET     [OWNERS_NAME] = @OWNERS_NAME,
+                                       [CLIENTS_CONTACT_NO] = @CLIENTS_CONTACT_NO,
+                                       [CLIENTS_CONTACT_OFFICE] = @CLIENTS_CONTACT_OFFICE,
+                                       [CLIENTS_CONTACT_MOBILE] = @CLIENTS_CONTACT_MOBILE
+                               WHERE   [CUST_ID] = @CUST_ID "
+        End Select
         Query = "
 Begin Transaction
+DECLARE @CUST_ID AS INTEGER
+DECLARE @CUST_ID_REP AS INTEGER
+
 	Begin Try
 	UPDATE	[A_NEW_PROJECT_DETAILS]
 	SET		[PROJECT_LABEL] = @PROJECT_LABEL,
@@ -713,9 +771,11 @@ Begin Transaction
 			[ACTIVITIES] = @ACTIVITIES
 	WHERE	[PD_ID] = @PD_ID 
 
-    UPDATE  
+    UPDATE  [A_NEW_CONTRACT_DETAILS]
     SET     [OTHER_PERTINENT_INFO] = @OTHER_PERTINENT_INFO
     WHERE   [PD_ID_REF] = @PD_ID
+
+" & QUERY_PART1 & QUERY_PART2 & "
 
 	SELECT	ERROR_NUMBER() AS ErrorNumber,
 			ERROR_MESSAGE() AS ErrorMessage
@@ -725,7 +785,7 @@ Begin Transaction
 	Begin Catch
 	SELECT	ERROR_NUMBER() AS ErrorNumber,
 			ERROR_MESSAGE() AS ErrorMessage
-			ROLLBACK TRANSACTION;  
+			ROLLBACK TRANSACTION
 	End Catch"
         Using sqlcon As New SqlConnection(sqlcnstr)
             sqlcon.Open()
@@ -745,6 +805,17 @@ Begin Transaction
                 'Else
                 '    MetroFramework.MetroMessageBox.Show(FormName, "Failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 'End If
+            End Using
+        End Using
+    End Sub
+    Public Sub PD_Addendum_Update_TechPartners(ByVal Formname As Form)
+        Query = ""
+
+
+        Using sqlcon As New SqlConnection(sqlcnstr)
+            sqlcon.Open()
+            Using sqlCommand As New SqlCommand(Query, sqlcon)
+
             End Using
         End Using
     End Sub
