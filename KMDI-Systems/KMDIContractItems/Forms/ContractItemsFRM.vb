@@ -28,6 +28,8 @@ Public Class ContractItemsFRM
     Public FSubTotal As Decimal
     Public GSubTotal As Decimal
 
+    Public ErrorMessage As String
+
     Dim CIF_Screen_DGV As New KryptonDataGridView
 
     Public ContractItemsBGW As BackgroundWorker = New BackgroundWorker
@@ -114,9 +116,8 @@ Public Class ContractItemsFRM
                                             ContractItemsBGW.ReportProgress(i)
                                         Next i
                                     Else
-                                        MessageBox.Show("Walang screen")
+                                        MessageBox.Show("No screen")
                                     End If
-
                                 Case "Glass"
                                     If sql.ds.Tables("Glass").Rows.Count > 0 Then
                                         For i As Integer = 0 To sql.ds.Tables("Glass").Rows.Count - 1
@@ -124,8 +125,7 @@ Public Class ContractItemsFRM
                                             ContractItemsBGW.ReportProgress(i)
                                         Next i
                                     Else
-                                        'ContractItemsBGW.WorkerSupportsCancellation = True
-                                        'ContractItemsBGW.CancelAsync()
+                                        MessageBox.Show("No glass")
                                     End If
                                 Case "Films"
                                 Case "Mechanisms"
@@ -247,7 +247,7 @@ Public Class ContractItemsFRM
                                   FROM [KMDI_ADDITIONAL_TB] "
                         QueryCondition = "WHERE ([ADDITIONAL] = 'Tempering' or [ADDITIONAL] = 'Frosting') AND
 		                                        [JOB_ORDER_NO] = @SearchString
-                                          ORDER BY ITEM_NO ASC"
+                                          ORDER BY ITEM_NO DESC"
                     Case "Films"
                         QueryFunction = ""
                         QueryBody = ""
@@ -381,7 +381,7 @@ Public Class ContractItemsFRM
             End Select
 
         Catch ex As Exception
-            MessageBox.Show(ex.ToString)
+            ErrorMessage = ex.ToString
             ContractItemsBGW.WorkerSupportsCancellation = True
             ContractItemsBGW.CancelAsync()
         End Try
@@ -389,21 +389,25 @@ Public Class ContractItemsFRM
     End Sub
 
     Private Sub ContractItemsBGW_RunWorkerCompleted(ByVal sender As System.Object, ByVal e As RunWorkerCompletedEventArgs)
+        Try
+            Load_LBL.Visible = False
+            Load_PB.Visible = False
+            Load_PB.Value = 0
+        Catch ex As Exception
+
+        End Try
 
         Select Case GenerateOutput
             Case True
 
                 Try
                     If e.Cancelled = True Then
-                        MetroMessageBox.Show(Me, "The system has encountered an error during recovery of contract information. This page will now close.", "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                        MetroMessageBox.Show(Me, "The system has encountered an error during recovery of contract information. This page will now close." & vbCrLf & vbCrLf & ErrorMessage, "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                         Me.Close()
                     ElseIf e.Error IsNot Nothing Then
                         MetroMessageBox.Show(Me, "The system has encountered an error during recovery of contract information. This page will now close.", "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                         Me.Close()
                     Else
-                        Load_LBL.Visible = False
-                        Load_PB.Visible = False
-                        Load_PB.Value = 0
                         GenerateOutput = False
 
                         Select Case ActionTaken
@@ -416,6 +420,7 @@ Public Class ContractItemsFRM
                                         ScreenEntry = False
                                     Case "Glass"
                                         GlassEntry = False
+                                        GSubTotal_LBL.Text = GSubTotal.ToString("N2")
                                     Case "Mechanisms"
                                     Case "Add-Ons"
                                     Case "Summary"
@@ -526,7 +531,7 @@ Public Class ContractItemsFRM
         '// Generate new item details
         Dim Lbl_Name As String
 
-        For i As Integer = 0 To 13 - 1
+        For i As Integer = 0 To 11 - 1
             Lbl_Name = "FLbl_" & CStr(e.ProgressPercentage) & CStr(i)
             Dim Labels As New MetroLabel
 
@@ -534,7 +539,7 @@ Public Class ContractItemsFRM
                 .Name = Lbl_Name
                 .FontSize = MetroLabelSize.Medium
                 .FontWeight = MetroLabelWeight.Regular
-                If i <= 8 Then
+                If i <= 6 Then
                     .AutoSize = True
                     Select Case i
                         Case 0
@@ -542,31 +547,31 @@ Public Class ContractItemsFRM
                             .Text = sql.ds.Tables("Frames").Rows(e.ProgressPercentage).Item(2).ToString
                         Case 1
                             .Location = New Point(61, 9)
-                            .Text = sql.ds.Tables("Frames").Rows(e.ProgressPercentage).Item(4).ToString
+                            .Text = Replace(sql.ds.Tables("Frames").Rows(e.ProgressPercentage).Item(4).ToString, "&", "&&")
                         Case 2
                             .Location = New Point(215, 9)
-                            .Text = sql.ds.Tables("Frames").Rows(e.ProgressPercentage).Item(3).ToString
+                            .Text = Replace(sql.ds.Tables("Frames").Rows(e.ProgressPercentage).Item(3).ToString, "&", "&&")
                         Case 3
                             .Location = New Point(215, 28)
                             .Text = sql.ds.Tables("Frames").Rows(e.ProgressPercentage).Item(6).ToString & "w x " & sql.ds.Tables("Frames").Rows(e.ProgressPercentage).Item(7).ToString & "h - " & sql.ds.Tables("Frames").Rows(e.ProgressPercentage).Item(5).ToString
                         Case 4
                             .Location = New Point(215, 47)
-                            .Text = sql.ds.Tables("Frames").Rows(e.ProgressPercentage).Item(8).ToString
+                            .Text = Replace(sql.ds.Tables("Frames").Rows(e.ProgressPercentage).Item(8).ToString, "&", "&&")
                         Case 5
                             .Location = New Point(215, 66)
-                            .Text = sql.ds.Tables("Frames").Rows(e.ProgressPercentage).Item(8).ToString
+                            .Text = Replace(sql.ds.Tables("Frames").Rows(e.ProgressPercentage).Item(9).ToString, "&", "&&")
                         Case 6
                             .Location = New Point(215, 85)
-                            .Text = sql.ds.Tables("Frames").Rows(e.ProgressPercentage).Item(9).ToString
-                        Case 7
-                            .Location = New Point(215, 104)
-                            .Text = sql.ds.Tables("Frames").Rows(e.ProgressPercentage).Item(9).ToString
-                        Case 8
-                            .Location = New Point(215, 123)
-                            .Text = sql.ds.Tables("Frames").Rows(e.ProgressPercentage).Item(16).ToString
+                            .Text = Replace(sql.ds.Tables("Frames").Rows(e.ProgressPercentage).Item(16).ToString, "&", "&&")
+                            'Case 7
+                            '    .Location = New Point(215, 104)
+                            '    .Text = sql.ds.Tables("Frames").Rows(e.ProgressPercentage).Item(16).ToString
+                            'Case 8
+                            '    .Location = New Point(215, 123)
+                            '.Text = sql.ds.Tables("Frames").Rows(e.ProgressPercentage).Item(16).ToString
                     End Select
                     .TextAlign = ContentAlignment.TopLeft
-                ElseIf i <= 12 Then
+                ElseIf i <= 10 Then
                     .AutoSize = False
                     .Anchor = AnchorStyles.Right
                     '// Set x location for qty, price, discount, net price
@@ -580,15 +585,15 @@ Public Class ContractItemsFRM
                     End If
 
                     Select Case i
-                        Case 9
+                        Case 7
                             .Size = New Size(33, 19)
                             .Location = New Point(locationx, 9)
                             .Text = sql.ds.Tables("Frames").Rows(e.ProgressPercentage).Item(10).ToString
-                        Case 10
+                        Case 8
                             .Size = New Size(134, 19)
                             .Location = New Point(locationx + 39, 9)
                             .Text = sql.ds.Tables("Frames").Rows(e.ProgressPercentage).Item(11).ToString
-                        Case 11
+                        Case 9
                             .Size = New Size(70, 19)
                             .Location = New Point(locationx + 182, 9)
                             Try
@@ -601,9 +606,10 @@ Public Class ContractItemsFRM
                                         .Text = CDec(sql.ds.Tables("Frames").Rows(e.ProgressPercentage).Item(12)).ToString("N2")
                                 End Select
                             Catch ex As Exception
-
+                                ErrorMessage = ex.ToString
+                                ContractItemsBGW.CancelAsync()
                             End Try
-                        Case 12
+                        Case 10
                             .Size = New Size(109, 19)
                             .Location = New Point(locationx + 270, 9)
                             .Text = sql.ds.Tables("Frames").Rows(e.ProgressPercentage).Item(13).ToString
@@ -742,8 +748,8 @@ Public Class ContractItemsFRM
         Dim panel As New Panel
         With panel
             .Name = "GPanel_" & CStr(e.ProgressPercentage)
-            .Width = 1127
-            .Height = 165
+            .Width = 1011
+            .Height = 39
             .Dock = DockStyle.Top
             .BorderStyle = 1
             .TabStop = False
@@ -771,8 +777,10 @@ Public Class ContractItemsFRM
                             .Location = New Point(8, 10)
                             .Text = sql.ds.Tables("Glass").Rows(e.ProgressPercentage).Item(3).ToString
                         Case 1
+                            .AutoSize = False
+                            .Size = New Size(164, 19)
                             .Location = New Point(53, 10)
-                            .Text = sql.ds.Tables("Glass").Rows(e.ProgressPercentage).Item(4).ToString
+                            .Text = Replace(sql.ds.Tables("Glass").Rows(e.ProgressPercentage).Item(4).ToString, "&", "&&")
                         Case 2
                             .Location = New Point(224, 10)
                             .Text = sql.ds.Tables("Glass").Rows(e.ProgressPercentage).Item(5).ToString
@@ -781,10 +789,10 @@ Public Class ContractItemsFRM
                             .Size = New Size(143, 19)
                             .TextAlign = ContentAlignment.TopRight
                             .Location = New Point(408, 10)
-                            .Text = sql.ds.Tables("Glass").Rows(e.ProgressPercentage).Item(6).ToString
+                            .Text = sql.ds.Tables("Glass").Rows(e.ProgressPercentage).Item(5).ToString
                         Case 4
                             .Location = New Point(567, 10)
-                            .Text = sql.ds.Tables("Glass").Rows(e.ProgressPercentage).Item(1).ToString
+                            .Text = sql.ds.Tables("Glass").Rows(e.ProgressPercentage).Item(6).ToString
                     End Select
                 ElseIf i <= 7 Then
                     .AutoSize = False
@@ -793,24 +801,16 @@ Public Class ContractItemsFRM
                     '// Answer for the bug of uneven spacing for the last 3 rows of the output.
                     Dim locationx As Integer
 
-                    If e.ProgressPercentage <= 2 And sql.ds.Tables("Glass").Rows.Count > 3 Then
-                        locationx = MetroLabel3.Location.X + 17
+                    If e.ProgressPercentage <= 11 And sql.ds.Tables("Glass").Rows.Count > 12 Then
+                        locationx = GNetPrice_LBL.Location.X + 17
                     Else
-                        locationx = MetroLabel3.Location.X
+                        locationx = GNetPrice_LBL.Location.X
                     End If
 
                     Select Case i
                         Case 5
                             .Size = New Size(98, 19)
                             .Location = New Point(locationx, 10)
-                            .Text = sql.ds.Tables("Glass").Rows(e.ProgressPercentage).Item(1).ToString
-                        Case 6
-                            .Size = New Size(33, 19)
-                            .Location = New Point(locationx + 104, 10)
-                            .Text = sql.ds.Tables("Glass").Rows(e.ProgressPercentage).Item(1).ToString
-                        Case 7
-                            .Size = New Size(146, 19)
-                            .Location = New Point(locationx + 143, 10)
                             Try
                                 Select Case sql.ds.Tables("Glass").Rows(e.ProgressPercentage).Item(7).ToString
                                     Case ""
@@ -818,12 +818,34 @@ Public Class ContractItemsFRM
                                     Case Nothing
                                         .Text = "0.00"
                                     Case Else
-                                        .Text = CDec(sql.ds.Tables("Glass").Rows(e.ProgressPercentage).Item(1)).ToString("N2")
+                                        .Text = CDec(sql.ds.Tables("Glass").Rows(e.ProgressPercentage).Item(7)).ToString("N2")
                                 End Select
-
-                                GSubTotal = GSubTotal + sql.ds.Tables("Glass").Rows(e.ProgressPercentage).Item(1)
                             Catch ex As Exception
+                                ErrorMessage = ex.ToString
+                                ContractItemsBGW.CancelAsync()
+                            End Try
 
+
+                        Case 6
+                            .Size = New Size(33, 19)
+                            .Location = New Point(locationx + 104, 10)
+                            .Text = sql.ds.Tables("Glass").Rows(e.ProgressPercentage).Item(8).ToString
+                        Case 7
+                            .Size = New Size(146, 19)
+                            .Location = New Point(locationx + 115, 10)
+                            Try
+                                Select Case sql.ds.Tables("Glass").Rows(e.ProgressPercentage).Item(10).ToString
+                                    Case ""
+                                        .Text = "0.00"
+                                    Case Nothing
+                                        .Text = "0.00"
+                                    Case Else
+                                        .Text = CDec(sql.ds.Tables("Glass").Rows(e.ProgressPercentage).Item(10)).ToString("N2")
+                                End Select
+                                GSubTotal = GSubTotal + sql.ds.Tables("Glass").Rows(e.ProgressPercentage).Item(10)
+                            Catch ex As Exception
+                                ErrorMessage = ex.ToString
+                                ContractItemsBGW.CancelAsync()
                             End Try
                     End Select
                     .Top = 10
@@ -834,5 +856,38 @@ Public Class ContractItemsFRM
             '// Add generated controls to panel
             panel.Controls.Add(Labels)
         Next i
+    End Sub
+
+    Public Sub RefreshPage()
+        ActionTaken = "Search"
+        GenerateOutput = False
+
+        Select Case CIF_TCTRL.SelectedIndex
+            Case 0
+                FrameEntry = True
+                SearchItemFN = "Frames"
+            Case 1
+                ScreenEntry = True
+                SearchItemFN = "Screens"
+            Case 2
+                GlassEntry = True
+                SearchItemFN = "Glass"
+            Case 3
+            Case 4
+            Case 5
+            Case 6
+        End Select
+
+        StartWorker()
+    End Sub
+
+    Private Sub ContractItemsFRM_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown, CIF_TCTRL.KeyDown
+        Try
+            Select Case e.KeyCode
+                Case Keys.F5
+                    RefreshPage()
+            End Select
+        Catch ex As Exception
+        End Try
     End Sub
 End Class

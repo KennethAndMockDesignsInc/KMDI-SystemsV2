@@ -15,7 +15,7 @@ Module LoginModule
     Public sqlCommand As SqlCommand
     Public Read As SqlDataReader
 
-    Public sqlDataAdapter As SqlDataAdapter
+    Public sqlDataAdapter As New SqlDataAdapter
     Public sqlDataSet As DataSet
     Public sqlBindingSource As BindingSource
 
@@ -61,7 +61,8 @@ Module LoginModule
             PROFILEPATH = Read.Item("PROFILEPATH").ToString
             AcctPASSWORD = Decrypt(Read.Item("PASSWORD").ToString)
         Else
-            KMDISystemsLogin.Login_BGW.CancelAsync()
+            KMDISystemsLogin.LoginBGW.WorkerSupportsCancellation = True
+            KMDISystemsLogin.LoginBGW.CancelAsync()
             AccountAutonum = Nothing
         End If
     End Sub

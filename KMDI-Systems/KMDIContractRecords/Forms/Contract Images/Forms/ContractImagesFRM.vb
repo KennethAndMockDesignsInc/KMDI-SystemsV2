@@ -440,7 +440,6 @@ Public Class ContractImagesFRM
 
             '// Draw the image
             e.Graphics.DrawImage(srcBmp, 0, 0)
-            MessageBox.Show(PrintNumber & " " & ImageLink)
         Catch ex As Exception
             MessageBox.Show(ex.ToString)
         End Try

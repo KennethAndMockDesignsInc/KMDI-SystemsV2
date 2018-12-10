@@ -46,33 +46,38 @@ Partial Class ContractItemsFRM
         Me.GBack_PNL = New System.Windows.Forms.Panel()
         Me.GMid_PNL = New System.Windows.Forms.Panel()
         Me.GBot_PNL = New System.Windows.Forms.Panel()
-        Me.MetroLabel1 = New MetroFramework.Controls.MetroLabel()
-        Me.MetroLabel2 = New MetroFramework.Controls.MetroLabel()
+        Me.GSubTotal_LBL = New MetroFramework.Controls.MetroLabel()
+        Me.GSub_LBL = New MetroFramework.Controls.MetroLabel()
         Me.GTop_PNL = New System.Windows.Forms.Panel()
+        Me.MetroLabel4 = New MetroFramework.Controls.MetroLabel()
         Me.MetroLabel11 = New MetroFramework.Controls.MetroLabel()
         Me.MetroLabel10 = New MetroFramework.Controls.MetroLabel()
         Me.MetroLabel8 = New MetroFramework.Controls.MetroLabel()
         Me.MetroLabel9 = New MetroFramework.Controls.MetroLabel()
         Me.MetroLabel7 = New MetroFramework.Controls.MetroLabel()
-        Me.MetroLabel3 = New MetroFramework.Controls.MetroLabel()
-        Me.MetroLabel4 = New MetroFramework.Controls.MetroLabel()
+        Me.GNetPrice_LBL = New MetroFramework.Controls.MetroLabel()
         Me.MetroLabel5 = New MetroFramework.Controls.MetroLabel()
         Me.MetroLabel6 = New MetroFramework.Controls.MetroLabel()
         Me.FilmTAB = New System.Windows.Forms.TabPage()
-        Me.MechanismTAB = New System.Windows.Forms.TabPage()
-        Me.AddOnTAB = New System.Windows.Forms.TabPage()
-        Me.SummaryTAB = New System.Windows.Forms.TabPage()
-        Me.Load_LBL = New MetroFramework.Controls.MetroLabel()
-        Me.Load_PB = New MetroFramework.Controls.MetroProgressBar()
-        Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.MetroLabel13 = New MetroFramework.Controls.MetroLabel()
-        Me.MetroLabel14 = New MetroFramework.Controls.MetroLabel()
+        Me.FilmBack_PNL = New System.Windows.Forms.Panel()
+        Me.FilmMid_PNL = New System.Windows.Forms.Panel()
+        Me.FilmBot_PNL = New System.Windows.Forms.Panel()
+        Me.FilmSubTotal_LBL = New MetroFramework.Controls.MetroLabel()
+        Me.FilmSub_LBL = New MetroFramework.Controls.MetroLabel()
+        Me.FilmTop_PNL = New System.Windows.Forms.Panel()
+        Me.MetroLabel1 = New MetroFramework.Controls.MetroLabel()
+        Me.MetroLabel12 = New MetroFramework.Controls.MetroLabel()
         Me.MetroLabel15 = New MetroFramework.Controls.MetroLabel()
         Me.MetroLabel16 = New MetroFramework.Controls.MetroLabel()
         Me.MetroLabel17 = New MetroFramework.Controls.MetroLabel()
         Me.MetroLabel18 = New MetroFramework.Controls.MetroLabel()
         Me.MetroLabel19 = New MetroFramework.Controls.MetroLabel()
-        Me.MetroLabel12 = New MetroFramework.Controls.MetroLabel()
+        Me.MetroLabel20 = New MetroFramework.Controls.MetroLabel()
+        Me.MechanismTAB = New System.Windows.Forms.TabPage()
+        Me.AddOnTAB = New System.Windows.Forms.TabPage()
+        Me.SummaryTAB = New System.Windows.Forms.TabPage()
+        Me.Load_LBL = New MetroFramework.Controls.MetroLabel()
+        Me.Load_PB = New MetroFramework.Controls.MetroProgressBar()
         Me.CIF_TCTRL.SuspendLayout()
         Me.FramesTAB.SuspendLayout()
         Me.FBack_PNL.SuspendLayout()
@@ -83,10 +88,12 @@ Partial Class ContractItemsFRM
         Me.SBot_PNL.SuspendLayout()
         Me.GlassTAB.SuspendLayout()
         Me.GBack_PNL.SuspendLayout()
-        Me.GMid_PNL.SuspendLayout()
         Me.GBot_PNL.SuspendLayout()
         Me.GTop_PNL.SuspendLayout()
-        Me.Panel1.SuspendLayout()
+        Me.FilmTAB.SuspendLayout()
+        Me.FilmBack_PNL.SuspendLayout()
+        Me.FilmBot_PNL.SuspendLayout()
+        Me.FilmTop_PNL.SuspendLayout()
         Me.SuspendLayout()
         '
         'ContractRecordsLBL
@@ -94,7 +101,7 @@ Partial Class ContractItemsFRM
         Me.ContractRecordsLBL.AutoSize = True
         Me.ContractRecordsLBL.FontSize = MetroFramework.MetroLabelSize.Tall
         Me.ContractRecordsLBL.FontWeight = MetroFramework.MetroLabelWeight.Bold
-        Me.ContractRecordsLBL.Location = New System.Drawing.Point(20, 32)
+        Me.ContractRecordsLBL.Location = New System.Drawing.Point(20, 41)
         Me.ContractRecordsLBL.Name = "ContractRecordsLBL"
         Me.ContractRecordsLBL.Size = New System.Drawing.Size(55, 25)
         Me.ContractRecordsLBL.TabIndex = 607
@@ -351,7 +358,6 @@ Partial Class ContractItemsFRM
         'GMid_PNL
         '
         Me.GMid_PNL.AutoScroll = True
-        Me.GMid_PNL.Controls.Add(Me.Panel1)
         Me.GMid_PNL.Dock = System.Windows.Forms.DockStyle.Fill
         Me.GMid_PNL.Location = New System.Drawing.Point(0, 52)
         Me.GMid_PNL.Name = "GMid_PNL"
@@ -361,8 +367,8 @@ Partial Class ContractItemsFRM
         'GBot_PNL
         '
         Me.GBot_PNL.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.GBot_PNL.Controls.Add(Me.MetroLabel1)
-        Me.GBot_PNL.Controls.Add(Me.MetroLabel2)
+        Me.GBot_PNL.Controls.Add(Me.GSubTotal_LBL)
+        Me.GBot_PNL.Controls.Add(Me.GSub_LBL)
         Me.GBot_PNL.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.GBot_PNL.Location = New System.Drawing.Point(0, 541)
         Me.GBot_PNL.Margin = New System.Windows.Forms.Padding(0)
@@ -370,40 +376,40 @@ Partial Class ContractItemsFRM
         Me.GBot_PNL.Size = New System.Drawing.Size(1011, 37)
         Me.GBot_PNL.TabIndex = 1
         '
-        'MetroLabel1
+        'GSubTotal_LBL
         '
-        Me.MetroLabel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.MetroLabel1.FontWeight = MetroFramework.MetroLabelWeight.Regular
-        Me.MetroLabel1.Location = New System.Drawing.Point(870, 9)
-        Me.MetroLabel1.Name = "MetroLabel1"
-        Me.MetroLabel1.Size = New System.Drawing.Size(113, 19)
-        Me.MetroLabel1.TabIndex = 3
-        Me.MetroLabel1.Text = "0.00"
-        Me.MetroLabel1.TextAlign = System.Drawing.ContentAlignment.TopRight
-        Me.MetroLabel1.UseCustomBackColor = True
+        Me.GSubTotal_LBL.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.GSubTotal_LBL.FontWeight = MetroFramework.MetroLabelWeight.Regular
+        Me.GSubTotal_LBL.Location = New System.Drawing.Point(849, 9)
+        Me.GSubTotal_LBL.Name = "GSubTotal_LBL"
+        Me.GSubTotal_LBL.Size = New System.Drawing.Size(113, 19)
+        Me.GSubTotal_LBL.TabIndex = 3
+        Me.GSubTotal_LBL.Text = "0.00"
+        Me.GSubTotal_LBL.TextAlign = System.Drawing.ContentAlignment.TopRight
+        Me.GSubTotal_LBL.UseCustomBackColor = True
         '
-        'MetroLabel2
+        'GSub_LBL
         '
-        Me.MetroLabel2.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.MetroLabel2.AutoSize = True
-        Me.MetroLabel2.FontWeight = MetroFramework.MetroLabelWeight.Bold
-        Me.MetroLabel2.Location = New System.Drawing.Point(787, 9)
-        Me.MetroLabel2.Name = "MetroLabel2"
-        Me.MetroLabel2.Size = New System.Drawing.Size(77, 19)
-        Me.MetroLabel2.TabIndex = 2
-        Me.MetroLabel2.Text = "Sub-Total:"
-        Me.MetroLabel2.UseCustomBackColor = True
+        Me.GSub_LBL.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.GSub_LBL.AutoSize = True
+        Me.GSub_LBL.FontWeight = MetroFramework.MetroLabelWeight.Bold
+        Me.GSub_LBL.Location = New System.Drawing.Point(761, 9)
+        Me.GSub_LBL.Name = "GSub_LBL"
+        Me.GSub_LBL.Size = New System.Drawing.Size(77, 19)
+        Me.GSub_LBL.TabIndex = 2
+        Me.GSub_LBL.Text = "Sub-Total:"
+        Me.GSub_LBL.UseCustomBackColor = True
         '
         'GTop_PNL
         '
         Me.GTop_PNL.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.GTop_PNL.Controls.Add(Me.MetroLabel4)
         Me.GTop_PNL.Controls.Add(Me.MetroLabel11)
         Me.GTop_PNL.Controls.Add(Me.MetroLabel10)
         Me.GTop_PNL.Controls.Add(Me.MetroLabel8)
         Me.GTop_PNL.Controls.Add(Me.MetroLabel9)
         Me.GTop_PNL.Controls.Add(Me.MetroLabel7)
-        Me.GTop_PNL.Controls.Add(Me.MetroLabel3)
-        Me.GTop_PNL.Controls.Add(Me.MetroLabel4)
+        Me.GTop_PNL.Controls.Add(Me.GNetPrice_LBL)
         Me.GTop_PNL.Controls.Add(Me.MetroLabel5)
         Me.GTop_PNL.Controls.Add(Me.MetroLabel6)
         Me.GTop_PNL.Dock = System.Windows.Forms.DockStyle.Top
@@ -412,6 +418,17 @@ Partial Class ContractItemsFRM
         Me.GTop_PNL.Name = "GTop_PNL"
         Me.GTop_PNL.Size = New System.Drawing.Size(1011, 52)
         Me.GTop_PNL.TabIndex = 0
+        '
+        'MetroLabel4
+        '
+        Me.MetroLabel4.AutoSize = True
+        Me.MetroLabel4.FontWeight = MetroFramework.MetroLabelWeight.Bold
+        Me.MetroLabel4.Location = New System.Drawing.Point(556, 9)
+        Me.MetroLabel4.Name = "MetroLabel4"
+        Me.MetroLabel4.Size = New System.Drawing.Size(115, 19)
+        Me.MetroLabel4.TabIndex = 2
+        Me.MetroLabel4.Text = "Dimension(mm)"
+        Me.MetroLabel4.UseCustomBackColor = True
         '
         'MetroLabel11
         '
@@ -441,7 +458,7 @@ Partial Class ContractItemsFRM
         '
         Me.MetroLabel8.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.MetroLabel8.FontWeight = MetroFramework.MetroLabelWeight.Bold
-        Me.MetroLabel8.Location = New System.Drawing.Point(867, 9)
+        Me.MetroLabel8.Location = New System.Drawing.Point(844, 9)
         Me.MetroLabel8.Name = "MetroLabel8"
         Me.MetroLabel8.Size = New System.Drawing.Size(116, 19)
         Me.MetroLabel8.TabIndex = 6
@@ -455,7 +472,7 @@ Partial Class ContractItemsFRM
         Me.MetroLabel9.AutoSize = True
         Me.MetroLabel9.BackColor = System.Drawing.Color.Transparent
         Me.MetroLabel9.FontWeight = MetroFramework.MetroLabelWeight.Bold
-        Me.MetroLabel9.Location = New System.Drawing.Point(828, 9)
+        Me.MetroLabel9.Location = New System.Drawing.Point(805, 9)
         Me.MetroLabel9.Name = "MetroLabel9"
         Me.MetroLabel9.Size = New System.Drawing.Size(33, 19)
         Me.MetroLabel9.TabIndex = 5
@@ -473,28 +490,17 @@ Partial Class ContractItemsFRM
         Me.MetroLabel7.TextAlign = System.Drawing.ContentAlignment.TopRight
         Me.MetroLabel7.UseCustomBackColor = True
         '
-        'MetroLabel3
+        'GNetPrice_LBL
         '
-        Me.MetroLabel3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.MetroLabel3.FontWeight = MetroFramework.MetroLabelWeight.Bold
-        Me.MetroLabel3.Location = New System.Drawing.Point(724, 9)
-        Me.MetroLabel3.Name = "MetroLabel3"
-        Me.MetroLabel3.Size = New System.Drawing.Size(98, 19)
-        Me.MetroLabel3.TabIndex = 3
-        Me.MetroLabel3.Text = "Net Price"
-        Me.MetroLabel3.TextAlign = System.Drawing.ContentAlignment.TopRight
-        Me.MetroLabel3.UseCustomBackColor = True
-        '
-        'MetroLabel4
-        '
-        Me.MetroLabel4.AutoSize = True
-        Me.MetroLabel4.FontWeight = MetroFramework.MetroLabelWeight.Bold
-        Me.MetroLabel4.Location = New System.Drawing.Point(556, 9)
-        Me.MetroLabel4.Name = "MetroLabel4"
-        Me.MetroLabel4.Size = New System.Drawing.Size(115, 19)
-        Me.MetroLabel4.TabIndex = 2
-        Me.MetroLabel4.Text = "Dimension(mm)"
-        Me.MetroLabel4.UseCustomBackColor = True
+        Me.GNetPrice_LBL.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.GNetPrice_LBL.FontWeight = MetroFramework.MetroLabelWeight.Bold
+        Me.GNetPrice_LBL.Location = New System.Drawing.Point(701, 9)
+        Me.GNetPrice_LBL.Name = "GNetPrice_LBL"
+        Me.GNetPrice_LBL.Size = New System.Drawing.Size(98, 19)
+        Me.GNetPrice_LBL.TabIndex = 3
+        Me.GNetPrice_LBL.Text = "Net Price"
+        Me.GNetPrice_LBL.TextAlign = System.Drawing.ContentAlignment.TopRight
+        Me.GNetPrice_LBL.UseCustomBackColor = True
         '
         'MetroLabel5
         '
@@ -521,11 +527,179 @@ Partial Class ContractItemsFRM
         '
         'FilmTAB
         '
+        Me.FilmTAB.Controls.Add(Me.FilmBack_PNL)
         Me.FilmTAB.Location = New System.Drawing.Point(4, 38)
         Me.FilmTAB.Name = "FilmTAB"
         Me.FilmTAB.Size = New System.Drawing.Size(1013, 580)
         Me.FilmTAB.TabIndex = 3
         Me.FilmTAB.Text = "FILMS"
+        '
+        'FilmBack_PNL
+        '
+        Me.FilmBack_PNL.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.FilmBack_PNL.Controls.Add(Me.FilmMid_PNL)
+        Me.FilmBack_PNL.Controls.Add(Me.FilmBot_PNL)
+        Me.FilmBack_PNL.Controls.Add(Me.FilmTop_PNL)
+        Me.FilmBack_PNL.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.FilmBack_PNL.Location = New System.Drawing.Point(0, 0)
+        Me.FilmBack_PNL.Name = "FilmBack_PNL"
+        Me.FilmBack_PNL.Size = New System.Drawing.Size(1013, 580)
+        Me.FilmBack_PNL.TabIndex = 2
+        '
+        'FilmMid_PNL
+        '
+        Me.FilmMid_PNL.AutoScroll = True
+        Me.FilmMid_PNL.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.FilmMid_PNL.Location = New System.Drawing.Point(0, 37)
+        Me.FilmMid_PNL.Name = "FilmMid_PNL"
+        Me.FilmMid_PNL.Size = New System.Drawing.Size(1011, 504)
+        Me.FilmMid_PNL.TabIndex = 2
+        '
+        'FilmBot_PNL
+        '
+        Me.FilmBot_PNL.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.FilmBot_PNL.Controls.Add(Me.FilmSubTotal_LBL)
+        Me.FilmBot_PNL.Controls.Add(Me.FilmSub_LBL)
+        Me.FilmBot_PNL.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.FilmBot_PNL.Location = New System.Drawing.Point(0, 541)
+        Me.FilmBot_PNL.Margin = New System.Windows.Forms.Padding(0)
+        Me.FilmBot_PNL.Name = "FilmBot_PNL"
+        Me.FilmBot_PNL.Size = New System.Drawing.Size(1011, 37)
+        Me.FilmBot_PNL.TabIndex = 1
+        '
+        'FilmSubTotal_LBL
+        '
+        Me.FilmSubTotal_LBL.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.FilmSubTotal_LBL.FontWeight = MetroFramework.MetroLabelWeight.Regular
+        Me.FilmSubTotal_LBL.Location = New System.Drawing.Point(849, 9)
+        Me.FilmSubTotal_LBL.Name = "FilmSubTotal_LBL"
+        Me.FilmSubTotal_LBL.Size = New System.Drawing.Size(113, 19)
+        Me.FilmSubTotal_LBL.TabIndex = 3
+        Me.FilmSubTotal_LBL.Text = "0.00"
+        Me.FilmSubTotal_LBL.TextAlign = System.Drawing.ContentAlignment.TopRight
+        Me.FilmSubTotal_LBL.UseCustomBackColor = True
+        '
+        'FilmSub_LBL
+        '
+        Me.FilmSub_LBL.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.FilmSub_LBL.AutoSize = True
+        Me.FilmSub_LBL.FontWeight = MetroFramework.MetroLabelWeight.Bold
+        Me.FilmSub_LBL.Location = New System.Drawing.Point(761, 9)
+        Me.FilmSub_LBL.Name = "FilmSub_LBL"
+        Me.FilmSub_LBL.Size = New System.Drawing.Size(77, 19)
+        Me.FilmSub_LBL.TabIndex = 2
+        Me.FilmSub_LBL.Text = "Sub-Total:"
+        Me.FilmSub_LBL.UseCustomBackColor = True
+        '
+        'FilmTop_PNL
+        '
+        Me.FilmTop_PNL.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.FilmTop_PNL.Controls.Add(Me.MetroLabel1)
+        Me.FilmTop_PNL.Controls.Add(Me.MetroLabel12)
+        Me.FilmTop_PNL.Controls.Add(Me.MetroLabel15)
+        Me.FilmTop_PNL.Controls.Add(Me.MetroLabel16)
+        Me.FilmTop_PNL.Controls.Add(Me.MetroLabel17)
+        Me.FilmTop_PNL.Controls.Add(Me.MetroLabel18)
+        Me.FilmTop_PNL.Controls.Add(Me.MetroLabel19)
+        Me.FilmTop_PNL.Controls.Add(Me.MetroLabel20)
+        Me.FilmTop_PNL.Dock = System.Windows.Forms.DockStyle.Top
+        Me.FilmTop_PNL.Location = New System.Drawing.Point(0, 0)
+        Me.FilmTop_PNL.Margin = New System.Windows.Forms.Padding(0)
+        Me.FilmTop_PNL.Name = "FilmTop_PNL"
+        Me.FilmTop_PNL.Size = New System.Drawing.Size(1011, 37)
+        Me.FilmTop_PNL.TabIndex = 0
+        '
+        'MetroLabel1
+        '
+        Me.MetroLabel1.AutoSize = True
+        Me.MetroLabel1.FontWeight = MetroFramework.MetroLabelWeight.Bold
+        Me.MetroLabel1.Location = New System.Drawing.Point(478, 9)
+        Me.MetroLabel1.Name = "MetroLabel1"
+        Me.MetroLabel1.Size = New System.Drawing.Size(72, 19)
+        Me.MetroLabel1.TabIndex = 7
+        Me.MetroLabel1.Text = "Thickness"
+        Me.MetroLabel1.UseCustomBackColor = True
+        '
+        'MetroLabel12
+        '
+        Me.MetroLabel12.AutoSize = True
+        Me.MetroLabel12.FontWeight = MetroFramework.MetroLabelWeight.Bold
+        Me.MetroLabel12.Location = New System.Drawing.Point(556, 9)
+        Me.MetroLabel12.Name = "MetroLabel12"
+        Me.MetroLabel12.Size = New System.Drawing.Size(115, 19)
+        Me.MetroLabel12.TabIndex = 2
+        Me.MetroLabel12.Text = "Dimension(mm)"
+        Me.MetroLabel12.UseCustomBackColor = True
+        '
+        'MetroLabel15
+        '
+        Me.MetroLabel15.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.MetroLabel15.FontWeight = MetroFramework.MetroLabelWeight.Bold
+        Me.MetroLabel15.Location = New System.Drawing.Point(844, 9)
+        Me.MetroLabel15.Name = "MetroLabel15"
+        Me.MetroLabel15.Size = New System.Drawing.Size(116, 19)
+        Me.MetroLabel15.TabIndex = 6
+        Me.MetroLabel15.Text = "Net Amount"
+        Me.MetroLabel15.TextAlign = System.Drawing.ContentAlignment.TopRight
+        Me.MetroLabel15.UseCustomBackColor = True
+        '
+        'MetroLabel16
+        '
+        Me.MetroLabel16.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.MetroLabel16.AutoSize = True
+        Me.MetroLabel16.BackColor = System.Drawing.Color.Transparent
+        Me.MetroLabel16.FontWeight = MetroFramework.MetroLabelWeight.Bold
+        Me.MetroLabel16.Location = New System.Drawing.Point(805, 9)
+        Me.MetroLabel16.Name = "MetroLabel16"
+        Me.MetroLabel16.Size = New System.Drawing.Size(33, 19)
+        Me.MetroLabel16.TabIndex = 5
+        Me.MetroLabel16.Text = "Qty"
+        Me.MetroLabel16.UseCustomBackColor = True
+        '
+        'MetroLabel17
+        '
+        Me.MetroLabel17.FontWeight = MetroFramework.MetroLabelWeight.Bold
+        Me.MetroLabel17.Location = New System.Drawing.Point(253, 9)
+        Me.MetroLabel17.Name = "MetroLabel17"
+        Me.MetroLabel17.Size = New System.Drawing.Size(219, 19)
+        Me.MetroLabel17.TabIndex = 4
+        Me.MetroLabel17.Text = "Film Description"
+        Me.MetroLabel17.UseCustomBackColor = True
+        '
+        'MetroLabel18
+        '
+        Me.MetroLabel18.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.MetroLabel18.FontWeight = MetroFramework.MetroLabelWeight.Bold
+        Me.MetroLabel18.Location = New System.Drawing.Point(701, 9)
+        Me.MetroLabel18.Name = "MetroLabel18"
+        Me.MetroLabel18.Size = New System.Drawing.Size(98, 19)
+        Me.MetroLabel18.TabIndex = 3
+        Me.MetroLabel18.Text = "Net Price"
+        Me.MetroLabel18.TextAlign = System.Drawing.ContentAlignment.TopRight
+        Me.MetroLabel18.UseCustomBackColor = True
+        '
+        'MetroLabel19
+        '
+        Me.MetroLabel19.FontWeight = MetroFramework.MetroLabelWeight.Bold
+        Me.MetroLabel19.Location = New System.Drawing.Point(52, 9)
+        Me.MetroLabel19.Name = "MetroLabel19"
+        Me.MetroLabel19.Size = New System.Drawing.Size(164, 19)
+        Me.MetroLabel19.TabIndex = 1
+        Me.MetroLabel19.Text = "Window /Door I.D."
+        Me.MetroLabel19.TextAlign = System.Drawing.ContentAlignment.TopRight
+        Me.MetroLabel19.UseCustomBackColor = True
+        '
+        'MetroLabel20
+        '
+        Me.MetroLabel20.AutoSize = True
+        Me.MetroLabel20.BackColor = System.Drawing.Color.Transparent
+        Me.MetroLabel20.FontWeight = MetroFramework.MetroLabelWeight.Bold
+        Me.MetroLabel20.Location = New System.Drawing.Point(7, 9)
+        Me.MetroLabel20.Name = "MetroLabel20"
+        Me.MetroLabel20.Size = New System.Drawing.Size(39, 19)
+        Me.MetroLabel20.TabIndex = 0
+        Me.MetroLabel20.Text = "Item"
+        Me.MetroLabel20.UseCustomBackColor = True
         '
         'MechanismTAB
         '
@@ -557,7 +731,7 @@ Partial Class ContractItemsFRM
         Me.Load_LBL.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Load_LBL.FontSize = MetroFramework.MetroLabelSize.Tall
         Me.Load_LBL.FontWeight = MetroFramework.MetroLabelWeight.Bold
-        Me.Load_LBL.Location = New System.Drawing.Point(568, 32)
+        Me.Load_LBL.Location = New System.Drawing.Point(568, 41)
         Me.Load_LBL.Name = "Load_LBL"
         Me.Load_LBL.Size = New System.Drawing.Size(364, 25)
         Me.Load_LBL.TabIndex = 612
@@ -567,123 +741,12 @@ Partial Class ContractItemsFRM
         'Load_PB
         '
         Me.Load_PB.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Load_PB.Location = New System.Drawing.Point(932, 32)
+        Me.Load_PB.Location = New System.Drawing.Point(932, 41)
         Me.Load_PB.Name = "Load_PB"
         Me.Load_PB.ProgressBarStyle = System.Windows.Forms.ProgressBarStyle.Blocks
         Me.Load_PB.Size = New System.Drawing.Size(121, 23)
         Me.Load_PB.Style = MetroFramework.MetroColorStyle.Silver
         Me.Load_PB.TabIndex = 611
-        '
-        'Panel1
-        '
-        Me.Panel1.Controls.Add(Me.MetroLabel19)
-        Me.Panel1.Controls.Add(Me.MetroLabel18)
-        Me.Panel1.Controls.Add(Me.MetroLabel17)
-        Me.Panel1.Controls.Add(Me.MetroLabel16)
-        Me.Panel1.Controls.Add(Me.MetroLabel15)
-        Me.Panel1.Controls.Add(Me.MetroLabel14)
-        Me.Panel1.Controls.Add(Me.MetroLabel13)
-        Me.Panel1.Controls.Add(Me.MetroLabel12)
-        Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
-        Me.Panel1.Location = New System.Drawing.Point(0, 0)
-        Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(1011, 39)
-        Me.Panel1.TabIndex = 0
-        '
-        'MetroLabel13
-        '
-        Me.MetroLabel13.AutoSize = True
-        Me.MetroLabel13.BackColor = System.Drawing.Color.Transparent
-        Me.MetroLabel13.FontWeight = MetroFramework.MetroLabelWeight.Regular
-        Me.MetroLabel13.Location = New System.Drawing.Point(53, 10)
-        Me.MetroLabel13.Name = "MetroLabel13"
-        Me.MetroLabel13.Size = New System.Drawing.Size(82, 19)
-        Me.MetroLabel13.TabIndex = 2
-        Me.MetroLabel13.Text = "Living Front"
-        Me.MetroLabel13.UseCustomBackColor = True
-        '
-        'MetroLabel14
-        '
-        Me.MetroLabel14.AutoSize = True
-        Me.MetroLabel14.BackColor = System.Drawing.Color.Transparent
-        Me.MetroLabel14.FontWeight = MetroFramework.MetroLabelWeight.Regular
-        Me.MetroLabel14.Location = New System.Drawing.Point(224, 10)
-        Me.MetroLabel14.Name = "MetroLabel14"
-        Me.MetroLabel14.Size = New System.Drawing.Size(76, 19)
-        Me.MetroLabel14.TabIndex = 3
-        Me.MetroLabel14.Text = "6mm Clear"
-        Me.MetroLabel14.UseCustomBackColor = True
-        '
-        'MetroLabel15
-        '
-        Me.MetroLabel15.FontWeight = MetroFramework.MetroLabelWeight.Regular
-        Me.MetroLabel15.Location = New System.Drawing.Point(408, 10)
-        Me.MetroLabel15.Name = "MetroLabel15"
-        Me.MetroLabel15.Size = New System.Drawing.Size(143, 19)
-        Me.MetroLabel15.TabIndex = 4
-        Me.MetroLabel15.Text = "6mm Tempered Clear"
-        Me.MetroLabel15.TextAlign = System.Drawing.ContentAlignment.TopRight
-        Me.MetroLabel15.UseCustomBackColor = True
-        '
-        'MetroLabel16
-        '
-        Me.MetroLabel16.AutoSize = True
-        Me.MetroLabel16.BackColor = System.Drawing.Color.Transparent
-        Me.MetroLabel16.FontWeight = MetroFramework.MetroLabelWeight.Regular
-        Me.MetroLabel16.Location = New System.Drawing.Point(567, 10)
-        Me.MetroLabel16.Name = "MetroLabel16"
-        Me.MetroLabel16.Size = New System.Drawing.Size(105, 19)
-        Me.MetroLabel16.TabIndex = 5
-        Me.MetroLabel16.Text = "2750w x 1600h"
-        Me.MetroLabel16.UseCustomBackColor = True
-        '
-        'MetroLabel17
-        '
-        Me.MetroLabel17.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.MetroLabel17.FontWeight = MetroFramework.MetroLabelWeight.Regular
-        Me.MetroLabel17.Location = New System.Drawing.Point(725, 10)
-        Me.MetroLabel17.Name = "MetroLabel17"
-        Me.MetroLabel17.Size = New System.Drawing.Size(98, 19)
-        Me.MetroLabel17.TabIndex = 6
-        Me.MetroLabel17.Text = "10,789,145.23"
-        Me.MetroLabel17.TextAlign = System.Drawing.ContentAlignment.TopRight
-        Me.MetroLabel17.UseCustomBackColor = True
-        '
-        'MetroLabel18
-        '
-        Me.MetroLabel18.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.MetroLabel18.FontWeight = MetroFramework.MetroLabelWeight.Regular
-        Me.MetroLabel18.Location = New System.Drawing.Point(829, 10)
-        Me.MetroLabel18.Name = "MetroLabel18"
-        Me.MetroLabel18.Size = New System.Drawing.Size(33, 19)
-        Me.MetroLabel18.TabIndex = 7
-        Me.MetroLabel18.Text = "00"
-        Me.MetroLabel18.TextAlign = System.Drawing.ContentAlignment.TopRight
-        Me.MetroLabel18.UseCustomBackColor = True
-        '
-        'MetroLabel19
-        '
-        Me.MetroLabel19.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.MetroLabel19.FontWeight = MetroFramework.MetroLabelWeight.Regular
-        Me.MetroLabel19.Location = New System.Drawing.Point(868, 10)
-        Me.MetroLabel19.Name = "MetroLabel19"
-        Me.MetroLabel19.Size = New System.Drawing.Size(116, 19)
-        Me.MetroLabel19.TabIndex = 8
-        Me.MetroLabel19.Text = "4,568.96"
-        Me.MetroLabel19.TextAlign = System.Drawing.ContentAlignment.TopRight
-        Me.MetroLabel19.UseCustomBackColor = True
-        '
-        'MetroLabel12
-        '
-        Me.MetroLabel12.AutoSize = True
-        Me.MetroLabel12.BackColor = System.Drawing.Color.Transparent
-        Me.MetroLabel12.FontWeight = MetroFramework.MetroLabelWeight.Regular
-        Me.MetroLabel12.Location = New System.Drawing.Point(8, 10)
-        Me.MetroLabel12.Name = "MetroLabel12"
-        Me.MetroLabel12.Size = New System.Drawing.Size(25, 19)
-        Me.MetroLabel12.TabIndex = 1
-        Me.MetroLabel12.Text = "00"
-        Me.MetroLabel12.UseCustomBackColor = True
         '
         'ContractItemsFRM
         '
@@ -715,13 +778,16 @@ Partial Class ContractItemsFRM
         Me.SBot_PNL.PerformLayout()
         Me.GlassTAB.ResumeLayout(False)
         Me.GBack_PNL.ResumeLayout(False)
-        Me.GMid_PNL.ResumeLayout(False)
         Me.GBot_PNL.ResumeLayout(False)
         Me.GBot_PNL.PerformLayout()
         Me.GTop_PNL.ResumeLayout(False)
         Me.GTop_PNL.PerformLayout()
-        Me.Panel1.ResumeLayout(False)
-        Me.Panel1.PerformLayout()
+        Me.FilmTAB.ResumeLayout(False)
+        Me.FilmBack_PNL.ResumeLayout(False)
+        Me.FilmBot_PNL.ResumeLayout(False)
+        Me.FilmBot_PNL.PerformLayout()
+        Me.FilmTop_PNL.ResumeLayout(False)
+        Me.FilmTop_PNL.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -757,10 +823,10 @@ Partial Class ContractItemsFRM
     Friend WithEvents GBack_PNL As Panel
     Friend WithEvents GMid_PNL As Panel
     Friend WithEvents GBot_PNL As Panel
-    Friend WithEvents MetroLabel1 As MetroFramework.Controls.MetroLabel
-    Friend WithEvents MetroLabel2 As MetroFramework.Controls.MetroLabel
+    Friend WithEvents GSubTotal_LBL As MetroFramework.Controls.MetroLabel
+    Friend WithEvents GSub_LBL As MetroFramework.Controls.MetroLabel
     Friend WithEvents GTop_PNL As Panel
-    Friend WithEvents MetroLabel3 As MetroFramework.Controls.MetroLabel
+    Friend WithEvents GNetPrice_LBL As MetroFramework.Controls.MetroLabel
     Friend WithEvents MetroLabel4 As MetroFramework.Controls.MetroLabel
     Friend WithEvents MetroLabel5 As MetroFramework.Controls.MetroLabel
     Friend WithEvents MetroLabel6 As MetroFramework.Controls.MetroLabel
@@ -769,13 +835,18 @@ Partial Class ContractItemsFRM
     Friend WithEvents MetroLabel8 As MetroFramework.Controls.MetroLabel
     Friend WithEvents MetroLabel9 As MetroFramework.Controls.MetroLabel
     Friend WithEvents MetroLabel7 As MetroFramework.Controls.MetroLabel
-    Friend WithEvents Panel1 As Panel
-    Friend WithEvents MetroLabel19 As MetroFramework.Controls.MetroLabel
-    Friend WithEvents MetroLabel18 As MetroFramework.Controls.MetroLabel
-    Friend WithEvents MetroLabel17 As MetroFramework.Controls.MetroLabel
-    Friend WithEvents MetroLabel16 As MetroFramework.Controls.MetroLabel
-    Friend WithEvents MetroLabel15 As MetroFramework.Controls.MetroLabel
-    Friend WithEvents MetroLabel14 As MetroFramework.Controls.MetroLabel
-    Friend WithEvents MetroLabel13 As MetroFramework.Controls.MetroLabel
+    Friend WithEvents FilmBack_PNL As Panel
+    Friend WithEvents FilmMid_PNL As Panel
+    Friend WithEvents FilmBot_PNL As Panel
+    Friend WithEvents FilmSubTotal_LBL As MetroFramework.Controls.MetroLabel
+    Friend WithEvents FilmSub_LBL As MetroFramework.Controls.MetroLabel
+    Friend WithEvents FilmTop_PNL As Panel
     Friend WithEvents MetroLabel12 As MetroFramework.Controls.MetroLabel
+    Friend WithEvents MetroLabel15 As MetroFramework.Controls.MetroLabel
+    Friend WithEvents MetroLabel16 As MetroFramework.Controls.MetroLabel
+    Friend WithEvents MetroLabel17 As MetroFramework.Controls.MetroLabel
+    Friend WithEvents MetroLabel18 As MetroFramework.Controls.MetroLabel
+    Friend WithEvents MetroLabel19 As MetroFramework.Controls.MetroLabel
+    Friend WithEvents MetroLabel20 As MetroFramework.Controls.MetroLabel
+    Friend WithEvents MetroLabel1 As MetroFramework.Controls.MetroLabel
 End Class

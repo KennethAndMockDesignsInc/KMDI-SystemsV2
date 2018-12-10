@@ -45,8 +45,10 @@ Public Class ContractRecordsFRM
     Public JobOrderNoID As String
     Public JOWithImage As Boolean
     Public JOWithItem As Boolean
+    Public JOUserView As String
 
-    Public SampleCheckbox As New CheckBox
+    Public ErrorMessage As String
+
     Public ContractRecordsBGW As BackgroundWorker = New BackgroundWorker
     Public Delegate Sub PBVisibilityDelegate(ByVal Visibility As Boolean)
     Dim ChangePBVisibility As PBVisibilityDelegate
@@ -61,7 +63,6 @@ Public Class ContractRecordsFRM
 
     Private Sub ContractRecords_Load(sender As Object, e As EventArgs) Handles Me.Load
         Try
-
             Me.WindowState = FormWindowState.Maximized
             AddHandler ContractRecordsBGW.DoWork, AddressOf ContractRecordsBGW_DoWork
             AddHandler ContractRecordsBGW.RunWorkerCompleted, AddressOf ContractRecordsBGW_RunWorkerCompleted
@@ -70,6 +71,7 @@ Public Class ContractRecordsFRM
             LoadInitialSetUp()
 
         Catch ex As Exception
+            ErrorMessage = ex.ToString
             MessageBox.Show(ex.ToString)
         End Try
 
@@ -112,6 +114,7 @@ Public Class ContractRecordsFRM
                                     ActionTaken,
                                     SearchItemFN)
         Catch ex As Exception
+            ErrorMessage = ex.ToString
             ContractRecordsBGW.WorkerSupportsCancellation = True
             ContractRecordsBGW.CancelAsync()
         End Try
@@ -447,7 +450,7 @@ Public Class ContractRecordsFRM
             If e.Cancelled = True Then
                 Select Case ActionTaken
                     Case "Search"
-                        MetroMessageBox.Show(Me, "Please click OK button or press the Enter key then press F5 key to refresh the system.", "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                        MetroMessageBox.Show(Me, "Please click OK button or press the Enter key then press F5 key to refresh the system." & vbCrLf & vbCrLf & ErrorMessage, "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                     Case "Add"
                     Case "Update"
                     Case "Delete"
@@ -455,7 +458,7 @@ Public Class ContractRecordsFRM
             ElseIf e.Error IsNot Nothing Then
                 Select Case ActionTaken
                     Case "Search"
-                        MetroMessageBox.Show(Me, "Please click OK button or press the Enter key then press F5 to refresh the system.", "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                        MetroMessageBox.Show(Me, "Please click OK button or press the Enter key then press F5 to refresh the system." & vbCrLf & vbCrLf & ErrorMessage, "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                     Case "Add"
                     Case "Update"
                     Case "Delete"
@@ -689,6 +692,7 @@ Public Class ContractRecordsFRM
 
                             '// For images of contracts
                             JobOrderNoID = ContractRecordsDGV.Item("JOB_ORDER_NO", e.RowIndex).Value.ToString
+                            JOUserView = ContractRecordsDGV.Item("JO#", e.RowIndex).Value.ToString
 
                             Select Case ContractRecordsDGV.Item("IMG", e.RowIndex).Value.ToString
                                 Case "yes"
@@ -1045,12 +1049,14 @@ Public Class ContractRecordsFRM
     Private Sub ContractRecords_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         Try
 
-            If MetroMessageBox.Show(Me, "Do you wish to proceed?", "Contracts form closing", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+            If MetroMessageBox.Show(Me, "Do you wish to proceed?", "Contracts form closing", MessageBoxButtons.YesNo, MessageBoxIcon.Information) = DialogResult.Yes Then
                 Me.Hide()
                 SearchFRM.Hide()
                 UpdateProjectAddressFRM.Hide()
                 ClientBackgroundFRM.Hide()
                 BackloadFrameSash.Hide()
+                KMDI_MainFRM.Show()
+                KMDI_MainFRM.BringToFront()
             Else
                 e.Cancel = True
             End If
@@ -1069,6 +1075,8 @@ Public Class ContractRecordsFRM
             Select Case JOWithItem
                 Case True
                     ContractItemsFRM.SearchString = JobOrderNoID
+                    ContractItemsFRM.ContractRecordsLBL.Text = JOUserView
+
                     Dim frm As Form = ContractItemsFRM
 
                     Select Case frm.Visible

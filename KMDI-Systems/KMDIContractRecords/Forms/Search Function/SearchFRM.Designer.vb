@@ -68,7 +68,6 @@ Partial Class SearchFRM
         '
         'SearchFRM
         '
-        Me.AcceptButton = Me.SearchBTN
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BorderStyle = MetroFramework.Forms.MetroFormBorderStyle.FixedSingle

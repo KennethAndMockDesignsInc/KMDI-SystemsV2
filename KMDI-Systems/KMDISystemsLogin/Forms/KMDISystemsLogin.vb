@@ -1,126 +1,150 @@
 ﻿Imports System.ComponentModel
 Imports System.Data.SqlClient
+Imports MetroFramework
 
 Public Class KMDISystemsLogin
 
+    Public LoginBGW As BackgroundWorker = New BackgroundWorker
     Private Sub KMDISystemsLogin_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        KMDISystemsLogin_AccessPoint = "192.168.1.21,49107"
-        ConnectionTypeCbox.SelectedIndex = 0
-        MaximizeBox = False
-    End Sub
-    Public Sub Login()
-        KMDISystems_Login_SERVER("KMDIDATA")
-        LoginType = "Fresh"
-        DBnameCboxSelectedIndex = 0
-        PrevDBnameCboxSelectedIndex = 0
-        KMDISystems_Login(KMDISystems_UserName,
-                          KMDISystems_Password)
-    End Sub
-
-    Private Sub ConnectionTypeCbox_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ConnectionTypeCbox.SelectionChangeCommitted
-        If ConnectionTypeCbox.SelectedIndex = 0 Then
-            KMDISystemsLogin_AccessPoint = "192.168.1.21,49107"
-        ElseIf ConnectionTypeCbox.SelectedIndex = 1 Then
+        Try
+            AddHandler LoginBGW.DoWork, AddressOf LoginBGW_DoWork
+            AddHandler LoginBGW.RunWorkerCompleted, AddressOf LoginBGW_RunWorkerCompleted
+            'AddHandler LoginBGW.ProgressChanged, AddressOf LoginBGW_ProgressChanged
             KMDISystemsLogin_AccessPoint = "121.58.229.248,49107"
-        End If
+            MaximizeBox = False
+            UserName_TBX.ForeColor = Color.FromArgb(17, 17, 17)
+        Catch ex As Exception
+
+        End Try
+
     End Sub
 
-    Private Sub UserNameTbox_TextChanged(sender As Object, e As EventArgs) Handles UserNameTbox.TextChanged
-        KMDISystems_UserName = UserNameTbox.Text
+    Private Sub UserNameTbox_TextChanged(sender As Object, e As EventArgs) Handles UserName_TBX.TextChanged
+        Try
+            KMDISystems_UserName = UserName_TBX.Text
+        Catch ex As Exception
+
+        End Try
+
     End Sub
 
-    Private Sub PasswordTbox_TextChanged(sender As Object, e As EventArgs) Handles PasswordTbox.TextChanged
-        KMDISystems_Password = PasswordTbox.Text
+    Private Sub PasswordTbox_TextChanged(sender As Object, e As EventArgs) Handles Password_TBX.TextChanged
+        Try
+            KMDISystems_Password = Password_TBX.Text
+        Catch ex As Exception
+
+        End Try
+
     End Sub
 
     Private Sub LoginBtn_Click(sender As Object, e As EventArgs) Handles LoginBtn.Click
-        If Login_BGW.IsBusy <> True Then
-            Loading_Pnl.Visible = True
-            Login_Pnl.Visible = False
-            ConnectionTypeCbox.Enabled = False
-            UserNameTbox.Enabled = False
-            PasswordTbox.Enabled = False
-            Login_BGW.RunWorkerAsync()
-        End If
-    End Sub
-
-    Private Sub CloseBtn_Click(sender As Object, e As EventArgs) Handles CloseBtn.Click
-        Me.Close()
-    End Sub
-
-    Private Sub ConnectionTypeCbox_Enter(sender As Object, e As EventArgs) Handles ConnectionTypeCbox.Enter
-        ConnectionTypeLbl.ForeColor = Color.DeepSkyBlue
-    End Sub
-
-    Private Sub ConnectionTypeCbox_Leave(sender As Object, e As EventArgs) Handles ConnectionTypeCbox.Leave
-        ConnectionTypeLbl.ForeColor = Color.White
-    End Sub
-
-    Private Sub UserNameTbox_Enter(sender As Object, e As EventArgs) Handles UserNameTbox.Enter
-        UserNameLbl.ForeColor = Color.DeepSkyBlue
-    End Sub
-
-    Private Sub UserNameTbox_Leave(sender As Object, e As EventArgs) Handles UserNameTbox.Leave
-        UserNameLbl.ForeColor = Color.White
-    End Sub
-
-    Private Sub PasswordTbox_Enter(sender As Object, e As EventArgs) Handles PasswordTbox.Enter
-        PasswordLbl.ForeColor = Color.DeepSkyBlue
-    End Sub
-
-    Private Sub PasswordTbox_Leave(sender As Object, e As EventArgs) Handles PasswordTbox.Leave
-        PasswordLbl.ForeColor = Color.White
-    End Sub
-
-    Private Sub Login_BGW_DoWork(sender As Object, e As DoWorkEventArgs) Handles Login_BGW.DoWork
-
         Try
-            KMDISystems_UserName = Trim(KMDISystems_UserName)
-            KMDISystems_Password = Trim(KMDISystems_Password)
-            If KMDISystems_UserName = Nothing Then
-                MetroFramework.MetroMessageBox.Show(Me, "Please enter username", "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
-                Login_BGW.CancelAsync()
-            ElseIf KMDISystems_Password = Nothing Then
-                MetroFramework.MetroMessageBox.Show(Me, "Please enter password", "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
-                Login_BGW.CancelAsync()
+            StartWorker()
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
+    Private Sub CloseBtn_Click(sender As Object, e As EventArgs)
+        Try
+            Me.Close()
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Public Sub StartWorker()
+        Try
+            If LoginBGW.IsBusy <> True Then
+                KMDISystems_UserName = Trim(KMDISystems_UserName)
+                KMDISystems_Password = Trim(KMDISystems_Password)
+                Select Case KMDISystems_UserName
+                    Case ""
+                        Login_TTP.Show("Username is required", UserName_TBX)
+                        Exit Sub
+                    Case Nothing
+                        Login_TTP.Show("Username is required", UserName_TBX)
+                        Exit Sub
+                    Case Else
+                        Select Case KMDISystems_Password
+                            Case ""
+                                Login_TTP.Show("Password is required", Password_TBX)
+                                Exit Sub
+                            Case Nothing
+                                Login_TTP.Show("Password is required", Password_TBX)
+                                Exit Sub
+                            Case Else
+                                LoginBtn.Visible = False
+                                LoadingPBOX.Visible = True
+                                UserName_TBX.Enabled = False
+                                Password_TBX.Enabled = False
+                                LoginBGW.WorkerReportsProgress = True
+                                LoginBGW.WorkerSupportsCancellation = True
+                                LoginBGW.RunWorkerAsync()
+                        End Select
+                End Select
+
             Else
-                Login()
+                MetroMessageBox.Show(Me, "System is gathering information.", "Please wait for a moment", MessageBoxButtons.OK, MessageBoxIcon.Stop)
             End If
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub LoginBGW_DoWork(ByVal sender As Object, ByVal e As DoWorkEventArgs)
+        Try
+
+            Select Case LoginBGW.CancellationPending
+                Case True
+                    e.Cancel = True
+                Case Else
+                    KMDISystems_Login_SERVER("KMDIDATA")
+                    LoginType = "Fresh"
+                    DBnameCboxSelectedIndex = 0
+                    PrevDBnameCboxSelectedIndex = 0
+            End Select
+
+            Select Case LoginBGW.CancellationPending
+                Case True
+                    e.Cancel = True
+                Case Else
+                    KMDISystems_Login(KMDISystems_UserName,
+                                      KMDISystems_Password)
+            End Select
         Catch ex As SqlException
             'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
             If ex.Number = -2 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Click ok to Reconnect", "Request Timeout", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                LoginBtn.PerformClick()
+                MetroMessageBox.Show(Me, "Click ok to Reconnect", "Request Timeout", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+                'LoginBtn.PerformClick()
             ElseIf ex.Number = 1232 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Please check internet connection", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Login_BGW.CancelAsync()
+                MetroMessageBox.Show(Me, "Please check internet connection", "Connection Error", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+                LoginBGW.CancelAsync()
             ElseIf ex.Number <> -2 And ex.Number <> 1232 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Contact the Programmers now", "You need some help?", MessageBoxButtons.OK, MessageBoxIcon.Stop)
-                MetroFramework.MetroMessageBox.Show(Me, ex.Message)
-                Login_BGW.CancelAsync()
+                MetroMessageBox.Show(Me, "Contact dev team for assistance" & vbCrLf & vbCrLf & ex.ToString, "System Error Detected", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+                LoginBGW.CancelAsync()
             End If
         Catch ex2 As Exception
-            MetroFramework.MetroMessageBox.Show(Me, ex2.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
+            MetroMessageBox.Show(Me, ex2.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
         End Try
 
-        If Login_BGW.CancellationPending = True Then
+        If LoginBGW.CancellationPending = True Then
             e.Cancel = True
         End If
     End Sub
 
-    Private Sub Login_BGW_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles Login_BGW.RunWorkerCompleted
+    Private Sub LoginBGW_RunWorkerCompleted(ByVal sender As Object, ByVal e As RunWorkerCompletedEventArgs)
         Try
-
+            LoadingPBOX.Visible = False
+            LoginBtn.Visible = True
             If e.Error IsNot Nothing Then
                 '' if BackgroundWorker terminated due to error
-                MetroFramework.MetroMessageBox.Show(Me, "Error Occured", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MetroMessageBox.Show(Me, "Contact dev team for assistance" & vbCrLf & vbCrLf & e.Error.ToString, "System Error Detected", MessageBoxButtons.OK, MessageBoxIcon.Stop)
             ElseIf e.Cancelled = True Then
                 '' otherwise if it was cancelled
-                Loading_Pnl.Visible = False
-                Login_Pnl.Visible = True
-                ConnectionTypeCbox.Enabled = True
-                UserNameTbox.Enabled = True
-                PasswordTbox.Enabled = True
+                UserName_TBX.Enabled = True
+                Password_TBX.Enabled = True
             Else
                 '' otherwise it completed normally
                 If AccountAutonum <> "" Or AccountAutonum IsNot Nothing Or AccountAutonum <> Nothing Then
@@ -144,13 +168,16 @@ Public Class KMDISystemsLogin
                             .DbNameCbox.SelectedIndex = DBnameCboxSelectedIndex
                         End With
                     End If
+
                     If LoginType = "Fresh" Then
                         Me.Hide()
                     ElseIf LoginType = "Relog" Then
                     End If
+
                 Else
                     With KMDI_MainFRM
-                        MetroFramework.MetroMessageBox.Show(Me, "Login failed! Please Try again", "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
+                        MetroMessageBox.Show(Me, "Login failed! Please Try again", "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
+
                         If Application.OpenForms().OfType(Of KMDI_MainFRM).Any Then
 
                             .DbNameCbox.SelectedIndex = PrevDBnameCboxSelectedIndex
@@ -160,22 +187,18 @@ Public Class KMDISystemsLogin
                             DBnameCboxSelectedIndex = .DbNameCbox.SelectedIndex
                             PrevDBnameCboxSelectedIndex = .PrevDBNameCboxSelectedIndex
 
-                            KMDISystems_Login(KMDISystems_UserName,
-                                              KMDISystems_Password)
+                            StartWorker()
                         End If
 
                     End With
                 End If
-                Loading_Pnl.Visible = False
-                Login_Pnl.Visible = True
-                ConnectionTypeCbox.Enabled = True
-                UserNameTbox.Enabled = True
-                PasswordTbox.Enabled = True
+                UserName_TBX.Enabled = True
+                Password_TBX.Enabled = True
 
             End If
 
         Catch ex As Exception
-            MetroFramework.MetroMessageBox.Show(Me, ex.Message)
+            MetroMessageBox.Show(Me, ex.Message)
         End Try
     End Sub
 End Class

@@ -351,7 +351,11 @@ Public Class KMDI_MainFRM
     End Sub
 
     Private Sub LogoutTile_Click(sender As Object, e As EventArgs) Handles LogoutTile.Click
-        Me.Close()
+        If MetroFramework.MetroMessageBox.Show(Me, "Do you wish to proceed?", "Log Out", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+            Me.Close()
+        Else
+            Exit Sub
+        End If
     End Sub
 
     Private Sub WinDoorMakerTile_Click(sender As Object, e As EventArgs) Handles WinDoorMakerTile.Click
@@ -468,16 +472,13 @@ Public Class KMDI_MainFRM
     End Sub
 
     Private Sub KMDI_MainFRM_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        If MetroFramework.MetroMessageBox.Show(Me, "Are you sure you want to Exit?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Error) = DialogResult.Yes Then
-
+        Try
             sqlConnection.Close()
-            KMDISystemsLogin.UserNameTbox.Clear()
-            'LoginModule.KMDISystems_UserName = Nothing
-            KMDISystemsLogin.PasswordTbox.Clear()
-            'LoginModule.KMDISystems_Password = Nothing
-            'KMDISystemsGlobalModule.AccountAutonum = Nothing
-            KMDISystemsLogin.UserNameTbox.Select()
+            KMDISystemsLogin.UserName_TBX.Clear()
+            KMDISystemsLogin.Password_TBX.Clear()
+            KMDISystemsLogin.UserName_TBX.Select()
             KMDISystemsLogin.Show()
+            KMDISystemsLogin.BringToFront()
 
             For Each Form In My.Application.OpenForms
                 If Form.name.ToString <> "KMDISystemsLogin" Then
@@ -486,10 +487,9 @@ Public Class KMDI_MainFRM
             Next
 
             Me.Dispose()
+        Catch ex As Exception
 
-        Else
-            e.Cancel = True
-        End If
+        End Try
     End Sub
 
 End Class
