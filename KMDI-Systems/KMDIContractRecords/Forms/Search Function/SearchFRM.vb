@@ -39,12 +39,6 @@
     Private Sub SearchTbox_KeyDown(sender As Object, e As KeyEventArgs) Handles SearchTbox.KeyDown
 
         Try
-            'If e.KeyCode = Keys.Enter Then
-            '    SearchBTN.PerformClick()
-            'ElseIf e.KeyCode = Keys.Escape Then
-            '    Me.Hide()
-            '    ContractRecordsFRM.Focus()
-            'End If
             Select Case e.KeyCode
                 Case Keys.Enter
                     SearchBTN.PerformClick()
@@ -60,6 +54,7 @@
 
     Private Sub SearchFRM_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         Try
+            Dispose()
             ContractRecordsFRM.Focus()
         Catch ex As Exception
             MessageBox.Show(ex.ToString)

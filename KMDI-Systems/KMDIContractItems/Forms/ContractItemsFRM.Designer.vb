@@ -119,7 +119,7 @@ Partial Class ContractItemsFRM
         Me.CIF_TCTRL.Dock = System.Windows.Forms.DockStyle.Fill
         Me.CIF_TCTRL.Location = New System.Drawing.Point(23, 78)
         Me.CIF_TCTRL.Name = "CIF_TCTRL"
-        Me.CIF_TCTRL.SelectedIndex = 2
+        Me.CIF_TCTRL.SelectedIndex = 0
         Me.CIF_TCTRL.Size = New System.Drawing.Size(1021, 622)
         Me.CIF_TCTRL.Style = MetroFramework.MetroColorStyle.Purple
         Me.CIF_TCTRL.TabIndex = 609

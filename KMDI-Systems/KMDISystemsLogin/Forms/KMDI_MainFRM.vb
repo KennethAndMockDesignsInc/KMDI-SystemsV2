@@ -352,7 +352,7 @@ Public Class KMDI_MainFRM
 
     Private Sub LogoutTile_Click(sender As Object, e As EventArgs) Handles LogoutTile.Click
         If MetroFramework.MetroMessageBox.Show(Me, "Do you wish to proceed?", "Log Out", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Me.Close()
+            Me.Dispose()
         Else
             Exit Sub
         End If

@@ -519,7 +519,7 @@ Public Class ContractItemsFRM
         With panel
             .Name = "FPanel_" & CStr(e.ProgressPercentage)
             .Width = 1127
-            .Height = 165
+            .Height = 125
             .Dock = DockStyle.Top
             .BorderStyle = 1
             .TabStop = False
@@ -563,12 +563,6 @@ Public Class ContractItemsFRM
                         Case 6
                             .Location = New Point(215, 85)
                             .Text = Replace(sql.ds.Tables("Frames").Rows(e.ProgressPercentage).Item(16).ToString, "&", "&&")
-                            'Case 7
-                            '    .Location = New Point(215, 104)
-                            '    .Text = sql.ds.Tables("Frames").Rows(e.ProgressPercentage).Item(16).ToString
-                            'Case 8
-                            '    .Location = New Point(215, 123)
-                            '.Text = sql.ds.Tables("Frames").Rows(e.ProgressPercentage).Item(16).ToString
                     End Select
                     .TextAlign = ContentAlignment.TopLeft
                 ElseIf i <= 10 Then
@@ -578,7 +572,7 @@ Public Class ContractItemsFRM
                     '// Answer for the bug of uneven spacing for the last 3 rows of the output.
                     Dim locationx As Integer
 
-                    If e.ProgressPercentage <= 2 And sql.ds.Tables("Frames").Rows.Count > 3 Then
+                    If e.ProgressPercentage <= 4 And sql.ds.Tables("Frames").Rows.Count > 5 Then
                         locationx = FQty_LBL.Location.X + 17
                     Else
                         locationx = FQty_LBL.Location.X

@@ -364,6 +364,7 @@ Public Class ContractImagesFRM
 
     Private Sub ContractImagesFRM_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
         Try
+            Dispose()
             ContractRecordsFRM.BringToFront()
             ContractRecordsFRM.ContractRecordsDGV.Select()
         Catch ex As Exception

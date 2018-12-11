@@ -53,7 +53,7 @@ Partial Class KMDISystemsLogin
         Me.Password_TBX.Icon = CType(resources.GetObject("Password_TBX.Icon"), System.Drawing.Image)
         Me.Password_TBX.IconRight = True
         Me.Password_TBX.Lines = New String(-1) {}
-        Me.Password_TBX.Location = New System.Drawing.Point(23, 187)
+        Me.Password_TBX.Location = New System.Drawing.Point(23, 192)
         Me.Password_TBX.MaxLength = 32767
         Me.Password_TBX.Name = "Password_TBX"
         Me.Password_TBX.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
@@ -89,7 +89,7 @@ Partial Class KMDISystemsLogin
         Me.UserName_TBX.Icon = CType(resources.GetObject("UserName_TBX.Icon"), System.Drawing.Image)
         Me.UserName_TBX.IconRight = True
         Me.UserName_TBX.Lines = New String(-1) {}
-        Me.UserName_TBX.Location = New System.Drawing.Point(23, 135)
+        Me.UserName_TBX.Location = New System.Drawing.Point(23, 140)
         Me.UserName_TBX.MaxLength = 32767
         Me.UserName_TBX.Name = "UserName_TBX"
         Me.UserName_TBX.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
@@ -122,7 +122,7 @@ Partial Class KMDISystemsLogin
         Me.LoginBtn.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LoginBtn.ForeColor = System.Drawing.Color.White
         Me.LoginBtn.Image = Nothing
-        Me.LoginBtn.Location = New System.Drawing.Point(212, 240)
+        Me.LoginBtn.Location = New System.Drawing.Point(212, 245)
         Me.LoginBtn.Name = "LoginBtn"
         Me.LoginBtn.Size = New System.Drawing.Size(106, 32)
         Me.LoginBtn.TabIndex = 2
@@ -136,7 +136,7 @@ Partial Class KMDISystemsLogin
         Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
         Me.PictureBox1.Location = New System.Drawing.Point(23, 23)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(295, 84)
+        Me.PictureBox1.Size = New System.Drawing.Size(295, 93)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox1.TabIndex = 16
         Me.PictureBox1.TabStop = False
@@ -152,7 +152,7 @@ Partial Class KMDISystemsLogin
         Me.AcceptButton = Me.LoginBtn
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(339, 287)
+        Me.ClientSize = New System.Drawing.Size(339, 297)
         Me.Controls.Add(Me.Password_TBX)
         Me.Controls.Add(Me.LoadingPBOX)
         Me.Controls.Add(Me.LoginBtn)

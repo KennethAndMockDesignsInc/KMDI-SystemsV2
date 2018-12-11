@@ -902,7 +902,9 @@ Public Class ContractRecordsFRM
             Select Case JOWithImage
                 Case True
                     ContractImagesFRM.SearchString = JobOrderNoID
+
                     Dim frm As Form = ContractImagesFRM
+                    SearchFRM.Dispose()
 
                     Select Case frm.Visible
                         Case True
@@ -1050,13 +1052,12 @@ Public Class ContractRecordsFRM
         Try
 
             If MetroMessageBox.Show(Me, "Do you wish to proceed?", "Contracts form closing", MessageBoxButtons.YesNo, MessageBoxIcon.Information) = DialogResult.Yes Then
-                Me.Hide()
-                SearchFRM.Hide()
-                UpdateProjectAddressFRM.Hide()
-                ClientBackgroundFRM.Hide()
-                BackloadFrameSash.Hide()
                 KMDI_MainFRM.Show()
                 KMDI_MainFRM.BringToFront()
+                SearchFRM.Dispose()
+                ContractItemsFRM.Dispose()
+                ContractImagesFRM.Dispose()
+                Dispose()
             Else
                 e.Cancel = True
             End If
@@ -1078,6 +1079,7 @@ Public Class ContractRecordsFRM
                     ContractItemsFRM.ContractRecordsLBL.Text = JOUserView
 
                     Dim frm As Form = ContractItemsFRM
+                    SearchFRM.Dispose()
 
                     Select Case frm.Visible
                         Case True
@@ -1094,5 +1096,4 @@ Public Class ContractRecordsFRM
             MessageBox.Show(ex.ToString)
         End Try
     End Sub
-
 End Class
