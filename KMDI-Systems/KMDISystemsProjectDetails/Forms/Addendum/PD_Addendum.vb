@@ -4,7 +4,7 @@ Public Class PD_Addendum
     Public PD_Addendum_BGW As BackgroundWorker = New BackgroundWorker
     Dim ADDENDUM_BGW_TODO As String
     Dim WD_ID, QUOTE_NO As String
-
+    Dim count_ArchDesignBS As Integer
 
     Sub Start_PD_Addendum_BGW(ByVal Panel_bool As Boolean,
                               ByVal Loading_bool As Boolean)
@@ -83,11 +83,16 @@ Public Class PD_Addendum
                         QUERY_SELECT_WITH_READER(Qno, ADDENDUM_BGW_TODO)
                     Next
                 Case "INSERT_TECHNICAL_PARTNERS"
-                    For Each ROW In ArchDesignBS
-                        PD_Addendum_Update_TechPartners(Me, C_ID, "Architectural Design", ROW("COMP_ID"), ROW("EMP_ID"), ROW("POSITION"), ROW("TP_ID"))
+                    'For Each ROW In ArchDesignBS
+                    '    PD_Addendum_Update_TechPartners(Me, C_ID, "Architectural Design", ROW("COMP_ID"), ROW("EMP_ID"), ROW("POSITION"), ROW("TP_ID"))
+                    'Next
+                Case "Search_for_TP_ID_then_Insert"
+                    For Each row In ArchDesignBS
+                        SEARCH_TP_ID(row("COMP_ID"), row("EMP_ID"), row("POSITION"))
+                        If TP_ID = Nothing Then
+                            PD_Addendum_Update_TechPartners(Me, C_ID, "Architectural Design", row("COMP_ID"), row("EMP_ID"), row("POSITION"), row("TP_ID"))
+                        End If
                     Next
-                Case "Search_for_TP_ID"
-                    SEARCH_TP_ID(COMP_ID, EMP_ID, EMP_POSITION)
             End Select
 
         Catch ex As SqlException
@@ -219,7 +224,7 @@ Public Class PD_Addendum
             If ProjectLabel = Nothing Or ProjectLabel = "" Then
                 MetroFramework.MetroMessageBox.Show(Me, "Please select Project Name.")
             Else
-                ADDENDUM_BGW_TODO = "Search_for_TP_ID"
+                ADDENDUM_BGW_TODO = "Search_for_TP_ID_then_Insert"
                 Start_PD_Addendum_BGW(False, True)
             End If
         Catch ex As Exception
@@ -390,9 +395,10 @@ Public Class PD_Addendum
                         ArchDesign_DGV.DataSource = Nothing
                         ArchDesignBS.DataSource = ArchDesignDT
                         ArchDesign_DGV.DataSource = ArchDesignBS
-                        ArchDesign_DGV.Columns("COMP_ID").Visible = False
-                        ArchDesign_DGV.Columns("EMP_ID").Visible = False
-                        ArchDesign_DGV.Columns("TP_ID").Visible = False
+                        count_ArchDesignBS = ArchDesignBS.Count
+                        'ArchDesign_DGV.Columns("COMP_ID").Visible = False
+                        'ArchDesign_DGV.Columns("EMP_ID").Visible = False
+                        'ArchDesign_DGV.Columns("TP_ID").Visible = False
 
                         IntrDesign_DGV.DataSource = Nothing
                         IntrDesignBS.DataSource = IntrDesignDT
@@ -437,10 +443,24 @@ Public Class PD_Addendum
                         Next
                         'OwnersName_Tbox.Focus()
                     Case "INSERT_TECHNICAL_PARTNERS"
-                        If PD_CountSuccess = ArchDesignBS.Count Then
+                        'If PD_CountSuccess = ArchDesignBS.Count Then
+                        '    MetroFramework.MetroMessageBox.Show(Me, "Success", " ", MessageBoxButtons.OK, MessageBoxIcon.None)
+                        'End If
+                    Case "Search_for_TP_ID_then_Insert"
+                        Dim insertInArchDesignBS, DiffIn_count_Inserted As Integer
+                        For Each row In ArchDesignBS
+                            If row("TP_ID") = "" Or row("TP_ID") = Nothing Then
+                                insertInArchDesignBS += 1
+                            End If
+                        Next
+                        DiffIn_count_Inserted = count_ArchDesignBS - insertInArchDesignBS
+                        MsgBox("PD_CountSuccess: " & PD_CountSuccess & vbCrLf &
+                               "insertInArchDesignBS: " & insertInArchDesignBS)
+                        If PD_CountSuccess = insertInArchDesignBS Then
+                            MetroFramework.MetroMessageBox.Show(Me, "Success", "Insert", MessageBoxButtons.OK, MessageBoxIcon.None)
+                        Else
                             MetroFramework.MetroMessageBox.Show(Me, "Success", " ", MessageBoxButtons.OK, MessageBoxIcon.None)
                         End If
-                    Case "Search_for_TP_ID"
                 End Select
 
             End If
