@@ -68,7 +68,14 @@ Public Class PD_Addendum
                     QueryBUILD = "SELECT	*
                               FROM    ( SELECT * " & QueryMidArrays(7) & ") AS [TP] " &
                                           QueryMidArrays(6) & " ON TP_NATURE.TP_ID_REF = TP.TP_ID " &
-                                          QueryConditionArrays(1) & " AND CD.JOB_ORDER_NO = CD.PARENTJONO AND STATUS_AVAILABILITY = 1 AND EMP_STATUS = 1 AND COMP_STATUS = 1 AND PD_STATUS = 1"
+                                          QueryConditionArrays(1) & " AND CD.JOB_ORDER_NO = CD.PARENTJONO 
+                                                                      AND STATUS_AVAILABILITY = 1 
+                                                                      AND EMP_STATUS = 1 
+                                                                      AND COMP_STATUS = 1 
+                                                                      AND PD_STATUS = 1 
+																	  AND TP_STATUS = 1
+																	  AND TPN_STATUS = 1
+																	  AND [STATUS_AVAILABILITY] = 1 "
                     Query_Select(PD_ID)
                 Case "QuoteRefNo_Sel"
                     QUERY_INSTANCE = "Read_using_SearchString"
@@ -87,12 +94,14 @@ Public Class PD_Addendum
                     '    PD_Addendum_Update_TechPartners(Me, C_ID, "Architectural Design", ROW("COMP_ID"), ROW("EMP_ID"), ROW("POSITION"), ROW("TP_ID"))
                     'Next
                 Case "Search_for_TP_ID_then_Insert"
-                    For Each row In ArchDesignBS
-                        SEARCH_TP_ID(row("COMP_ID"), row("EMP_ID"), row("POSITION"))
-                        If TP_ID = Nothing Then
-                            PD_Addendum_Update_TechPartners(Me, C_ID, "Architectural Design", row("COMP_ID"), row("EMP_ID"), row("POSITION"), row("TP_ID"))
-                        End If
-                    Next
+                    'For Each row In ArchDesignBS
+                    '    SEARCH_TP_ID(row("COMP_ID"), row("EMP_ID"), row("POSITION"))
+                    '    If TP_ID = Nothing Then
+                    '        PD_Addendum_Update_TechPartners(Me, C_ID, "Architectural Design", row("COMP_ID"), row("EMP_ID"), row("POSITION"), row("TP_ID"))
+                    '    End If
+                    'Next
+                Case "TPN_DELETE"
+                    PD_Addendum_TPN_Delete(Me, TPN_ID)
             End Select
 
         Catch ex As SqlException
@@ -201,6 +210,22 @@ Public Class PD_Addendum
     Dim OwnersRep, OwnersRepHomeCno, OwnersRepOfficeCno, OwnersRepMobileCno, OwnersNameHomeCno,
         OwnersNameOfficeCno, OwnersNameMobile, ConStage, SiteMeeting, SpInstr, CUST_ID, CUST_ID_REP As String
 
+    Public TPN_ID As Integer
+    Private Sub ArchDesign_DGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs) Handles ArchDesign_DGV.RowEnter
+        Try
+            If (e.RowIndex >= 0 And e.ColumnIndex >= 0) Then
+                TPN_ID = ArchDesign_DGV.Item("TPN_ID", e.RowIndex).Value
+            End If
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
+    End Sub
+
+    Private Sub ArchDesign_DGV_UserDeletingRow(sender As Object, e As DataGridViewRowCancelEventArgs) Handles ArchDesign_DGV.UserDeletingRow
+        ADDENDUM_BGW_TODO = "TPN_DELETE"
+        Start_PD_Addendum_BGW(False, True)
+    End Sub
+
     Dim CompanyName_Str, OwnersName, ProjectLabel As String
 
     Dim FIle_Label_As As String = Nothing, QuoteRefNo As String = Nothing
@@ -291,14 +316,10 @@ Public Class PD_Addendum
                             Area = row("AREA")
                         Next row
 
-                    'Lock_Btn.Text = "Unlock"
-                    'QuoteRefNo_Cbox.Enabled = False
-                    ArchDesignDT.Clear()
-                    ConsMngmtDT.Clear()
-                    GenConDT.Clear()
-                    IntrDesignDT.Clear()
+                        'Lock_Btn.Text = "Unlock"
+                        'QuoteRefNo_Cbox.Enabled = False
 
-                    If ArchDesignDT.Columns.Count = 0 And ConsMngmtDT.Columns.Count = 0 And
+                        If ArchDesignDT.Columns.Count = 0 And ConsMngmtDT.Columns.Count = 0 And
                             GenConDT.Columns.Count = 0 And IntrDesignDT.Columns.Count = 0 Then
                             For i = 0 To UBound(DTcols_str)
                                 ADDTCols = New DataColumn(DTcols_str(i), GetType(String))
@@ -379,16 +400,22 @@ Public Class PD_Addendum
                         ADDENDUM_BGW_TODO = "TechnicalPartners"
                         Start_PD_Addendum_BGW(False, True)
                     Case "TechnicalPartners"
+
+                        ArchDesignDT.Clear()
+                        ConsMngmtDT.Clear()
+                        GenConDT.Clear()
+                        IntrDesignDT.Clear()
+
                         For Each row3 In sqlBindingSource
                             Dim nature As String = row3("NATURE")
                             If nature = "Architectural Design" Then
-                                ArchDesignDT.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"), row3("COMP_ID"), row3("EMP_ID"), row3("TP_ID"))
+                                ArchDesignDT.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"), row3("COMP_ID"), row3("EMP_ID"), row3("TP_ID"), row3("TPN_ID"))
                             ElseIf nature = "Interior Design" Then
-                                IntrDesignDT.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"), row3("COMP_ID"), row3("EMP_ID"), row3("TP_ID"))
+                                IntrDesignDT.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"), row3("COMP_ID"), row3("EMP_ID"), row3("TP_ID"), row3("TPN_ID"))
                             ElseIf nature = "General Contractor" Then
-                                GenConDT.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"), row3("COMP_ID"), row3("EMP_ID"), row3("TP_ID"))
+                                GenConDT.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"), row3("COMP_ID"), row3("EMP_ID"), row3("TP_ID"), row3("TPN_ID"))
                             ElseIf nature = "Construction Management" Then
-                                ConsMngmtDT.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"), row3("COMP_ID"), row3("EMP_ID"), row3("TP_ID"))
+                                ConsMngmtDT.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"), row3("COMP_ID"), row3("EMP_ID"), row3("TP_ID"), row3("TPN_ID"))
                             End If
                         Next row3
 
@@ -396,9 +423,10 @@ Public Class PD_Addendum
                         ArchDesignBS.DataSource = ArchDesignDT
                         ArchDesign_DGV.DataSource = ArchDesignBS
                         count_ArchDesignBS = ArchDesignBS.Count
-                        'ArchDesign_DGV.Columns("COMP_ID").Visible = False
-                        'ArchDesign_DGV.Columns("EMP_ID").Visible = False
-                        'ArchDesign_DGV.Columns("TP_ID").Visible = False
+                        ArchDesign_DGV.Columns("COMP_ID").Visible = False
+                        ArchDesign_DGV.Columns("EMP_ID").Visible = False
+                        ArchDesign_DGV.Columns("TP_ID").Visible = False
+                        ArchDesign_DGV.Columns("TPN_ID").Visible = False
 
                         IntrDesign_DGV.DataSource = Nothing
                         IntrDesignBS.DataSource = IntrDesignDT
@@ -406,6 +434,7 @@ Public Class PD_Addendum
                         IntrDesign_DGV.Columns("COMP_ID").Visible = False
                         IntrDesign_DGV.Columns("EMP_ID").Visible = False
                         IntrDesign_DGV.Columns("TP_ID").Visible = False
+                        IntrDesign_DGV.Columns("TPN_ID").Visible = False
 
                         ConsMngmt_DGV.DataSource = Nothing
                         ConsMngmtBS.DataSource = ConsMngmtDT
@@ -413,6 +442,7 @@ Public Class PD_Addendum
                         ConsMngmt_DGV.Columns("COMP_ID").Visible = False
                         ConsMngmt_DGV.Columns("EMP_ID").Visible = False
                         ConsMngmt_DGV.Columns("TP_ID").Visible = False
+                        ConsMngmt_DGV.Columns("TPN_ID").Visible = False
 
                         GenCon_DGV.DataSource = Nothing
                         GenConBS.DataSource = GenConDT
@@ -420,6 +450,7 @@ Public Class PD_Addendum
                         GenCon_DGV.Columns("COMP_ID").Visible = False
                         GenCon_DGV.Columns("EMP_ID").Visible = False
                         GenCon_DGV.Columns("TP_ID").Visible = False
+                        GenCon_DGV.Columns("TPN_ID").Visible = False
 
                     Case "QuoteRefNo_Sel"
 
@@ -447,20 +478,23 @@ Public Class PD_Addendum
                         '    MetroFramework.MetroMessageBox.Show(Me, "Success", " ", MessageBoxButtons.OK, MessageBoxIcon.None)
                         'End If
                     Case "Search_for_TP_ID_then_Insert"
-                        Dim insertInArchDesignBS, DiffIn_count_Inserted As Integer
-                        For Each row In ArchDesignBS
-                            If row("TP_ID") = "" Or row("TP_ID") = Nothing Then
-                                insertInArchDesignBS += 1
-                            End If
-                        Next
-                        DiffIn_count_Inserted = count_ArchDesignBS - insertInArchDesignBS
-                        MsgBox("PD_CountSuccess: " & PD_CountSuccess & vbCrLf &
-                               "insertInArchDesignBS: " & insertInArchDesignBS)
-                        If PD_CountSuccess = insertInArchDesignBS Then
-                            MetroFramework.MetroMessageBox.Show(Me, "Success", "Insert", MessageBoxButtons.OK, MessageBoxIcon.None)
-                        Else
-                            MetroFramework.MetroMessageBox.Show(Me, "Success", " ", MessageBoxButtons.OK, MessageBoxIcon.None)
-                        End If
+                        'Dim insertInArchDesignBS, DiffIn_count_Inserted As Integer
+                        'For Each row In ArchDesignBS
+                        '    If row("TP_ID") = "" Or row("TP_ID") = Nothing Then
+                        '        insertInArchDesignBS += 1
+                        '    End If
+                        'Next
+                        'DiffIn_count_Inserted = count_ArchDesignBS - insertInArchDesignBS
+                        'MsgBox("PD_CountSuccess: " & PD_CountSuccess & vbCrLf &
+                        '       "insertInArchDesignBS: " & insertInArchDesignBS)
+                        'If PD_CountSuccess = insertInArchDesignBS Then
+                        '    MetroFramework.MetroMessageBox.Show(Me, "Success", "Insert", MessageBoxButtons.OK, MessageBoxIcon.None)
+                        'Else
+                        '    MetroFramework.MetroMessageBox.Show(Me, "Success", " ", MessageBoxButtons.OK, MessageBoxIcon.None)
+                        'End If
+                    Case "TPN_DELETE"
+                        ADDENDUM_BGW_TODO = "TechnicalPartners"
+                        Start_PD_Addendum_BGW(False, True)
                 End Select
 
             End If

@@ -15,6 +15,7 @@ Module ProjectDetailsModule
     Public ErrorMsg, ErrorNum As String
 
     Public PD_ID, CUST_ID, C_ID As Integer
+    Public TPN_ID, TPN_ID_SearchIfDeleted As Integer
 
     Public ArchDesignBS, IntrDesignBS, ConsMngmtBS, GenConBS As New BindingSource
     'Public QuoteNoBS As New BindingSource
@@ -25,7 +26,7 @@ Module ProjectDetailsModule
     Public ConsMngmtDT As DataTable = New DataTable("ConsMngmtDT")
     Public GenConDT As DataTable = New DataTable("GenConDT")
     'Public QuoteNoDT As DataTable = New DataTable("QuoteNoDT")
-    Public DTcols_str As String() = {"OFFICENAME", "NAME", "POSITION", "CONTACT NUMBER", "COMP_ID", "EMP_ID", "TP_ID"}
+    Public DTcols_str As String() = {"OFFICENAME", "NAME", "POSITION", "CONTACT NUMBER", "COMP_ID", "EMP_ID", "TP_ID", "TPN_ID"}
 
     Public arr_WD_ID As New List(Of String)
     Public arr_Profile_finish As New List(Of String)
@@ -158,7 +159,8 @@ Module ProjectDetailsModule
     Public QueryORDERArrays() As String = {"ORDER BY [PD].[PD_ID] DESC", '0
                                            "ORDER BY CTD_PD_OWN_CLD_TBL.PD_ID DESC" '1
     }
-    Public Sub Query_Select(ByVal SearchString As String)
+    Public Sub Query_Select(ByVal SearchString As String,
+                            Optional _BGW_TODO As String = "")
 
         sqlDataSet = New DataSet
         sqlDataAdapter = New SqlDataAdapter
@@ -177,10 +179,14 @@ Module ProjectDetailsModule
                         is_SalesJobOrder_bool = True
                         sqlCommand.Parameters.AddWithValue("@EqualSearch", SearchString)
                 End Select
-                sqlDataAdapter.SelectCommand = sqlCommand
-                sqlDataAdapter.Fill(sqlDataSet, "QUERY_DETAILS")
-                sqlBindingSource.DataSource = sqlDataSet
-                sqlBindingSource.DataMember = "QUERY_DETAILS"
+                Select Case _BGW_TODO
+                    Case "TechnicalPartners"
+                    Case ""
+                        sqlDataAdapter.SelectCommand = sqlCommand
+                        sqlDataAdapter.Fill(sqlDataSet, "QUERY_DETAILS")
+                        sqlBindingSource.DataSource = sqlDataSet
+                        sqlBindingSource.DataMember = "QUERY_DETAILS"
+                End Select
             End Using
         End Using
     End Sub
@@ -868,8 +874,11 @@ DECLARE @CUST_ID_REP AS INTEGER
 BEGIN TRANSACTION
 
 DECLARE @TP_ID AS INTEGER
+DECLARE @TPN_ID AS INTEGER
 BEGIN TRY
 " & QUERY_PART1 & "
+    SELECT @TPN_ID = @@IDENTITY
+    SELECT @TPN_ID AS [TPN_ID]
 	SELECT	ERROR_NUMBER() AS ErrorNumber,
 			ERROR_MESSAGE() AS ErrorMessage
             Commit Transaction
@@ -886,20 +895,87 @@ END CATCH
             Using sqlCommand As New SqlCommand(Query, sqlcon)
                 sqlCommand.Parameters.AddWithValue("@NATURE", NATURE)
                 Select Case TP_ID_REF
-                    Case Nothing
+                    Case ""
                         sqlCommand.Parameters.AddWithValue("@COMP_ID_REF", COMP_ID_REF)
                         sqlCommand.Parameters.AddWithValue("@EMP_ID_REF", EMP_ID_REF)
                         sqlCommand.Parameters.AddWithValue("@POSITION", POSITION)
-                    Case <> Nothing
+                    Case <> ""
                         sqlCommand.Parameters.AddWithValue("@TP_ID_REF", TP_ID_REF)
-                        sqlCommand.Parameters.AddWithValue("@CD_ID_REF", CD_ID_REF)
                 End Select
+                sqlCommand.Parameters.AddWithValue("@CD_ID_REF", CD_ID_REF)
+                Using read As SqlDataReader = sqlCommand.ExecuteReader
+                    read.Read()
+                    If read.HasRows Then
+                        PD_CountSuccess = 1
+                        TPN_ID = read.Item("TPN_ID")
+                    Else
+                        PD_CountSuccess = 0
+                        TPN_ID = Nothing
+                    End If
+                End Using
+            End Using
+        End Using
+    End Sub
+
+    Public Sub PD_Addendum_TPN_Delete(ByVal Formname As Form,
+                                      ByVal TPN_ID As Integer)
+        Query = " UPDATE [A_NEW_TECHNICAL_PARTNERS_NATURE] SET [TPN_STATUS] = 0 WHERE [TPN_ID] = @TPN_ID"
+
+        Using sqlcon As New SqlConnection(sqlcnstr)
+            sqlcon.Open()
+            Using sqlCommand As New SqlCommand(Query, sqlcon)
+                sqlCommand.Parameters.AddWithValue("@TPN_ID", TPN_ID)
+                confirmQuery = sqlCommand.ExecuteNonQuery()
+                If confirmQuery <> 0 Then
+                    'PD_CountSuccess += 1
+                    'MetroFramework.MetroMessageBox.Show(Formname, "SUCCESS", " ", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                Else
+                    MetroFramework.MetroMessageBox.Show(Formname, "Failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                End If
+            End Using
+        End Using
+    End Sub
+    Public Sub PD_Addendum_TechPartners_SearchIfDeleted(ByVal TP_ID_REF As String,
+                                                        ByVal CD_ID_REF As Integer,
+                                                        ByVal NATURE As String)
+        Query = "SELECT [TPN_ID]
+                 FROM [A_NEW_TECHNICAL_PARTNERS_NATURE]
+                 WHERE [TP_ID_REF] = @TP_ID_REF AND
+                       [CD_ID_REF] = @CD_ID_REF AND
+                       [NATURE] = @NATURE AND
+                       [TPN_STATUS] = 0 "
+        Using sqlcon As New SqlConnection(sqlcnstr)
+            sqlcon.Open()
+            Using sqlCommand As New SqlCommand(Query, sqlcon)
+                sqlCommand.Parameters.AddWithValue("@NATURE", NATURE)
+                sqlCommand.Parameters.AddWithValue("@TP_ID_REF", TP_ID_REF)
+                sqlCommand.Parameters.AddWithValue("@CD_ID_REF", CD_ID_REF)
+                Using read As SqlDataReader = sqlCommand.ExecuteReader
+                    read.Read()
+                    If read.HasRows Then
+                        TPN_ID_SearchIfDeleted = read.Item("TPN_ID")
+                    Else
+                        TPN_ID_SearchIfDeleted = Nothing
+                    End If
+                End Using
+            End Using
+        End Using
+    End Sub
+    Public Sub PD_Addendum_TechPartners_ReturnDeletedRow(ByVal FORMNAME As Form,
+                                                         ByVal TPN_ID As Integer)
+        Query = "UPDATE [A_NEW_TECHNICAL_PARTNERS_NATURE]
+                 SET [TPN_STATUS] = 1
+                 WHERE [TPN_ID] = @TPN_ID "
+        Using sqlcon As New SqlConnection(sqlcnstr)
+            sqlcon.Open()
+            Using sqlCommand As New SqlCommand(Query, sqlcon)
+                sqlCommand.Parameters.AddWithValue("@TPN_ID", TPN_ID)
 
                 confirmQuery = sqlCommand.ExecuteNonQuery()
                 If confirmQuery <> 0 Then
-                    PD_CountSuccess += 1
+                    PD_CountSuccess = 1
                 Else
-                    MetroFramework.MetroMessageBox.Show(Formname, "Failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                    PD_CountSuccess = 0
                 End If
             End Using
         End Using
