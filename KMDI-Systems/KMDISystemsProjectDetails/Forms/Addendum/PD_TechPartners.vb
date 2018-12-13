@@ -209,9 +209,7 @@ Public Class PD_TechPartners
                                 TechPartners_DGV.DataSource = GenConBS
                             End If
                         End If
-                        'MetroFramework.MetroMessageBox.Show(Me, "Success", PD_TechPartners_BGW_TODO, MessageBoxButtons.OK, MessageBoxIcon.Information)
                     ElseIf PD_CountSuccess = 0 Then
-                        'MetroFramework.MetroMessageBox.Show(Me, "Failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
                         MetroFramework.MetroMessageBox.Show(Me, "Failed", PD_TechPartners_BGW_TODO, MessageBoxButtons.OK, MessageBoxIcon.Error)
                     End If
 
@@ -340,14 +338,7 @@ Public Class PD_TechPartners
     End Sub
 
     Private Sub Nature_Cbox_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles Nature_Cbox.SelectionChangeCommitted
-        'If ArchDesignDT.Rows.Count <> Nothing Or IntrDesignDT.Rows.Count <> Nothing Or
-        '   ConsMngmtDT.Rows.Count <> Nothing Or GenConDT.Rows.Count <> Nothing Then
-        '    col_invisi_bool = False
-        'End If
-        'If col_invisi_bool = True Then
         TechPartners_DGV.Columns.Clear()
-        'col_invisi_bool = False
-        'End If
         If Nature_Cbox.SelectedIndex = 0 Then
             ArchDesignBS.DataSource = ArchDesignDT
             TechPartners_DGV.DataSource = ArchDesignBS

@@ -198,6 +198,12 @@ Public Class PD_Addendum
         Try
             If MetroFramework.MetroMessageBox.Show(Me, "Are you sure you want to Exit?", " ", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                 Project_Details.BringToFront()
+                If Application.OpenForms().OfType(Of PD_TechPartners).Any Then
+                    PD_TechPartners.Dispose()
+                End If
+                If Application.OpenForms().OfType(Of PD_UpdateHeader).Any Then
+                    PD_UpdateHeader.Dispose()
+                End If
                 e.Cancel = False
             Else
                 e.Cancel = True
@@ -210,9 +216,67 @@ Public Class PD_Addendum
     Dim OwnersRep, OwnersRepHomeCno, OwnersRepOfficeCno, OwnersRepMobileCno, OwnersNameHomeCno,
         OwnersNameOfficeCno, OwnersNameMobile, ConStage, SiteMeeting, SpInstr, CUST_ID, CUST_ID_REP As String
 
+    Private Sub ConsMngmt_DGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs) Handles ConsMngmt_DGV.RowEnter
+        Try
+            ArchDesign_DGV.ClearSelection()
+            GenCon_DGV.ClearSelection()
+            IntrDesign_DGV.ClearSelection()
+
+            If (e.RowIndex >= 0 And e.ColumnIndex >= 0) Then
+                TPN_ID = ConsMngmt_DGV.Item("TPN_ID", e.RowIndex).Value
+            End If
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
+    End Sub
+
+    Private Sub GenCon_DGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs) Handles GenCon_DGV.RowEnter
+        Try
+            ArchDesign_DGV.ClearSelection()
+            ConsMngmt_DGV.ClearSelection()
+            IntrDesign_DGV.ClearSelection()
+            If (e.RowIndex >= 0 And e.ColumnIndex >= 0) Then
+                TPN_ID = GenCon_DGV.Item("TPN_ID", e.RowIndex).Value
+            End If
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
+    End Sub
+
+    Private Sub IntrDesign_DGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs) Handles IntrDesign_DGV.RowEnter
+        Try
+            ConsMngmt_DGV.ClearSelection()
+            GenCon_DGV.ClearSelection()
+            ArchDesign_DGV.ClearSelection()
+            If (e.RowIndex >= 0 And e.ColumnIndex >= 0) Then
+                TPN_ID = IntrDesign_DGV.Item("TPN_ID", e.RowIndex).Value
+            End If
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
+    End Sub
+
+    Private Sub ConsMngmt_DGV_UserDeletingRow(sender As Object, e As DataGridViewRowCancelEventArgs) Handles ConsMngmt_DGV.UserDeletingRow
+        ADDENDUM_BGW_TODO = "TPN_DELETE"
+        Start_PD_Addendum_BGW(False, True)
+    End Sub
+
+    Private Sub GenCon_DGV_UserDeletingRow(sender As Object, e As DataGridViewRowCancelEventArgs) Handles GenCon_DGV.UserDeletingRow
+        ADDENDUM_BGW_TODO = "TPN_DELETE"
+        Start_PD_Addendum_BGW(False, True)
+    End Sub
+
+    Private Sub IntrDesign_DGV_UserDeletingRow(sender As Object, e As DataGridViewRowCancelEventArgs) Handles IntrDesign_DGV.UserDeletingRow
+        ADDENDUM_BGW_TODO = "TPN_DELETE"
+        Start_PD_Addendum_BGW(False, True)
+    End Sub
+
     Public TPN_ID As Integer
     Private Sub ArchDesign_DGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs) Handles ArchDesign_DGV.RowEnter
         Try
+            ConsMngmt_DGV.ClearSelection()
+            GenCon_DGV.ClearSelection()
+            IntrDesign_DGV.ClearSelection()
             If (e.RowIndex >= 0 And e.ColumnIndex >= 0) Then
                 TPN_ID = ArchDesign_DGV.Item("TPN_ID", e.RowIndex).Value
             End If
@@ -422,7 +486,6 @@ Public Class PD_Addendum
                         ArchDesign_DGV.DataSource = Nothing
                         ArchDesignBS.DataSource = ArchDesignDT
                         ArchDesign_DGV.DataSource = ArchDesignBS
-                        count_ArchDesignBS = ArchDesignBS.Count
                         ArchDesign_DGV.Columns("COMP_ID").Visible = False
                         ArchDesign_DGV.Columns("EMP_ID").Visible = False
                         ArchDesign_DGV.Columns("TP_ID").Visible = False

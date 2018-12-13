@@ -753,8 +753,8 @@ Module ProjectDetailsModule
 	                            SELECT @CUST_ID = @@IDENTITY
 	                            INSERT INTO	[A_NEW_OWNERS_TBL]
 				                            ([PD_ID_REF]
-				                              ,[CUST_ID_REF]
-				                              ,[CLIENT_STATUS])
+				                            ,[CUST_ID_REF]
+				                            ,[CLIENT_STATUS])
 			                            VALUES	(@PD_ID,@CUST_ID,'Current Owner') "
             Case "UPDATE"
                 QUERY_PART1 = " UPDATE  [A_NEW_CLIENT_DETAILS]
@@ -805,7 +805,6 @@ DECLARE @CUST_ID_REP AS INTEGER
     SET     [OTHER_PERTINENT_INFO] = @OTHER_PERTINENT_INFO
     WHERE   [PD_ID_REF] = @PD_ID
 
-" & QUERY_PART1 & QUERY_PART2 & "
 
 	SELECT	ERROR_NUMBER() AS ErrorNumber,
 			ERROR_MESSAGE() AS ErrorMessage
