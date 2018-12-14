@@ -14,7 +14,8 @@ Module ProjectDetailsModule
     Public InsertedPD_ID = Nothing, InsertedCustID = Nothing, InsertedC_ID As Integer = Nothing
     Public ErrorMsg, ErrorNum As String
 
-    Public PD_ID, CUST_ID, C_ID As Integer
+    Public PD_ID, CUST_ID, OWN_REP_ID, C_ID As Integer
+    Public CQN_ID As New List(Of Integer)
     Public TPN_ID, TPN_ID_SearchIfDeleted As Integer
 
     Public ArchDesignBS, IntrDesignBS, ConsMngmtBS, GenConBS As New BindingSource
@@ -102,7 +103,7 @@ Module ProjectDetailsModule
 			                                            JOIN    [A_NEW_PROJECT_DETAILS] [PD]
                                                         ON      [CTD].PD_ID_REF = [PD].PD_ID 
 										            ON  [CQN].CD_ID_REF = [CTD].CD_ID
-												ON WD.WD_ID = CQN.WD_ID_REF ", '4 JOIN CQN > CTD > PD
+												ON WD.WD_ID = CQN.WD_ID_REF ", '4 JOIN WD > CQN > CTD > PD
                                          " FROM	[A_NEW_PROJECT_DETAILS] [PD]
 			                                    JOIN	[A_NEW_OWNERS_TBL] [OWN]
 				                                    JOIN	[A_NEW_CLIENT_DETAILS] [CD]
@@ -127,7 +128,17 @@ Module ProjectDetailsModule
 	                                        JOIN	A_NEW_TECHNICAL_PARTNERS [TP]
 		                                        JOIN	A_NEW_EMPLOYEE_DETAILS [EMP]
 		                                        ON		TP.EMP_ID_REF = EMP.EMP_ID
-	                                        ON		COMP.COMP_ID = TP.COMP_ID_REF " '9 JOIN COMP > TP > EMP
+	                                        ON		COMP.COMP_ID = TP.COMP_ID_REF ", '9 JOIN COMP > TP > EMP
+                                         " FROM	[dbo].[A_NEW_PROJECT_DETAILS] [PD]
+	                                            JOIN	[dbo].[A_NEW_OWNERS_REP] [OWN_REP]
+		                                            JOIN	[dbo].[A_NEW_CLIENT_DETAILS] [CLD]
+		                                            ON		OWN_REP.CUST_ID_REF = CLD.CUST_ID
+	                                            ON		PD.PD_ID = OWN_REP.PD_ID_REF ", '10 JOIN PD > OWN_REP > CLD
+                                         " FROM	A_NEW_CONTRACT_DETAILS [CTD]
+	                                        JOIN	A_NEW_CONTRACT_QUOTE_NO [CQN]
+		                                        JOIN	A_NEW_WINDOOR_DETAILS [WD] 
+		                                        ON CQN.WD_ID_REF = WD.WD_ID
+	                                        ON	CTD.CD_ID = CD_ID_REF " '11 JOIN CD > CQN > WD
     }
 
     Public QueryConditionArrays() As String = {"WHERE ([PD].[PD_ID] like @SearchString OR
@@ -159,8 +170,7 @@ Module ProjectDetailsModule
     Public QueryORDERArrays() As String = {"ORDER BY [PD].[PD_ID] DESC", '0
                                            "ORDER BY CTD_PD_OWN_CLD_TBL.PD_ID DESC" '1
     }
-    Public Sub Query_Select(ByVal SearchString As String,
-                            Optional _BGW_TODO As String = "")
+    Public Sub Query_Select(ByVal SearchString As String)
 
         sqlDataSet = New DataSet
         sqlDataAdapter = New SqlDataAdapter
@@ -179,14 +189,10 @@ Module ProjectDetailsModule
                         is_SalesJobOrder_bool = True
                         sqlCommand.Parameters.AddWithValue("@EqualSearch", SearchString)
                 End Select
-                Select Case _BGW_TODO
-                    Case "TechnicalPartners"
-                    Case ""
-                        sqlDataAdapter.SelectCommand = sqlCommand
-                        sqlDataAdapter.Fill(sqlDataSet, "QUERY_DETAILS")
-                        sqlBindingSource.DataSource = sqlDataSet
-                        sqlBindingSource.DataMember = "QUERY_DETAILS"
-                End Select
+                sqlDataAdapter.SelectCommand = sqlCommand
+                sqlDataAdapter.Fill(sqlDataSet, "QUERY_DETAILS")
+                sqlBindingSource.DataSource = sqlDataSet
+                sqlBindingSource.DataMember = "QUERY_DETAILS"
             End Using
         End Using
     End Sub
@@ -733,15 +739,28 @@ Module ProjectDetailsModule
         End Using
     End Sub
 
-    Public Sub PD_Addendum_Update(ByVal FormName As Form,
-                                  ByVal OWNER_AddorUpdate As String,
-                                  ByVal REP_AddorUpdate As String)
+    Public Sub PD_Addendum_Update(ByVal REP_AddorUpdate As String,
+                                  ByVal PROJECT_LABEL As String,
+                                  ByVal CONSTRUCTION_STAGE As String,
+                                  ByVal ACTIVITIES_SITEMEETING As String,
+                                  ByVal OTHER_PERTINENT_INFO As String,
+                                  ByVal PD_ID As String,
+                                  ByVal OWNERS_NAME As String,
+                                  ByVal CLIENTS_CONTACT_NO As String,
+                                  ByVal CLIENTS_CONTACT_OFFICE As String,
+                                  ByVal CLIENTS_CONTACT_MOBILE As String,
+                                  ByVal CUST_ID As String,
+                                  ByVal OWNERS_NAME_REP As String,
+                                  ByVal CLIENTS_CONTACT_NO_REP As String,
+                                  ByVal CLIENTS_CONTACT_OFFICE_REP As String,
+                                  ByVal CLIENTS_CONTACT_MOBILE_REP As String,
+                                  ByVal CUST_ID_REP As String)
 
-        Dim QUERY_PART1 As String = "", QUERY_PART2 As String = ""
+        Dim QUERY_PART1 As String = ""
         Select Case REP_AddorUpdate
             Case "ADD"
                 QUERY_PART1 = " INSERT  INTO [A_NEW_CLIENT_DETAILS]
-                                        ([OWNERS_NAME],
+                                        ([CLIENTS_NAME],
                                          [CLIENTS_CONTACT_NO],
                                          [CLIENTS_CONTACT_OFFICE],
                                          [CLIENTS_CONTACT_MOBILE])
@@ -750,61 +769,43 @@ Module ProjectDetailsModule
                                          @CLIENTS_CONTACT_OFFICE_REP,
                                          @CLIENTS_CONTACT_MOBILE_REP)
 
-	                            SELECT @CUST_ID = @@IDENTITY
-	                            INSERT INTO	[A_NEW_OWNERS_TBL]
-				                            ([PD_ID_REF]
-				                            ,[CUST_ID_REF]
-				                            ,[CLIENT_STATUS])
-			                            VALUES	(@PD_ID,@CUST_ID,'Current Owner') "
+	                            SELECT @CUST_ID_REP_IDENTITY = @@IDENTITY
+	                            INSERT	INTO	[A_NEW_OWNERS_REP]
+					                            ([PD_ID_REF]
+					                            ,[CUST_ID_REF])
+			                            VALUES	(@PD_ID,@CUST_ID_REP_IDENTITY) "
             Case "UPDATE"
                 QUERY_PART1 = " UPDATE  [A_NEW_CLIENT_DETAILS]
-                              SET     [OWNERS_NAME] = @OWNERS_NAME_REP,
+                              SET     [CLIENTS_NAME] = @OWNERS_NAME_REP,
                                       [CLIENTS_CONTACT_NO] = @CLIENTS_CONTACT_NO_REP,
                                       [CLIENTS_CONTACT_OFFICE] = @CLIENTS_CONTACT_OFFICE_REP,
                                       [CLIENTS_CONTACT_MOBILE] = @CLIENTS_CONTACT_MOBILE_REP
                               WHERE   [CUST_ID] = @CUST_ID_REP "
         End Select
-        Select Case OWNER_AddorUpdate
-            Case "ADD"
-                QUERY_PART2 = " INSERT INTO  [A_NEW_CLIENT_DETAILS]
-                                        ([OWNERS_NAME],
-                                         [CLIENTS_CONTACT_NO],
-                                         [CLIENTS_CONTACT_OFFICE],
-                                         [CLIENTS_CONTACT_MOBILE])
-                                VALUES  (@OWNERS_NAME,
-                                         @CLIENTS_CONTACT_NO,
-                                         @CLIENTS_CONTACT_OFFICE,
-                                         @CLIENTS_CONTACT_MOBILE)
 
-	                            SELECT @CUST_ID_REP = @@IDENTITY
-	                            INSERT	INTO	[A_NEW_OWNERS_REP]
-					                            ([PD_ID_REF]
-					                            ,[CUST_ID_REF])
-			                            VALUES	(@PD_ID,@CUST_ID_REP) "
-            Case "UPDATE"
-                QUERY_PART2 = " UPDATE  [A_NEW_CLIENT_DETAILS]
-                               SET     [OWNERS_NAME] = @OWNERS_NAME,
-                                       [CLIENTS_CONTACT_NO] = @CLIENTS_CONTACT_NO,
-                                       [CLIENTS_CONTACT_OFFICE] = @CLIENTS_CONTACT_OFFICE,
-                                       [CLIENTS_CONTACT_MOBILE] = @CLIENTS_CONTACT_MOBILE
-                               WHERE   [CUST_ID] = @CUST_ID "
-        End Select
         Query = "
 Begin Transaction
-DECLARE @CUST_ID AS INTEGER
-DECLARE @CUST_ID_REP AS INTEGER
+DECLARE @CUST_ID_REP_IDENTITY AS INTEGER
 
 	Begin Try
 	UPDATE	[A_NEW_PROJECT_DETAILS]
 	SET		[PROJECT_LABEL] = @PROJECT_LABEL,
 			[CONSTRUCTION_STAGE] = @CONSTRUCTION_STAGE,
-			[ACTIVITIES] = @ACTIVITIES
-	WHERE	[PD_ID] = @PD_ID 
+			[ACTIVITIES] = @ACTIVITIES_SITEMEETING
+	WHERE	[PD_ID] = @PD_ID
 
     UPDATE  [A_NEW_CONTRACT_DETAILS]
     SET     [OTHER_PERTINENT_INFO] = @OTHER_PERTINENT_INFO
     WHERE   [PD_ID_REF] = @PD_ID
 
+    UPDATE  [A_NEW_CLIENT_DETAILS]
+    SET     [OWNERS_NAME] = @OWNERS_NAME,
+            [CLIENTS_CONTACT_NO] = @CLIENTS_CONTACT_NO,
+            [CLIENTS_CONTACT_OFFICE] = @CLIENTS_CONTACT_OFFICE,
+            [CLIENTS_CONTACT_MOBILE] = @CLIENTS_CONTACT_MOBILE
+    WHERE   [CUST_ID] = @CUST_ID
+
+" & QUERY_PART1 & "
 
 	SELECT	ERROR_NUMBER() AS ErrorNumber,
 			ERROR_MESSAGE() AS ErrorMessage
@@ -819,21 +820,27 @@ DECLARE @CUST_ID_REP AS INTEGER
         Using sqlcon As New SqlConnection(sqlcnstr)
             sqlcon.Open()
             Using sqlCommand As New SqlCommand(Query, sqlcon)
-                'sqlCommand.Parameters.AddWithValue("@OFFICENAME", OFFICENAME)
-                'sqlCommand.Parameters.AddWithValue("@OFFICEADDRESS", OFFICEADDRESS)
-                'sqlCommand.Parameters.AddWithValue("@CONTACTNO", CONTACTNO)
-                'sqlCommand.Parameters.AddWithValue("@OFFICEASSISTANT", OFFICEASSISTANT)
-                'sqlCommand.Parameters.AddWithValue("@REMARKS", REMARKS)
-                'If Operation_Type = "Update" Or Operation_Type = "Delete" Then
-                '    sqlCommand.Parameters.AddWithValue("@COMP_ID", COMP_ID)
-                'End If
-
-                'confirmQuery = sqlCommand.ExecuteNonQuery()
-                'If confirmQuery <> 0 Then
-                '    PD_CountSuccess = 1
-                'Else
-                '    MetroFramework.MetroMessageBox.Show(FormName, "Failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                'End If
+                sqlCommand.Parameters.AddWithValue("@PROJECT_LABEL", PROJECT_LABEL)
+                sqlCommand.Parameters.AddWithValue("@CONSTRUCTION_STAGE", CONSTRUCTION_STAGE)
+                sqlCommand.Parameters.AddWithValue("@ACTIVITIES_SITEMEETING", ACTIVITIES_SITEMEETING)
+                sqlCommand.Parameters.AddWithValue("@OTHER_PERTINENT_INFO", OTHER_PERTINENT_INFO)
+                sqlCommand.Parameters.AddWithValue("@PD_ID", PD_ID)
+                sqlCommand.Parameters.AddWithValue("@OWNERS_NAME", OWNERS_NAME)
+                sqlCommand.Parameters.AddWithValue("@CLIENTS_CONTACT_NO", CLIENTS_CONTACT_NO)
+                sqlCommand.Parameters.AddWithValue("@CLIENTS_CONTACT_OFFICE", CLIENTS_CONTACT_OFFICE)
+                sqlCommand.Parameters.AddWithValue("@CLIENTS_CONTACT_MOBILE", CLIENTS_CONTACT_MOBILE)
+                sqlCommand.Parameters.AddWithValue("@CUST_ID", CUST_ID)
+                sqlCommand.Parameters.AddWithValue("@OWNERS_NAME_REP", OWNERS_NAME_REP)
+                sqlCommand.Parameters.AddWithValue("@CLIENTS_CONTACT_NO_REP", CLIENTS_CONTACT_NO_REP)
+                sqlCommand.Parameters.AddWithValue("@CLIENTS_CONTACT_OFFICE_REP", CLIENTS_CONTACT_OFFICE_REP)
+                sqlCommand.Parameters.AddWithValue("@CLIENTS_CONTACT_MOBILE_REP", CLIENTS_CONTACT_MOBILE_REP)
+                sqlCommand.Parameters.AddWithValue("@CUST_ID_REP", CUST_ID_REP)
+                confirmQuery = sqlCommand.ExecuteNonQuery()
+                If confirmQuery <> 0 Then
+                    PD_CountSuccess = 1
+                Else
+                    PD_CountSuccess = 0
+                End If
             End Using
         End Using
     End Sub
@@ -978,5 +985,8 @@ END CATCH
                 End If
             End Using
         End Using
+    End Sub
+    Public Sub PD_Addendum_QuoteRefNo()
+
     End Sub
 End Module

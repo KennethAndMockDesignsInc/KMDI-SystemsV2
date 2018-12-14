@@ -5,6 +5,7 @@ Public Class PD_Addendum
     Dim ADDENDUM_BGW_TODO As String
     Dim WD_ID, QUOTE_NO As String
     Dim count_ArchDesignBS As Integer
+    Dim QuoteRefNo_Populate_counter As Integer
 
     Sub Start_PD_Addendum_BGW(ByVal Panel_bool As Boolean,
                               ByVal Loading_bool As Boolean)
@@ -39,7 +40,6 @@ Public Class PD_Addendum
         PD_Addendum_BGW.WorkerReportsProgress = True
         AddHandler PD_Addendum_BGW.DoWork, AddressOf PD_Addendum_BGW_DoWork
         AddHandler PD_Addendum_BGW.RunWorkerCompleted, AddressOf PD_Addendum_BGW_RunWorkerCompleted
-        'AddHandler PD_Addendum_BGW.ProgressChanged, AddressOf PD_Addendum_BGW_ProgressChanged
         onformLoad()
     End Sub
 
@@ -89,36 +89,50 @@ Public Class PD_Addendum
                     For Each Qno As String In Qnos
                         QUERY_SELECT_WITH_READER(Qno, ADDENDUM_BGW_TODO)
                     Next
-                Case "INSERT_TECHNICAL_PARTNERS"
-                    'For Each ROW In ArchDesignBS
-                    '    PD_Addendum_Update_TechPartners(Me, C_ID, "Architectural Design", ROW("COMP_ID"), ROW("EMP_ID"), ROW("POSITION"), ROW("TP_ID"))
-                    'Next
-                Case "Search_for_TP_ID_then_Insert"
-                    'For Each row In ArchDesignBS
-                    '    SEARCH_TP_ID(row("COMP_ID"), row("EMP_ID"), row("POSITION"))
-                    '    If TP_ID = Nothing Then
-                    '        PD_Addendum_Update_TechPartners(Me, C_ID, "Architectural Design", row("COMP_ID"), row("EMP_ID"), row("POSITION"), row("TP_ID"))
-                    '    End If
-                    'Next
+                Case "UPDATE_ADDENDUM"
+                    Dim ADDorUPDATE As String = Nothing
+                    If OWN_REP_ID = Nothing Then
+                        ADDorUPDATE = "ADD"
+                    ElseIf OWN_REP_ID <> Nothing Then
+                        ADDorUPDATE = "UPDATE"
+                    End If
+                    PD_Addendum_Update(ADDorUPDATE, ProjectLabel, ConStage, SiteMeeting, SpInstr, PD_ID, OwnersName,
+                                       OwnersNameHomeCno, OwnersNameOfficeCno, OwnersNameMobile, CUST_ID, OwnersRep,
+                                       OwnersRepHomeCno, OwnersRepOfficeCno, OwnersRepMobileCno, OWN_REP_ID)
                 Case "TPN_DELETE"
                     PD_Addendum_TPN_Delete(Me, TPN_ID)
+                Case "OWNERS_REP"
+                    QUERY_INSTANCE = "Loading_using_EqualSearch"
+                    QueryBUILD = "SELECT	CLD.CUST_ID,
+		                                    CLD.CLIENTS_NAME,
+		                                    CLD.CLIENTS_CONTACT_NO,
+		                                    CLD.CLIENTS_CONTACT_OFFICE,
+		                                    CLD.CLIENTS_CONTACT_MOBILE " & QueryMidArrays(10) & QueryConditionArrays(1) &
+                                 " AND OWN_REP.REP_STATUS = 1 AND CLD.CUST_STATUS = 1 "
+                    Query_Select(PD_ID)
+                Case "QuoteRefNo_Populate"
+                    QUERY_INSTANCE = "Loading_using_EqualSearch"
+                    QueryBUILD = "SELECT    CQN_ID,
+                                            QUOTE_NO,
+                                            QUOTE_DATE,
+                                            PROFILE_FINISH " & QueryMidArrays(11) & QueryConditionArrays(2) &
+                                 " AND CQN_STATUS = 1 AND WD_STATUS = 1"
+                    Query_Select(C_ID)
             End Select
 
         Catch ex As SqlException
-        'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
-        If ex.Number = -2 Then
-            MetroFramework.MetroMessageBox.Show(Me, "Click ok to Reconnect", "Request Timeout", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-        ElseIf ex.Number = 1232 Then
-            MetroFramework.MetroMessageBox.Show(Me, "Please check internet connection", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            PD_Addendum_BGW.CancelAsync()
-        ElseIf ex.Number = 19 Then
-            MetroFramework.MetroMessageBox.Show(Me, "Sorry our server is under maintenance." & vbCrLf & "Please be patient, will come back A.S.A.P", "Server is down", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            PD_Addendum_BGW.CancelAsync()
-        ElseIf ex.Number <> -2 And ex.Number <> 1232 And ex.Number <> 19 Then
-            MetroFramework.MetroMessageBox.Show(Me, "Contact the Programmers now", "You need some help?", MessageBoxButtons.OK, MessageBoxIcon.Stop)
-            MetroFramework.MetroMessageBox.Show(Me, ex.Message)
-            PD_Addendum_BGW.CancelAsync()
-        End If
+            'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
+            If ex.Number = -2 Then
+                MetroFramework.MetroMessageBox.Show(Me, "Click ok to Reconnect", "Request Timeout", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                PD_Addendum_BGW.CancelAsync()
+            ElseIf ex.Number = 1232 Or ex.Number = 121 Then
+                MetroFramework.MetroMessageBox.Show(Me, "Please check internet connection", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            ElseIf ex.Number = 19 Then
+                MetroFramework.MetroMessageBox.Show(Me, "Sorry our server is under maintenance." & vbCrLf & "Please be patient, will come back A.S.A.P", "Server is down", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            ElseIf ex.Number <> -2 And ex.Number <> 1232 And ex.Number <> 19 And ex.Number <> 121 Then
+                MetroFramework.MetroMessageBox.Show(Me, "Contact the Programmers now", "You need some help?", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+                MessageBox.Show(ex.Number.ToString)
+            End If
         Catch ex2 As Exception
         MessageBox.Show(Me, ex2.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
         End Try
@@ -296,7 +310,7 @@ Public Class PD_Addendum
 
     Private Sub Update_btn_Click(sender As Object, e As EventArgs) Handles Update_btn.Click
         Try
-            ProjectLabel = ProjectLabel_Cbox.Text
+            'ProjectLabel = ProjectLabel_Cbox.Text
             QuoteRefNo = QuoteRefNo_Tbox.Text
             OwnersName = OwnersName_Tbox.Text
             OwnersNameHomeCno = OwnersNameHomeCno_Tbox.Text
@@ -313,7 +327,9 @@ Public Class PD_Addendum
             If ProjectLabel = Nothing Or ProjectLabel = "" Then
                 MetroFramework.MetroMessageBox.Show(Me, "Please select Project Name.")
             Else
-                ADDENDUM_BGW_TODO = "Search_for_TP_ID_then_Insert"
+                If QuoteRefNo_Tbox.Text = Nothing Then
+                End If
+                ADDENDUM_BGW_TODO = "UPDATE_ADDENDUM"
                 Start_PD_Addendum_BGW(False, True)
             End If
         Catch ex As Exception
@@ -338,8 +354,8 @@ Public Class PD_Addendum
 
 
     Private Sub PD_Addendum_BGW_RunWorkerCompleted(ByVal sender As Object, ByVal e As RunWorkerCompletedEventArgs)
-        Try
-            Me.Width = 800
+        'Try
+        Me.Width = 800
             Me.Height = 600
             If e.Error IsNot Nothing Then
                 '' if BackgroundWorker terminated due to error
@@ -347,6 +363,7 @@ Public Class PD_Addendum
             ElseIf e.Cancelled = True Then
                 '' otherwise if it was cancelled
                 MetroFramework.MetroMessageBox.Show(Me, "Error Occured", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                onformLoad()
             Else
                 '' otherwise it completed normally
                 FullAddress_Tbox.Text = Project_Details.FULLADDRESS
@@ -358,15 +375,15 @@ Public Class PD_Addendum
                             FIle_Label_As = row("FILE_LABEL_AS")
                             ProjectLabel = row("PROJECT_LABEL")
                             JORefNo_Lbl.Text = row("SUB_JO")
-                            QuoteRefNo = row("QUOTE_NO")
-                            QuoteDate_Lbl.Text = row("QUOTE_DATE")
+                            'QuoteRefNo = row("QUOTE_NO")
+                            'QuoteDate_Lbl.Text = row("QUOTE_DATE")
                             ConStage_Tbox.Text = row("CONSTRUCTION_STAGE")
                             SiteMeeting_Tbox.Text = row("ACTIVITIES")
 
                             ProjClass_Lbl.Text = row("PROJECT_CLASSIFICATION")
                             ProjSource_Lbl.Text = row("PROJECT_SOURCE")
                             Competitors_Lbl.Text = row("COMPETITORS")
-                            ProfileFin_Lbl.Text = row("PROFILE_FINISH")
+                            'ProfileFin_Lbl.Text = row("PROFILE_FINISH")
                             SpInstr_RTbox.Text = row("OTHER_PERTINENT_INFO")
 
                             UnitNo = row("UnitNo")
@@ -379,7 +396,6 @@ Public Class PD_Addendum
                             Province = row("PROVINCE")
                             Area = row("AREA")
                         Next row
-
                         'Lock_Btn.Text = "Unlock"
                         'QuoteRefNo_Cbox.Enabled = False
 
@@ -461,6 +477,38 @@ Public Class PD_Addendum
                             ProjectLabel_Cbox.Text = CompanyName_Str
                         End If
 
+                        ADDENDUM_BGW_TODO = "OWNERS_REP"
+                        Start_PD_Addendum_BGW(False, True)
+                    Case "OWNERS_REP"
+                        For Each row In sqlBindingSource
+                            OWN_REP_ID = row("CUST_ID")
+                            OwnersRep_Tbox.Text = row("CLIENTS_NAME")
+                            OwnersRepHomeCno_Tbox.Text = row("CLIENTS_CONTACT_NO")
+                            OwnersRepOfficeCno_Tbox.Text = row("CLIENTS_CONTACT_OFFICE")
+                            OwnersRepMobileCno_Tbox.Text = row("CLIENTS_CONTACT_MOBILE")
+                        Next row
+
+                        ADDENDUM_BGW_TODO = "QuoteRefNo_Populate"
+                        Start_PD_Addendum_BGW(False, True)
+                    Case "QuoteRefNo_Populate"
+                        For Each row In sqlBindingSource
+                            QuoteRefNo_Populate_counter += 1
+                            CQN_ID.Add(row("CQN_ID"))
+                            If sqlBindingSource.Count = 1 Then
+                                QuoteRefNo_Tbox.Text = row("QUOTE_NO")
+                                QuoteDate_Lbl.Text = row("QUOTE_DATE").ToString("MMM-dd-yyyy")
+                                ProfileFin_Lbl.Text = row("PROFILE_FINISH")
+                            ElseIf sqlBindingSource.Count > 1 And QuoteRefNo_Populate_counter <> sqlBindingSource.Count Then
+                                QuoteRefNo_Tbox.Text += row("QUOTE_NO") & " & "
+                                QuoteDate_Lbl.Text += row("QUOTE_DATE").ToString("MMM-dd-yyyy") & ", "
+                                ProfileFin_Lbl.Text += row("PROFILE_FINISH") & ", "
+                            ElseIf sqlBindingSource.Count > 1 And QuoteRefNo_Populate_counter = sqlBindingSource.Count Then
+                                QuoteRefNo_Tbox.Text += row("QUOTE_NO")
+                                QuoteDate_Lbl.Text += row("QUOTE_DATE").ToString("MMM-dd-yyyy")
+                                ProfileFin_Lbl.Text += row("PROFILE_FINISH")
+                            End If
+                        Next
+
                         ADDENDUM_BGW_TODO = "TechnicalPartners"
                         Start_PD_Addendum_BGW(False, True)
                     Case "TechnicalPartners"
@@ -535,26 +583,12 @@ Public Class PD_Addendum
                                 ProfileFin_Lbl.Text += arr_Profile_finish(i)
                             End If
                         Next
-                        'OwnersName_Tbox.Focus()
-                    Case "INSERT_TECHNICAL_PARTNERS"
-                        'If PD_CountSuccess = ArchDesignBS.Count Then
-                        '    MetroFramework.MetroMessageBox.Show(Me, "Success", " ", MessageBoxButtons.OK, MessageBoxIcon.None)
-                        'End If
-                    Case "Search_for_TP_ID_then_Insert"
-                        'Dim insertInArchDesignBS, DiffIn_count_Inserted As Integer
-                        'For Each row In ArchDesignBS
-                        '    If row("TP_ID") = "" Or row("TP_ID") = Nothing Then
-                        '        insertInArchDesignBS += 1
-                        '    End If
-                        'Next
-                        'DiffIn_count_Inserted = count_ArchDesignBS - insertInArchDesignBS
-                        'MsgBox("PD_CountSuccess: " & PD_CountSuccess & vbCrLf &
-                        '       "insertInArchDesignBS: " & insertInArchDesignBS)
-                        'If PD_CountSuccess = insertInArchDesignBS Then
-                        '    MetroFramework.MetroMessageBox.Show(Me, "Success", "Insert", MessageBoxButtons.OK, MessageBoxIcon.None)
-                        'Else
-                        '    MetroFramework.MetroMessageBox.Show(Me, "Success", " ", MessageBoxButtons.OK, MessageBoxIcon.None)
-                        'End If
+                    Case "UPDATE_ADDENDUM"
+                        If PD_CountSuccess = 1 Then
+                            MetroFramework.MetroMessageBox.Show(Me, "Success", " ", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                        ElseIf PD_CountSuccess = 0 Then
+                            MetroFramework.MetroMessageBox.Show(Me, "Failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                        End If
                     Case "TPN_DELETE"
                         ADDENDUM_BGW_TODO = "TechnicalPartners"
                         Start_PD_Addendum_BGW(False, True)
@@ -563,9 +597,9 @@ Public Class PD_Addendum
             End If
             PD_Addendum_Pnl.Visible = True
             LoadingPbox.Visible = False
-        Catch ex As Exception
-        MessageBox.Show(Me, ex.Message)
-        End Try
+        'Catch ex As Exception
+        'MessageBox.Show(Me, ex.Message)
+        'End Try
     End Sub
 
 End Class

@@ -85,15 +85,15 @@ Public Class Project_Details
             'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
             If ex.Number = -2 Then
                 MetroFramework.MetroMessageBox.Show(Me, "Click ok to Reconnect", "Request Timeout", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            ElseIf ex.Number = 1232 Then
+            ElseIf ex.Number = 1232 Or ex.Number = 121 Then
                 MetroFramework.MetroMessageBox.Show(Me, "Please check internet connection", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 ProjectDetailsBGW.CancelAsync()
             ElseIf ex.Number = 19 Then
                 MetroFramework.MetroMessageBox.Show(Me, "Sorry our server is under maintenance." & vbCrLf & "Please be patient, will come back A.S.A.P", "Server is down", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 ProjectDetailsBGW.CancelAsync()
-            ElseIf ex.Number <> -2 And ex.Number <> 1232 And ex.Number <> 19 Then
+            ElseIf ex.Number <> -2 And ex.Number <> 1232 And ex.Number <> 19 And ex.Number <> 121 Then
                 MetroFramework.MetroMessageBox.Show(Me, "Contact the Programmers now", "You need some help?", MessageBoxButtons.OK, MessageBoxIcon.Stop)
-                MetroFramework.MetroMessageBox.Show(Me, ex.Message)
+                MessageBox.Show(ex.Number.ToString)
                 ProjectDetailsBGW.CancelAsync()
             End If
         Catch ex2 As Exception
@@ -114,16 +114,13 @@ Public Class Project_Details
                 ProjectDetailsDGV.Enabled = True
                 ProjectDetailsDGV.DataSource = sqlBindingSource
 
-                'If is_CTD_bool = True And is_SalesJobOrder_bool = False Then
-                'ProjectDetailsDGV.Columns("PD_ID").Visible = False
-                'ElseIf is_CTD_bool = False Or is_SalesJobOrder_bool = False Then
-                '    ProjectDetailsDGV.Columns("PD_ID").Visible = False
-                'Else
                 If is_CTD_bool = True Then
                     ProjectDetailsDGV.Columns("ID").Visible = False
                 End If
 
-                ProjectDetailsDGV.Columns("PD_ID").Visible = False
+                If ProjectDetailsDGV.Columns.Count <> 0 Then
+                    ProjectDetailsDGV.Columns("PD_ID").Visible = False
+                End If
 
                 With ProjectDetailsDGV
                     .DefaultCellStyle.BackColor = Color.White
