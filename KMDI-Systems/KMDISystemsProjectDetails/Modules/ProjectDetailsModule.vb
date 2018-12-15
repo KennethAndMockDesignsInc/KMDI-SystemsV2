@@ -29,7 +29,7 @@ Module ProjectDetailsModule
     'Public QuoteNoDT As DataTable = New DataTable("QuoteNoDT")
     Public DTcols_str As String() = {"OFFICENAME", "NAME", "POSITION", "CONTACT NUMBER", "COMP_ID", "EMP_ID", "TP_ID", "TPN_ID"}
 
-    Public arr_WD_ID As New List(Of String)
+    Public arr_WD_ID As New List(Of Integer)
     Public arr_Profile_finish As New List(Of String)
     Public arr_Quote_Date As New List(Of Date)
 
@@ -754,9 +754,13 @@ Module ProjectDetailsModule
                                   ByVal CLIENTS_CONTACT_NO_REP As String,
                                   ByVal CLIENTS_CONTACT_OFFICE_REP As String,
                                   ByVal CLIENTS_CONTACT_MOBILE_REP As String,
-                                  ByVal CUST_ID_REP As String)
+                                  ByVal CUST_ID_REP As String,
+                                  ByVal QuoteRefNo_count As Integer,
+                                  ByVal CD_ID As String,
+                                  ByVal WD_ID As String,
+                                  ByVal A As List(Of String))
 
-        Dim QUERY_PART1 As String = ""
+        Dim QUERY_PART1 As String = "", QUERY_PART2 As String = ""
         Select Case REP_AddorUpdate
             Case "ADD"
                 QUERY_PART1 = " INSERT  INTO [A_NEW_CLIENT_DETAILS]
@@ -782,6 +786,15 @@ Module ProjectDetailsModule
                                       [CLIENTS_CONTACT_MOBILE] = @CLIENTS_CONTACT_MOBILE_REP
                               WHERE   [CUST_ID] = @CUST_ID_REP "
         End Select
+        Select Case QuoteRefNo_count
+            Case <> 0
+                QUERY_PART2 = " UPDATE  [A_NEW_CONTRACT_QUOTE_NO] 
+                                SET     [CQN_STATUS] = 0 "
+            Case = 0
+                QUERY_PART2 = " INSERT INTO [A_NEW_CONTRACT_QUOTE_NO] ([CD_ID_REF],
+                                                                       [WD_ID_REF])
+                                                               VALUES (@CD_ID,@WD_ID)"
+        End Select
 
         Query = "
 Begin Transaction
@@ -805,7 +818,7 @@ DECLARE @CUST_ID_REP_IDENTITY AS INTEGER
             [CLIENTS_CONTACT_MOBILE] = @CLIENTS_CONTACT_MOBILE
     WHERE   [CUST_ID] = @CUST_ID
 
-" & QUERY_PART1 & "
+" & QUERY_PART1 & QUERY_PART2 & " 
 
 	SELECT	ERROR_NUMBER() AS ErrorNumber,
 			ERROR_MESSAGE() AS ErrorMessage

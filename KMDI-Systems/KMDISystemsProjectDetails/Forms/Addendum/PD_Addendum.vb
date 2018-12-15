@@ -98,7 +98,7 @@ Public Class PD_Addendum
                     End If
                     PD_Addendum_Update(ADDorUPDATE, ProjectLabel, ConStage, SiteMeeting, SpInstr, PD_ID, OwnersName,
                                        OwnersNameHomeCno, OwnersNameOfficeCno, OwnersNameMobile, CUST_ID, OwnersRep,
-                                       OwnersRepHomeCno, OwnersRepOfficeCno, OwnersRepMobileCno, OWN_REP_ID)
+                                       OwnersRepHomeCno, OwnersRepOfficeCno, OwnersRepMobileCno, OWN_REP_ID, CQN_ID.Count)
                 Case "TPN_DELETE"
                     PD_Addendum_TPN_Delete(Me, TPN_ID)
                 Case "OWNERS_REP"
@@ -354,8 +354,8 @@ Public Class PD_Addendum
 
 
     Private Sub PD_Addendum_BGW_RunWorkerCompleted(ByVal sender As Object, ByVal e As RunWorkerCompletedEventArgs)
-        'Try
-        Me.Width = 800
+        Try
+            Me.Width = 800
             Me.Height = 600
             If e.Error IsNot Nothing Then
                 '' if BackgroundWorker terminated due to error
@@ -491,24 +491,25 @@ Public Class PD_Addendum
                         ADDENDUM_BGW_TODO = "QuoteRefNo_Populate"
                         Start_PD_Addendum_BGW(False, True)
                     Case "QuoteRefNo_Populate"
+                        Dim Qdate As Date
                         For Each row In sqlBindingSource
                             QuoteRefNo_Populate_counter += 1
                             CQN_ID.Add(row("CQN_ID"))
+                            Qdate = row("QUOTE_DATE")
                             If sqlBindingSource.Count = 1 Then
                                 QuoteRefNo_Tbox.Text = row("QUOTE_NO")
-                                QuoteDate_Lbl.Text = row("QUOTE_DATE").ToString("MMM-dd-yyyy")
+                                QuoteDate_Lbl.Text = Qdate.ToString("MMM-dd-yyyy")
                                 ProfileFin_Lbl.Text = row("PROFILE_FINISH")
                             ElseIf sqlBindingSource.Count > 1 And QuoteRefNo_Populate_counter <> sqlBindingSource.Count Then
                                 QuoteRefNo_Tbox.Text += row("QUOTE_NO") & " & "
-                                QuoteDate_Lbl.Text += row("QUOTE_DATE").ToString("MMM-dd-yyyy") & ", "
+                                QuoteDate_Lbl.Text += Qdate.ToString("MMM-dd-yyyy") & ", "
                                 ProfileFin_Lbl.Text += row("PROFILE_FINISH") & ", "
                             ElseIf sqlBindingSource.Count > 1 And QuoteRefNo_Populate_counter = sqlBindingSource.Count Then
                                 QuoteRefNo_Tbox.Text += row("QUOTE_NO")
-                                QuoteDate_Lbl.Text += row("QUOTE_DATE").ToString("MMM-dd-yyyy")
+                                QuoteDate_Lbl.Text += Qdate.ToString("MMM-dd-yyyy")
                                 ProfileFin_Lbl.Text += row("PROFILE_FINISH")
                             End If
                         Next
-
                         ADDENDUM_BGW_TODO = "TechnicalPartners"
                         Start_PD_Addendum_BGW(False, True)
                     Case "TechnicalPartners"
@@ -597,9 +598,9 @@ Public Class PD_Addendum
             End If
             PD_Addendum_Pnl.Visible = True
             LoadingPbox.Visible = False
-        'Catch ex As Exception
-        'MessageBox.Show(Me, ex.Message)
-        'End Try
+        Catch ex As Exception
+            MessageBox.Show(Me, ex.Message)
+        End Try
     End Sub
 
 End Class
