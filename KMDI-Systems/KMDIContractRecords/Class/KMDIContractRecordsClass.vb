@@ -6,43 +6,63 @@ Public Class KMDIContractRecordsClass
     Public ds As New DataSet
     Public bs As New BindingSource
 
-    Public Sub ContractRecordsLoad(ByVal QueryFunction As String,
-                                   ByVal QueryBody As String,
-                                   ByVal QueryCondition As String,
-                                   ByVal ActionTaken As String,
-                                   ByVal SearchItemFN As String)
-        sqlConnection.Close()
-        sqlConnection.Open()
+    Public Sub ContractRecordsLoad(ByVal ActionTaken As String,
+                                   ByVal SearchItemFN As String,
+                                   ByVal SearchScope As String,
+                                   ByVal stp_Name As String,
+                                   ByVal SearchString As String)
+        Try
+            sqlConnection.Close()
+            sqlConnection.Open()
+        Catch ex As Exception
+
+        End Try
+
+        sqlCommand = New SqlCommand(stp_Name, sqlConnection)
 
         Select Case ActionTaken
             Case "Search"
                 ds.Clear()
-            Case "Add"
-            Case "Update"
-            Case "Delete"
-        End Select
-        Query = QueryFunction &
-                QueryBody &
-                QueryCondition
-        sqlCommand = New SqlCommand(Query, sqlConnection)
-        sqlCommand.CommandTimeout = 300
-        sqlDataAdapter.SelectCommand = sqlCommand
-        Select Case ActionTaken
-            Case "Search"
                 Select Case SearchItemFN
                     Case "InitialF2"
+                        sqlCommand.Parameters.AddWithValue("@SearchString", "%" & SearchString & "%")
+                        sqlCommand.CommandType = CommandType.StoredProcedure
+                        sqlCommand.CommandTimeout = 300
+
+                        sqlDataAdapter.SelectCommand = sqlCommand
                         sqlDataAdapter.Fill(ds, "InitialF2")
+
                         bs.DataSource = ds
                         bs.DataMember = "InitialF2"
                     Case "SecondF2"
+                        Select Case SearchScope
+                            Case "Broad"
+                                sqlCommand.Parameters.AddWithValue("@SearchString", "%" & SearchString & "%")
+                            Case "Specific"
+                                sqlCommand.Parameters.AddWithValue("@SearchString", SearchString)
+                        End Select
+                        sqlCommand.CommandType = CommandType.StoredProcedure
+                        sqlCommand.CommandTimeout = 300
+
+                        sqlDataAdapter.SelectCommand = sqlCommand
                         sqlDataAdapter.Fill(ds, "SecondF2")
                         bs.DataSource = ds
                         bs.DataMember = "SecondF2"
                     Case "ItemSearchInitialF2"
+                        sqlCommand.Parameters.AddWithValue("@SearchString", "%" & SearchString & "%")
+                        sqlCommand.CommandType = CommandType.StoredProcedure
+                        sqlCommand.CommandTimeout = 300
+
+                        sqlDataAdapter.SelectCommand = sqlCommand
                         sqlDataAdapter.Fill(ds, "FFabTB_Join_A2C1")
                         bs.DataSource = ds
                         bs.DataMember = "FFabTB_Join_A2C1"
                     Case "ItemSearchSecondF2"
+                        sqlCommand.Parameters.AddWithValue("@SearchString", "%" & SearchString & "%")
+                        sqlCommand.CommandType = CommandType.StoredProcedure
+                        sqlCommand.CommandTimeout = 300
+
+                        sqlDataAdapter.SelectCommand = sqlCommand
                         sqlDataAdapter.Fill(ds, "FFabTB_Join_A2C2")
                         bs.DataSource = ds
                         bs.DataMember = "FFabTB_Join_A2C2"
@@ -54,10 +74,8 @@ Public Class KMDIContractRecordsClass
         End Select
     End Sub
 
-    Public Sub ProjectAddress(ByVal QueryFunction As String,
-                              ByVal QueryBody As String,
-                              ByVal QueryCondition As String,
-                              ByVal ActionTaken As String,
+    Public Sub ProjectAddress(ByVal ActionTaken As String,
+                              ByVal stp_Name As String,
                               ByVal SearchString As String,
                               ByVal UnitNo As String,
                               ByVal Establishment As String,
@@ -69,24 +87,18 @@ Public Class KMDIContractRecordsClass
                               ByVal Province As String,
                               ByVal Area As String,
                               ByVal FullAddress As String)
-        sqlConnection.Close()
-        sqlConnection.Open()
+        Try
+            sqlConnection.Close()
+            sqlConnection.Open()
+        Catch ex As Exception
+
+        End Try
+
+        sqlCommand = New SqlCommand(stp_Name, sqlConnection)
 
         Select Case ActionTaken
             Case "Search"
                 ds.Clear()
-            Case "Add"
-            Case "Update"
-            Case "Delete"
-        End Select
-
-        Query = QueryFunction &
-                QueryBody &
-                QueryCondition
-        sqlCommand = New SqlCommand(Query, sqlConnection)
-
-        Select Case ActionTaken
-            Case "Search"
                 sqlCommand.Parameters.AddWithValue("@SearchString", SearchString)
             Case "Add"
             Case "Update"
@@ -104,6 +116,7 @@ Public Class KMDIContractRecordsClass
             Case "Delete"
         End Select
 
+        sqlCommand.CommandType = CommandType.StoredProcedure
         sqlCommand.CommandTimeout = 300
         sqlDataAdapter.SelectCommand = sqlCommand
         Read = sqlCommand.ExecuteReader

@@ -3,6 +3,7 @@ Imports System.Drawing.Printing
 Imports System.IO
 Imports System.Net
 Imports MetroFramework
+Imports System.Data.SqlClient
 
 Public Class ContractImagesFRM
     Dim sql As New ContractImagesClass
@@ -11,9 +12,9 @@ Public Class ContractImagesFRM
     Public ActionTaken As String
     Public GenerateImage As Boolean
 
-    Public QueryFunction As String
-    Public QueryBody As String
-    Public QueryCondition As String
+    Public err As String
+
+    Dim stp_Name As String
 
     Public picbox As PictureBox
     Public ImageAddresses As New ArrayList
@@ -47,6 +48,7 @@ Public Class ContractImagesFRM
         PageNo_LBL.Visible = False
         GenerateImage = False
         ActionTaken = "Search"
+        Load_LBL.Text = "Gathering information"
         StartWorker()
     End Sub
 
@@ -63,7 +65,7 @@ Public Class ContractImagesFRM
                 MetroMessageBox.Show(Me, "System is gathering information.", "Please wait for a moment", MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         Catch ex As Exception
-            MessageBox.Show(ex.ToString)
+            MetroMessageBox.Show(Me, "The system has encountered an error during recovery of the scanned contract" & vbCrLf & vbCrLf & ex.ToString, "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Stop)
         End Try
 
     End Sub
@@ -80,30 +82,32 @@ Public Class ContractImagesFRM
                         MetroMessageBox.Show(Me, "No scanned copy of the contract where found in the database.", "No scanned copy available", MessageBoxButtons.OK, MessageBoxIcon.Information)
                     Else
                         For i As Integer = 0 To ImageAddresses.Count - 1
-                            System.Threading.Thread.Sleep(100)
+                            Threading.Thread.Sleep(100)
                             ContractImagesBGW.ReportProgress(i)
                         Next i
                     End If
 
                 Case False
-                    ActionTakenByUser()
+                    Try
+                        ActionTakenByUser()
 
-                    For i As Integer = 0 To 1 - 1
-                        sql.ContractImagesLoad(QueryFunction,
-                                                   QueryBody,
-                                                   QueryCondition,
-                                                   ActionTaken)
-                        System.Threading.Thread.Sleep(100)
-                        ContractImagesBGW.ReportProgress(i)
-                    Next i
+                        For i As Integer = 0 To 1 - 1
+                            sql.ContractImagesLoad(ActionTaken,
+                                                   stp_Name,
+                                                   SearchString)
+                            Threading.Thread.Sleep(100)
+                            ContractImagesBGW.ReportProgress(i)
+                        Next i
+                    Catch ex As SqlException
+                        err = ex.Number.ToString
+                    End Try
 
             End Select
         Catch ex As Exception
-            MsgBox(ex.ToString)
+            err = ex.ToString
             ContractImagesBGW.WorkerSupportsCancellation = True
             ContractImagesBGW.CancelAsync()
         End Try
-
 
         If ContractImagesBGW.CancellationPending Then
             e.Cancel = True
@@ -170,8 +174,8 @@ Public Class ContractImagesFRM
             End Select
 
         Catch ex As Exception
-            MetroMessageBox.Show(Me, "The system has encountered an error during recovery of the scanned contract. This page will now close.", "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-            Me.Close()
+            err = ex.ToString
+            ContractImagesBGW.CancelAsync()
         End Try
 
     End Sub
@@ -179,10 +183,7 @@ Public Class ContractImagesFRM
     Public Sub ActionTakenByUser()
         Select Case ActionTaken
             Case "Search"
-                QueryFunction = "DECLARE @SearchString VARCHAR(MAX) = '" & SearchString & "'
-                                 SELECT [IMG]"
-                QueryBody = " FROM [CONTRACTIMG]"
-                QueryCondition = " WHERE [JOB_ORDER_NO] = @SearchString"
+                stp_Name = "stp_SearchContractImages"
             Case "Add"
             Case "Update"
             Case "Delete"
@@ -195,62 +196,35 @@ Public Class ContractImagesFRM
             Case True
 
                 Try
+                    Load_LBL.Text = "Retrieving scanned contracts. Please wait"
                     Load_LBL.Visible = False
                     Load_PB.Visible = False
                     Load_PB.Value = 0
                     PageNo_LBL.Visible = True
                     PageNo_LBL.Text = "1 of " & ImageAddresses.Count
 
-                    If e.Cancelled = True Then
-                        MetroMessageBox.Show(Me, "The system has encountered an error during recovery of the scanned contract. This page will now close.", "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                        Me.Close()
-                    ElseIf e.Error IsNot Nothing Then
-                        MetroMessageBox.Show(Me, "The system has encountered an error during recovery of the scanned contract. This page will now close.", "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                        Me.Close()
-                    Else
+                    Select Case err
+                        Case ""
+                        Case Nothing
+                        Case Else
+                            GeneralSystemError(sender, e)
+                    End Select
 
-                    End If
                 Catch ex As Exception
                     MessageBox.Show(ex.ToString)
                 End Try
 
             Case False
                 Try
-                    If e.Cancelled = True Then
-                        Select Case ActionTaken
-                            Case "Search"
-                                MetroMessageBox.Show(Me, "Please click OK button or press the Enter key then press F5 key to refresh the system.", "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                            Case "Add"
-                            Case "Update"
-                            Case "Delete"
-                        End Select
-                    ElseIf e.Error IsNot Nothing Then
-                        Select Case ActionTaken
-                            Case "Search"
-                                MetroMessageBox.Show(Me, "Please click OK button or press the Enter key then press F5 to refresh the system.", "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                            Case "Add"
-                            Case "Update"
-                            Case "Delete"
-                        End Select
-                    Else
-                        Try
-                            Select Case ActionTaken
-                                Case "Search"
-                                    If Read.HasRows = True Then
-                                        Scanned_Contracts_Display()
-                                    Else
-                                        MetroMessageBox.Show(Me, "Please coordinate with collections department for a copy of the contract.", "No scanned contracts detected", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                                    End If
-                                Case "Add"
-                                Case "Update"
-                                Case "Delete"
-                            End Select
-                        Catch ex As Exception
-                            MessageBox.Show(ex.ToString)
-                        End Try
-                    End If
+                    Select Case err
+                        Case ""
+                            Output()
+                        Case Nothing
+                            Output()
+                        Case Else
+                            GeneralSystemError(sender, e)
+                    End Select
                 Catch ex As Exception
-                    MessageBox.Show(ex.ToString)
                 End Try
         End Select
     End Sub
@@ -260,6 +234,7 @@ Public Class ContractImagesFRM
             Select Case ActionTaken
                 Case "Search"
                     GenerateImage = True
+                    Load_LBL.Text = "Retrieving scanned contracts. Please wait"
                     StartWorker()
                 Case "Add"
                 Case "Update"
@@ -373,11 +348,19 @@ Public Class ContractImagesFRM
     End Sub
 
     Private Sub PrintCtrlPToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles PrintCtrlPToolStripMenuItem.Click
-        PrintDoc()
+        Try
+            PrintDoc()
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     Private Sub ContractImages_PNL_MouseClick(sender As Object, e As MouseEventArgs) Handles ContractImages_PNL.MouseClick
-        ShowScannedOptions(sender, e)
+        Try
+            ShowScannedOptions(sender, e)
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     Private Sub PrintDocument1_PrintPage(sender As Object, e As PrintPageEventArgs) Handles PrintDoc_PDC.PrintPage
@@ -401,7 +384,11 @@ Public Class ContractImagesFRM
     End Sub
 
     Private Sub ContractImages_PNL_Scroll(sender As Object, e As ScrollEventArgs) Handles ContractImages_PNL.Scroll
-        VerticalScrolling()
+        Try
+            VerticalScrolling()
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     Private Sub ContractImages_PNL_MouseWheel(ByVal sender As Object, ByVal e As MouseEventArgs) Handles ContractImages_PNL.MouseWheel
@@ -413,7 +400,8 @@ Public Class ContractImagesFRM
             PageNumber = (ContractImages_PNL.VerticalScroll.Value / 1025) + 1
             PageNo_LBL.Text = PageNumber & " of " & ImageAddresses.Count
         Catch ex As Exception
-            MessageBox.Show(ex.ToString)
+            MetroMessageBox.Show(Me, "A system error has occured. If problem persist please contact the system dev team for assistance. This page will now close.", "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Close()
         End Try
     End Sub
 
@@ -442,7 +430,8 @@ Public Class ContractImagesFRM
             '// Draw the image
             e.Graphics.DrawImage(srcBmp, 0, 0)
         Catch ex As Exception
-            MessageBox.Show(ex.ToString)
+            MetroMessageBox.Show(Me, "A system error has occured. If problem persist please contact the system dev team for assistance. This page will now close.", "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Me.Close()
         End Try
     End Sub
 
@@ -456,7 +445,8 @@ Public Class ContractImagesFRM
                     End With
             End Select
         Catch ex As Exception
-            MessageBox.Show(ex.ToString)
+            MetroMessageBox.Show(Me, "The system has encountered an error during recovery of the scanned contract" & vbCrLf & vbCrLf & ex.ToString, "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Close()
         End Try
     End Sub
 
@@ -505,7 +495,57 @@ Public Class ContractImagesFRM
             End If
 
         Catch ex As Exception
-            MessageBox.Show(ex.ToString)
+            MetroMessageBox.Show(Me, "A system error has occured. If problem persist please contact the system dev team for assistance. This page will now close.", "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Close()
+        End Try
+    End Sub
+
+    Public Sub GeneralSystemError(ByVal sender As System.Object, ByVal e As RunWorkerCompletedEventArgs)
+        Try
+            If e.Cancelled = True Then
+                If err = "-2" Then
+                    MetroMessageBox.Show(Me, "Request time out", "System Error Detected", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+                ElseIf err = "1232" Then
+                    MetroMessageBox.Show(Me, "Connection error", "System Error Detected", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+                ElseIf err = "19" Then
+                    MetroMessageBox.Show(Me, "Server maintenance", "System Error Detected", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+                ElseIf err <> "-2" And err <> "1232" And err <> "19" Then
+                    MetroMessageBox.Show(Me, "The system has encountered an error during recovery of the scanned contract" & vbCrLf & vbCrLf & err, "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+                End If
+            ElseIf e.Error IsNot Nothing Then
+                If err = "-2" Then
+                    MetroMessageBox.Show(Me, "Request time out", "System Error Detected", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+                ElseIf err = "1232" Then
+                    MetroMessageBox.Show(Me, "Connection error", "System Error Detected", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+                ElseIf err = "19" Then
+                    MetroMessageBox.Show(Me, "Server maintenance", "System Error Detected", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+                ElseIf err <> "-2" And err <> "1232" And err <> "19" Then
+                    MetroMessageBox.Show(Me, "The system has encountered an error during recovery of the scanned contract" & vbCrLf & vbCrLf & err, "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+                End If
+            End If
+            Close()
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
+    Public Sub Output()
+        Try
+            Select Case ActionTaken
+                Case "Search"
+                    If Read.HasRows = True Then
+
+                        Scanned_Contracts_Display()
+                    Else
+                        MetroMessageBox.Show(Me, "Please coordinate with collections department for a copy of the contract.", "No scanned contracts detected", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    End If
+                Case "Add"
+                Case "Update"
+                Case "Delete"
+            End Select
+        Catch ex As Exception
+            MetroMessageBox.Show(Me, "The system has encountered an error during recovery of the scanned contract" & vbCrLf & vbCrLf & ex.ToString, "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Stop)
         End Try
     End Sub
 End Class

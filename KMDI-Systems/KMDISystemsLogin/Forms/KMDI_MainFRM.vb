@@ -352,7 +352,7 @@ Public Class KMDI_MainFRM
 
     Private Sub LogoutTile_Click(sender As Object, e As EventArgs) Handles LogoutTile.Click
         If MetroFramework.MetroMessageBox.Show(Me, "Do you wish to proceed?", "Log Out", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Me.Dispose()
+            Dispose()
         Else
             Exit Sub
         End If
@@ -385,12 +385,19 @@ Public Class KMDI_MainFRM
 
     Private Sub ContractListTile_Click(sender As Object, e As EventArgs) Handles ContractListTile.Click
         Try
-            ContractRecordsFRM.Show()
-            ContractRecordsFRM.BringToFront()
+
+            Dim frm As Form = ContractRecordsFRM
+            Select Case frm.Visible
+                Case True
+                    ContractRecordsFRM.BringToFront()
+                Case False
+                    ContractRecordsFRM.Show()
+                    ContractRecordsFRM.BringToFront()
+            End Select
+
         Catch ex As Exception
 
         End Try
-
     End Sub
 
     Private Sub RecycleTile_Click(sender As Object, e As EventArgs) Handles RecycleTile.Click
@@ -482,11 +489,12 @@ Public Class KMDI_MainFRM
 
             For Each Form In My.Application.OpenForms
                 If Form.name.ToString <> "KMDISystemsLogin" Then
-                    Form.hide()
+                    'Form.hide()
+                    Form.Dispose()
                 End If
             Next
 
-            Me.Dispose()
+            Dispose()
         Catch ex As Exception
 
         End Try

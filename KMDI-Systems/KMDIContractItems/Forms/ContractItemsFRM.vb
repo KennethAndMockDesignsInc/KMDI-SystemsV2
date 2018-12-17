@@ -9,9 +9,10 @@ Public Class ContractItemsFRM
     Public ActionTaken As String
     Public SearchItemFN As String
 
-    Public QueryFunction As String
-    Public QueryBody As String
-    Public QueryCondition As String
+    'Public QueryFunction As String
+    'Public QueryBody As String
+    'Public QueryCondition As String
+    Dim stp_Name As String
 
     Public GenerateOutput As Boolean
     Public FrameEntry As Boolean
@@ -142,11 +143,9 @@ Public Class ContractItemsFRM
                     ActionTakenByUser()
 
                     For i As Integer = 0 To 1 - 1
-                        sql.ContractItemsLoad(QueryFunction,
-                                              QueryBody,
-                                              QueryCondition,
-                                              ActionTaken,
+                        sql.ContractItemsLoad(ActionTaken,
                                               SearchItemFN,
+                                              stp_Name,
                                               SearchString)
                         Threading.Thread.Sleep(100)
                         ContractItemsBGW.ReportProgress(i)
@@ -170,100 +169,19 @@ Public Class ContractItemsFRM
             Case "Search"
                 Select Case SearchItemFN
                     Case "Frames"
-                        QueryFunction = "SELECT "
-                        QueryBody = " AUTONUM,
-                                      JOB_ORDER_NO,
-                                      ITEM_NO as ITEM#,
-                                      WDW_NO AS WDW#,
-                                      LOCATION,
-                                      COLOR,
-                                      WIDTH,
-                                      HEIGHT,
-                                      DESCRIPTION,
-                                      GLASS_SPECS,
-                                      QTY,
-                                      format(PRICE,'N2') as PRICE,
-                                      DISCOUNT,
-                                      format(NET_PRICE,'n2') as NET_PRICE,
-                                      POINTS,
-                                      SYSTEM_USED,
-                                      REMARKS,
-                                      STATUS,
-                                      IMG
-                                    FROM KMDI_ASPERCONTRACT_TB "
-                        QueryCondition = " WHERE JOB_ORDER_NO = @SearchString
-                                           ORDER BY ITEM_NO DESC"
+                        stp_Name = "stp_OriginalFrames"
                     Case "Screens"
-                        QueryFunction = "DECLARE @Sub_Total as DECIMAL(18,2)
-                                         DECLARE @Sub_Total_QTY as DECIMAL(18,2)
-                                         DECLARE @Sub_Total_per_QTY as DECIMAL(18,2) "
-                        QueryBody = " SELECT @Sub_Total = SUM(PRICE)
-                                      FROM [KMDI_SCREENASPERCONTRACT_TB]
-                                      WHERE [JOB_ORDER_NO] = @SearchString
-
-                                      SELECT @Sub_Total_QTY = SUM(QTY)
-                                      FROM [KMDI_SCREENASPERCONTRACT_TB]
-                                      WHERE [JOB_ORDER_NO]= @SearchString
-
-                                      SELECT [ITEM_NO] as [Item],
-	                                         [DESCRIPTION] as [Type of Insect Screen],                                           
-                                             CONCAT([WIDTH],'" & "w x " & "',[HEIGHT],'" & "h - " & "',[COLOR]) as [Dimension(mm) - P.Color],
-	                                         CONCAT([WDW_NO],' ',[LOCATION]) as [Window/Door I.D.],
-                                             FORMAT(PRICE,'N2') as [Unit Price],                                        
-                                             [QTY] as [Qty],
-                                             FORMAT(NET_PRICE,'N2') as [Total Amount],
-                                             [AUTONUM],
-                                             [JOB_ORDER_NO],
-                                             [WDW_NO],
-                                             [LOCATION],
-                                             [COLOR],
-                                             [WIDTH],
-                                             [HEIGHT],
-                                             [DISCOUNT],
-                                             [POINTS],
-                                             [SYSTEM_USED],
-                                             [REMARKS],
-                                             [STATUS],
-                                             FORMAT(@Sub_Total_QTY,'N0') as [Total QTY], 
-	                                         FORMAT(@Sub_Total,'N2') as [Sub Total]	                                          
-                                     FROM [KMDI_SCREENASPERCONTRACT_TB] "
-                        QueryCondition = " WHERE [JOB_ORDER_NO] = @SearchString
-                                           ORDER BY ITEM_NO ASC"
+                        stp_Name = "stp_OriginalScreens"
                     Case "Glass"
-                        QueryFunction = "SELECT"
-                        QueryBody = "  [AUTONUM]
-                                      ,[JOB_ORDER_NO]
-                                      ,[ADDITIONAL]
-                                      ,[ITEM_NO]
-                                      ,[WDW_DOOR_ID]
-                                      ,[THICKNESS]
-                                      ,[DIMENSION]
-                                      ,[NET_PRICE]
-                                      ,[QTY]
-                                      ,[DISCOUNT]
-                                      ,[NET_AMOUNT]
-                                      ,[REMARKS]
-                                      ,[SELECTED_ITEMS]
-                                  FROM [KMDI_ADDITIONAL_TB] "
-                        QueryCondition = "WHERE ([ADDITIONAL] = 'Tempering' or [ADDITIONAL] = 'Frosting') AND
-		                                        [JOB_ORDER_NO] = @SearchString
-                                          ORDER BY ITEM_NO DESC"
+                        stp_Name = "stp_OriginalGlass"
                     Case "Films"
-                        QueryFunction = ""
-                        QueryBody = ""
-                        QueryCondition = ""
+
                     Case "Mechanisms"
-                        QueryFunction = ""
-                        QueryBody = ""
-                        QueryCondition = ""
+
                     Case "Add-Ons"
-                        QueryFunction = ""
-                        QueryBody = ""
-                        QueryCondition = ""
+
                     Case "Summary"
-                        QueryFunction = ""
-                        QueryBody = ""
-                        QueryCondition = ""
+
                 End Select
             Case "Add"
             Case "Update"
@@ -572,7 +490,7 @@ Public Class ContractItemsFRM
                     '// Answer for the bug of uneven spacing for the last 3 rows of the output.
                     Dim locationx As Integer
 
-                    If e.ProgressPercentage <= 4 And sql.ds.Tables("Frames").Rows.Count > 5 Then
+                    If e.ProgressPercentage <= 3 And sql.ds.Tables("Frames").Rows.Count > 4 Then
                         locationx = FQty_LBL.Location.X + 17
                     Else
                         locationx = FQty_LBL.Location.X

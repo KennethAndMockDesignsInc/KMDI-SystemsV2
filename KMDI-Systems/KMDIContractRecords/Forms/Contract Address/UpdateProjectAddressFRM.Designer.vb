@@ -25,7 +25,6 @@ Partial Class UpdateProjectAddressFRM
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(UpdateProjectAddressFRM))
         Me.LoadingPB = New System.Windows.Forms.PictureBox()
         Me.UpdateAddress_LBL = New MetroFramework.Controls.MetroLabel()
-        Me.Cancel_BTN = New MetroFramework.Controls.MetroTextBox.MetroTextButton()
         Me.UpdateBTN = New MetroFramework.Controls.MetroTextBox.MetroTextButton()
         Me.Province__Required_TBX = New MetroFramework.Controls.MetroTextBox()
         Me.CityMunicipality__Required_TBX = New MetroFramework.Controls.MetroTextBox()
@@ -71,19 +70,6 @@ Partial Class UpdateProjectAddressFRM
         Me.UpdateAddress_LBL.Size = New System.Drawing.Size(307, 25)
         Me.UpdateAddress_LBL.TabIndex = 643
         Me.UpdateAddress_LBL.Text = "U P D A T E   A D D R E S S   I N F O"
-        '
-        'Cancel_BTN
-        '
-        Me.Cancel_BTN.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.Cancel_BTN.Image = Nothing
-        Me.Cancel_BTN.Location = New System.Drawing.Point(196, 439)
-        Me.Cancel_BTN.Name = "Cancel_BTN"
-        Me.Cancel_BTN.Size = New System.Drawing.Size(109, 30)
-        Me.Cancel_BTN.Style = MetroFramework.MetroColorStyle.Teal
-        Me.Cancel_BTN.TabIndex = 10
-        Me.Cancel_BTN.Text = "&Cancel"
-        Me.Cancel_BTN.UseSelectable = True
-        Me.Cancel_BTN.UseVisualStyleBackColor = True
         '
         'UpdateBTN
         '
@@ -479,7 +465,6 @@ Partial Class UpdateProjectAddressFRM
         Me.Controls.Add(Me.MetroLabel3)
         Me.Controls.Add(Me.MetroLabel2)
         Me.Controls.Add(Me.ContractImages_LBL)
-        Me.Controls.Add(Me.Cancel_BTN)
         Me.Controls.Add(Me.UpdateBTN)
         Me.Controls.Add(Me.Province__Required_TBX)
         Me.Controls.Add(Me.CityMunicipality__Required_TBX)
@@ -505,7 +490,6 @@ Partial Class UpdateProjectAddressFRM
 
     Friend WithEvents LoadingPB As PictureBox
     Friend WithEvents UpdateAddress_LBL As MetroFramework.Controls.MetroLabel
-    Friend WithEvents Cancel_BTN As MetroFramework.Controls.MetroTextBox.MetroTextButton
     Friend WithEvents UpdateBTN As MetroFramework.Controls.MetroTextBox.MetroTextButton
     Friend WithEvents Province__Required_TBX As MetroFramework.Controls.MetroTextBox
     Friend WithEvents CityMunicipality__Required_TBX As MetroFramework.Controls.MetroTextBox

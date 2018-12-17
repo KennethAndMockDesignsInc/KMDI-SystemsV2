@@ -9,9 +9,11 @@ Public Class UpdateProjectAddressFRM
 
     Public RequiredField As Boolean
 
-    Public QueryFunction As String
-    Public QueryBody As String
-    Public QueryCondition As String
+    'Public QueryFunction As String
+    'Public QueryBody As String
+    'Public QueryCondition As String
+
+    Dim stp_Name As String
 
     Public UpdateProjectAddressBGW As BackgroundWorker = New BackgroundWorker
     Public Delegate Sub PBVisibilityDelegate(ByVal Visibility As Boolean)
@@ -50,31 +52,33 @@ Public Class UpdateProjectAddressFRM
     Public Sub ActionTakenByUser()
         Select Case ActionTaken
             Case "Search"
-                QueryFunction = "SELECT [UNITNO]
-		                               ,[ESTABLISHMENT]
-		                               ,[NO]
-		                               ,[STREET]
-		                               ,[VILLAGE]
-		                               ,[BRGY_MUNICIPALITY]
-		                               ,[TOWN_DISTRICT]
-	                                   ,[PROVINCE]
-		                               ,[AREA]"
-                QueryBody = " FROM [A_NEW_PROJECT_DETAILS]"
-                QueryCondition = " WHERE [PD_ID] = @SearchString"
+                stp_Name = "stp_AddressUpdateSearch"
+                'QueryFunction = "SELECT [UNITNO]
+                      '                 ,[ESTABLISHMENT]
+                      '                 ,[NO]
+                      '                 ,[STREET]
+                      '                 ,[VILLAGE]
+                      '                 ,[BRGY_MUNICIPALITY]
+                      '                 ,[TOWN_DISTRICT]
+                   '                    ,[PROVINCE]
+                      '                 ,[AREA]"
+                'QueryBody = " FROM [A_NEW_PROJECT_DETAILS]"
+                'QueryCondition = " WHERE [PD_ID] = @SearchString"
             Case "Add"
             Case "Update"
-                QueryFunction = "UPDATE "
-                QueryBody = " [A_NEW_PROJECT_DETAILS] SET [UNITNO] = @UnitNo,
-                                                            [ESTABLISHMENT] = @Establishment,
-                                                            [NO] = @HouseNo,
-                                                            [STREET] = @Street,
-                                                            [VILLAGE] = @Village,
-                                                            [BRGY_MUNICIPALITY] = @Brgy,
-                                                            [TOWN_DISTRICT] = @CityMunicipality,
-                                                            [PROVINCE] = @Province,
-                                                            [AREA] = @Area,
-                                                            [FULLADD] = @FullAddress"
-                QueryCondition = " WHERE [PD_ID] = @SearchString"
+                stp_Name = "stp_AddressUpdate"
+                'QueryFunction = "UPDATE "
+                'QueryBody = " [A_NEW_PROJECT_DETAILS] SET [UNITNO] = @UnitNo,
+                '                                            [ESTABLISHMENT] = @Establishment,
+                '                                            [NO] = @HouseNo,
+                '                                            [STREET] = @Street,
+                '                                            [VILLAGE] = @Village,
+                '                                            [BRGY_MUNICIPALITY] = @Brgy,
+                '                                            [TOWN_DISTRICT] = @CityMunicipality,
+                '                                            [PROVINCE] = @Province,
+                '                                            [AREA] = @Area,
+                '                                            [FULLADD] = @FullAddress"
+                'QueryCondition = " WHERE [PD_ID] = @SearchString"
             Case "Delete"
         End Select
     End Sub
@@ -101,10 +105,8 @@ Public Class UpdateProjectAddressFRM
         ActionTakenByUser()
 
         Try
-            sql.ProjectAddress(QueryFunction,
-                               QueryBody,
-                               QueryCondition,
-                               ActionTaken,
+            sql.ProjectAddress(ActionTaken,
+                               stp_Name,
                                SearchString,
                                UnitNo,
                                Establishment,
@@ -166,11 +168,10 @@ Public Class UpdateProjectAddressFRM
                         Case "Add"
                         Case "Update"
                             If MetroMessageBox.Show(Me, "Information has been succesfully updated in the database. Do you want to close this page?", "Information has been saved", MessageBoxButtons.YesNo, MessageBoxIcon.Information) = DialogResult.Yes Then
-                                Me.Hide()
+                                Me.Close()
                             Else
                                 LoadInitialSetUp()
                             End If
-                            ContractRecordsFRM.StartWorker()
                         Case "Delete"
                     End Select
                 Catch ex As Exception
@@ -187,15 +188,24 @@ Public Class UpdateProjectAddressFRM
             Case "Search"
                 With Read
                     .Read()
-                    UnitNo_TBX.Text = Replace(.Item("UNITNO").ToString, "`", "'")
-                    Establishment_TBX.Text = Replace(.Item("ESTABLISHMENT").ToString, "`", "'")
-                    HouseNo_TBX.Text = Replace(.Item("NO").ToString, "`", "'")
-                    Street__Required_TBX.Text = Replace(.Item("STREET").ToString, "`", "'")
-                    Village_TBX.Text = Replace(.Item("VILLAGE").ToString, "`", "'")
-                    Brgy_TBX.Text = Replace(.Item("BRGY_MUNICIPALITY").ToString, "`", "'")
-                    CityMunicipality__Required_TBX.Text = Replace(.Item("TOWN_DISTRICT").ToString, "`", "'")
-                    Province__Required_TBX.Text = Replace(.Item("PROVINCE").ToString, "`", "'")
-                    Area__Required_CBX.Text = Replace(.Item("AREA").ToString, "`", "'")
+                    'UnitNo_TBX.Text = Replace(.Item("UNITNO").ToString, "`", "'")
+                    'Establishment_TBX.Text = Replace(.Item("ESTABLISHMENT").ToString, "`", "'")
+                    'HouseNo_TBX.Text = Replace(.Item("NO").ToString, "`", "'")
+                    'Street__Required_TBX.Text = Replace(.Item("STREET").ToString, "`", "'")
+                    'Village_TBX.Text = Replace(.Item("VILLAGE").ToString, "`", "'")
+                    'Brgy_TBX.Text = Replace(.Item("BRGY_MUNICIPALITY").ToString, "`", "'")
+                    'CityMunicipality__Required_TBX.Text = Replace(.Item("TOWN_DISTRICT").ToString, "`", "'")
+                    'Province__Required_TBX.Text = Replace(.Item("PROVINCE").ToString, "`", "'")
+                    'Area__Required_CBX.Text = Replace(.Item("AREA").ToString, "`", "'")
+                    UnitNo_TBX.Text = .Item(0).ToString
+                    Establishment_TBX.Text = .Item(1).ToString
+                    HouseNo_TBX.Text = .Item(2).ToString
+                    Street__Required_TBX.Text = .Item(3).ToString
+                    Village_TBX.Text = .Item(4).ToString
+                    Brgy_TBX.Text = .Item(5).ToString
+                    CityMunicipality__Required_TBX.Text = .Item(6).ToString
+                    Province__Required_TBX.Text = .Item(7).ToString
+                    Area__Required_CBX.Text = .Item(8).ToString
                     .Close()
                 End With
             Case "Add"
@@ -205,15 +215,6 @@ Public Class UpdateProjectAddressFRM
     End Sub
 
     Public Sub Format()
-        'UnitNo = Trim(Replace(Replace(UnitNo_TBX.Text, "'", "`"), ",", ""))
-        'Establishment = Trim(Replace(Replace(Establishment_TBX.Text, "'", "`"), ",", ""))
-        'HouseNo = Trim(Replace(Replace(HouseNo_TBX.Text, "'", "`"), ",", ""))
-        'Street = Trim(Replace(Replace(Street__Required_TBX.Text, "'", "`"), ",", ""))
-        'Village = Trim(Replace(Replace(Village_TBX.Text, "'", "`"), ",", ""))
-        'Brgy = Trim(Replace(Replace(Brgy_TBX.Text, "'", "`"), ",", ""))
-        'CityMunicipality = Trim(Replace(Replace(CityMunicipality__Required_TBX.Text, "'", "`"), ",", ""))
-        'Province = Trim(Replace(Replace(Province__Required_TBX.Text, "'", "`"), ",", ""))
-
         UnitNo = Trim(Replace(UnitNo_TBX.Text, ",", ""))
         Establishment = Trim(Replace(Establishment_TBX.Text, ",", ""))
         HouseNo = Trim(Replace(HouseNo_TBX.Text, ",", ""))
@@ -649,27 +650,14 @@ Public Class UpdateProjectAddressFRM
         End Try
     End Sub
 
-    Private Sub RefreshBTN_Click(sender As Object, e As EventArgs) Handles Cancel_BTN.Click
-        Try
-
-            If MetroMessageBox.Show(Me, "Are you sure you want to log out?", "What?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                RefreshUI()
-            End If
-
-        Catch ex As Exception
-            MessageBox.Show(ex.ToString)
-        End Try
-    End Sub
-
     Private Sub UpdateProjectAddressFRM_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         Try
-
-            Me.Hide()
-            e.Cancel = True
+            ContractRecordsFRM.BringToFront()
+            ContractRecordsFRM.StartWorker()
             ContractRecordsFRM.Focus()
-
+            Dispose()
         Catch ex As Exception
-            MessageBox.Show(ex.ToString)
+
         End Try
     End Sub
 
@@ -677,8 +665,7 @@ Public Class UpdateProjectAddressFRM
                                                                                     Establishment_TBX.KeyDown, HouseNo_TBX.KeyDown,
                                                                                     Street__Required_TBX.KeyDown, Brgy_TBX.KeyDown,
                                                                                     CityMunicipality__Required_TBX.KeyDown, Province__Required_TBX.KeyDown,
-                                                                                    Area__Required_CBX.KeyDown, UpdateBTN.KeyDown,
-                                                                                    Cancel_BTN.KeyDown
+                                                                                    Area__Required_CBX.KeyDown, UpdateBTN.KeyDown
 
         Try
             Select Case e.KeyCode
