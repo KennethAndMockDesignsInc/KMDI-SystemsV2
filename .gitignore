@@ -328,3 +328,6 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+KMDI-Systems/Form1.Designer.vb
+KMDI-Systems/Form1.resx
+KMDI-Systems/Form1.vb

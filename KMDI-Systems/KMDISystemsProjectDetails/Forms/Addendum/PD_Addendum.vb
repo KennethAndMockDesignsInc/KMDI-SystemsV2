@@ -96,9 +96,9 @@ Public Class PD_Addendum
                     ElseIf OWN_REP_ID <> Nothing Then
                         ADDorUPDATE = "UPDATE"
                     End If
-                    PD_Addendum_Update(ADDorUPDATE, ProjectLabel, ConStage, SiteMeeting, SpInstr, PD_ID, OwnersName,
-                                       OwnersNameHomeCno, OwnersNameOfficeCno, OwnersNameMobile, CUST_ID, OwnersRep,
-                                       OwnersRepHomeCno, OwnersRepOfficeCno, OwnersRepMobileCno, OWN_REP_ID, CQN_ID.Count)
+                    'PD_Addendum_Update(ADDorUPDATE, ProjectLabel, ConStage, SiteMeeting, SpInstr, PD_ID, OwnersName,
+                    '                   OwnersNameHomeCno, OwnersNameOfficeCno, OwnersNameMobile, CUST_ID, OwnersRep,
+                    '                   OwnersRepHomeCno, OwnersRepOfficeCno, OwnersRepMobileCno, OWN_REP_ID, CQN_ID.Count)
                 Case "TPN_DELETE"
                     PD_Addendum_TPN_Delete(Me, TPN_ID)
                 Case "OWNERS_REP"
@@ -585,11 +585,28 @@ Public Class PD_Addendum
                             End If
                         Next
                     Case "UPDATE_ADDENDUM"
-                        If PD_CountSuccess = 1 Then
-                            MetroFramework.MetroMessageBox.Show(Me, "Success", " ", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                        ElseIf PD_CountSuccess = 0 Then
-                            MetroFramework.MetroMessageBox.Show(Me, "Failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                        If (sql_Err_no = "" Or sql_Err_no = Nothing) AndAlso
+                           (sql_Err_msg = "" Or sql_Err_msg = Nothing) Then
+                            If sql_Transaction_result = "Commited" Then
+                                MetroFramework.MetroMessageBox.Show(Me, "Success", " ", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                            ElseIf sql_Transaction_result = "Rollback" Then
+                                MetroFramework.MetroMessageBox.Show(Me, "Failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                            End If
+                        Else
+                            MetroFramework.MetroMessageBox.Show(Me, "Transaction failed", "Contact the Developers", MessageBoxButtons.OK, MessageBoxIcon.Error)
+
+                            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+                            Log_File.WriteLine(vbCrLf & "Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                               "SQL Transaction Error Number: " & sql_Err_no & vbCrLf &
+                                               "SQL Transaction Error Message: " & sql_Err_msg)
+                            Log_File.Close()
                         End If
+
+                        'If PD_CountSuccess = 1 Then
+                        '    MetroFramework.MetroMessageBox.Show(Me, "Success", " ", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                        'ElseIf PD_CountSuccess = 0 Then
+                        '    MetroFramework.MetroMessageBox.Show(Me, "Failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                        'End If
                     Case "TPN_DELETE"
                         ADDENDUM_BGW_TODO = "TechnicalPartners"
                         Start_PD_Addendum_BGW(False, True)

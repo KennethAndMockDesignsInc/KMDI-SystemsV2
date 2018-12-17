@@ -1,4 +1,5 @@
 ﻿Imports System.Data.SqlClient
+Imports System.IO
 Module ProjectDetailsModule
     Public sqlcnstr As String = "Data Source='121.58.229.248,49107';Network Library=DBMSSOCN;Initial Catalog='heretosave';User ID='kmdiadmin';Password='kmdiadmin';"
 
@@ -11,11 +12,10 @@ Module ProjectDetailsModule
     Public QUERY_INSTANCE As String = Nothing
 
     Public PD_CountSuccess As Integer = 0
-    Public InsertedPD_ID = Nothing, InsertedCustID = Nothing, InsertedC_ID As Integer = Nothing
+    Public InsertedPD_ID As Integer = Nothing, InsertedCustID As Integer = Nothing, InsertedC_ID As Integer = Nothing
     Public ErrorMsg, ErrorNum As String
 
     Public PD_ID, CUST_ID, OWN_REP_ID, C_ID As Integer
-    Public CQN_ID As New List(Of Integer)
     Public TPN_ID, TPN_ID_SearchIfDeleted As Integer
 
     Public ArchDesignBS, IntrDesignBS, ConsMngmtBS, GenConBS As New BindingSource
@@ -32,13 +32,18 @@ Module ProjectDetailsModule
     Public arr_WD_ID As New List(Of Integer)
     Public arr_Profile_finish As New List(Of String)
     Public arr_Quote_Date As New List(Of Date)
+    Public CQN_ID As New List(Of Integer)
 
     Public COMP_ID As String = Nothing,
-        COMP_NAME As String = Nothing,
-        EMP_ID As String = Nothing,
-        EMP_NAME As String = Nothing,
-        EMP_MOBILENO As String = Nothing,
-        EMP_POSITION As String = Nothing 'used in Technical Partners
+           COMP_NAME As String = Nothing,
+           EMP_ID As String = Nothing,
+           EMP_NAME As String = Nothing,
+           EMP_MOBILENO As String = Nothing,
+           EMP_POSITION As String = Nothing 'used in Technical Partners
+
+    Public sql_Err_no, sql_Err_msg, sql_Transaction_result As String
+
+    Public Log_File As StreamWriter
 
     Public QuerySearchHeadArrays() As String = {SelDist & " TOP 100 [PD].[PD_ID],
                                                                     [CTD].[SUB_JO] AS [JO#],
@@ -789,7 +794,8 @@ Module ProjectDetailsModule
         Select Case QuoteRefNo_count
             Case <> 0
                 QUERY_PART2 = " UPDATE  [A_NEW_CONTRACT_QUOTE_NO] 
-                                SET     [CQN_STATUS] = 0 "
+                                SET     [CQN_STATUS] = 0 
+                                WHERE   [CQN_ID] = @CQN_ID"
             Case = 0
                 QUERY_PART2 = " INSERT INTO [A_NEW_CONTRACT_QUOTE_NO] ([CD_ID_REF],
                                                                        [WD_ID_REF])
@@ -821,13 +827,15 @@ DECLARE @CUST_ID_REP_IDENTITY AS INTEGER
 " & QUERY_PART1 & QUERY_PART2 & " 
 
 	SELECT	ERROR_NUMBER() AS ErrorNumber,
-			ERROR_MESSAGE() AS ErrorMessage
+			ERROR_MESSAGE() AS ErrorMessage,
+            'Commited' AS [Transaction]
             Commit Transaction
 	End Try
 
 	Begin Catch
 	SELECT	ERROR_NUMBER() AS ErrorNumber,
-			ERROR_MESSAGE() AS ErrorMessage
+			ERROR_MESSAGE() AS ErrorMessage,
+            'Rollback' AS [Transaction]
 			ROLLBACK TRANSACTION
 	End Catch"
         Using sqlcon As New SqlConnection(sqlcnstr)
@@ -848,12 +856,18 @@ DECLARE @CUST_ID_REP_IDENTITY AS INTEGER
                 sqlCommand.Parameters.AddWithValue("@CLIENTS_CONTACT_OFFICE_REP", CLIENTS_CONTACT_OFFICE_REP)
                 sqlCommand.Parameters.AddWithValue("@CLIENTS_CONTACT_MOBILE_REP", CLIENTS_CONTACT_MOBILE_REP)
                 sqlCommand.Parameters.AddWithValue("@CUST_ID_REP", CUST_ID_REP)
-                confirmQuery = sqlCommand.ExecuteNonQuery()
-                If confirmQuery <> 0 Then
-                    PD_CountSuccess = 1
-                Else
-                    PD_CountSuccess = 0
-                End If
+                'confirmQuery = sqlCommand.ExecuteNonQuery()
+                'If confirmQuery <> 0 Then
+                '    PD_CountSuccess = 1
+                'Else
+                '    PD_CountSuccess = 0
+                'End If
+                Using read As SqlDataReader = sqlCommand.ExecuteReader
+                    read.Read()
+                    sql_Err_no = read.Item("ErrorNumber").ToString
+                    sql_Err_msg = read.Item("ErrorMessage").ToString
+                    sql_Transaction_result = read.Item("Transaction").ToString
+                End Using
             End Using
         End Using
     End Sub
