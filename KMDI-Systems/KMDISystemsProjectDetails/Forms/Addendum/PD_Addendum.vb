@@ -6,7 +6,6 @@ Public Class PD_Addendum
     Dim WD_ID, QUOTE_NO As String
     Dim count_ArchDesignBS As Integer
     Dim QuoteRefNo_Populate_counter As Integer
-    Dim str_in_QuoteRefNo_Tbox As String
 
     Sub Start_PD_Addendum_BGW(ByVal Panel_bool As Boolean,
                               ByVal Loading_bool As Boolean)
@@ -48,8 +47,8 @@ Public Class PD_Addendum
     Dim UPDATE_ADDENDUM_QuoteRefNo_WD_ID_counter As Integer = 0
 
     Private Sub PD_Addendum_BGW_DoWork(ByVal sender As Object, ByVal e As DoWorkEventArgs)
-        Try
-            Select Case ADDENDUM_BGW_TODO
+        'Try
+        Select Case ADDENDUM_BGW_TODO
                 Case "Onload"
                     QUERY_INSTANCE = "Loading_using_EqualSearch"
                     QueryBUILD = QuerySearchHeadArrays(5) & QueryMidArrays(4) & QueryConditionArrays(1) & " AND [CTD].JOB_ORDER_NO = [CTD].PARENTJONO"
@@ -123,25 +122,25 @@ Public Class PD_Addendum
                                      " AND CQN_STATUS = 1 AND WD_STATUS = 1"
                     Query_Select(C_ID)
                 Case "UPDATE_ADDENDUM_QuoteRefNo"
-                    PD_Addendum_Update_QuoteRefNo(arr_WD_ID_ToBeUse.Count, C_ID, arr_WD_ID_ToBeUse.Item(UPDATE_ADDENDUM_QuoteRefNo_WD_ID_counter))
+                    PD_Addendum_Update_QuoteRefNo(C_ID, arr_WD_ID.Item(UPDATE_ADDENDUM_QuoteRefNo_WD_ID_counter))
             End Select
 
-        Catch ex As SqlException
-        'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
-        If ex.Number = -2 Then
-            MetroFramework.MetroMessageBox.Show(Me, "Click ok to Reconnect", "Request Timeout", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            PD_Addendum_BGW.CancelAsync()
-        ElseIf ex.Number = 1232 Or ex.Number = 121 Then
-            MetroFramework.MetroMessageBox.Show(Me, "Please check internet connection", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        ElseIf ex.Number = 19 Then
-            MetroFramework.MetroMessageBox.Show(Me, "Sorry our server is under maintenance." & vbCrLf & "Please be patient, will come back A.S.A.P", "Server is down", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        ElseIf ex.Number <> -2 And ex.Number <> 1232 And ex.Number <> 19 And ex.Number <> 121 Then
-            MetroFramework.MetroMessageBox.Show(Me, "Contact the Programmers now", "You need some help?", MessageBoxButtons.OK, MessageBoxIcon.Stop)
-            MessageBox.Show(ex.Number.ToString)
-        End If
-        Catch ex2 As Exception
-        MessageBox.Show(Me, ex2.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
-        End Try
+        'Catch ex As SqlException
+        ''DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
+        'If ex.Number = -2 Then
+        '    MetroFramework.MetroMessageBox.Show(Me, "Click ok to Reconnect", "Request Timeout", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+        '    PD_Addendum_BGW.CancelAsync()
+        'ElseIf ex.Number = 1232 Or ex.Number = 121 Then
+        '    MetroFramework.MetroMessageBox.Show(Me, "Please check internet connection", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        'ElseIf ex.Number = 19 Then
+        '    MetroFramework.MetroMessageBox.Show(Me, "Sorry our server is under maintenance." & vbCrLf & "Please be patient, will come back A.S.A.P", "Server is down", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        'ElseIf ex.Number <> -2 And ex.Number <> 1232 And ex.Number <> 19 And ex.Number <> 121 Then
+        '    MetroFramework.MetroMessageBox.Show(Me, "Contact the Programmers now", "You need some help?", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+        ''    MessageBox.Show(ex.Number.ToString)
+        'End If
+        'Catch ex2 As Exception
+        'MessageBox.Show(Me, ex2.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
+        'End Try
     End Sub
 
     Private Sub ProjectLabel_Cbox_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ProjectLabel_Cbox.SelectionChangeCommitted
@@ -251,21 +250,21 @@ Public Class PD_Addendum
     End Sub
 
     Private Sub Lock_BTN_Click(sender As Object, e As EventArgs) Handles Lock_BTN.Click
-        QUOTE_NO = Replace(QuoteRefNo_Tbox.Text, " ", "")
-        If Lock_BTN.Text = "Lock" Then
-            If QUOTE_NO <> Nothing And QUOTE_NO <> "" Then
-                QuoteDate_Lbl.Text = ""
-                ProfileFin_Lbl.Text = ""
-                ADDENDUM_BGW_TODO = "QuoteRefNo_Sel"
-                Start_PD_Addendum_BGW(False, True)
-            Else
-                MetroFramework.MetroMessageBox.Show(Me, "Please input a valid Quote reference number.")
-            End If
-        ElseIf Lock_BTN.Text = "Unlock" Then
-            arr_WD_ID_inLockBtnClicked.Clear()
-            QuoteRefNo_Tbox.Enabled = True
-            Lock_BTN.Text = "Lock"
-        End If
+        'QUOTE_NO = Replace(QuoteRefNo_Tbox.Text, " ", "")
+        'If Lock_BTN.Text = "Lock" Then
+        '    If QUOTE_NO <> Nothing And QUOTE_NO <> "" Then
+        '        QuoteDate_Lbl.Text = ""
+        '        ProfileFin_Lbl.Text = ""
+        '        ADDENDUM_BGW_TODO = "QuoteRefNo_Sel"
+        '        Start_PD_Addendum_BGW(False, True)
+        '    Else
+        '        MetroFramework.MetroMessageBox.Show(Me, "Please input a valid Quote reference number.")
+        '    End If
+        'ElseIf Lock_BTN.Text = "Unlock" Then
+        '    arr_WD_ID.Clear()
+        '    QuoteRefNo_Tbox.Enabled = True
+        '    Lock_BTN.Text = "Lock"
+        'End If
     End Sub
 
     Private Sub GenCon_DGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs) Handles GenCon_DGV.RowEnter
@@ -279,6 +278,16 @@ Public Class PD_Addendum
         Catch ex As Exception
             MsgBox(ex.Message)
         End Try
+    End Sub
+
+    Private Sub QuoteRefNo_Tbox_Leave(sender As Object, e As EventArgs) Handles QuoteRefNo_Tbox.Leave
+        CheckLockQNo()
+    End Sub
+
+    Private Sub QuoteRefNo_Tbox_KeyDown(sender As Object, e As KeyEventArgs) Handles QuoteRefNo_Tbox.KeyDown
+        If e.KeyCode = Keys.Enter Then
+            CheckLockQNo()
+        End If
     End Sub
 
     Private Sub IntrDesign_DGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs) Handles IntrDesign_DGV.RowEnter
@@ -334,7 +343,7 @@ Public Class PD_Addendum
 
     Private Sub Update_btn_Click(sender As Object, e As EventArgs) Handles Update_btn.Click
         Try
-            'ProjectLabel = ProjectLabel_Cbox.Text
+            ProjectLabel = ProjectLabel_Cbox.Text.Replace("&&", "&")
             QuoteRefNo = QuoteRefNo_Tbox.Text
             OwnersName = OwnersName_Tbox.Text
             OwnersNameHomeCno = OwnersNameHomeCno_Tbox.Text
@@ -348,14 +357,6 @@ Public Class PD_Addendum
             SiteMeeting = SiteMeeting_Tbox.Text
             SpInstr = SpInstr_RTbox.Text
 
-            'MsgBox(arr_WD_ID_inLockBtnClicked.Count)
-            'MsgBox(arr_WD_ID_UponLoad.Count)
-            For Each arr_int As Integer In arr_WD_ID_UponLoad
-                If arr_WD_ID_inLockBtnClicked.Contains(arr_int) Then
-                    arr_WD_ID_ToBeUse.Add(arr_int)
-                End If
-            Next
-
             If ProjectLabel = Nothing Or ProjectLabel = "" Then
                 MetroFramework.MetroMessageBox.Show(Me, "Please select Project Name.", " ", MessageBoxButtons.OK)
             Else
@@ -365,12 +366,8 @@ Public Class PD_Addendum
                     If QuoteRefNo_Tbox.Enabled = True Then
                         MetroFramework.MetroMessageBox.Show(Me, "Please lock first the Quote Ref No", " ", MessageBoxButtons.OK)
                     ElseIf QuoteRefNo_Tbox.Enabled = False Then
-                        'If arr_WD_ID_ToBeUse.Count = 0 Then
-                        '    MetroFramework.MetroMessageBox.Show(Me, "Success", " ", MessageBoxButtons.OK)
-                        'ElseIf arr_WD_ID_ToBeUse.Count > 0 Then
                         ADDENDUM_BGW_TODO = "UPDATE_ADDENDUM"
                         Start_PD_Addendum_BGW(False, True)
-                        'End If
                     End If
                 End If
             End If
@@ -383,318 +380,342 @@ Public Class PD_Addendum
         Try
             Me.Width = 800
             Me.Height = 600
-            If e.Error IsNot Nothing Then
-                '' if BackgroundWorker terminated due to error
-                MetroFramework.MetroMessageBox.Show(Me, "Error Occured", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            ElseIf e.Cancelled = True Then
-                '' otherwise if it was cancelled
-                MetroFramework.MetroMessageBox.Show(Me, "Error Occured", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                onformLoad()
-            Else
-                '' otherwise it completed normally
-                FullAddress_Tbox.Text = Project_Details.FULLADDRESS
-                Dim rownum As Integer = sqlBindingSource.Count
-                Select Case ADDENDUM_BGW_TODO
-                    Case "Onload"
-                        For Each row In sqlBindingSource
-                            C_ID = row("CD_ID")
-                            FIle_Label_As = row("FILE_LABEL_AS")
-                            ProjectLabel = row("PROJECT_LABEL")
-                            JORefNo_Lbl.Text = row("SUB_JO")
-                            'QuoteRefNo = row("QUOTE_NO")
-                            'QuoteDate_Lbl.Text = row("QUOTE_DATE")
-                            ConStage_Tbox.Text = row("CONSTRUCTION_STAGE")
-                            SiteMeeting_Tbox.Text = row("ACTIVITIES")
+        If e.Error IsNot Nothing Then
+            '' if BackgroundWorker terminated due to error
+            MetroFramework.MetroMessageBox.Show(Me, "Error Occured", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        ElseIf e.Cancelled = True Then
+            '' otherwise if it was cancelled
+            MetroFramework.MetroMessageBox.Show(Me, "Error Occured", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            onformLoad()
+        Else
+            '' otherwise it completed normally
+            FullAddress_Tbox.Text = Project_Details.FULLADDRESS
+            Dim rownum As Integer = sqlBindingSource.Count
+            Select Case ADDENDUM_BGW_TODO
+                Case "Onload"
+                    For Each row In sqlBindingSource
+                        C_ID = row("CD_ID")
+                        FIle_Label_As = row("FILE_LABEL_AS")
+                        ProjectLabel = row("PROJECT_LABEL")
+                        JORefNo_Lbl.Text = row("SUB_JO")
+                        'QuoteRefNo = row("QUOTE_NO")
+                        'QuoteDate_Lbl.Text = row("QUOTE_DATE")
+                        ConStage_Tbox.Text = row("CONSTRUCTION_STAGE")
+                        SiteMeeting_Tbox.Text = row("ACTIVITIES")
 
-                            ProjClass_Lbl.Text = row("PROJECT_CLASSIFICATION")
-                            ProjSource_Lbl.Text = row("PROJECT_SOURCE")
-                            Competitors_Lbl.Text = row("COMPETITORS")
-                            'ProfileFin_Lbl.Text = row("PROFILE_FINISH")
-                            SpInstr_RTbox.Text = row("OTHER_PERTINENT_INFO")
+                        ProjClass_Lbl.Text = row("PROJECT_CLASSIFICATION")
+                        ProjSource_Lbl.Text = row("PROJECT_SOURCE")
+                        Competitors_Lbl.Text = row("COMPETITORS")
+                        'ProfileFin_Lbl.Text = row("PROFILE_FINISH")
+                        SpInstr_RTbox.Text = row("OTHER_PERTINENT_INFO")
 
-                            UnitNo = row("UnitNo")
-                            Establishment = row("ESTABLISHMENT")
-                            HouseNo = row("NO")
-                            Street = row("STREET")
-                            Village = row("VILLAGE")
-                            Brgy = row("BRGY_MUNICIPALITY")
-                            CityMunicipality = row("TOWN_DISTRICT")
-                            Province = row("PROVINCE")
-                            Area = row("AREA")
-                        Next row
-                        'Lock_Btn.Text = "Unlock"
-                        'QuoteRefNo_Cbox.Enabled = False
+                        UnitNo = row("UnitNo")
+                        Establishment = row("ESTABLISHMENT")
+                        HouseNo = row("NO")
+                        Street = row("STREET")
+                        Village = row("VILLAGE")
+                        Brgy = row("BRGY_MUNICIPALITY")
+                        CityMunicipality = row("TOWN_DISTRICT")
+                        Province = row("PROVINCE")
+                        Area = row("AREA")
+                    Next row
+                    'Lock_Btn.Text = "Unlock"
+                    'QuoteRefNo_Cbox.Enabled = False
 
-                        If ArchDesignDT.Columns.Count = 0 And ConsMngmtDT.Columns.Count = 0 And
-                            GenConDT.Columns.Count = 0 And IntrDesignDT.Columns.Count = 0 Then
-                            For i = 0 To UBound(DTcols_str)
-                                ADDTCols = New DataColumn(DTcols_str(i), GetType(String))
-                                IDDTCols = New DataColumn(DTcols_str(i), GetType(String))
-                                GCDTCols = New DataColumn(DTcols_str(i), GetType(String))
-                                CMDTCols = New DataColumn(DTcols_str(i), GetType(String))
+                    If ArchDesignDT.Columns.Count = 0 And ConsMngmtDT.Columns.Count = 0 And
+                        GenConDT.Columns.Count = 0 And IntrDesignDT.Columns.Count = 0 Then
+                        For i = 0 To UBound(DTcols_str)
+                            ADDTCols = New DataColumn(DTcols_str(i), GetType(String))
+                            IDDTCols = New DataColumn(DTcols_str(i), GetType(String))
+                            GCDTCols = New DataColumn(DTcols_str(i), GetType(String))
+                            CMDTCols = New DataColumn(DTcols_str(i), GetType(String))
 
-                                ArchDesignDT.Columns.Add(ADDTCols)
-                                ConsMngmtDT.Columns.Add(CMDTCols)
-                                GenConDT.Columns.Add(GCDTCols)
-                                IntrDesignDT.Columns.Add(IDDTCols)
-                            Next
+                            ArchDesignDT.Columns.Add(ADDTCols)
+                            ConsMngmtDT.Columns.Add(CMDTCols)
+                            GenConDT.Columns.Add(GCDTCols)
+                            IntrDesignDT.Columns.Add(IDDTCols)
+                        Next
+                    End If
+
+                    If (QuoteRefNo <> Nothing Or QuoteRefNo <> "") And
+                       (JORefNo_Lbl.Text <> Nothing Or JORefNo_Lbl.Text <> "") Then
+                        QuoteRefNo_Tbox.Enabled = False
+                    Else
+                        QuoteRefNo_Tbox.Enabled = True
+                    End If
+
+                    ADDENDUM_BGW_TODO = "AEIC_LBL_LOAD"
+                    Start_PD_Addendum_BGW(False, True)
+                Case "AEIC_LBL_LOAD"
+                    Dim lbl_output_seq As Integer
+                    For Each rowAEIC In sqlBindingSource
+                        lbl_output_seq += 1
+                        If AEIC_Lbl.Width > 547 Then
+                            AEIC_Lbl.FontSize = MetroFramework.MetroLabelSize.Small
+                            AEIC_Lbl.FontWeight = MetroFramework.MetroLabelWeight.Light
                         End If
-
-                        If (QuoteRefNo <> Nothing Or QuoteRefNo <> "") And
-                           (JORefNo_Lbl.Text <> Nothing Or JORefNo_Lbl.Text <> "") Then
-                            QuoteRefNo_Tbox.Enabled = False
-                        Else
-                            QuoteRefNo_Tbox.Enabled = True
-                        End If
-
-                        ADDENDUM_BGW_TODO = "AEIC_LBL_LOAD"
-                        Start_PD_Addendum_BGW(False, True)
-                    Case "AEIC_LBL_LOAD"
-                        Dim lbl_output_seq As Integer
-                        For Each rowAEIC In sqlBindingSource
-                            lbl_output_seq += 1
-                            If AEIC_Lbl.Width > 547 Then
-                                AEIC_Lbl.FontSize = MetroFramework.MetroLabelSize.Small
-                                AEIC_Lbl.FontWeight = MetroFramework.MetroLabelWeight.Light
-                            End If
-                            If rownum <> lbl_output_seq Then
-                                If lbl_output_seq Mod 2 = 0 Then
-                                    AEIC_Lbl.Text += rowAEIC("FULLNAME") & " && " & vbCrLf
-                                Else
-                                    AEIC_Lbl.Text += rowAEIC("FULLNAME") & " && "
-                                End If
+                        If rownum <> lbl_output_seq Then
+                            If lbl_output_seq Mod 2 = 0 Then
+                                AEIC_Lbl.Text += rowAEIC("FULLNAME") & " && " & vbCrLf
                             Else
-                                AEIC_Lbl.Text += rowAEIC("FULLNAME")
+                                AEIC_Lbl.Text += rowAEIC("FULLNAME") & " && "
                             End If
-                        Next rowAEIC
-                        ADDENDUM_BGW_TODO = "CompanyName"
-                        Start_PD_Addendum_BGW(False, True)
-                    Case "CompanyName"
-                        For Each row2 In sqlBindingSource
-                            CUST_ID = row2("CUST_ID")
-                            OwnersName_Tbox.Text = row2("CLIENTS_NAME")
-                            OwnersNameHomeCno_Tbox.Text = row2("CLIENTS_CONTACT_NO")
-                            OwnersNameOfficeCno_Tbox.Text = row2("CLIENTS_CONTACT_OFFICE")
-                            OwnersNameMobile_Tbox.Text = row2("CLIENTS_CONTACT_MOBILE")
-                            CompanyName_Str = row2("COMPANY_NAME")
-                            OwnersName = row2("OWNERS_NAME")
-                        Next row2
-                        If OwnersName <> Nothing AndAlso OwnersName.Contains("&") Then
-                            OwnersName = OwnersName.Replace("&", "&&")
+                        Else
+                            AEIC_Lbl.Text += rowAEIC("FULLNAME")
                         End If
-                        If CompanyName_Str <> Nothing AndAlso CompanyName_Str.Contains("&") Then
-                            CompanyName_Str = CompanyName_Str.Replace("&", "&&")
-                        End If
-                        ProjectLabel_Cbox.Items.Add(OwnersName)
-                        ProjectLabel_Cbox.Items.Add(CompanyName_Str)
+                    Next rowAEIC
+                    ADDENDUM_BGW_TODO = "CompanyName"
+                    Start_PD_Addendum_BGW(False, True)
+                Case "CompanyName"
+                    For Each row2 In sqlBindingSource
+                        CUST_ID = row2("CUST_ID")
+                        OwnersName_Tbox.Text = row2("CLIENTS_NAME")
+                        OwnersNameHomeCno_Tbox.Text = row2("CLIENTS_CONTACT_NO")
+                        OwnersNameOfficeCno_Tbox.Text = row2("CLIENTS_CONTACT_OFFICE")
+                        OwnersNameMobile_Tbox.Text = row2("CLIENTS_CONTACT_MOBILE")
+                        CompanyName_Str = row2("COMPANY_NAME")
+                        OwnersName = row2("OWNERS_NAME")
+                    Next row2
+                    If OwnersName <> Nothing AndAlso OwnersName.Contains("&") Then
+                        OwnersName = OwnersName.Replace("&", "&&")
+                    End If
+                    If CompanyName_Str <> Nothing AndAlso CompanyName_Str.Contains("&") Then
+                        CompanyName_Str = CompanyName_Str.Replace("&", "&&")
+                    End If
+                    ProjectLabel_Cbox.Items.Add(OwnersName)
+                    ProjectLabel_Cbox.Items.Add(CompanyName_Str)
 
 
-                        If FIle_Label_As = Nothing Or FIle_Label_As = "" Then
-                            If OwnersName <> "" And OwnersName <> Nothing Then
-                                ProjectLabel_Cbox.Text = OwnersName
-                                FIle_Label_As = "Proj/Client`s Name"
-                            ElseIf CompanyName_Str <> "" And CompanyName_Str <> Nothing Then
-                                ProjectLabel_Cbox.Text = CompanyName_Str
-                                FIle_Label_As = "Company Name"
-                            End If
-                        ElseIf FIle_Label_As.Contains("Proj/Client`s Name") Then
+                    If FIle_Label_As = Nothing Or FIle_Label_As = "" Then
+                        If OwnersName <> "" And OwnersName <> Nothing Then
                             ProjectLabel_Cbox.Text = OwnersName
-                        ElseIf FIle_Label_As.Contains("Company Name") Then
+                            FIle_Label_As = "Proj/Client`s Name"
+                        ElseIf CompanyName_Str <> "" And CompanyName_Str <> Nothing Then
                             ProjectLabel_Cbox.Text = CompanyName_Str
+                            FIle_Label_As = "Company Name"
                         End If
+                    ElseIf FIle_Label_As.Contains("Proj/Client`s Name") Then
+                        ProjectLabel_Cbox.Text = OwnersName
+                    ElseIf FIle_Label_As.Contains("Company Name") Then
+                        ProjectLabel_Cbox.Text = CompanyName_Str
+                    End If
 
-                        ADDENDUM_BGW_TODO = "OWNERS_REP"
-                        Start_PD_Addendum_BGW(False, True)
-                    Case "OWNERS_REP"
-                        For Each row In sqlBindingSource
-                            OWN_REP_ID = row("CUST_ID")
-                            OwnersRep_Tbox.Text = row("CLIENTS_NAME")
-                            OwnersRepHomeCno_Tbox.Text = row("CLIENTS_CONTACT_NO")
-                            OwnersRepOfficeCno_Tbox.Text = row("CLIENTS_CONTACT_OFFICE")
-                            OwnersRepMobileCno_Tbox.Text = row("CLIENTS_CONTACT_MOBILE")
-                        Next row
+                    ADDENDUM_BGW_TODO = "OWNERS_REP"
+                    Start_PD_Addendum_BGW(False, True)
+                Case "OWNERS_REP"
+                    For Each row In sqlBindingSource
+                        OWN_REP_ID = row("CUST_ID")
+                        OwnersRep_Tbox.Text = row("CLIENTS_NAME")
+                        OwnersRepHomeCno_Tbox.Text = row("CLIENTS_CONTACT_NO")
+                        OwnersRepOfficeCno_Tbox.Text = row("CLIENTS_CONTACT_OFFICE")
+                        OwnersRepMobileCno_Tbox.Text = row("CLIENTS_CONTACT_MOBILE")
+                    Next row
 
-                        ADDENDUM_BGW_TODO = "QuoteRefNo_Populate"
-                        Start_PD_Addendum_BGW(False, True)
-                    Case "QuoteRefNo_Populate"
-                        Dim Qdate As Date
-                        For Each row In sqlBindingSource
-                            QuoteRefNo_Populate_counter += 1
-                            Qdate = row("QUOTE_DATE")
-                            arr_CQN_ID_UponLoad.Add(row("CQN_ID"))
-                            arr_WD_ID_UponLoad.Add(row("WD_ID"))
-                            If sqlBindingSource.Count = 1 Then
-                                QuoteRefNo_Tbox.Text = row("QUOTE_NO")
-                                QuoteDate_Lbl.Text = Qdate.ToString("MMM-dd-yyyy")
-                                ProfileFin_Lbl.Text = row("PROFILE_FINISH")
-                            ElseIf sqlBindingSource.Count > 1 And QuoteRefNo_Populate_counter <> sqlBindingSource.Count Then
-                                QuoteRefNo_Tbox.Text += row("QUOTE_NO") & " & "
-                                QuoteDate_Lbl.Text += Qdate.ToString("MMM-dd-yyyy") & ", "
-                                ProfileFin_Lbl.Text += row("PROFILE_FINISH") & ", "
-                            ElseIf sqlBindingSource.Count > 1 And QuoteRefNo_Populate_counter = sqlBindingSource.Count Then
-                                QuoteRefNo_Tbox.Text += row("QUOTE_NO")
-                                QuoteDate_Lbl.Text += Qdate.ToString("MMM-dd-yyyy")
-                                ProfileFin_Lbl.Text += row("PROFILE_FINISH")
-                            End If
-                        Next
-                        str_in_QuoteRefNo_Tbox = QuoteRefNo_Tbox.Text
-                        ADDENDUM_BGW_TODO = "TechnicalPartners"
-                        Start_PD_Addendum_BGW(False, True)
-                    Case "TechnicalPartners"
-
-                        ArchDesignDT.Clear()
-                        ConsMngmtDT.Clear()
-                        GenConDT.Clear()
-                        IntrDesignDT.Clear()
-
-                        For Each row3 In sqlBindingSource
-                            Dim nature As String = row3("NATURE")
-                            If nature = "Architectural Design" Then
-                                ArchDesignDT.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"), row3("COMP_ID"), row3("EMP_ID"), row3("TP_ID"), row3("TPN_ID"))
-                            ElseIf nature = "Interior Design" Then
-                                IntrDesignDT.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"), row3("COMP_ID"), row3("EMP_ID"), row3("TP_ID"), row3("TPN_ID"))
-                            ElseIf nature = "General Contractor" Then
-                                GenConDT.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"), row3("COMP_ID"), row3("EMP_ID"), row3("TP_ID"), row3("TPN_ID"))
-                            ElseIf nature = "Construction Management" Then
-                                ConsMngmtDT.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"), row3("COMP_ID"), row3("EMP_ID"), row3("TP_ID"), row3("TPN_ID"))
-                            End If
-                        Next row3
-
-                        ArchDesign_DGV.DataSource = Nothing
-                        ArchDesignBS.DataSource = ArchDesignDT
-                        ArchDesign_DGV.DataSource = ArchDesignBS
-                        ArchDesign_DGV.Columns("COMP_ID").Visible = False
-                        ArchDesign_DGV.Columns("EMP_ID").Visible = False
-                        ArchDesign_DGV.Columns("TP_ID").Visible = False
-                        ArchDesign_DGV.Columns("TPN_ID").Visible = False
-
-                        IntrDesign_DGV.DataSource = Nothing
-                        IntrDesignBS.DataSource = IntrDesignDT
-                        IntrDesign_DGV.DataSource = IntrDesignBS
-                        IntrDesign_DGV.Columns("COMP_ID").Visible = False
-                        IntrDesign_DGV.Columns("EMP_ID").Visible = False
-                        IntrDesign_DGV.Columns("TP_ID").Visible = False
-                        IntrDesign_DGV.Columns("TPN_ID").Visible = False
-
-                        ConsMngmt_DGV.DataSource = Nothing
-                        ConsMngmtBS.DataSource = ConsMngmtDT
-                        ConsMngmt_DGV.DataSource = ConsMngmtBS
-                        ConsMngmt_DGV.Columns("COMP_ID").Visible = False
-                        ConsMngmt_DGV.Columns("EMP_ID").Visible = False
-                        ConsMngmt_DGV.Columns("TP_ID").Visible = False
-                        ConsMngmt_DGV.Columns("TPN_ID").Visible = False
-
-                        GenCon_DGV.DataSource = Nothing
-                        GenConBS.DataSource = GenConDT
-                        GenCon_DGV.DataSource = GenConBS
-                        GenCon_DGV.Columns("COMP_ID").Visible = False
-                        GenCon_DGV.Columns("EMP_ID").Visible = False
-                        GenCon_DGV.Columns("TP_ID").Visible = False
-                        GenCon_DGV.Columns("TPN_ID").Visible = False
-
-                    Case "QuoteRefNo_Sel"
-                        Dim qdate, PFin As Integer
-                        For qdate = 0 To arr_Quote_Date.Count - 1
-                            If arr_Quote_Date.Count = 1 Then
-                                QuoteDate_Lbl.Text = arr_Quote_Date(0).ToString("MMM-dd-yyyy")
-                            ElseIf arr_Quote_Date.Count > 1 And qdate <> arr_Quote_Date.Count - 1 Then
-                                QuoteDate_Lbl.Text += arr_Quote_Date(qdate).ToString("MMM-dd-yyyy") & ", "
-                            ElseIf arr_Quote_Date.Count > 1 And qdate = arr_Quote_Date.Count - 1 Then
-                                QuoteDate_Lbl.Text += arr_Quote_Date(qdate).ToString("MMM-dd-yyyy")
-                            End If
-                        Next
-                        For PFin = 0 To arr_Profile_finish.Count - 1
-                            If arr_Profile_finish.Count = 1 Then
-                                ProfileFin_Lbl.Text = arr_Profile_finish(0)
-                            ElseIf arr_Profile_finish.Count > 1 And PFin <> arr_Profile_finish.Count - 1 Then
-                                ProfileFin_Lbl.Text += arr_Profile_finish(PFin) & ", "
-                            ElseIf arr_Profile_finish.Count > 1 And PFin = arr_Profile_finish.Count - 1 Then
-                                ProfileFin_Lbl.Text += arr_Profile_finish(PFin)
-                            End If
-                        Next
-                        'MsgBox("qdate: " & qdate)
-                        'MsgBox("arr_Quote_Date.Count - 1: " & arr_Quote_Date.Count - 1)
-                        'MsgBox("PFin: " & PFin)
-                        'MsgBox("arr_Profile_finish.Count - 1: " & arr_Profile_finish.Count - 1)
-
-                        If (qdate = arr_Quote_Date.Count) And (PFin = arr_Profile_finish.Count) Then
-                            QuoteRefNo_Tbox.Enabled = False
-                            Lock_BTN.Text = "Unlock"
-                        Else
-                            MetroFramework.MetroMessageBox.Show(Me, "Something Wrong", "Contact the Developers", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    ADDENDUM_BGW_TODO = "QuoteRefNo_Populate"
+                    Start_PD_Addendum_BGW(False, True)
+                Case "QuoteRefNo_Populate"
+                    Dim Qdate As Date
+                    For Each row In sqlBindingSource
+                        QuoteRefNo_Populate_counter += 1
+                        Qdate = row("QUOTE_DATE")
+                        arr_CQN_ID_UponLoad.Add(row("CQN_ID"))
+                        arr_WD_ID.Add(row("WD_ID"))
+                        If sqlBindingSource.Count = 1 Then
+                            QuoteRefNo_Tbox.Text = row("QUOTE_NO")
+                            QuoteDate_Lbl.Text = Qdate.ToString("MMM-dd-yyyy")
+                            ProfileFin_Lbl.Text = row("PROFILE_FINISH")
+                        ElseIf sqlBindingSource.Count > 1 And QuoteRefNo_Populate_counter <> sqlBindingSource.Count Then
+                            QuoteRefNo_Tbox.Text += row("QUOTE_NO") & " & "
+                            QuoteDate_Lbl.Text += Qdate.ToString("MMM-dd-yyyy") & ", "
+                            ProfileFin_Lbl.Text += row("PROFILE_FINISH") & ", "
+                        ElseIf sqlBindingSource.Count > 1 And QuoteRefNo_Populate_counter = sqlBindingSource.Count Then
+                            QuoteRefNo_Tbox.Text += row("QUOTE_NO")
+                            QuoteDate_Lbl.Text += Qdate.ToString("MMM-dd-yyyy")
+                            ProfileFin_Lbl.Text += row("PROFILE_FINISH")
                         End If
-                    Case "UPDATE_ADDENDUM"
-                        If (sql_Err_no = "" Or sql_Err_no = Nothing) AndAlso
-                           (sql_Err_msg = "" Or sql_Err_msg = Nothing) Then
-                            If sql_Transaction_result = "Commited" Then
-                                MsgBox(arr_WD_ID_ToBeUse.Count)
-                                If arr_WD_ID_ToBeUse.Count > 0 Then
-                                    MsgBox("UPDATE_ADDENDUM_QuoteRefNo")
-                                    ADDENDUM_BGW_TODO = "UPDATE_ADDENDUM_QuoteRefNo"
-                                    Start_PD_Addendum_BGW(False, True)
-                                ElseIf arr_WD_ID_ToBeUse.Count = 0 Then
-                                    MetroFramework.MetroMessageBox.Show(Me, "Success", " ", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                                End If
-                            ElseIf sql_Transaction_result = "Rollback" Then
-                                MetroFramework.MetroMessageBox.Show(Me, "Failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                            End If
-                        Else
-                            MetroFramework.MetroMessageBox.Show(Me, "Transaction failed", "Contact the Developers", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                    Next
+                    ADDENDUM_BGW_TODO = "TechnicalPartners"
+                    Start_PD_Addendum_BGW(False, True)
+                Case "TechnicalPartners"
 
-                            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
-                            Log_File.WriteLine(vbCrLf & "Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-                                               "SQL Transaction Error Number: " & sql_Err_no & vbCrLf &
-                                               "SQL Transaction Error Message: " & sql_Err_msg & vbCrLf & "Useful Informations" & vbCrLf &
-                                               "UI :" & Me.Name & vbCrLf & "Code Block :PD_Addendum_BGW_RunWorkerCompleted" & vbCrLf &
-                                               "ADDENDUM_BGW_TODO :" & ADDENDUM_BGW_TODO)
-                            Log_File.Close()
-                            sql_Err_msg = Nothing
-                            sql_Err_no = Nothing
-                            sql_Transaction_result = ""
+                    ArchDesignDT.Clear()
+                    ConsMngmtDT.Clear()
+                    GenConDT.Clear()
+                    IntrDesignDT.Clear()
+
+                    For Each row3 In sqlBindingSource
+                        Dim nature As String = row3("NATURE")
+                        If nature = "Architectural Design" Then
+                            ArchDesignDT.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"), row3("COMP_ID"), row3("EMP_ID"), row3("TP_ID"), row3("TPN_ID"))
+                        ElseIf nature = "Interior Design" Then
+                            IntrDesignDT.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"), row3("COMP_ID"), row3("EMP_ID"), row3("TP_ID"), row3("TPN_ID"))
+                        ElseIf nature = "General Contractor" Then
+                            GenConDT.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"), row3("COMP_ID"), row3("EMP_ID"), row3("TP_ID"), row3("TPN_ID"))
+                        ElseIf nature = "Construction Management" Then
+                            ConsMngmtDT.Rows.Add(row3("OFFICENAME"), row3("NAME"), row3("POSITION"), row3("MOBILENO"), row3("COMP_ID"), row3("EMP_ID"), row3("TP_ID"), row3("TPN_ID"))
                         End If
+                    Next row3
 
-                    Case "UPDATE_ADDENDUM_QuoteRefNo"
-                        If (sql_Err_no = "" Or sql_Err_no = Nothing) AndAlso
-                           (sql_Err_msg = "" Or sql_Err_msg = Nothing) Then
-                            If sql_Transaction_result = "Commited" Then
-                                If UPDATE_ADDENDUM_QuoteRefNo_WD_ID_counter < arr_WD_ID_ToBeUse.Count - 1 Then
-                                    ADDENDUM_BGW_TODO = "UPDATE_ADDENDUM_QuoteRefNo"
-                                    Start_PD_Addendum_BGW(False, True)
-                                    UPDATE_ADDENDUM_QuoteRefNo_WD_ID_counter += 1
-                                ElseIf UPDATE_ADDENDUM_QuoteRefNo_WD_ID_counter = arr_WD_ID_ToBeUse.Count - 1 Then
-                                    MetroFramework.MetroMessageBox.Show(Me, "Success", " ", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                                    arr_WD_ID_ToBeUse.Clear()
-                                    UPDATE_ADDENDUM_QuoteRefNo_WD_ID_counter = 0
-                                End If
-                            ElseIf sql_Transaction_result = "Rollback" Then
-                                MetroFramework.MetroMessageBox.Show(Me, "Failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                            End If
-                        Else
-                            MetroFramework.MetroMessageBox.Show(Me, "Transaction failed", "Contact the Developers", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                    ArchDesign_DGV.DataSource = Nothing
+                    ArchDesignBS.DataSource = ArchDesignDT
+                    ArchDesign_DGV.DataSource = ArchDesignBS
+                    ArchDesign_DGV.Columns("COMP_ID").Visible = False
+                    ArchDesign_DGV.Columns("EMP_ID").Visible = False
+                    ArchDesign_DGV.Columns("TP_ID").Visible = False
+                    ArchDesign_DGV.Columns("TPN_ID").Visible = False
 
-                            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
-                            Log_File.WriteLine(vbCrLf & "Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-                                               "SQL Transaction Error Number: " & sql_Err_no & vbCrLf &
-                                               "SQL Transaction Error Message: " & sql_Err_msg & vbCrLf & "Useful Informations" & vbCrLf &
-                                               "UI :" & Me.Name & vbCrLf & "Code Block :PD_Addendum_BGW_RunWorkerCompleted" & vbCrLf &
-                                               "ADDENDUM_BGW_TODO :" & ADDENDUM_BGW_TODO)
-                            Log_File.Close()
-                            sql_Err_msg = Nothing
-                            sql_Err_no = Nothing
-                            sql_Transaction_result = ""
+                    IntrDesign_DGV.DataSource = Nothing
+                    IntrDesignBS.DataSource = IntrDesignDT
+                    IntrDesign_DGV.DataSource = IntrDesignBS
+                    IntrDesign_DGV.Columns("COMP_ID").Visible = False
+                    IntrDesign_DGV.Columns("EMP_ID").Visible = False
+                    IntrDesign_DGV.Columns("TP_ID").Visible = False
+                    IntrDesign_DGV.Columns("TPN_ID").Visible = False
+
+                    ConsMngmt_DGV.DataSource = Nothing
+                    ConsMngmtBS.DataSource = ConsMngmtDT
+                    ConsMngmt_DGV.DataSource = ConsMngmtBS
+                    ConsMngmt_DGV.Columns("COMP_ID").Visible = False
+                    ConsMngmt_DGV.Columns("EMP_ID").Visible = False
+                    ConsMngmt_DGV.Columns("TP_ID").Visible = False
+                    ConsMngmt_DGV.Columns("TPN_ID").Visible = False
+
+                    GenCon_DGV.DataSource = Nothing
+                    GenConBS.DataSource = GenConDT
+                    GenCon_DGV.DataSource = GenConBS
+                    GenCon_DGV.Columns("COMP_ID").Visible = False
+                    GenCon_DGV.Columns("EMP_ID").Visible = False
+                    GenCon_DGV.Columns("TP_ID").Visible = False
+                    GenCon_DGV.Columns("TPN_ID").Visible = False
+
+                Case "QuoteRefNo_Sel"
+                    Dim qdate, PFin As Integer
+                    For qdate = 0 To arr_Quote_Date.Count - 1
+                        If arr_Quote_Date.Count = 1 Then
+                            QuoteDate_Lbl.Text = arr_Quote_Date(0).ToString("MMM-dd-yyyy")
+                        ElseIf arr_Quote_Date.Count > 1 And qdate <> arr_Quote_Date.Count - 1 Then
+                            QuoteDate_Lbl.Text += arr_Quote_Date(qdate).ToString("MMM-dd-yyyy") & ", "
+                        ElseIf arr_Quote_Date.Count > 1 And qdate = arr_Quote_Date.Count - 1 Then
+                            QuoteDate_Lbl.Text += arr_Quote_Date(qdate).ToString("MMM-dd-yyyy")
                         End If
+                    Next
+                    For PFin = 0 To arr_Profile_finish.Count - 1
+                        If arr_Profile_finish.Count = 1 Then
+                            ProfileFin_Lbl.Text = arr_Profile_finish(0)
+                        ElseIf arr_Profile_finish.Count > 1 And PFin <> arr_Profile_finish.Count - 1 Then
+                            ProfileFin_Lbl.Text += arr_Profile_finish(PFin) & ", "
+                        ElseIf arr_Profile_finish.Count > 1 And PFin = arr_Profile_finish.Count - 1 Then
+                            ProfileFin_Lbl.Text += arr_Profile_finish(PFin)
+                        End If
+                    Next
+                    'MsgBox("qdate: " & qdate)
+                    'MsgBox("arr_Quote_Date.Count - 1: " & arr_Quote_Date.Count - 1)
+                    'MsgBox("PFin: " & PFin)
+                    'MsgBox("arr_Profile_finish.Count - 1: " & arr_Profile_finish.Count - 1)
 
-                    Case "TPN_DELETE"
-                        ADDENDUM_BGW_TODO = "TechnicalPartners"
-                        Start_PD_Addendum_BGW(False, True)
-                End Select
+                    If arr_Quote_Date.Count > 0 Or arr_Profile_finish.Count > 0 Then
+                        QuoteRefNo_Tbox.Enabled = False
+                        Lock_BTN.Text = "Unlock"
+                    Else
+                        MetroFramework.MetroMessageBox.Show(Me, "Please input valid Quote Ref No.", " ", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    End If
 
-            End If
-            PD_Addendum_Pnl.Visible = True
-            LoadingPbox.Visible = False
+                        'If (qdate = arr_Quote_Date.Count) And (PFin = arr_Profile_finish.Count) Then
+                        '    QuoteRefNo_Tbox.Enabled = False
+                        '    Lock_BTN.Text = "Unlock"
+                        'Else
+                        '    MetroFramework.MetroMessageBox.Show(Me, "Something Wrong", "Contact the Developers", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                        'End If
+                Case "UPDATE_ADDENDUM"
+                    If (sql_Err_no = "" Or sql_Err_no = Nothing) AndAlso
+                       (sql_Err_msg = "" Or sql_Err_msg = Nothing) Then
+                        If sql_Transaction_result = "Commited" Then
+                            If arr_WD_ID.Count > 0 Then
+                                ADDENDUM_BGW_TODO = "UPDATE_ADDENDUM_QuoteRefNo"
+                                Start_PD_Addendum_BGW(False, True)
+                            ElseIf arr_WD_ID.Count = 0 Then
+                                MetroFramework.MetroMessageBox.Show(Me, "Success", " ", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                            End If
+                        ElseIf sql_Transaction_result = "Rollback" Then
+                            MetroFramework.MetroMessageBox.Show(Me, "Failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                        End If
+                    Else
+                        MetroFramework.MetroMessageBox.Show(Me, "Transaction failed", "Contact the Developers", MessageBoxButtons.OK, MessageBoxIcon.Error)
+
+                        Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+                        Log_File.WriteLine(vbCrLf & "Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                           "SQL Transaction Error Number: " & sql_Err_no & vbCrLf &
+                                           "SQL Transaction Error Message: " & sql_Err_msg & vbCrLf & "Useful Informations" & vbCrLf &
+                                           "UI :" & Me.Name & vbCrLf & "Code Block :PD_Addendum_BGW_RunWorkerCompleted" & vbCrLf &
+                                           "ADDENDUM_BGW_TODO :" & ADDENDUM_BGW_TODO)
+                        Log_File.Close()
+                        sql_Err_msg = Nothing
+                        sql_Err_no = Nothing
+                        sql_Transaction_result = ""
+                    End If
+
+                Case "UPDATE_ADDENDUM_QuoteRefNo"
+                    If (sql_Err_no = "" Or sql_Err_no = Nothing) AndAlso
+                       (sql_Err_msg = "" Or sql_Err_msg = Nothing) Then
+                        If sql_Transaction_result = "Commited" Then
+                            If UPDATE_ADDENDUM_QuoteRefNo_WD_ID_counter < arr_WD_ID.Count - 1 Then
+                                ADDENDUM_BGW_TODO = "UPDATE_ADDENDUM_QuoteRefNo"
+                                Start_PD_Addendum_BGW(False, True)
+                                UPDATE_ADDENDUM_QuoteRefNo_WD_ID_counter += 1
+                            ElseIf UPDATE_ADDENDUM_QuoteRefNo_WD_ID_counter = arr_WD_ID.Count - 1 Then
+                                MetroFramework.MetroMessageBox.Show(Me, "Success", " ", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                                arr_WD_ID.Clear()
+                                UPDATE_ADDENDUM_QuoteRefNo_WD_ID_counter = 0
+                                PD_Addendum_Update_QuoteRefNo_counter = 0
+                            End If
+                        ElseIf sql_Transaction_result = "Rollback" Then
+                            MetroFramework.MetroMessageBox.Show(Me, "Failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                        End If
+                    Else
+                        MetroFramework.MetroMessageBox.Show(Me, "Transaction failed", "Contact the Developers", MessageBoxButtons.OK, MessageBoxIcon.Error)
+
+                        Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+                        Log_File.WriteLine(vbCrLf & "Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                           "SQL Transaction Error Number: " & sql_Err_no & vbCrLf &
+                                           "SQL Transaction Error Message: " & sql_Err_msg & vbCrLf & "Useful Informations" & vbCrLf &
+                                           "UI :" & Me.Name & vbCrLf & "Code Block :PD_Addendum_BGW_RunWorkerCompleted" & vbCrLf &
+                                           "ADDENDUM_BGW_TODO :" & ADDENDUM_BGW_TODO)
+                        Log_File.Close()
+                        sql_Err_msg = Nothing
+                        sql_Err_no = Nothing
+                        sql_Transaction_result = ""
+                    End If
+
+                Case "TPN_DELETE"
+                    ADDENDUM_BGW_TODO = "TechnicalPartners"
+                    Start_PD_Addendum_BGW(False, True)
+            End Select
+
+        End If
+        PD_Addendum_Pnl.Visible = True
+        LoadingPbox.Visible = False
         Catch ex As Exception
-            MessageBox.Show(Me, ex.Message)
+        MessageBox.Show(Me, ex.Message)
         End Try
+    End Sub
+
+    Public Sub CheckLockQNo()
+        Try
+            QUOTE_NO = Replace(QuoteRefNo_Tbox.Text, " ", "")
+            If QuoteRefNo_Tbox.Enabled = True Then
+                If QUOTE_NO <> Nothing And QUOTE_NO <> "" Then
+                    QuoteDate_Lbl.Text = ""
+                    ProfileFin_Lbl.Text = ""
+                    ADDENDUM_BGW_TODO = "QuoteRefNo_Sel"
+                    Start_PD_Addendum_BGW(True, True)
+                Else
+                    MetroFramework.MetroMessageBox.Show(Me, "Please input a valid Quote reference number.")
+                End If
+            End If
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
+        
     End Sub
 
 End Class

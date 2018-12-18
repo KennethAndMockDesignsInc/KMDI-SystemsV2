@@ -17,6 +17,7 @@ Module ProjectDetailsModule
 
     Public PD_ID, CUST_ID, OWN_REP_ID, C_ID As Integer
     Public TPN_ID, TPN_ID_SearchIfDeleted As Integer
+    Public PD_Addendum_Update_QuoteRefNo_counter As Integer = 0
 
     Public ArchDesignBS, IntrDesignBS, ConsMngmtBS, GenConBS As New BindingSource
     'Public QuoteNoBS As New BindingSource
@@ -29,9 +30,11 @@ Module ProjectDetailsModule
     'Public QuoteNoDT As DataTable = New DataTable("QuoteNoDT")
     Public DTcols_str As String() = {"OFFICENAME", "NAME", "POSITION", "CONTACT NUMBER", "COMP_ID", "EMP_ID", "TP_ID", "TPN_ID"}
 
-    Public arr_WD_ID_inLockBtnClicked As New List(Of Integer)
-    Public arr_WD_ID_UponLoad As New List(Of Integer)
-    Public arr_WD_ID_ToBeUse As New List(Of Integer)
+    Public arr_WD_ID As New List(Of Integer)
+    'Public arr_WD_ID_inLockBtnClicked As New List(Of Integer)
+    'Public arr_WD_ID_UponLoad As New List(Of Integer)
+    'Public arr_WD_ID_ToBeINSERT As New List(Of Integer)
+    'Public arr_WD_ID_ToBeDELETE As New List(Of Integer)
     Public arr_CQN_ID_UponLoad As New List(Of Integer)
     Public arr_Profile_finish As New List(Of String)
     Public arr_Quote_Date As New List(Of Date)
@@ -222,7 +225,7 @@ Module ProjectDetailsModule
                         QUERY_SELECT_WITH_READER_bool = True
                         Select Case ReadBy
                             Case "QuoteRefNo_Sel"
-                                arr_WD_ID_inLockBtnClicked.Add(read.Item("WD_ID"))
+                                arr_WD_ID.Add(read.Item("WD_ID"))
                                 arr_Quote_Date.Add(read.Item("QUOTE_DATE"))
                                 arr_Profile_finish.Add(read.Item("PROFILE_FINISH"))
                         End Select
@@ -996,29 +999,53 @@ END CATCH
             End Using
         End Using
     End Sub
-    Public Sub PD_Addendum_Update_QuoteRefNo(ByVal QuoteRefNo_count As Integer,
-                                             ByVal CD_ID As String,
+    Public Sub PD_Addendum_Update_QuoteRefNo(ByVal CD_ID As String,
                                              ByVal WD_ID As String)
-        Dim QUERY_PART1 As String = ""
-        Select Case QuoteRefNo_count
-            Case <> 0
-                QUERY_PART1 = " SELECT  @CQN_ID = [CQN_ID] FROM [A_NEW_CONTRACT_QUOTE_NO]
-                                WHERE   [CD_ID_REF] = @CD_ID AND [WD_ID_REF] = @WD_ID AND [CQN_STATUS] = 1
-
-                                UPDATE  [A_NEW_CONTRACT_QUOTE_NO] 
+        Dim QUERY_PART1 As String = "", QUERY_PART2 As String = ""
+        Select Case PD_Addendum_Update_QuoteRefNo_counter
+            Case = 0
+                QUERY_PART1 = " UPDATE  [A_NEW_CONTRACT_QUOTE_NO] 
                                 SET     [CQN_STATUS] = 0 
-                                WHERE   [CQN_ID] = @CQN_ID "
+                                WHERE   [CD_ID_REF] = @CD_ID "
+            Case <> 0
+                QUERY_PART1 = " SET @CQN_ID = (SELECT [CQN_ID] FROM [A_NEW_CONTRACT_QUOTE_NO]
+			                                   WHERE [CD_ID_REF] = @CD_ID AND [WD_ID_REF] = @WD_ID AND [CQN_STATUS] = 1 ) 
+                                IF (@CQN_ID IS NOT NULL)
+			                        UPDATE  [A_NEW_CONTRACT_QUOTE_NO]
+					                SET     [CQN_STATUS] = 0
+					                WHERE	[CQN_ID] = @CQN_ID "
+        End Select
+
+        Select Case PD_Addendum_Update_QuoteRefNo_counter
+            Case >= 0
+                QUERY_PART2 = " SET @CQN_ID = (SELECT   [CQN_ID] FROM [A_NEW_CONTRACT_QUOTE_NO]
+			                                   WHERE    [CD_ID_REF] = @CD_ID AND [WD_ID_REF] = @WD_ID )
+                IF (@CQN_ID IS NOT NULL)
+			                BEGIN
+			                  SET @CQN_STATUS = ( SELECT CQN_STATUS FROM [A_NEW_CONTRACT_QUOTE_NO] WHERE CQN_ID = @CQN_ID)
+			                  IF (@CQN_ID = 1 )
+					                UPDATE      [A_NEW_CONTRACT_QUOTE_NO]
+					                SET     [CQN_STATUS] = 0
+					                WHERE	[CQN_ID] = @CQN_ID
+			                  ELSE
+					                UPDATE      [A_NEW_CONTRACT_QUOTE_NO]
+					                SET     [CQN_STATUS] = 1
+					                WHERE	[CQN_ID] = @CQN_ID
+			                END
+
+                ELSE			   
+			                   INSERT INTO [A_NEW_CONTRACT_QUOTE_NO] ([CD_ID_REF],[WD_ID_REF])
+											                  VALUES (@CD_ID,@WD_ID) "
+            Case = 0
+                QUERY_PART2 = "  "
         End Select
         Query = "
 Begin Transaction
 DECLARE @CQN_ID AS INTEGER
+DECLARE @CQN_STATUS AS BIT
 	Begin Try
 
-IF EXISTS (SELECT  @CQN_ID FROM [A_NEW_CONTRACT_QUOTE_NO]
-           WHERE   [CD_ID_REF] = @CD_ID AND [WD_ID_REF] = @WD_ID AND [CQN_STATUS] = 1 )
-
-INSERT INTO [A_NEW_CONTRACT_QUOTE_NO] ([CD_ID_REF],[WD_ID_REF])
-                               VALUES (@CD_ID,@WD_ID)
+" & QUERY_PART1 & QUERY_PART2 & "
 
 	SELECT	ERROR_NUMBER() AS ErrorNumber,
 			ERROR_MESSAGE() AS ErrorMessage,
@@ -1047,5 +1074,6 @@ INSERT INTO [A_NEW_CONTRACT_QUOTE_NO] ([CD_ID_REF],[WD_ID_REF])
                 End Using
             End Using
         End Using
+        PD_Addendum_Update_QuoteRefNo_counter += 1
     End Sub
 End Module
