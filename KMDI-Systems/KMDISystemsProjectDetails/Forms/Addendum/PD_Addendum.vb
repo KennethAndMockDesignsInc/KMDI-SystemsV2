@@ -6,6 +6,7 @@ Public Class PD_Addendum
     Dim WD_ID, QUOTE_NO As String
     Dim count_ArchDesignBS As Integer
     Dim QuoteRefNo_Populate_counter As Integer
+    Dim str_in_QuoteRefNo_Tbox As String
 
     Sub Start_PD_Addendum_BGW(ByVal Panel_bool As Boolean,
                               ByVal Loading_bool As Boolean)
@@ -44,6 +45,8 @@ Public Class PD_Addendum
     End Sub
 
     Dim Qnos() As String
+    Dim UPDATE_ADDENDUM_QuoteRefNo_WD_ID_counter As Integer = 0
+
     Private Sub PD_Addendum_BGW_DoWork(ByVal sender As Object, ByVal e As DoWorkEventArgs)
         Try
             Select Case ADDENDUM_BGW_TODO
@@ -96,9 +99,9 @@ Public Class PD_Addendum
                     ElseIf OWN_REP_ID <> Nothing Then
                         ADDorUPDATE = "UPDATE"
                     End If
-                    'PD_Addendum_Update(ADDorUPDATE, ProjectLabel, ConStage, SiteMeeting, SpInstr, PD_ID, OwnersName,
-                    '                   OwnersNameHomeCno, OwnersNameOfficeCno, OwnersNameMobile, CUST_ID, OwnersRep,
-                    '                   OwnersRepHomeCno, OwnersRepOfficeCno, OwnersRepMobileCno, OWN_REP_ID, CQN_ID.Count)
+                    PD_Addendum_Update(ADDorUPDATE, ProjectLabel, ConStage, SiteMeeting, SpInstr, PD_ID, OwnersName,
+                                       OwnersNameHomeCno, OwnersNameOfficeCno, OwnersNameMobile, CUST_ID, OwnersRep,
+                                       OwnersRepHomeCno, OwnersRepOfficeCno, OwnersRepMobileCno, OWN_REP_ID)
                 Case "TPN_DELETE"
                     PD_Addendum_TPN_Delete(Me, TPN_ID)
                 Case "OWNERS_REP"
@@ -113,26 +116,29 @@ Public Class PD_Addendum
                 Case "QuoteRefNo_Populate"
                     QUERY_INSTANCE = "Loading_using_EqualSearch"
                     QueryBUILD = "SELECT    CQN_ID,
+                                            WD_ID,
                                             QUOTE_NO,
                                             QUOTE_DATE,
                                             PROFILE_FINISH " & QueryMidArrays(11) & QueryConditionArrays(2) &
-                                 " AND CQN_STATUS = 1 AND WD_STATUS = 1"
+                                     " AND CQN_STATUS = 1 AND WD_STATUS = 1"
                     Query_Select(C_ID)
+                Case "UPDATE_ADDENDUM_QuoteRefNo"
+                    PD_Addendum_Update_QuoteRefNo(arr_WD_ID_ToBeUse.Count, C_ID, arr_WD_ID_ToBeUse.Item(UPDATE_ADDENDUM_QuoteRefNo_WD_ID_counter))
             End Select
 
         Catch ex As SqlException
-            'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
-            If ex.Number = -2 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Click ok to Reconnect", "Request Timeout", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                PD_Addendum_BGW.CancelAsync()
-            ElseIf ex.Number = 1232 Or ex.Number = 121 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Please check internet connection", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            ElseIf ex.Number = 19 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Sorry our server is under maintenance." & vbCrLf & "Please be patient, will come back A.S.A.P", "Server is down", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            ElseIf ex.Number <> -2 And ex.Number <> 1232 And ex.Number <> 19 And ex.Number <> 121 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Contact the Programmers now", "You need some help?", MessageBoxButtons.OK, MessageBoxIcon.Stop)
-                MessageBox.Show(ex.Number.ToString)
-            End If
+        'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
+        If ex.Number = -2 Then
+            MetroFramework.MetroMessageBox.Show(Me, "Click ok to Reconnect", "Request Timeout", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            PD_Addendum_BGW.CancelAsync()
+        ElseIf ex.Number = 1232 Or ex.Number = 121 Then
+            MetroFramework.MetroMessageBox.Show(Me, "Please check internet connection", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        ElseIf ex.Number = 19 Then
+            MetroFramework.MetroMessageBox.Show(Me, "Sorry our server is under maintenance." & vbCrLf & "Please be patient, will come back A.S.A.P", "Server is down", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        ElseIf ex.Number <> -2 And ex.Number <> 1232 And ex.Number <> 19 And ex.Number <> 121 Then
+            MetroFramework.MetroMessageBox.Show(Me, "Contact the Programmers now", "You need some help?", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+            MessageBox.Show(ex.Number.ToString)
+        End If
         Catch ex2 As Exception
         MessageBox.Show(Me, ex2.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
         End Try
@@ -244,6 +250,24 @@ Public Class PD_Addendum
         End Try
     End Sub
 
+    Private Sub Lock_BTN_Click(sender As Object, e As EventArgs) Handles Lock_BTN.Click
+        QUOTE_NO = Replace(QuoteRefNo_Tbox.Text, " ", "")
+        If Lock_BTN.Text = "Lock" Then
+            If QUOTE_NO <> Nothing And QUOTE_NO <> "" Then
+                QuoteDate_Lbl.Text = ""
+                ProfileFin_Lbl.Text = ""
+                ADDENDUM_BGW_TODO = "QuoteRefNo_Sel"
+                Start_PD_Addendum_BGW(False, True)
+            Else
+                MetroFramework.MetroMessageBox.Show(Me, "Please input a valid Quote reference number.")
+            End If
+        ElseIf Lock_BTN.Text = "Unlock" Then
+            arr_WD_ID_inLockBtnClicked.Clear()
+            QuoteRefNo_Tbox.Enabled = True
+            Lock_BTN.Text = "Lock"
+        End If
+    End Sub
+
     Private Sub GenCon_DGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs) Handles GenCon_DGV.RowEnter
         Try
             ArchDesign_DGV.ClearSelection()
@@ -324,34 +348,36 @@ Public Class PD_Addendum
             SiteMeeting = SiteMeeting_Tbox.Text
             SpInstr = SpInstr_RTbox.Text
 
-            If ProjectLabel = Nothing Or ProjectLabel = "" Then
-                MetroFramework.MetroMessageBox.Show(Me, "Please select Project Name.")
-            Else
-                If QuoteRefNo_Tbox.Text = Nothing Then
+            'MsgBox(arr_WD_ID_inLockBtnClicked.Count)
+            'MsgBox(arr_WD_ID_UponLoad.Count)
+            For Each arr_int As Integer In arr_WD_ID_UponLoad
+                If arr_WD_ID_inLockBtnClicked.Contains(arr_int) Then
+                    arr_WD_ID_ToBeUse.Add(arr_int)
                 End If
-                ADDENDUM_BGW_TODO = "UPDATE_ADDENDUM"
-                Start_PD_Addendum_BGW(False, True)
+            Next
+
+            If ProjectLabel = Nothing Or ProjectLabel = "" Then
+                MetroFramework.MetroMessageBox.Show(Me, "Please select Project Name.", " ", MessageBoxButtons.OK)
+            Else
+                If QuoteRefNo_Tbox.Text = Nothing Or QuoteRefNo_Tbox.Text = "" Then
+                    MetroFramework.MetroMessageBox.Show(Me, "Please select input Quote Ref No", " ", MessageBoxButtons.OK)
+                Else
+                    If QuoteRefNo_Tbox.Enabled = True Then
+                        MetroFramework.MetroMessageBox.Show(Me, "Please lock first the Quote Ref No", " ", MessageBoxButtons.OK)
+                    ElseIf QuoteRefNo_Tbox.Enabled = False Then
+                        'If arr_WD_ID_ToBeUse.Count = 0 Then
+                        '    MetroFramework.MetroMessageBox.Show(Me, "Success", " ", MessageBoxButtons.OK)
+                        'ElseIf arr_WD_ID_ToBeUse.Count > 0 Then
+                        ADDENDUM_BGW_TODO = "UPDATE_ADDENDUM"
+                        Start_PD_Addendum_BGW(False, True)
+                        'End If
+                    End If
+                End If
             End If
         Catch ex As Exception
             MsgBox(ex.Message)
         End Try
     End Sub
-
-    Private Sub QuoteRefNo_Tbox_KeyDown(sender As Object, e As KeyEventArgs) Handles QuoteRefNo_Tbox.KeyDown
-        QUOTE_NO = Replace(QuoteRefNo_Tbox.Text, " ", "")
-        If e.KeyCode = Keys.Enter Then
-            If QUOTE_NO <> Nothing And QUOTE_NO <> "" Then
-                QuoteDate_Lbl.Text = ""
-                ProfileFin_Lbl.Text = ""
-                ADDENDUM_BGW_TODO = "QuoteRefNo_Sel"
-                Start_PD_Addendum_BGW(False, True)
-
-            Else
-                MetroFramework.MetroMessageBox.Show(Me, "Please input a valid Quote reference number.")
-            End If
-        End If
-    End Sub
-
 
     Private Sub PD_Addendum_BGW_RunWorkerCompleted(ByVal sender As Object, ByVal e As RunWorkerCompletedEventArgs)
         Try
@@ -494,8 +520,9 @@ Public Class PD_Addendum
                         Dim Qdate As Date
                         For Each row In sqlBindingSource
                             QuoteRefNo_Populate_counter += 1
-                            CQN_ID.Add(row("CQN_ID"))
                             Qdate = row("QUOTE_DATE")
+                            arr_CQN_ID_UponLoad.Add(row("CQN_ID"))
+                            arr_WD_ID_UponLoad.Add(row("WD_ID"))
                             If sqlBindingSource.Count = 1 Then
                                 QuoteRefNo_Tbox.Text = row("QUOTE_NO")
                                 QuoteDate_Lbl.Text = Qdate.ToString("MMM-dd-yyyy")
@@ -510,6 +537,7 @@ Public Class PD_Addendum
                                 ProfileFin_Lbl.Text += row("PROFILE_FINISH")
                             End If
                         Next
+                        str_in_QuoteRefNo_Tbox = QuoteRefNo_Tbox.Text
                         ADDENDUM_BGW_TODO = "TechnicalPartners"
                         Start_PD_Addendum_BGW(False, True)
                     Case "TechnicalPartners"
@@ -565,30 +593,48 @@ Public Class PD_Addendum
                         GenCon_DGV.Columns("TPN_ID").Visible = False
 
                     Case "QuoteRefNo_Sel"
-
-                        For i = 0 To arr_Quote_Date.Count - 1
+                        Dim qdate, PFin As Integer
+                        For qdate = 0 To arr_Quote_Date.Count - 1
                             If arr_Quote_Date.Count = 1 Then
                                 QuoteDate_Lbl.Text = arr_Quote_Date(0).ToString("MMM-dd-yyyy")
-                            ElseIf arr_Quote_Date.Count > 1 And i <> arr_Quote_Date.Count - 1 Then
-                                QuoteDate_Lbl.Text += arr_Quote_Date(i).ToString("MMM-dd-yyyy") & ", "
-                            ElseIf arr_Quote_Date.Count > 1 And i = arr_Quote_Date.Count - 1 Then
-                                QuoteDate_Lbl.Text += arr_Quote_Date(i).ToString("MMM-dd-yyyy")
+                            ElseIf arr_Quote_Date.Count > 1 And qdate <> arr_Quote_Date.Count - 1 Then
+                                QuoteDate_Lbl.Text += arr_Quote_Date(qdate).ToString("MMM-dd-yyyy") & ", "
+                            ElseIf arr_Quote_Date.Count > 1 And qdate = arr_Quote_Date.Count - 1 Then
+                                QuoteDate_Lbl.Text += arr_Quote_Date(qdate).ToString("MMM-dd-yyyy")
                             End If
                         Next
-                        For i = 0 To arr_Profile_finish.Count - 1
+                        For PFin = 0 To arr_Profile_finish.Count - 1
                             If arr_Profile_finish.Count = 1 Then
                                 ProfileFin_Lbl.Text = arr_Profile_finish(0)
-                            ElseIf arr_Profile_finish.Count > 1 And i <> arr_Profile_finish.Count - 1 Then
-                                ProfileFin_Lbl.Text += arr_Profile_finish(i) & ", "
-                            ElseIf arr_Profile_finish.Count > 1 And i = arr_Profile_finish.Count - 1 Then
-                                ProfileFin_Lbl.Text += arr_Profile_finish(i)
+                            ElseIf arr_Profile_finish.Count > 1 And PFin <> arr_Profile_finish.Count - 1 Then
+                                ProfileFin_Lbl.Text += arr_Profile_finish(PFin) & ", "
+                            ElseIf arr_Profile_finish.Count > 1 And PFin = arr_Profile_finish.Count - 1 Then
+                                ProfileFin_Lbl.Text += arr_Profile_finish(PFin)
                             End If
                         Next
+                        'MsgBox("qdate: " & qdate)
+                        'MsgBox("arr_Quote_Date.Count - 1: " & arr_Quote_Date.Count - 1)
+                        'MsgBox("PFin: " & PFin)
+                        'MsgBox("arr_Profile_finish.Count - 1: " & arr_Profile_finish.Count - 1)
+
+                        If (qdate = arr_Quote_Date.Count) And (PFin = arr_Profile_finish.Count) Then
+                            QuoteRefNo_Tbox.Enabled = False
+                            Lock_BTN.Text = "Unlock"
+                        Else
+                            MetroFramework.MetroMessageBox.Show(Me, "Something Wrong", "Contact the Developers", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                        End If
                     Case "UPDATE_ADDENDUM"
                         If (sql_Err_no = "" Or sql_Err_no = Nothing) AndAlso
                            (sql_Err_msg = "" Or sql_Err_msg = Nothing) Then
                             If sql_Transaction_result = "Commited" Then
-                                MetroFramework.MetroMessageBox.Show(Me, "Success", " ", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                                MsgBox(arr_WD_ID_ToBeUse.Count)
+                                If arr_WD_ID_ToBeUse.Count > 0 Then
+                                    MsgBox("UPDATE_ADDENDUM_QuoteRefNo")
+                                    ADDENDUM_BGW_TODO = "UPDATE_ADDENDUM_QuoteRefNo"
+                                    Start_PD_Addendum_BGW(False, True)
+                                ElseIf arr_WD_ID_ToBeUse.Count = 0 Then
+                                    MetroFramework.MetroMessageBox.Show(Me, "Success", " ", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                                End If
                             ElseIf sql_Transaction_result = "Rollback" Then
                                 MetroFramework.MetroMessageBox.Show(Me, "Failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                             End If
@@ -598,15 +644,46 @@ Public Class PD_Addendum
                             Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
                             Log_File.WriteLine(vbCrLf & "Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
                                                "SQL Transaction Error Number: " & sql_Err_no & vbCrLf &
-                                               "SQL Transaction Error Message: " & sql_Err_msg)
+                                               "SQL Transaction Error Message: " & sql_Err_msg & vbCrLf & "Useful Informations" & vbCrLf &
+                                               "UI :" & Me.Name & vbCrLf & "Code Block :PD_Addendum_BGW_RunWorkerCompleted" & vbCrLf &
+                                               "ADDENDUM_BGW_TODO :" & ADDENDUM_BGW_TODO)
                             Log_File.Close()
+                            sql_Err_msg = Nothing
+                            sql_Err_no = Nothing
+                            sql_Transaction_result = ""
                         End If
 
-                        'If PD_CountSuccess = 1 Then
-                        '    MetroFramework.MetroMessageBox.Show(Me, "Success", " ", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                        'ElseIf PD_CountSuccess = 0 Then
-                        '    MetroFramework.MetroMessageBox.Show(Me, "Failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                        'End If
+                    Case "UPDATE_ADDENDUM_QuoteRefNo"
+                        If (sql_Err_no = "" Or sql_Err_no = Nothing) AndAlso
+                           (sql_Err_msg = "" Or sql_Err_msg = Nothing) Then
+                            If sql_Transaction_result = "Commited" Then
+                                If UPDATE_ADDENDUM_QuoteRefNo_WD_ID_counter < arr_WD_ID_ToBeUse.Count - 1 Then
+                                    ADDENDUM_BGW_TODO = "UPDATE_ADDENDUM_QuoteRefNo"
+                                    Start_PD_Addendum_BGW(False, True)
+                                    UPDATE_ADDENDUM_QuoteRefNo_WD_ID_counter += 1
+                                ElseIf UPDATE_ADDENDUM_QuoteRefNo_WD_ID_counter = arr_WD_ID_ToBeUse.Count - 1 Then
+                                    MetroFramework.MetroMessageBox.Show(Me, "Success", " ", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                                    arr_WD_ID_ToBeUse.Clear()
+                                    UPDATE_ADDENDUM_QuoteRefNo_WD_ID_counter = 0
+                                End If
+                            ElseIf sql_Transaction_result = "Rollback" Then
+                                MetroFramework.MetroMessageBox.Show(Me, "Failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                            End If
+                        Else
+                            MetroFramework.MetroMessageBox.Show(Me, "Transaction failed", "Contact the Developers", MessageBoxButtons.OK, MessageBoxIcon.Error)
+
+                            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+                            Log_File.WriteLine(vbCrLf & "Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                               "SQL Transaction Error Number: " & sql_Err_no & vbCrLf &
+                                               "SQL Transaction Error Message: " & sql_Err_msg & vbCrLf & "Useful Informations" & vbCrLf &
+                                               "UI :" & Me.Name & vbCrLf & "Code Block :PD_Addendum_BGW_RunWorkerCompleted" & vbCrLf &
+                                               "ADDENDUM_BGW_TODO :" & ADDENDUM_BGW_TODO)
+                            Log_File.Close()
+                            sql_Err_msg = Nothing
+                            sql_Err_no = Nothing
+                            sql_Transaction_result = ""
+                        End If
+
                     Case "TPN_DELETE"
                         ADDENDUM_BGW_TODO = "TechnicalPartners"
                         Start_PD_Addendum_BGW(False, True)

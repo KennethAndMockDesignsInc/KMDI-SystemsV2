@@ -29,10 +29,13 @@ Module ProjectDetailsModule
     'Public QuoteNoDT As DataTable = New DataTable("QuoteNoDT")
     Public DTcols_str As String() = {"OFFICENAME", "NAME", "POSITION", "CONTACT NUMBER", "COMP_ID", "EMP_ID", "TP_ID", "TPN_ID"}
 
-    Public arr_WD_ID As New List(Of Integer)
+    Public arr_WD_ID_inLockBtnClicked As New List(Of Integer)
+    Public arr_WD_ID_UponLoad As New List(Of Integer)
+    Public arr_WD_ID_ToBeUse As New List(Of Integer)
+    Public arr_CQN_ID_UponLoad As New List(Of Integer)
     Public arr_Profile_finish As New List(Of String)
     Public arr_Quote_Date As New List(Of Date)
-    Public CQN_ID As New List(Of Integer)
+    Public arr_CQN_ID_UponSearch As New List(Of Integer)
 
     Public COMP_ID As String = Nothing,
            COMP_NAME As String = Nothing,
@@ -219,7 +222,7 @@ Module ProjectDetailsModule
                         QUERY_SELECT_WITH_READER_bool = True
                         Select Case ReadBy
                             Case "QuoteRefNo_Sel"
-                                arr_WD_ID.Add(read.Item("WD_ID"))
+                                arr_WD_ID_inLockBtnClicked.Add(read.Item("WD_ID"))
                                 arr_Quote_Date.Add(read.Item("QUOTE_DATE"))
                                 arr_Profile_finish.Add(read.Item("PROFILE_FINISH"))
                         End Select
@@ -759,13 +762,9 @@ Module ProjectDetailsModule
                                   ByVal CLIENTS_CONTACT_NO_REP As String,
                                   ByVal CLIENTS_CONTACT_OFFICE_REP As String,
                                   ByVal CLIENTS_CONTACT_MOBILE_REP As String,
-                                  ByVal CUST_ID_REP As String,
-                                  ByVal QuoteRefNo_count As Integer,
-                                  ByVal CD_ID As String,
-                                  ByVal WD_ID As String,
-                                  ByVal A As List(Of String))
+                                  ByVal CUST_ID_REP As String)
 
-        Dim QUERY_PART1 As String = "", QUERY_PART2 As String = ""
+        Dim QUERY_PART1 As String = ""
         Select Case REP_AddorUpdate
             Case "ADD"
                 QUERY_PART1 = " INSERT  INTO [A_NEW_CLIENT_DETAILS]
@@ -791,17 +790,6 @@ Module ProjectDetailsModule
                                       [CLIENTS_CONTACT_MOBILE] = @CLIENTS_CONTACT_MOBILE_REP
                               WHERE   [CUST_ID] = @CUST_ID_REP "
         End Select
-        Select Case QuoteRefNo_count
-            Case <> 0
-                QUERY_PART2 = " UPDATE  [A_NEW_CONTRACT_QUOTE_NO] 
-                                SET     [CQN_STATUS] = 0 
-                                WHERE   [CQN_ID] = @CQN_ID"
-            Case = 0
-                QUERY_PART2 = " INSERT INTO [A_NEW_CONTRACT_QUOTE_NO] ([CD_ID_REF],
-                                                                       [WD_ID_REF])
-                                                               VALUES (@CD_ID,@WD_ID)"
-        End Select
-
         Query = "
 Begin Transaction
 DECLARE @CUST_ID_REP_IDENTITY AS INTEGER
@@ -824,7 +812,7 @@ DECLARE @CUST_ID_REP_IDENTITY AS INTEGER
             [CLIENTS_CONTACT_MOBILE] = @CLIENTS_CONTACT_MOBILE
     WHERE   [CUST_ID] = @CUST_ID
 
-" & QUERY_PART1 & QUERY_PART2 & " 
+" & QUERY_PART1 & " 
 
 	SELECT	ERROR_NUMBER() AS ErrorNumber,
 			ERROR_MESSAGE() AS ErrorMessage,
@@ -856,12 +844,7 @@ DECLARE @CUST_ID_REP_IDENTITY AS INTEGER
                 sqlCommand.Parameters.AddWithValue("@CLIENTS_CONTACT_OFFICE_REP", CLIENTS_CONTACT_OFFICE_REP)
                 sqlCommand.Parameters.AddWithValue("@CLIENTS_CONTACT_MOBILE_REP", CLIENTS_CONTACT_MOBILE_REP)
                 sqlCommand.Parameters.AddWithValue("@CUST_ID_REP", CUST_ID_REP)
-                'confirmQuery = sqlCommand.ExecuteNonQuery()
-                'If confirmQuery <> 0 Then
-                '    PD_CountSuccess = 1
-                'Else
-                '    PD_CountSuccess = 0
-                'End If
+
                 Using read As SqlDataReader = sqlCommand.ExecuteReader
                     read.Read()
                     sql_Err_no = read.Item("ErrorNumber").ToString
@@ -1013,7 +996,56 @@ END CATCH
             End Using
         End Using
     End Sub
-    Public Sub PD_Addendum_QuoteRefNo()
+    Public Sub PD_Addendum_Update_QuoteRefNo(ByVal QuoteRefNo_count As Integer,
+                                             ByVal CD_ID As String,
+                                             ByVal WD_ID As String)
+        Dim QUERY_PART1 As String = ""
+        Select Case QuoteRefNo_count
+            Case <> 0
+                QUERY_PART1 = " SELECT  @CQN_ID = [CQN_ID] FROM [A_NEW_CONTRACT_QUOTE_NO]
+                                WHERE   [CD_ID_REF] = @CD_ID AND [WD_ID_REF] = @WD_ID AND [CQN_STATUS] = 1
 
+                                UPDATE  [A_NEW_CONTRACT_QUOTE_NO] 
+                                SET     [CQN_STATUS] = 0 
+                                WHERE   [CQN_ID] = @CQN_ID "
+        End Select
+        Query = "
+Begin Transaction
+DECLARE @CQN_ID AS INTEGER
+	Begin Try
+
+IF EXISTS (SELECT  @CQN_ID FROM [A_NEW_CONTRACT_QUOTE_NO]
+           WHERE   [CD_ID_REF] = @CD_ID AND [WD_ID_REF] = @WD_ID AND [CQN_STATUS] = 1 )
+
+INSERT INTO [A_NEW_CONTRACT_QUOTE_NO] ([CD_ID_REF],[WD_ID_REF])
+                               VALUES (@CD_ID,@WD_ID)
+
+	SELECT	ERROR_NUMBER() AS ErrorNumber,
+			ERROR_MESSAGE() AS ErrorMessage,
+            'Commited' AS [Transaction]
+            Commit Transaction
+	End Try
+
+	Begin Catch
+	SELECT	ERROR_NUMBER() AS ErrorNumber,
+			ERROR_MESSAGE() AS ErrorMessage,
+            'Rollback' AS [Transaction]
+			ROLLBACK TRANSACTION
+	End Catch"
+
+        Using sqlcon As New SqlConnection(sqlcnstr)
+            sqlcon.Open()
+            Using sqlCommand As New SqlCommand(Query, sqlcon)
+                sqlCommand.Parameters.AddWithValue("@CD_ID", CD_ID)
+                sqlCommand.Parameters.AddWithValue("@WD_ID", WD_ID)
+                'sqlCommand.Parameters.AddWithValue("@CQN_ID", CQN_ID)
+                Using read As SqlDataReader = sqlCommand.ExecuteReader
+                    read.Read()
+                    sql_Err_no = read.Item("ErrorNumber").ToString
+                    sql_Err_msg = read.Item("ErrorMessage").ToString
+                    sql_Transaction_result = read.Item("Transaction").ToString
+                End Using
+            End Using
+        End Using
     End Sub
 End Module

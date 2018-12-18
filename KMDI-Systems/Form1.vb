@@ -64,4 +64,12 @@ Begin Transaction
         file.WriteLine(vbCrLf & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & " Here is the first string.")
         file.Close()
     End Sub
+
+    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+        If TextBox1.Text.Contains(TextBox2.Text) Then
+            MsgBox("Same")
+        Else
+            MsgBox("Not Same")
+        End If
+    End Sub
 End Class
