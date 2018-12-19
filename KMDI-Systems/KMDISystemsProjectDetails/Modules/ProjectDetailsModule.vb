@@ -31,14 +31,11 @@ Module ProjectDetailsModule
     Public DTcols_str As String() = {"OFFICENAME", "NAME", "POSITION", "CONTACT NUMBER", "COMP_ID", "EMP_ID", "TP_ID", "TPN_ID"}
 
     Public arr_WD_ID As New List(Of Integer)
-    'Public arr_WD_ID_inLockBtnClicked As New List(Of Integer)
-    'Public arr_WD_ID_UponLoad As New List(Of Integer)
-    'Public arr_WD_ID_ToBeINSERT As New List(Of Integer)
-    'Public arr_WD_ID_ToBeDELETE As New List(Of Integer)
     Public arr_CQN_ID_UponLoad As New List(Of Integer)
     Public arr_Profile_finish As New List(Of String)
     Public arr_Quote_Date As New List(Of Date)
     Public arr_CQN_ID_UponSearch As New List(Of Integer)
+    Public arr_AEID As New List(Of Integer)
 
     Public COMP_ID As String = Nothing,
            COMP_NAME As String = Nothing,
@@ -50,6 +47,8 @@ Module ProjectDetailsModule
     Public sql_Err_no, sql_Err_msg, sql_Transaction_result As String
 
     Public Log_File As StreamWriter
+
+    Public transaction As SqlTransaction
 
     Public QuerySearchHeadArrays() As String = {SelDist & " TOP 100 [PD].[PD_ID],
                                                                     [CTD].[SUB_JO] AS [JO#],
@@ -989,7 +988,6 @@ END CATCH
             sqlcon.Open()
             Using sqlCommand As New SqlCommand(Query, sqlcon)
                 sqlCommand.Parameters.AddWithValue("@TPN_ID", TPN_ID)
-
                 confirmQuery = sqlCommand.ExecuteNonQuery()
                 If confirmQuery <> 0 Then
                     PD_CountSuccess = 1
@@ -1076,4 +1074,148 @@ DECLARE @CQN_STATUS AS BIT
         End Using
         PD_Addendum_Update_QuoteRefNo_counter += 1
     End Sub
+
+    Public Sub PD_Inserts_NewProj(Optional PROJECT_SOURCE As String = "",
+                                  Optional PROJECT_CLASSIFICATION As String = "",
+                                  Optional COMPETITORS As String = "",
+                                  Optional UNITNO As String = "",
+                                  Optional ESTABLISHMENT As String = "",
+                                  Optional NO As String = "",
+                                  Optional STREET As String = "",
+                                  Optional VILLAGE As String = "",
+                                  Optional BRGY_MUNICIPALITY As String = "",
+                                  Optional TOWN_DISTRICT As String = "",
+                                  Optional PROVINCE As String = "",
+                                  Optional AREA As String = "",
+                                  Optional FULLADD As String = "",
+                                  Optional CLIENTS_NAME As String = "",
+                                  Optional OWNERS_NAME As String = "",
+                                  Optional CLIENTS_CONTACT_NO As String = "",
+                                  Optional CLIENTS_CONTACT_OFFICE As String = "",
+                                  Optional CLIENTS_CONTACT_MOBILE As String = "",
+                                  Optional CLIENTS_EMAIL_ADD As String = "",
+                                  Optional COMPANY_NAME As String = "")
+        Using sqlcon As New SqlConnection(sqlcnstr)
+            sqlcon.Open()
+            Using sqlcmd As SqlCommand = sqlcon.CreateCommand()
+                transaction = sqlcon.BeginTransaction("SampleTransaction")
+                sqlcmd.Connection = sqlcon
+                sqlcmd.Transaction = transaction
+                sqlcmd.CommandText = "PD_stp_NewProject"
+                sqlcmd.CommandType = CommandType.StoredProcedure
+
+                sqlcmd.Parameters.AddWithValue("@PROJECT_SOURCE", PROJECT_SOURCE)
+                sqlcmd.Parameters.AddWithValue("@PROJECT_CLASSIFICATION", PROJECT_CLASSIFICATION)
+                sqlcmd.Parameters.AddWithValue("@COMPETITORS", COMPETITORS)
+                sqlcmd.Parameters.AddWithValue("@UNITNO", UNITNO)
+                sqlcmd.Parameters.AddWithValue("@ESTABLISHMENT", ESTABLISHMENT)
+                sqlcmd.Parameters.AddWithValue("@NO", NO)
+                sqlcmd.Parameters.AddWithValue("@STREET", STREET)
+                sqlcmd.Parameters.AddWithValue("@VILLAGE", VILLAGE)
+                sqlcmd.Parameters.AddWithValue("@BRGY_MUNICIPALITY", BRGY_MUNICIPALITY)
+                sqlcmd.Parameters.AddWithValue("@TOWN_DISTRICT", TOWN_DISTRICT)
+                sqlcmd.Parameters.AddWithValue("@PROVINCE", PROVINCE)
+                sqlcmd.Parameters.AddWithValue("@AREA", AREA)
+                sqlcmd.Parameters.AddWithValue("@FULLADD", FULLADD)
+
+                sqlcmd.Parameters.AddWithValue("@CLIENTS_NAME", CLIENTS_NAME)
+                sqlcmd.Parameters.AddWithValue("@OWNERS_NAME", OWNERS_NAME)
+                sqlcmd.Parameters.AddWithValue("@CLIENTS_CONTACT_NO", CLIENTS_CONTACT_NO)
+                sqlcmd.Parameters.AddWithValue("@CLIENTS_CONTACT_OFFICE", CLIENTS_CONTACT_OFFICE)
+                sqlcmd.Parameters.AddWithValue("@CLIENTS_CONTACT_MOBILE", CLIENTS_CONTACT_MOBILE)
+                sqlcmd.Parameters.AddWithValue("@CLIENTS_EMAIL_ADD", CLIENTS_EMAIL_ADD)
+                sqlcmd.Parameters.AddWithValue("@COMPANY_NAME", COMPANY_NAME)
+                Using read As SqlDataReader = sqlcmd.ExecuteReader
+                    read.Read()
+                    InsertedPD_ID = read.Item("PD_ID").ToString
+                End Using
+                'sqlcmd.ExecuteNonQuery()
+
+                'sqlcmd.CommandType = CommandType.StoredProcedure
+
+                For Each arr_AEID_int As Integer In arr_AEID
+                    sqlcmd.CommandText = "INSERT INTO [A_NEW_AE_ASSIGNMENT]  ([PD_ID_REF],[AE_ID_REF])
+                                                                 VALUES  (@PD_ID_REF2" & arr_AEID_int & ",
+                                                                          @AE_ID_REF" & arr_AEID_int & ")"
+                    sqlcmd.Parameters.AddWithValue("@PD_ID_REF2" & arr_AEID_int, InsertedPD_ID)
+                    sqlcmd.Parameters.AddWithValue("@AE_ID_REF" & arr_AEID_int, arr_AEID_int)
+                    sqlcmd.ExecuteNonQuery()
+                Next
+
+                transaction.Commit()
+                sql_Transaction_result = "Committed"
+            End Using
+        End Using
+
+    End Sub
+
+    Public Sub ExecuteSqlTransaction(Optional Params As String = "")
+        Using sqlcon As New SqlConnection(sqlcnstr)
+            sqlcon.Open()
+            Using sqlcmd As SqlCommand = sqlcon.CreateCommand()
+
+                'Dim command As SqlCommand = sqlcon.CreateCommand()
+
+                ' Start a local transaction
+                transaction = sqlcon.BeginTransaction("SampleTransaction")
+
+                ' Must assign both transaction object and connection
+                ' to Command object for a pending local transaction.
+                sqlcmd.Connection = sqlcon
+                sqlcmd.Transaction = transaction
+
+                'Try
+                sqlcmd.CommandText = "PD_stp_NewProject"
+                sqlcmd.CommandType = CommandType.StoredProcedure
+
+                sqlcmd.Parameters.AddWithValue("@PROJECT_SOURCE", Params)
+                sqlcmd.Parameters.AddWithValue("@PROJECT_CLASSIFICATION", Params)
+                sqlcmd.Parameters.AddWithValue("@COMPETITORS", Params)
+                sqlcmd.Parameters.AddWithValue("@UNITNO", Params)
+                sqlcmd.Parameters.AddWithValue("@ESTABLISHMENT", Params)
+                sqlcmd.Parameters.AddWithValue("@NO", Params)
+                sqlcmd.Parameters.AddWithValue("@STREET", Params)
+                sqlcmd.Parameters.AddWithValue("@VILLAGE", Params)
+                sqlcmd.Parameters.AddWithValue("@BRGY_MUNICIPALITY", Params)
+                sqlcmd.Parameters.AddWithValue("@TOWN_DISTRICT", Params)
+                sqlcmd.Parameters.AddWithValue("@PROVINCE", Params)
+                sqlcmd.Parameters.AddWithValue("@AREA", Params)
+                sqlcmd.Parameters.AddWithValue("@FULLADD", Params)
+
+                sqlcmd.Parameters.AddWithValue("@CLIENTS_NAME", Params)
+                sqlcmd.Parameters.AddWithValue("@OWNERS_NAME", Params)
+                sqlcmd.Parameters.AddWithValue("@CLIENTS_CONTACT_NO", Params)
+                sqlcmd.Parameters.AddWithValue("@CLIENTS_CONTACT_OFFICE", Params)
+                sqlcmd.Parameters.AddWithValue("@CLIENTS_CONTACT_MOBILE", Params)
+                sqlcmd.Parameters.AddWithValue("@CLIENTS_EMAIL_ADD", Params)
+                sqlcmd.Parameters.AddWithValue("@COMPANY_NAME", Params)
+
+                sqlcmd.ExecuteNonQuery()
+
+                ' Attempt to commit the transaction.
+                transaction.Commit()
+                sql_Transaction_result = "Committed"
+                MsgBox("Both records are written to database.")
+
+                'Catch ex As Exception
+                '    Console.WriteLine("Commit Exception Type: {0}", ex.GetType())
+                '    Console.WriteLine("  Message: {0}", ex.Message)
+
+                '    ' Attempt to roll back the transaction.
+                '    Try
+                '        transaction.Rollback()
+
+                '    Catch ex2 As Exception
+                '        ' This catch block will handle any errors that may have occurred
+                '        ' on the server that would cause the rollback to fail, such as
+                '        ' a closed connection.
+                '        Console.WriteLine("Rollback Exception Type: {0}", ex2.GetType())
+                '        Console.WriteLine("  Message: {0}", ex2.Message)
+                '    End Try
+                'End Try
+            End Using
+        End Using
+    End Sub
+
+
 End Module
