@@ -1139,8 +1139,8 @@ DECLARE @CQN_STATUS AS BIT
                                                                           @AE_ID_REF" & arr_AEID_int & ")"
                     sqlcmd.Parameters.AddWithValue("@PD_ID_REF2" & arr_AEID_int, InsertedPD_ID)
                     sqlcmd.Parameters.AddWithValue("@AE_ID_REF" & arr_AEID_int, arr_AEID_int)
-                    sqlcmd.ExecuteNonQuery()
                 Next
+                sqlcmd.ExecuteNonQuery()
 
                 transaction.Commit()
                 sql_Transaction_result = "Committed"

@@ -128,32 +128,32 @@ Begin Transaction
         Try
             ExecuteSqlTransaction(txt2)
         Catch ex As SqlException
-            'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
-            If ex.Number = -2 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Click ok to Reconnect", "Request Timeout", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                BackgroundWorker1.CancelAsync()
-            ElseIf ex.Number = 1232 Or ex.Number = 121 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Please check internet connection", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            ElseIf ex.Number = 19 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Sorry our server is under maintenance." & vbCrLf & "Please be patient, will come back A.S.A.P", "Server is down", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            ElseIf ex.Number <> -2 And ex.Number <> 1232 And ex.Number <> 19 And ex.Number <> 121 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Transaction Failed", "Contact the Developers", MessageBoxButtons.OK, MessageBoxIcon.Stop)
-                Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
-                Log_File.WriteLine(vbCrLf & "Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-                                           "SQL Transaction Error Number: " & ex.Number & vbCrLf &
-                                           "SQL Transaction Error Message: " & ex.Message)
-                Log_File.Close()
-            End If
-            sql_Err_msg = ex.Message
-            sql_Err_no = ex.Number
-            Try
-                transaction.Rollback()
-                sql_Transaction_result = "Rollback"
-            Catch ex2 As Exception
-                MessageBox.Show(ex2.Message)
-            End Try
-            'Catch ex2 As Exception
-            '    MessageBox.Show(Me, ex2.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
+        'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
+        If ex.Number = -2 Then
+            MetroFramework.MetroMessageBox.Show(Me, "Click ok to Reconnect", "Request Timeout", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            BackgroundWorker1.CancelAsync()
+        ElseIf ex.Number = 1232 Or ex.Number = 121 Then
+            MetroFramework.MetroMessageBox.Show(Me, "Please check internet connection", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        ElseIf ex.Number = 19 Then
+            MetroFramework.MetroMessageBox.Show(Me, "Sorry our server is under maintenance." & vbCrLf & "Please be patient, will come back A.S.A.P", "Server is down", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        ElseIf ex.Number <> -2 And ex.Number <> 1232 And ex.Number <> 19 And ex.Number <> 121 Then
+            MetroFramework.MetroMessageBox.Show(Me, "Transaction Failed", "Contact the Developers", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine(vbCrLf & "Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "SQL Transaction Error Number: " & ex.Number & vbCrLf &
+                                       "SQL Transaction Error Message: " & ex.Message)
+            Log_File.Close()
+        End If
+        sql_Err_msg = ex.Message
+        sql_Err_no = ex.Number
+        Try
+            transaction.Rollback()
+            sql_Transaction_result = "Rollback"
+        Catch ex2 As Exception
+            MessageBox.Show(ex2.Message)
+        End Try
+        'Catch ex2 As Exception
+        '    MessageBox.Show(Me, ex2.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
         End Try
     End Sub
 
