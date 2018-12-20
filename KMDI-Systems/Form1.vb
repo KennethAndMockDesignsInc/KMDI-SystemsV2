@@ -126,7 +126,7 @@ Begin Transaction
     Public txt2 As String
     Private Sub BackgroundWorker1_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles BackgroundWorker1.DoWork
         Try
-            ExecuteSqlTransaction(txt2)
+            INSERT_SAMPLE()
         Catch ex As SqlException
         'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
         If ex.Number = -2 Then
@@ -187,17 +187,56 @@ Begin Transaction
                 sql_Err_no = Nothing
                 sql_Transaction_result = ""
             End If
+            LoadingPboxRNP.Visible = False
         Catch ex As Exception
             MsgBox(ex.Message)
         End Try
     End Sub
+    'Dim list_int As New List(Of Integer)(New Integer() {1, 2, 3})
+    Dim arr_sample As New List(Of Integer)(New Integer() {11, 22, 33})
+    Public Sub INSERT_SAMPLE()
+        Using sqlcon As New SqlConnection(sqlcnstr)
+            sqlcon.Open()
+            Using sqlcmd As SqlCommand = sqlcon.CreateCommand()
+                transaction = sqlcon.BeginTransaction("SampleTransaction")
+                sqlcmd.Connection = sqlcon
+                sqlcmd.Transaction = transaction
+                sqlcmd.CommandText = "SampleInsert_SAMPLE_TBL"
+                sqlcmd.CommandType = CommandType.StoredProcedure
+
+                sqlcmd.Parameters.AddWithValue("@SAMPLE_COL1", "asdasd")
+                sqlcmd.ExecuteNonQuery()
+
+                'sqlcmd.CommandText = "INSERT INTO A_NEW_A_SAMPLE_TBL ([SAMPLE_COL1]) VALUES (@SAMPLE_COL11)"
+                'sqlcmd.Parameters.AddWithValue("@SAMPLE_COL11", "zxczxczxc")
+                'sqlcmd.ExecuteNonQuery()
+
+                'sqlcmd.CommandType = CommandType.StoredProcedure
+
+                For Each arr_sample_int As Integer In arr_sample
+                    sqlcmd.CommandText = "INSERT INTO A_NEW_A_SAMPLE_TBL ([SAMPLE_COL1]) VALUES (@SAMPLE_COL1" & arr_sample_int & ")"
+                    sqlcmd.CommandType = CommandType.Text
+                    sqlcmd.Parameters.AddWithValue("@SAMPLE_COL1" & arr_sample_int, arr_sample_int)
+                    sqlcmd.ExecuteNonQuery()
+                Next
+
+                transaction.Commit()
+                sql_Transaction_result = "Committed"
+            End Using
+        End Using
+    End Sub
 
     Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
         txt2 = TextBox2.Text
+        LoadingPboxRNP.Visible = True
         BackgroundWorker1.RunWorkerAsync()
     End Sub
 
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
         Project_Details.Show()
+    End Sub
+
+    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
     End Sub
 End Class

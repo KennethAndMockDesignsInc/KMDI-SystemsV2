@@ -31,6 +31,8 @@ Partial Class Form1
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
         Me.Button5 = New System.Windows.Forms.Button()
         Me.Button6 = New System.Windows.Forms.Button()
+        Me.LoadingPboxRNP = New System.Windows.Forms.PictureBox()
+        CType(Me.LoadingPboxRNP, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Button1
@@ -44,11 +46,11 @@ Partial Class Form1
         '
         'TextBox1
         '
-        Me.TextBox1.Location = New System.Drawing.Point(12, 12)
+        Me.TextBox1.Location = New System.Drawing.Point(12, 40)
         Me.TextBox1.Multiline = True
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both
-        Me.TextBox1.Size = New System.Drawing.Size(347, 189)
+        Me.TextBox1.Size = New System.Drawing.Size(347, 161)
         Me.TextBox1.TabIndex = 1
         '
         'TextBox2
@@ -108,11 +110,25 @@ Partial Class Form1
         Me.Button6.Text = "Project_Details.vb"
         Me.Button6.UseVisualStyleBackColor = True
         '
+        'LoadingPboxRNP
+        '
+        Me.LoadingPboxRNP.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.LoadingPboxRNP.BackColor = System.Drawing.Color.Transparent
+        Me.LoadingPboxRNP.Image = Global.KMDI_Systems.My.Resources.Resources.loading_page
+        Me.LoadingPboxRNP.Location = New System.Drawing.Point(12, 12)
+        Me.LoadingPboxRNP.Name = "LoadingPboxRNP"
+        Me.LoadingPboxRNP.Size = New System.Drawing.Size(57, 22)
+        Me.LoadingPboxRNP.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.LoadingPboxRNP.TabIndex = 13
+        Me.LoadingPboxRNP.TabStop = False
+        Me.LoadingPboxRNP.Visible = False
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(485, 231)
+        Me.Controls.Add(Me.LoadingPboxRNP)
         Me.Controls.Add(Me.Button6)
         Me.Controls.Add(Me.Button5)
         Me.Controls.Add(Me.Button4)
@@ -123,6 +139,7 @@ Partial Class Form1
         Me.Controls.Add(Me.Button1)
         Me.Name = "Form1"
         Me.Text = "Form1"
+        CType(Me.LoadingPboxRNP, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -137,4 +154,5 @@ Partial Class Form1
     Friend WithEvents BackgroundWorker1 As System.ComponentModel.BackgroundWorker
     Friend WithEvents Button5 As Button
     Friend WithEvents Button6 As Button
+    Friend WithEvents LoadingPboxRNP As PictureBox
 End Class

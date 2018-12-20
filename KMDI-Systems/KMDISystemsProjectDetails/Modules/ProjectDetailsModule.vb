@@ -1129,18 +1129,15 @@ DECLARE @CQN_STATUS AS BIT
                     read.Read()
                     InsertedPD_ID = read.Item("PD_ID").ToString
                 End Using
-                'sqlcmd.ExecuteNonQuery()
-
-                'sqlcmd.CommandType = CommandType.StoredProcedure
-
                 For Each arr_AEID_int As Integer In arr_AEID
                     sqlcmd.CommandText = "INSERT INTO [A_NEW_AE_ASSIGNMENT]  ([PD_ID_REF],[AE_ID_REF])
                                                                  VALUES  (@PD_ID_REF2" & arr_AEID_int & ",
                                                                           @AE_ID_REF" & arr_AEID_int & ")"
+                    sqlcmd.CommandType = CommandType.Text
                     sqlcmd.Parameters.AddWithValue("@PD_ID_REF2" & arr_AEID_int, InsertedPD_ID)
                     sqlcmd.Parameters.AddWithValue("@AE_ID_REF" & arr_AEID_int, arr_AEID_int)
+                    sqlcmd.ExecuteNonQuery()
                 Next
-                sqlcmd.ExecuteNonQuery()
 
                 transaction.Commit()
                 sql_Transaction_result = "Committed"

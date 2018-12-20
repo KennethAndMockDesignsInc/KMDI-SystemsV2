@@ -411,33 +411,33 @@ Public Class NewProject_Register
     End Sub
 
     Private Sub Insert_BGW_DoWork(sender As Object, e As DoWorkEventArgs) Handles Insert_BGW.DoWork
-        'Try
-        'A_NEW_PROJECT_DETAILS_Insert(Me,
-        '                             Source,
-        '                             P1plusP2,
-        '                             Competitors,
-        '                             UnitNo,
-        '                             Establishment,
-        '                             HouseNo,
-        '                             Street,
-        '                             Village,
-        '                             Brgy,
-        '                             CityMunicipality,
-        '                             Province,
-        '                             Area,
-        '                             FullAddress)
-        'A_NEW_CLIENT_DETAILS_Insert(Me,
-        '                            ClientName,
-        '                            Owners,
-        '                            HomeCN,
-        '                            OfficeCn,
-        '                            MobileCN,
-        '                            Email,
-        '                            Company_Name)
-        'A_NEW_CONTRACT_DETAILS_Insert(InsertedPD_ID, Me)
-        'A_NEW_OWNERS_TBL_Insert(InsertedPD_ID, InsertedCustID, "Current Owner", Me)
-        'A_NEW_CONTRACT_QUOTE_NO_Insert(InsertedC_ID, "", "", Me
-        For i = 0 To AEICSelectedDGV.Rows.Count - 1
+        Try
+            'A_NEW_PROJECT_DETAILS_Insert(Me,
+            '                             Source,
+            '                             P1plusP2,
+            '                             Competitors,
+            '                             UnitNo,
+            '                             Establishment,
+            '                             HouseNo,
+            '                             Street,
+            '                             Village,
+            '                             Brgy,
+            '                             CityMunicipality,
+            '                             Province,
+            '                             Area,
+            '                             FullAddress)
+            'A_NEW_CLIENT_DETAILS_Insert(Me,
+            '                            ClientName,
+            '                            Owners,
+            '                            HomeCN,
+            '                            OfficeCn,
+            '                            MobileCN,
+            '                            Email,
+            '                            Company_Name)
+            'A_NEW_CONTRACT_DETAILS_Insert(InsertedPD_ID, Me)
+            'A_NEW_OWNERS_TBL_Insert(InsertedPD_ID, InsertedCustID, "Current Owner", Me)
+            'A_NEW_CONTRACT_QUOTE_NO_Insert(InsertedC_ID, "", "", Me
+            For i = 0 To AEICSelectedDGV.Rows.Count - 1
                 arr_AEID.Add(AEICSelectedDGV.Rows(i).Cells("AUTONUM").Value.ToString)
                 'A_NEW_AE_ASSIGNMENT_Insert(InsertedPD_ID, AUTONUMid, Me)
             Next
@@ -463,37 +463,37 @@ Public Class NewProject_Register
                                Company_Name)
 
 
-        'Catch ex As SqlException
-        '    'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
-        '    If ex.Number = -2 Then
-        '        MetroFramework.MetroMessageBox.Show(Me, "Click ok to Reconnect", "Request Timeout", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-        '        Insert_BGW.CancelAsync()
-        '    ElseIf ex.Number = 1232 Or ex.Number = 121 Then
-        '        MetroFramework.MetroMessageBox.Show(Me, "Please check internet connection", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        '    ElseIf ex.Number = 19 Then
-        '        MetroFramework.MetroMessageBox.Show(Me, "Sorry our server is under maintenance." & vbCrLf & "Please be patient, will come back A.S.A.P", "Server is down", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        '        'ElseIf ex.Number <> -2 And ex.Number <> 1232 And ex.Number <> 19 And ex.Number <> 121 Then
-        '        '    MetroFramework.MetroMessageBox.Show(Me, "Transaction Failed", "Contact the Developers", MessageBoxButtons.OK, MessageBoxIcon.Stop)
-        '        '    Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
-        '        '    Log_File.WriteLine(vbCrLf & "Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-        '        '                               "SQL Transaction Error Number: " & ex.Number & vbCrLf &
-        '        '                               "SQL Transaction Error Message: " & ex.Message)
-        '        '    Log_File.Close()
-        '    End If
-        '    sql_Err_msg = ex.Message
-        '    sql_Err_no = ex.Number
-        '    Try
-        '        transaction.Rollback()
-        '        sql_Transaction_result = "Rollback"
-        '    Catch ex2 As Exception
-        '        Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
-        '        Log_File.WriteLine(vbCrLf & "Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-        '                                   "Rollback Error Message: " & ex2.Message)
-        '        Log_File.Close()
-        '    End Try
-        'Catch ex22 As Exception
-        '    'MetroFramework.MetroMessageBox.Show(Me, ex22.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
-        'End Try
+        Catch ex As SqlException
+            'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
+            If ex.Number = -2 Then
+                MetroFramework.MetroMessageBox.Show(Me, "Click ok to Reconnect", "Request Timeout", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                Insert_BGW.CancelAsync()
+            ElseIf ex.Number = 1232 Or ex.Number = 121 Then
+                MetroFramework.MetroMessageBox.Show(Me, "Please check internet connection", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            ElseIf ex.Number = 19 Then
+                MetroFramework.MetroMessageBox.Show(Me, "Sorry our server is under maintenance." & vbCrLf & "Please be patient, will come back A.S.A.P", "Server is down", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            ElseIf ex.Number <> -2 And ex.Number <> 1232 And ex.Number <> 19 And ex.Number <> 121 Then
+                'MetroFramework.MetroMessageBox.Show(Me, "Transaction Failed", "Contact the Developers", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+                Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+                Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                           "SQL Transaction Error Number: " & ex.Number & vbCrLf &
+                                           "SQL Transaction Error Message: " & ex.Message)
+                Log_File.Close()
+            End If
+            sql_Err_msg = ex.Message
+            sql_Err_no = ex.Number
+            Try
+                transaction.Rollback()
+                sql_Transaction_result = "Rollback"
+            Catch ex2 As Exception
+                Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+                Log_File.WriteLine(vbCrLf & "Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                           "Rollback Error Message: " & ex2.Message)
+                Log_File.Close()
+            End Try
+        Catch ex22 As Exception
+            'MetroFramework.MetroMessageBox.Show(Me, ex22.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
+        End Try
     End Sub
 
     Private Sub Insert_BGW_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles Insert_BGW.RunWorkerCompleted
