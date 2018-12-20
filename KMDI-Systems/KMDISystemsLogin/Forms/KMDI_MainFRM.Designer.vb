@@ -22,6 +22,7 @@ Partial Class KMDI_MainFRM
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(KMDI_MainFRM))
         Me.DbNameCbox = New MetroFramework.Controls.MetroComboBox()
         Me.FlowLayoutPanel2 = New System.Windows.Forms.FlowLayoutPanel()
         Me.MainFRMBody_FLP = New System.Windows.Forms.FlowLayoutPanel()
@@ -36,7 +37,6 @@ Partial Class KMDI_MainFRM
         Me.NotifTile = New MetroFramework.Controls.MetroTile()
         Me.UpdSecTile = New MetroFramework.Controls.MetroTile()
         Me.MngeAccTile = New MetroFramework.Controls.MetroTile()
-        Me.LogoutTile = New MetroFramework.Controls.MetroTile()
         Me.AcctsLBL = New MetroFramework.Controls.MetroLabel()
         Me.SNOpanel = New MetroFramework.Controls.MetroPanel()
         Me.FlowLayoutPanel4 = New System.Windows.Forms.FlowLayoutPanel()
@@ -103,7 +103,7 @@ Partial Class KMDI_MainFRM
         Me.DbNameCbox.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.DbNameCbox.FormattingEnabled = True
         Me.DbNameCbox.ItemHeight = 23
-        Me.DbNameCbox.Location = New System.Drawing.Point(1142, 35)
+        Me.DbNameCbox.Location = New System.Drawing.Point(1217, 35)
         Me.DbNameCbox.Name = "DbNameCbox"
         Me.DbNameCbox.Size = New System.Drawing.Size(143, 29)
         Me.DbNameCbox.TabIndex = 1
@@ -143,7 +143,7 @@ Partial Class KMDI_MainFRM
         Me.ContractsPanel.HorizontalScrollbarSize = 10
         Me.ContractsPanel.Location = New System.Drawing.Point(3, 3)
         Me.ContractsPanel.Name = "ContractsPanel"
-        Me.ContractsPanel.Size = New System.Drawing.Size(620, 170)
+        Me.ContractsPanel.Size = New System.Drawing.Size(635, 170)
         Me.ContractsPanel.TabIndex = 6
         Me.ContractsPanel.Theme = MetroFramework.MetroThemeStyle.Dark
         Me.ContractsPanel.VerticalScrollbarBarColor = True
@@ -170,7 +170,7 @@ Partial Class KMDI_MainFRM
         Me.FlowLayoutPanel9.Location = New System.Drawing.Point(0, 30)
         Me.FlowLayoutPanel9.Name = "FlowLayoutPanel9"
         Me.FlowLayoutPanel9.Padding = New System.Windows.Forms.Padding(66, 0, 0, 0)
-        Me.FlowLayoutPanel9.Size = New System.Drawing.Size(620, 140)
+        Me.FlowLayoutPanel9.Size = New System.Drawing.Size(635, 140)
         Me.FlowLayoutPanel9.TabIndex = 22
         '
         'ContractListTile
@@ -210,7 +210,7 @@ Partial Class KMDI_MainFRM
         Me.AccountsPanel.HorizontalScrollbarSize = 10
         Me.AccountsPanel.Location = New System.Drawing.Point(3, 179)
         Me.AccountsPanel.Name = "AccountsPanel"
-        Me.AccountsPanel.Size = New System.Drawing.Size(620, 170)
+        Me.AccountsPanel.Size = New System.Drawing.Size(635, 170)
         Me.AccountsPanel.TabIndex = 16
         Me.AccountsPanel.Theme = MetroFramework.MetroThemeStyle.Dark
         Me.AccountsPanel.VerticalScrollbarBarColor = True
@@ -223,12 +223,11 @@ Partial Class KMDI_MainFRM
         Me.FlowLayoutPanel8.Controls.Add(Me.NotifTile)
         Me.FlowLayoutPanel8.Controls.Add(Me.UpdSecTile)
         Me.FlowLayoutPanel8.Controls.Add(Me.MngeAccTile)
-        Me.FlowLayoutPanel8.Controls.Add(Me.LogoutTile)
         Me.FlowLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.FlowLayoutPanel8.Location = New System.Drawing.Point(0, 30)
         Me.FlowLayoutPanel8.Name = "FlowLayoutPanel8"
         Me.FlowLayoutPanel8.Padding = New System.Windows.Forms.Padding(66, 0, 0, 0)
-        Me.FlowLayoutPanel8.Size = New System.Drawing.Size(620, 140)
+        Me.FlowLayoutPanel8.Size = New System.Drawing.Size(635, 140)
         Me.FlowLayoutPanel8.TabIndex = 25
         '
         'InboxTile
@@ -285,19 +284,6 @@ Partial Class KMDI_MainFRM
         Me.MngeAccTile.UseSelectable = True
         Me.MngeAccTile.Visible = False
         '
-        'LogoutTile
-        '
-        Me.LogoutTile.ActiveControl = Nothing
-        Me.LogoutTile.Location = New System.Drawing.Point(337, 72)
-        Me.LogoutTile.Name = "LogoutTile"
-        Me.LogoutTile.Size = New System.Drawing.Size(262, 63)
-        Me.LogoutTile.Style = MetroFramework.MetroColorStyle.Blue
-        Me.LogoutTile.TabIndex = 35
-        Me.LogoutTile.Text = "Logout"
-        Me.LogoutTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
-        Me.LogoutTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
-        Me.LogoutTile.UseSelectable = True
-        '
         'AcctsLBL
         '
         Me.AcctsLBL.AutoSize = True
@@ -319,7 +305,7 @@ Partial Class KMDI_MainFRM
         Me.SNOpanel.HorizontalScrollbarSize = 10
         Me.SNOpanel.Location = New System.Drawing.Point(3, 355)
         Me.SNOpanel.Name = "SNOpanel"
-        Me.SNOpanel.Size = New System.Drawing.Size(620, 170)
+        Me.SNOpanel.Size = New System.Drawing.Size(635, 170)
         Me.SNOpanel.TabIndex = 24
         Me.SNOpanel.Theme = MetroFramework.MetroThemeStyle.Dark
         Me.SNOpanel.VerticalScrollbarBarColor = True
@@ -341,7 +327,7 @@ Partial Class KMDI_MainFRM
         Me.FlowLayoutPanel4.Location = New System.Drawing.Point(0, 30)
         Me.FlowLayoutPanel4.Name = "FlowLayoutPanel4"
         Me.FlowLayoutPanel4.Padding = New System.Windows.Forms.Padding(66, 0, 0, 0)
-        Me.FlowLayoutPanel4.Size = New System.Drawing.Size(620, 140)
+        Me.FlowLayoutPanel4.Size = New System.Drawing.Size(635, 140)
         Me.FlowLayoutPanel4.TabIndex = 4
         '
         'ProjAssignmentTile
@@ -475,9 +461,9 @@ Partial Class KMDI_MainFRM
         Me.ProductionPanel.HorizontalScrollbarBarColor = True
         Me.ProductionPanel.HorizontalScrollbarHighlightOnWheel = False
         Me.ProductionPanel.HorizontalScrollbarSize = 10
-        Me.ProductionPanel.Location = New System.Drawing.Point(629, 3)
+        Me.ProductionPanel.Location = New System.Drawing.Point(644, 3)
         Me.ProductionPanel.Name = "ProductionPanel"
-        Me.ProductionPanel.Size = New System.Drawing.Size(620, 170)
+        Me.ProductionPanel.Size = New System.Drawing.Size(635, 170)
         Me.ProductionPanel.TabIndex = 28
         Me.ProductionPanel.Theme = MetroFramework.MetroThemeStyle.Dark
         Me.ProductionPanel.VerticalScrollbarBarColor = True
@@ -496,7 +482,7 @@ Partial Class KMDI_MainFRM
         Me.FlowLayoutPanel6.Location = New System.Drawing.Point(0, 30)
         Me.FlowLayoutPanel6.Name = "FlowLayoutPanel6"
         Me.FlowLayoutPanel6.Padding = New System.Windows.Forms.Padding(66, 0, 0, 0)
-        Me.FlowLayoutPanel6.Size = New System.Drawing.Size(620, 140)
+        Me.FlowLayoutPanel6.Size = New System.Drawing.Size(635, 140)
         Me.FlowLayoutPanel6.TabIndex = 18
         '
         'StatusMonitoringTile
@@ -588,9 +574,9 @@ Partial Class KMDI_MainFRM
         Me.EngrPanel.HorizontalScrollbarBarColor = True
         Me.EngrPanel.HorizontalScrollbarHighlightOnWheel = False
         Me.EngrPanel.HorizontalScrollbarSize = 10
-        Me.EngrPanel.Location = New System.Drawing.Point(629, 179)
+        Me.EngrPanel.Location = New System.Drawing.Point(644, 179)
         Me.EngrPanel.Name = "EngrPanel"
-        Me.EngrPanel.Size = New System.Drawing.Size(620, 170)
+        Me.EngrPanel.Size = New System.Drawing.Size(635, 170)
         Me.EngrPanel.TabIndex = 29
         Me.EngrPanel.Theme = MetroFramework.MetroThemeStyle.Dark
         Me.EngrPanel.VerticalScrollbarBarColor = True
@@ -610,7 +596,7 @@ Partial Class KMDI_MainFRM
         Me.FlowLayoutPanel7.Location = New System.Drawing.Point(0, 30)
         Me.FlowLayoutPanel7.Name = "FlowLayoutPanel7"
         Me.FlowLayoutPanel7.Padding = New System.Windows.Forms.Padding(66, 0, 0, 0)
-        Me.FlowLayoutPanel7.Size = New System.Drawing.Size(620, 140)
+        Me.FlowLayoutPanel7.Size = New System.Drawing.Size(635, 140)
         Me.FlowLayoutPanel7.TabIndex = 18
         '
         'DeliveryRecieptsTile
@@ -716,9 +702,9 @@ Partial Class KMDI_MainFRM
         Me.MarketingPanel.HorizontalScrollbarBarColor = True
         Me.MarketingPanel.HorizontalScrollbarHighlightOnWheel = False
         Me.MarketingPanel.HorizontalScrollbarSize = 10
-        Me.MarketingPanel.Location = New System.Drawing.Point(629, 355)
+        Me.MarketingPanel.Location = New System.Drawing.Point(644, 355)
         Me.MarketingPanel.Name = "MarketingPanel"
-        Me.MarketingPanel.Size = New System.Drawing.Size(620, 170)
+        Me.MarketingPanel.Size = New System.Drawing.Size(635, 170)
         Me.MarketingPanel.TabIndex = 30
         Me.MarketingPanel.Theme = MetroFramework.MetroThemeStyle.Dark
         Me.MarketingPanel.VerticalScrollbarBarColor = True
@@ -735,7 +721,7 @@ Partial Class KMDI_MainFRM
         Me.FlowLayoutPanel5.Location = New System.Drawing.Point(0, 30)
         Me.FlowLayoutPanel5.Name = "FlowLayoutPanel5"
         Me.FlowLayoutPanel5.Padding = New System.Windows.Forms.Padding(66, 0, 0, 0)
-        Me.FlowLayoutPanel5.Size = New System.Drawing.Size(620, 140)
+        Me.FlowLayoutPanel5.Size = New System.Drawing.Size(635, 140)
         Me.FlowLayoutPanel5.TabIndex = 19
         '
         'MarketingRequestTile
@@ -802,7 +788,7 @@ Partial Class KMDI_MainFRM
         Me.CostingPanel.HorizontalScrollbarBarColor = True
         Me.CostingPanel.HorizontalScrollbarHighlightOnWheel = False
         Me.CostingPanel.HorizontalScrollbarSize = 10
-        Me.CostingPanel.Location = New System.Drawing.Point(1255, 3)
+        Me.CostingPanel.Location = New System.Drawing.Point(1285, 3)
         Me.CostingPanel.Name = "CostingPanel"
         Me.CostingPanel.Size = New System.Drawing.Size(620, 170)
         Me.CostingPanel.TabIndex = 31
@@ -881,9 +867,9 @@ Partial Class KMDI_MainFRM
         '
         Me.LoadingPBOX.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.LoadingPBOX.Image = Global.KMDI_Systems.My.Resources.Resources.loading_page
-        Me.LoadingPBOX.Location = New System.Drawing.Point(1050, 13)
+        Me.LoadingPBOX.Location = New System.Drawing.Point(1153, 35)
         Me.LoadingPBOX.Name = "LoadingPBOX"
-        Me.LoadingPBOX.Size = New System.Drawing.Size(117, 46)
+        Me.LoadingPBOX.Size = New System.Drawing.Size(79, 29)
         Me.LoadingPBOX.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.LoadingPBOX.TabIndex = 7
         Me.LoadingPBOX.TabStop = False
@@ -894,7 +880,6 @@ Partial Class KMDI_MainFRM
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1360, 760)
-        Me.ControlBox = False
         Me.Controls.Add(Me.DbNameCbox)
         Me.Controls.Add(Me.LoadingPBOX)
         Me.Controls.Add(Me.NicknameLbl)
@@ -902,6 +887,7 @@ Partial Class KMDI_MainFRM
         Me.Controls.Add(Me.FlowLayoutPanel1)
         Me.Controls.Add(Me.MainFRMBody_FLP)
         Me.Cursor = System.Windows.Forms.Cursors.Default
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "KMDI_MainFRM"
         Me.Resizable = False
         Me.Theme = MetroFramework.MetroThemeStyle.Dark
@@ -948,7 +934,6 @@ Partial Class KMDI_MainFRM
     Friend WithEvents NotifTile As MetroFramework.Controls.MetroTile
     Friend WithEvents UpdSecTile As MetroFramework.Controls.MetroTile
     Friend WithEvents MngeAccTile As MetroFramework.Controls.MetroTile
-    Friend WithEvents LogoutTile As MetroFramework.Controls.MetroTile
     Friend WithEvents AcctsLBL As MetroFramework.Controls.MetroLabel
     Friend WithEvents RecycleTile As MetroFramework.Controls.MetroTile
     Friend WithEvents SNOpanel As MetroFramework.Controls.MetroPanel

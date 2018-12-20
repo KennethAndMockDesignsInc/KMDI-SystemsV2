@@ -174,7 +174,7 @@ Public Class ContractRecordsFRM
                 Try
                     Select Case ActionTaken
                         Case "Search"
-                            If Read.HasRows = True Then
+                            If sql.ReadHasRows = True Then
                                 Grid_Display()
                             Else
                                 SearchFRM.Hide()

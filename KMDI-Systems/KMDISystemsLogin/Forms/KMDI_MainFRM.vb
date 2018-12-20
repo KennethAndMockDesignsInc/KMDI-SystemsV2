@@ -329,7 +329,6 @@ Public Class KMDI_MainFRM
     End Sub
 
     Private Sub KMDI_MainFRM_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
         TileAccessOfLoggedAccount = Nothing
         TileInvisibility()
         KMDI_ACCT_ACCESS_TB_READ_FOR_KMDI_MainFRM(AccountAutonum)
@@ -340,22 +339,13 @@ Public Class KMDI_MainFRM
         PanelVisibility()
         NicknameLbl.Text = "Hi I'm " & "" & nickname.ToUpper & "" & " at your Service!"
         PrevDBNameCboxSelectedIndex = DbNameCbox.SelectedIndex
-        Me.Width = 800
-        Me.Height = 600
-
+        Width = 800
+        Height = 600
     End Sub
 
     Private Sub MngeAccTile_Click(sender As Object, e As EventArgs) Handles MngeAccTile.Click
         ManageAccounts.Show()
         Me.Enabled = False
-    End Sub
-
-    Private Sub LogoutTile_Click(sender As Object, e As EventArgs) Handles LogoutTile.Click
-        If MetroFramework.MetroMessageBox.Show(Me, "Do you wish to proceed?", "Log Out", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Dispose()
-        Else
-            Exit Sub
-        End If
     End Sub
 
     Private Sub WinDoorMakerTile_Click(sender As Object, e As EventArgs) Handles WinDoorMakerTile.Click
@@ -438,9 +428,9 @@ Public Class KMDI_MainFRM
             If ex.Number = -2 Then
                 MetroFramework.MetroMessageBox.Show(Me, "Click ok to Reconnect", "Request Timeout", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             ElseIf ex.Number = 1232 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Please check internet connection", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MetroFramework.MetroMessageBox.Show(Me, "Please check internet connection", "Network Disconnected? kmdi_mainfrm 431", MessageBoxButtons.OK, MessageBoxIcon.Error)
             ElseIf ex.Number <> -2 And ex.Number <> 1232 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Contact the Programmers now", "You need some help?", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+                MetroFramework.MetroMessageBox.Show(Me, "Contact the system dev team now", "You need some help?", MessageBoxButtons.OK, MessageBoxIcon.Stop)
                 MetroFramework.MetroMessageBox.Show(Me, ex.Message)
             End If
         Catch ex2 As Exception
@@ -480,21 +470,18 @@ Public Class KMDI_MainFRM
 
     Private Sub KMDI_MainFRM_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         Try
-            sqlConnection.Close()
-            KMDISystemsLogin.UserName_TBX.Clear()
-            KMDISystemsLogin.Password_TBX.Clear()
-            KMDISystemsLogin.UserName_TBX.Select()
-            KMDISystemsLogin.Show()
-            KMDISystemsLogin.BringToFront()
-
-            For Each Form In My.Application.OpenForms
-                If Form.name.ToString <> "KMDISystemsLogin" Then
-                    'Form.hide()
-                    Form.Dispose()
-                End If
-            Next
-
-            Dispose()
+            If MetroFramework.MetroMessageBox.Show(Me, "Do you wish to proceed?", "Log Out", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+                KMDISystemsLogin.Show()
+                KMDISystemsLogin.BringToFront()
+                sqlConnection.Close()
+                KMDISystemsLogin.UserName_TBX.Clear()
+                KMDISystemsLogin.Password_TBX.Clear()
+                KMDISystemsLogin.UserName_TBX.Select()
+                'KMDISystemsLogin.CleanSlateProtocol()
+            Else
+                e.Cancel = True
+                Exit Sub
+            End If
         Catch ex As Exception
 
         End Try

@@ -476,6 +476,7 @@ Partial Class UpdateProjectAddressFRM
         Me.Controls.Add(Me.UnitNo_TBX)
         Me.Controls.Add(Me.UpdateAddress_LBL)
         Me.Controls.Add(Me.LoadingPB)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "UpdateProjectAddressFRM"

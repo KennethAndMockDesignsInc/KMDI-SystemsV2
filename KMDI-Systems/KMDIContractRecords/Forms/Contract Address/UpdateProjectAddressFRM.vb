@@ -9,10 +9,6 @@ Public Class UpdateProjectAddressFRM
 
     Public RequiredField As Boolean
 
-    'Public QueryFunction As String
-    'Public QueryBody As String
-    'Public QueryCondition As String
-
     Dim stp_Name As String
 
     Public UpdateProjectAddressBGW As BackgroundWorker = New BackgroundWorker
@@ -53,32 +49,9 @@ Public Class UpdateProjectAddressFRM
         Select Case ActionTaken
             Case "Search"
                 stp_Name = "stp_AddressUpdateSearch"
-                'QueryFunction = "SELECT [UNITNO]
-                      '                 ,[ESTABLISHMENT]
-                      '                 ,[NO]
-                      '                 ,[STREET]
-                      '                 ,[VILLAGE]
-                      '                 ,[BRGY_MUNICIPALITY]
-                      '                 ,[TOWN_DISTRICT]
-                   '                    ,[PROVINCE]
-                      '                 ,[AREA]"
-                'QueryBody = " FROM [A_NEW_PROJECT_DETAILS]"
-                'QueryCondition = " WHERE [PD_ID] = @SearchString"
             Case "Add"
             Case "Update"
                 stp_Name = "stp_AddressUpdate"
-                'QueryFunction = "UPDATE "
-                'QueryBody = " [A_NEW_PROJECT_DETAILS] SET [UNITNO] = @UnitNo,
-                '                                            [ESTABLISHMENT] = @Establishment,
-                '                                            [NO] = @HouseNo,
-                '                                            [STREET] = @Street,
-                '                                            [VILLAGE] = @Village,
-                '                                            [BRGY_MUNICIPALITY] = @Brgy,
-                '                                            [TOWN_DISTRICT] = @CityMunicipality,
-                '                                            [PROVINCE] = @Province,
-                '                                            [AREA] = @Area,
-                '                                            [FULLADD] = @FullAddress"
-                'QueryCondition = " WHERE [PD_ID] = @SearchString"
             Case "Delete"
         End Select
     End Sub
@@ -118,6 +91,7 @@ Public Class UpdateProjectAddressFRM
                                Province,
                                Area,
                                FullAddress)
+            MessageBox.Show(UnitNo)
 
         Catch ex As Exception
             MessageBox.Show(ex.ToString)
@@ -159,7 +133,7 @@ Public Class UpdateProjectAddressFRM
                 Try
                     Select Case ActionTaken
                         Case "Search"
-                            If Read.HasRows = True Then
+                            If sql.ReadHasRows = True Then
                                 UI_Display()
                             Else
                                 MetroMessageBox.Show(Me, "The system has encountered an error during recovery of address information. This page will now close.", "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Warning)
@@ -186,28 +160,15 @@ Public Class UpdateProjectAddressFRM
     Public Sub UI_Display()
         Select Case ActionTaken
             Case "Search"
-                With Read
-                    .Read()
-                    'UnitNo_TBX.Text = Replace(.Item("UNITNO").ToString, "`", "'")
-                    'Establishment_TBX.Text = Replace(.Item("ESTABLISHMENT").ToString, "`", "'")
-                    'HouseNo_TBX.Text = Replace(.Item("NO").ToString, "`", "'")
-                    'Street__Required_TBX.Text = Replace(.Item("STREET").ToString, "`", "'")
-                    'Village_TBX.Text = Replace(.Item("VILLAGE").ToString, "`", "'")
-                    'Brgy_TBX.Text = Replace(.Item("BRGY_MUNICIPALITY").ToString, "`", "'")
-                    'CityMunicipality__Required_TBX.Text = Replace(.Item("TOWN_DISTRICT").ToString, "`", "'")
-                    'Province__Required_TBX.Text = Replace(.Item("PROVINCE").ToString, "`", "'")
-                    'Area__Required_CBX.Text = Replace(.Item("AREA").ToString, "`", "'")
-                    UnitNo_TBX.Text = .Item(0).ToString
-                    Establishment_TBX.Text = .Item(1).ToString
-                    HouseNo_TBX.Text = .Item(2).ToString
-                    Street__Required_TBX.Text = .Item(3).ToString
-                    Village_TBX.Text = .Item(4).ToString
-                    Brgy_TBX.Text = .Item(5).ToString
-                    CityMunicipality__Required_TBX.Text = .Item(6).ToString
-                    Province__Required_TBX.Text = .Item(7).ToString
-                    Area__Required_CBX.Text = .Item(8).ToString
-                    .Close()
-                End With
+                UnitNo_TBX.Text = UnitNo
+                Establishment_TBX.Text = Establishment
+                HouseNo_TBX.Text = HouseNo
+                Street__Required_TBX.Text = Street
+                Village_TBX.Text = Village
+                Brgy_TBX.Text = Brgy
+                CityMunicipality__Required_TBX.Text = CityMunicipality
+                Province__Required_TBX.Text = Province
+                Area__Required_CBX.Text = Area
             Case "Add"
             Case "Update"
             Case "Delete"

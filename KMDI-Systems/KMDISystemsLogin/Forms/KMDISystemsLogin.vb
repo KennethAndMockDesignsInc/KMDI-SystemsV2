@@ -10,7 +10,6 @@ Public Class KMDISystemsLogin
             AddHandler LoginBGW.DoWork, AddressOf LoginBGW_DoWork
             AddHandler LoginBGW.RunWorkerCompleted, AddressOf LoginBGW_RunWorkerCompleted
             'AddHandler LoginBGW.ProgressChanged, AddressOf LoginBGW_ProgressChanged
-            KMDISystemsLogin_AccessPoint = "121.58.229.248,49107"
             MaximizeBox = False
             UserName_TBX.ForeColor = Color.FromArgb(17, 17, 17)
         Catch ex As Exception
@@ -116,7 +115,7 @@ Public Class KMDISystemsLogin
         Catch ex As SqlException
             'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
             If ex.Number = -2 Then
-                MetroMessageBox.Show(Me, "Click ok to Reconnect", "Request Timeout", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+                MetroMessageBox.Show(Me, "Click ok to reconnect", "Request Timeout", MessageBoxButtons.OK, MessageBoxIcon.Stop)
                 'LoginBtn.PerformClick()
             ElseIf ex.Number = 1232 Then
                 MetroMessageBox.Show(Me, "Please check internet connection", "Connection Error", MessageBoxButtons.OK, MessageBoxIcon.Stop)
@@ -199,6 +198,20 @@ Public Class KMDISystemsLogin
 
         Catch ex As Exception
             MetroMessageBox.Show(Me, ex.Message)
+        End Try
+    End Sub
+
+    Public Sub CleanSlateProtocol()
+        Try
+            For Each Form In My.Application.OpenForms
+                If Form.name.ToString <> "KMDISystemsLogin" Then
+                    Form.Dispose()
+                End If
+            Next
+
+            'KMDI_MainFRM.Dispose()
+        Catch ex As Exception
+
         End Try
     End Sub
 End Class

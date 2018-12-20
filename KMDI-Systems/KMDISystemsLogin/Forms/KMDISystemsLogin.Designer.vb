@@ -159,6 +159,7 @@ Partial Class KMDISystemsLogin
         Me.Controls.Add(Me.UserName_TBX)
         Me.Controls.Add(Me.PictureBox1)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MinimizeBox = False
         Me.Name = "KMDISystemsLogin"
         Me.Resizable = False

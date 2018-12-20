@@ -22,6 +22,7 @@ Partial Class ContractItemsFRM
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ContractItemsFRM))
         Me.ContractRecordsLBL = New MetroFramework.Controls.MetroLabel()
         Me.CIF_TCTRL = New MetroFramework.Controls.MetroTabControl()
         Me.FramesTAB = New System.Windows.Forms.TabPage()
@@ -117,7 +118,9 @@ Partial Class ContractItemsFRM
         Me.CIF_TCTRL.Controls.Add(Me.AddOnTAB)
         Me.CIF_TCTRL.Controls.Add(Me.SummaryTAB)
         Me.CIF_TCTRL.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.CIF_TCTRL.ItemSize = New System.Drawing.Size(35, 35)
         Me.CIF_TCTRL.Location = New System.Drawing.Point(23, 78)
+        Me.CIF_TCTRL.Multiline = True
         Me.CIF_TCTRL.Name = "CIF_TCTRL"
         Me.CIF_TCTRL.SelectedIndex = 0
         Me.CIF_TCTRL.Size = New System.Drawing.Size(1021, 622)
@@ -130,9 +133,9 @@ Partial Class ContractItemsFRM
         '
         Me.FramesTAB.AccessibleRole = System.Windows.Forms.AccessibleRole.None
         Me.FramesTAB.Controls.Add(Me.FBack_PNL)
-        Me.FramesTAB.Location = New System.Drawing.Point(4, 38)
+        Me.FramesTAB.Location = New System.Drawing.Point(4, 39)
         Me.FramesTAB.Name = "FramesTAB"
-        Me.FramesTAB.Size = New System.Drawing.Size(1013, 580)
+        Me.FramesTAB.Size = New System.Drawing.Size(1013, 579)
         Me.FramesTAB.TabIndex = 7
         Me.FramesTAB.Text = "FRAMES"
         '
@@ -145,7 +148,7 @@ Partial Class ContractItemsFRM
         Me.FBack_PNL.Dock = System.Windows.Forms.DockStyle.Fill
         Me.FBack_PNL.Location = New System.Drawing.Point(0, 0)
         Me.FBack_PNL.Name = "FBack_PNL"
-        Me.FBack_PNL.Size = New System.Drawing.Size(1013, 580)
+        Me.FBack_PNL.Size = New System.Drawing.Size(1013, 579)
         Me.FBack_PNL.TabIndex = 0
         '
         'FMid_PNL
@@ -154,7 +157,7 @@ Partial Class ContractItemsFRM
         Me.FMid_PNL.Dock = System.Windows.Forms.DockStyle.Fill
         Me.FMid_PNL.Location = New System.Drawing.Point(0, 37)
         Me.FMid_PNL.Name = "FMid_PNL"
-        Me.FMid_PNL.Size = New System.Drawing.Size(1011, 504)
+        Me.FMid_PNL.Size = New System.Drawing.Size(1011, 503)
         Me.FMid_PNL.TabIndex = 2
         '
         'FBot_PNL
@@ -163,7 +166,7 @@ Partial Class ContractItemsFRM
         Me.FBot_PNL.Controls.Add(Me.FSubPrice_LBL)
         Me.FBot_PNL.Controls.Add(Me.FSub_LBL)
         Me.FBot_PNL.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.FBot_PNL.Location = New System.Drawing.Point(0, 541)
+        Me.FBot_PNL.Location = New System.Drawing.Point(0, 540)
         Me.FBot_PNL.Margin = New System.Windows.Forms.Padding(0)
         Me.FBot_PNL.Name = "FBot_PNL"
         Me.FBot_PNL.Size = New System.Drawing.Size(1011, 37)
@@ -259,9 +262,9 @@ Partial Class ContractItemsFRM
         'ScreenTAB
         '
         Me.ScreenTAB.Controls.Add(Me.SBack_PNL)
-        Me.ScreenTAB.Location = New System.Drawing.Point(4, 38)
+        Me.ScreenTAB.Location = New System.Drawing.Point(4, 39)
         Me.ScreenTAB.Name = "ScreenTAB"
-        Me.ScreenTAB.Size = New System.Drawing.Size(1013, 580)
+        Me.ScreenTAB.Size = New System.Drawing.Size(1013, 579)
         Me.ScreenTAB.TabIndex = 1
         Me.ScreenTAB.Text = "SCREENS"
         '
@@ -273,7 +276,7 @@ Partial Class ContractItemsFRM
         Me.SBack_PNL.Dock = System.Windows.Forms.DockStyle.Fill
         Me.SBack_PNL.Location = New System.Drawing.Point(0, 0)
         Me.SBack_PNL.Name = "SBack_PNL"
-        Me.SBack_PNL.Size = New System.Drawing.Size(1013, 580)
+        Me.SBack_PNL.Size = New System.Drawing.Size(1013, 579)
         Me.SBack_PNL.TabIndex = 1
         '
         'SMid_PNL
@@ -282,7 +285,7 @@ Partial Class ContractItemsFRM
         Me.SMid_PNL.Dock = System.Windows.Forms.DockStyle.Fill
         Me.SMid_PNL.Location = New System.Drawing.Point(0, 0)
         Me.SMid_PNL.Name = "SMid_PNL"
-        Me.SMid_PNL.Size = New System.Drawing.Size(1011, 541)
+        Me.SMid_PNL.Size = New System.Drawing.Size(1011, 540)
         Me.SMid_PNL.TabIndex = 3
         '
         'SBot_PNL
@@ -292,7 +295,7 @@ Partial Class ContractItemsFRM
         Me.SBot_PNL.Controls.Add(Me.SSubPrice_LBL)
         Me.SBot_PNL.Controls.Add(Me.SSub_LBL)
         Me.SBot_PNL.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.SBot_PNL.Location = New System.Drawing.Point(0, 541)
+        Me.SBot_PNL.Location = New System.Drawing.Point(0, 540)
         Me.SBot_PNL.Margin = New System.Windows.Forms.Padding(0)
         Me.SBot_PNL.Name = "SBot_PNL"
         Me.SBot_PNL.Size = New System.Drawing.Size(1011, 37)
@@ -337,9 +340,9 @@ Partial Class ContractItemsFRM
         'GlassTAB
         '
         Me.GlassTAB.Controls.Add(Me.GBack_PNL)
-        Me.GlassTAB.Location = New System.Drawing.Point(4, 38)
+        Me.GlassTAB.Location = New System.Drawing.Point(4, 39)
         Me.GlassTAB.Name = "GlassTAB"
-        Me.GlassTAB.Size = New System.Drawing.Size(1013, 580)
+        Me.GlassTAB.Size = New System.Drawing.Size(1013, 579)
         Me.GlassTAB.TabIndex = 2
         Me.GlassTAB.Text = "GLASS"
         '
@@ -352,7 +355,7 @@ Partial Class ContractItemsFRM
         Me.GBack_PNL.Dock = System.Windows.Forms.DockStyle.Fill
         Me.GBack_PNL.Location = New System.Drawing.Point(0, 0)
         Me.GBack_PNL.Name = "GBack_PNL"
-        Me.GBack_PNL.Size = New System.Drawing.Size(1013, 580)
+        Me.GBack_PNL.Size = New System.Drawing.Size(1013, 579)
         Me.GBack_PNL.TabIndex = 1
         '
         'GMid_PNL
@@ -361,7 +364,7 @@ Partial Class ContractItemsFRM
         Me.GMid_PNL.Dock = System.Windows.Forms.DockStyle.Fill
         Me.GMid_PNL.Location = New System.Drawing.Point(0, 52)
         Me.GMid_PNL.Name = "GMid_PNL"
-        Me.GMid_PNL.Size = New System.Drawing.Size(1011, 489)
+        Me.GMid_PNL.Size = New System.Drawing.Size(1011, 488)
         Me.GMid_PNL.TabIndex = 2
         '
         'GBot_PNL
@@ -370,7 +373,7 @@ Partial Class ContractItemsFRM
         Me.GBot_PNL.Controls.Add(Me.GSubTotal_LBL)
         Me.GBot_PNL.Controls.Add(Me.GSub_LBL)
         Me.GBot_PNL.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.GBot_PNL.Location = New System.Drawing.Point(0, 541)
+        Me.GBot_PNL.Location = New System.Drawing.Point(0, 540)
         Me.GBot_PNL.Margin = New System.Windows.Forms.Padding(0)
         Me.GBot_PNL.Name = "GBot_PNL"
         Me.GBot_PNL.Size = New System.Drawing.Size(1011, 37)
@@ -528,9 +531,9 @@ Partial Class ContractItemsFRM
         'FilmTAB
         '
         Me.FilmTAB.Controls.Add(Me.FilmBack_PNL)
-        Me.FilmTAB.Location = New System.Drawing.Point(4, 38)
+        Me.FilmTAB.Location = New System.Drawing.Point(4, 39)
         Me.FilmTAB.Name = "FilmTAB"
-        Me.FilmTAB.Size = New System.Drawing.Size(1013, 580)
+        Me.FilmTAB.Size = New System.Drawing.Size(1013, 579)
         Me.FilmTAB.TabIndex = 3
         Me.FilmTAB.Text = "FILMS"
         '
@@ -543,7 +546,7 @@ Partial Class ContractItemsFRM
         Me.FilmBack_PNL.Dock = System.Windows.Forms.DockStyle.Fill
         Me.FilmBack_PNL.Location = New System.Drawing.Point(0, 0)
         Me.FilmBack_PNL.Name = "FilmBack_PNL"
-        Me.FilmBack_PNL.Size = New System.Drawing.Size(1013, 580)
+        Me.FilmBack_PNL.Size = New System.Drawing.Size(1013, 579)
         Me.FilmBack_PNL.TabIndex = 2
         '
         'FilmMid_PNL
@@ -552,7 +555,7 @@ Partial Class ContractItemsFRM
         Me.FilmMid_PNL.Dock = System.Windows.Forms.DockStyle.Fill
         Me.FilmMid_PNL.Location = New System.Drawing.Point(0, 37)
         Me.FilmMid_PNL.Name = "FilmMid_PNL"
-        Me.FilmMid_PNL.Size = New System.Drawing.Size(1011, 504)
+        Me.FilmMid_PNL.Size = New System.Drawing.Size(1011, 503)
         Me.FilmMid_PNL.TabIndex = 2
         '
         'FilmBot_PNL
@@ -561,7 +564,7 @@ Partial Class ContractItemsFRM
         Me.FilmBot_PNL.Controls.Add(Me.FilmSubTotal_LBL)
         Me.FilmBot_PNL.Controls.Add(Me.FilmSub_LBL)
         Me.FilmBot_PNL.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.FilmBot_PNL.Location = New System.Drawing.Point(0, 541)
+        Me.FilmBot_PNL.Location = New System.Drawing.Point(0, 540)
         Me.FilmBot_PNL.Margin = New System.Windows.Forms.Padding(0)
         Me.FilmBot_PNL.Name = "FilmBot_PNL"
         Me.FilmBot_PNL.Size = New System.Drawing.Size(1011, 37)
@@ -703,26 +706,26 @@ Partial Class ContractItemsFRM
         '
         'MechanismTAB
         '
-        Me.MechanismTAB.Location = New System.Drawing.Point(4, 38)
+        Me.MechanismTAB.Location = New System.Drawing.Point(4, 39)
         Me.MechanismTAB.Name = "MechanismTAB"
-        Me.MechanismTAB.Size = New System.Drawing.Size(1013, 580)
+        Me.MechanismTAB.Size = New System.Drawing.Size(1013, 579)
         Me.MechanismTAB.TabIndex = 4
         Me.MechanismTAB.Text = "MECHANISMS"
         '
         'AddOnTAB
         '
-        Me.AddOnTAB.Location = New System.Drawing.Point(4, 38)
+        Me.AddOnTAB.Location = New System.Drawing.Point(4, 39)
         Me.AddOnTAB.Name = "AddOnTAB"
-        Me.AddOnTAB.Size = New System.Drawing.Size(1013, 580)
+        Me.AddOnTAB.Size = New System.Drawing.Size(1013, 579)
         Me.AddOnTAB.TabIndex = 5
         Me.AddOnTAB.Text = "ADD-ONS"
         '
         'SummaryTAB
         '
         Me.SummaryTAB.Font = New System.Drawing.Font("Segoe UI", 9.75!)
-        Me.SummaryTAB.Location = New System.Drawing.Point(4, 38)
+        Me.SummaryTAB.Location = New System.Drawing.Point(4, 39)
         Me.SummaryTAB.Name = "SummaryTAB"
-        Me.SummaryTAB.Size = New System.Drawing.Size(1013, 580)
+        Me.SummaryTAB.Size = New System.Drawing.Size(1013, 579)
         Me.SummaryTAB.TabIndex = 6
         Me.SummaryTAB.Text = "SUMMARY"
         '
@@ -758,6 +761,7 @@ Partial Class ContractItemsFRM
         Me.Controls.Add(Me.CIF_TCTRL)
         Me.Controls.Add(Me.ContractRecordsLBL)
         Me.Font = New System.Drawing.Font("Segoe UI", 9.75!)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.MinimumSize = New System.Drawing.Size(1024, 726)
         Me.Name = "ContractItemsFRM"
