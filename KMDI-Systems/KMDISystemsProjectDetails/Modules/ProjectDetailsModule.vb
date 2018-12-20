@@ -207,6 +207,44 @@ Module ProjectDetailsModule
         End Using
     End Sub
 
+    Public Sub Query_Select_STP(ByVal SearchString As String,
+                                Optional StoredProcedureName As String = "")
+
+        sqlDataSet = New DataSet
+        sqlDataAdapter = New SqlDataAdapter
+        sqlBindingSource = New BindingSource
+
+        sqlDataSet.Clear()
+        sqlBindingSource.Clear()
+
+        Using sqlcon As New SqlConnection(sqlcnstr)
+            sqlcon.Open()
+            Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
+                transaction = sqlcon.BeginTransaction(StoredProcedureName)
+                sqlCommand.Connection = sqlcon
+                sqlCommand.Transaction = transaction
+                sqlCommand.CommandText = StoredProcedureName
+                sqlCommand.CommandType = CommandType.StoredProcedure
+
+                Select Case QUERY_INSTANCE
+                    Case "Loading_using_SearchString"
+                        sqlCommand.Parameters.AddWithValue("@SearchString", "%" & SearchString & "%")
+                    Case "Loading_using_EqualSearch"
+                        is_SalesJobOrder_bool = True
+                        sqlCommand.Parameters.AddWithValue("@EqualSearch", SearchString)
+                End Select
+
+                transaction.Commit()
+                sql_Transaction_result = "Committed"
+
+                sqlDataAdapter.SelectCommand = sqlCommand
+                sqlDataAdapter.Fill(sqlDataSet, "QUERY_DETAILS")
+                sqlBindingSource.DataSource = sqlDataSet
+                sqlBindingSource.DataMember = "QUERY_DETAILS"
+            End Using
+        End Using
+    End Sub
+
     Public QUERY_SELECT_WITH_READER_VAL As String
     Public QUERY_SELECT_WITH_READER_bool As Boolean
     Public Sub QUERY_SELECT_WITH_READER(ByVal SearchString As String,
@@ -527,65 +565,71 @@ Module ProjectDetailsModule
                                        ByVal PROJECT_LABEL As String,
                                        ByVal PERTINENT_DETAILS As String,
                                        ByVal PD_ID As Integer)
-        Query = "BEGIN TRANSACTION
-                 Begin Try
-                    
-                    UPDATE	A_NEW_CONTRACT_DETAILS
-                    SET     JOB_ORDER_NO = @JOB_ORDER_NO,
-                            PARENTJONO = @PARENTJONO
-                    WHERE	ID = @C_ID AND JOB_ORDER_NO = ''
+        'Query = "BEGIN TRANSACTION
+        '         Begin Try
 
-                    UPDATE	A_NEW_CONTRACT_DETAILS
-                    SET		SUB_JO = @SUB_JO,
-		                    JOB_ORDER_NO_DATE = @JOB_ORDER_NO_DATE,
-		                    FILE_LABEL_AS = @FILE_LABEL_AS,
-		                    JOB_ORDER_DESC = @JOB_ORDER_DESC,
-		                    JO_ATTACHMENT = @JO_ATTACHMENT,
-		                    SPECIAL_COMMENTS = @SPECIAL_COMMENTS,
-		                    BLANK_PAGE = @BLANK_PAGE,
-		                    CONTRACT_VAT_PROFILE = @CONTRACT_VAT_PROFILE ,
-		                    PAYMENT_TERMS = @PAYMENT_TERMS,
-		                    PAYMENT_MODE = @PAYMENT_MODE,
-		                    DOWN_PAYMENT = @DOWN_PAYMENT,
-		                    PAYMENT_DATE = @PAYMENT_DATE,
-		                    ADDRESS_BILLING = @ADDRESS_BILLING,
-		                    ADDRESS_TO = @ADDRESS_TO,
-		                    ESTD_DEL_DATE = @ESTD_DEL_DATE,
-		                    MODE_OF_DEL = @MODE_OF_DEL,
-		                    MODE_OF_SHIP = @MODE_OF_SHIP,
-		                    OUT_OF_TOWN_CHARGES = @OUT_OF_TOWN_CHARGES,
-		                    DEL_GOODS = @DEL_GOODS,
-		                    DELGOODS_TO = @DELGOODS_TO,
-		                    OTHER_PERTINENT_INFO = @OTHER_PERTINENT_INFO,
-                            CONTRACT_TYPE = @CONTRACT_TYPE,
-                            BAL_OF_DP = @BAL_OF_DP
-                    WHERE	ID = @C_ID
+        '            UPDATE	A_NEW_CONTRACT_DETAILS
+        '            SET     JOB_ORDER_NO = @JOB_ORDER_NO,
+        '                    PARENTJONO = @PARENTJONO
+        '            WHERE	ID = @C_ID AND JOB_ORDER_NO = ''
 
-                    UPDATE	A_NEW_CLIENT_DETAILS
-                    SET		COMPANY_NAME = @COMPANY_NAME 
-                    WHERE	CUST_ID = @CUST_ID
+        '            UPDATE	A_NEW_CONTRACT_DETAILS
+        '            SET		SUB_JO = @SUB_JO,
+        '              JOB_ORDER_NO_DATE = @JOB_ORDER_NO_DATE,
+        '              FILE_LABEL_AS = @FILE_LABEL_AS,
+        '              JOB_ORDER_DESC = @JOB_ORDER_DESC,
+        '              JO_ATTACHMENT = @JO_ATTACHMENT,
+        '              SPECIAL_COMMENTS = @SPECIAL_COMMENTS,
+        '              BLANK_PAGE = @BLANK_PAGE,
+        '              CONTRACT_VAT_PROFILE = @CONTRACT_VAT_PROFILE ,
+        '              PAYMENT_TERMS = @PAYMENT_TERMS,
+        '              PAYMENT_MODE = @PAYMENT_MODE,
+        '              DOWN_PAYMENT = @DOWN_PAYMENT,
+        '              PAYMENT_DATE = @PAYMENT_DATE,
+        '              ADDRESS_BILLING = @ADDRESS_BILLING,
+        '              ADDRESS_TO = @ADDRESS_TO,
+        '              ESTD_DEL_DATE = @ESTD_DEL_DATE,
+        '              MODE_OF_DEL = @MODE_OF_DEL,
+        '              MODE_OF_SHIP = @MODE_OF_SHIP,
+        '              OUT_OF_TOWN_CHARGES = @OUT_OF_TOWN_CHARGES,
+        '              DEL_GOODS = @DEL_GOODS,
+        '              DELGOODS_TO = @DELGOODS_TO,
+        '              OTHER_PERTINENT_INFO = @OTHER_PERTINENT_INFO,
+        '                    CONTRACT_TYPE = @CONTRACT_TYPE,
+        '                    BAL_OF_DP = @BAL_OF_DP
+        '            WHERE	ID = @C_ID
 
-                    UPDATE	DBO.A_NEW_PROJECT_DETAILS
-                    SET		PROJECT_LABEL = @PROJECT_LABEL,
-		                    PERTINENT_DETAILS = @PERTINENT_DETAILS
-                    WHERE	PD_ID = @PD_ID
+        '            UPDATE	A_NEW_CLIENT_DETAILS
+        '            SET		COMPANY_NAME = @COMPANY_NAME 
+        '            WHERE	CUST_ID = @CUST_ID
 
-                 SELECT 
-										ERROR_NUMBER() AS ErrorNumber  
-									   ,ERROR_MESSAGE() AS ErrorMessage
-                                        Commit Transaction
+        '            UPDATE	DBO.A_NEW_PROJECT_DETAILS
+        '            SET		PROJECT_LABEL = @PROJECT_LABEL,
+        '              PERTINENT_DETAILS = @PERTINENT_DETAILS
+        '            WHERE	PD_ID = @PD_ID
 
-                 End try
+        '         SELECT 
+        '		ERROR_NUMBER() AS ErrorNumber  
+        '	   ,ERROR_MESSAGE() AS ErrorMessage
+        '                                Commit Transaction
 
-                Begin Catch
-                SELECT   
-                ERROR_NUMBER() AS ErrorNumber,
-                ERROR_MESSAGE() AS ErrorMessage
-                ROLLBACK TRANSACTION
-                End Catch"
+        '         End try
+
+        '        Begin Catch
+        '        SELECT   
+        '        ERROR_NUMBER() AS ErrorNumber,
+        '        ERROR_MESSAGE() AS ErrorMessage
+        '        ROLLBACK TRANSACTION
+        '        End Catch"
         Using sqlcon As New SqlConnection(sqlcnstr)
             sqlcon.Open()
-            Using sqlCommand As New SqlCommand(Query, sqlcon)
+            Using sqlcmd As SqlCommand = sqlcon.CreateCommand()
+                transaction = sqlcon.BeginTransaction("UPDATE_SALES_JOB_ORDER")
+                sqlcmd.Connection = sqlcon
+                sqlcmd.Transaction = transaction
+                sqlcmd.CommandText = "PD_stp_SalesJobOrder"
+                sqlcmd.CommandType = CommandType.StoredProcedure
+
                 sqlCommand.Parameters.AddWithValue("@JOB_ORDER_NO", JOB_ORDER_NO)
                 sqlCommand.Parameters.AddWithValue("@PARENTJONO", JOB_ORDER_NO)
                 sqlCommand.Parameters.AddWithValue("@SUB_JO", SUB_JO)
@@ -617,14 +661,55 @@ Module ProjectDetailsModule
                 sqlCommand.Parameters.AddWithValue("@PROJECT_LABEL", PROJECT_LABEL)
                 sqlCommand.Parameters.AddWithValue("@PERTINENT_DETAILS", PERTINENT_DETAILS)
                 sqlCommand.Parameters.AddWithValue("@PD_ID", PD_ID)
-                Using read As SqlDataReader = sqlCommand.ExecuteReader
-                    While read.Read
-                        ErrorMsg = read.Item("ErrorMessage").ToString
-                        ErrorNum = read.Item("ErrorNumber").ToString
-                    End While
-                End Using
+                sqlcmd.ExecuteNonQuery()
+
+                transaction.Commit()
+                sql_Transaction_result = "Committed"
             End Using
         End Using
+
+        'Using sqlcon As New SqlConnection(sqlcnstr)
+        '    sqlcon.Open()
+        '    Using sqlCommand As New SqlCommand(Query, sqlcon)
+        '        sqlCommand.Parameters.AddWithValue("@JOB_ORDER_NO", JOB_ORDER_NO)
+        '        sqlCommand.Parameters.AddWithValue("@PARENTJONO", JOB_ORDER_NO)
+        '        sqlCommand.Parameters.AddWithValue("@SUB_JO", SUB_JO)
+        '        sqlCommand.Parameters.AddWithValue("@JOB_ORDER_NO_DATE", JOB_ORDER_NO_DATE)
+        '        sqlCommand.Parameters.AddWithValue("@FILE_LABEL_AS", FILE_LABEL_AS)
+        '        sqlCommand.Parameters.AddWithValue("@JOB_ORDER_DESC", JOB_ORDER_DESC)
+        '        sqlCommand.Parameters.AddWithValue("@JO_ATTACHMENT", JO_ATTACHMENT)
+        '        sqlCommand.Parameters.AddWithValue("@SPECIAL_COMMENTS", SPECIAL_COMMENTS)
+        '        sqlCommand.Parameters.AddWithValue("@BLANK_PAGE", BLANK_PAGE)
+        '        sqlCommand.Parameters.AddWithValue("@CONTRACT_VAT_PROFILE", CONTRACT_VAT_PROFILE)
+        '        sqlCommand.Parameters.AddWithValue("@PAYMENT_TERMS", PAYMENT_TERMS)
+        '        sqlCommand.Parameters.AddWithValue("@PAYMENT_MODE", PAYMENT_MODE)
+        '        sqlCommand.Parameters.AddWithValue("@DOWN_PAYMENT", DOWN_PAYMENT)
+        '        sqlCommand.Parameters.AddWithValue("@PAYMENT_DATE", PAYMENT_DATE)
+        '        sqlCommand.Parameters.AddWithValue("@ADDRESS_BILLING", ADDRESS_BILLING)
+        '        sqlCommand.Parameters.AddWithValue("@ADDRESS_TO", ADDRESS_TO)
+        '        sqlCommand.Parameters.AddWithValue("@ESTD_DEL_DATE", ESTD_DEL_DATE)
+        '        sqlCommand.Parameters.AddWithValue("@MODE_OF_DEL", MODE_OF_DEL)
+        '        sqlCommand.Parameters.AddWithValue("@MODE_OF_SHIP", MODE_OF_SHIP)
+        '        sqlCommand.Parameters.AddWithValue("@OUT_OF_TOWN_CHARGES", OUT_OF_TOWN_CHARGES)
+        '        sqlCommand.Parameters.AddWithValue("@DEL_GOODS", DEL_GOODS)
+        '        sqlCommand.Parameters.AddWithValue("@DELGOODS_TO", DELGOODS_TO)
+        '        sqlCommand.Parameters.AddWithValue("@OTHER_PERTINENT_INFO", OTHER_PERTINENT_INFO)
+        '        sqlCommand.Parameters.AddWithValue("@CONTRACT_TYPE", CONTRACT_TYPE)
+        '        sqlCommand.Parameters.AddWithValue("@BAL_OF_DP", BAL_OF_DP)
+        '        sqlCommand.Parameters.AddWithValue("@C_ID", C_ID)
+        '        sqlCommand.Parameters.AddWithValue("@COMPANY_NAME", COMPANY_NAME)
+        '        sqlCommand.Parameters.AddWithValue("@CUST_ID", CUST_ID)
+        '        sqlCommand.Parameters.AddWithValue("@PROJECT_LABEL", PROJECT_LABEL)
+        '        sqlCommand.Parameters.AddWithValue("@PERTINENT_DETAILS", PERTINENT_DETAILS)
+        '        sqlCommand.Parameters.AddWithValue("@PD_ID", PD_ID)
+        '        Using read As SqlDataReader = sqlCommand.ExecuteReader
+        '            While read.Read
+        '                ErrorMsg = read.Item("ErrorMessage").ToString
+        '                ErrorNum = read.Item("ErrorNumber").ToString
+        '            End While
+        '        End Using
+        '    End Using
+        'End Using
     End Sub
 
     Public Sub PD_UpdateEmp_Operations(ByVal FormName As Form,
@@ -1098,7 +1183,7 @@ DECLARE @CQN_STATUS AS BIT
         Using sqlcon As New SqlConnection(sqlcnstr)
             sqlcon.Open()
             Using sqlcmd As SqlCommand = sqlcon.CreateCommand()
-                transaction = sqlcon.BeginTransaction("SampleTransaction")
+                transaction = sqlcon.BeginTransaction("INSERT_NEWPROJECT")
                 sqlcmd.Connection = sqlcon
                 sqlcmd.Transaction = transaction
                 sqlcmd.CommandText = "PD_stp_NewProject"
@@ -1145,74 +1230,5 @@ DECLARE @CQN_STATUS AS BIT
         End Using
 
     End Sub
-
-    Public Sub ExecuteSqlTransaction(Optional Params As String = "")
-        Using sqlcon As New SqlConnection(sqlcnstr)
-            sqlcon.Open()
-            Using sqlcmd As SqlCommand = sqlcon.CreateCommand()
-
-                'Dim command As SqlCommand = sqlcon.CreateCommand()
-
-                ' Start a local transaction
-                transaction = sqlcon.BeginTransaction("SampleTransaction")
-
-                ' Must assign both transaction object and connection
-                ' to Command object for a pending local transaction.
-                sqlcmd.Connection = sqlcon
-                sqlcmd.Transaction = transaction
-
-                'Try
-                sqlcmd.CommandText = "PD_stp_NewProject"
-                sqlcmd.CommandType = CommandType.StoredProcedure
-
-                sqlcmd.Parameters.AddWithValue("@PROJECT_SOURCE", Params)
-                sqlcmd.Parameters.AddWithValue("@PROJECT_CLASSIFICATION", Params)
-                sqlcmd.Parameters.AddWithValue("@COMPETITORS", Params)
-                sqlcmd.Parameters.AddWithValue("@UNITNO", Params)
-                sqlcmd.Parameters.AddWithValue("@ESTABLISHMENT", Params)
-                sqlcmd.Parameters.AddWithValue("@NO", Params)
-                sqlcmd.Parameters.AddWithValue("@STREET", Params)
-                sqlcmd.Parameters.AddWithValue("@VILLAGE", Params)
-                sqlcmd.Parameters.AddWithValue("@BRGY_MUNICIPALITY", Params)
-                sqlcmd.Parameters.AddWithValue("@TOWN_DISTRICT", Params)
-                sqlcmd.Parameters.AddWithValue("@PROVINCE", Params)
-                sqlcmd.Parameters.AddWithValue("@AREA", Params)
-                sqlcmd.Parameters.AddWithValue("@FULLADD", Params)
-
-                sqlcmd.Parameters.AddWithValue("@CLIENTS_NAME", Params)
-                sqlcmd.Parameters.AddWithValue("@OWNERS_NAME", Params)
-                sqlcmd.Parameters.AddWithValue("@CLIENTS_CONTACT_NO", Params)
-                sqlcmd.Parameters.AddWithValue("@CLIENTS_CONTACT_OFFICE", Params)
-                sqlcmd.Parameters.AddWithValue("@CLIENTS_CONTACT_MOBILE", Params)
-                sqlcmd.Parameters.AddWithValue("@CLIENTS_EMAIL_ADD", Params)
-                sqlcmd.Parameters.AddWithValue("@COMPANY_NAME", Params)
-
-                sqlcmd.ExecuteNonQuery()
-
-                ' Attempt to commit the transaction.
-                transaction.Commit()
-                sql_Transaction_result = "Committed"
-                MsgBox("Both records are written to database.")
-
-                'Catch ex As Exception
-                '    Console.WriteLine("Commit Exception Type: {0}", ex.GetType())
-                '    Console.WriteLine("  Message: {0}", ex.Message)
-
-                '    ' Attempt to roll back the transaction.
-                '    Try
-                '        transaction.Rollback()
-
-                '    Catch ex2 As Exception
-                '        ' This catch block will handle any errors that may have occurred
-                '        ' on the server that would cause the rollback to fail, such as
-                '        ' a closed connection.
-                '        Console.WriteLine("Rollback Exception Type: {0}", ex2.GetType())
-                '        Console.WriteLine("  Message: {0}", ex2.Message)
-                '    End Try
-                'End Try
-            End Using
-        End Using
-    End Sub
-
 
 End Module

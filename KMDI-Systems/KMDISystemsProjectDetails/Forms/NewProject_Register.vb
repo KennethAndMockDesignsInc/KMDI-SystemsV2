@@ -497,9 +497,9 @@ Public Class NewProject_Register
     End Sub
 
     Private Sub Insert_BGW_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles Insert_BGW.RunWorkerCompleted
-        'Try
+        Try
 
-        If e.Error IsNot Nothing Then
+            If e.Error IsNot Nothing Then
                 '' if BackgroundWorker terminated due to error
                 MetroFramework.MetroMessageBox.Show(Me, "Please Restart!", "Error Occured", MessageBoxButtons.OK, MessageBoxIcon.Error)
             ElseIf e.Cancelled = True Then
@@ -535,11 +535,11 @@ Public Class NewProject_Register
                 Else
                     MetroFramework.MetroMessageBox.Show(Me, "Transaction failed", "Contact the Developers", MessageBoxButtons.OK, MessageBoxIcon.Error)
 
-                    Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
-                    Log_File.WriteLine(vbCrLf & "Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-                               "SQL Transaction Error Number: " & sql_Err_no & vbCrLf &
-                               "SQL Transaction Error Message: " & sql_Err_msg & vbCrLf)
-                    Log_File.Close()
+                    'Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+                    'Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                    '           "SQL Transaction Error Number: " & sql_Err_no & vbCrLf &
+                    '           "SQL Transaction Error Message: " & sql_Err_msg & vbCrLf)
+                    'Log_File.Close()
 
                 End If
                 sql_Err_msg = Nothing
@@ -573,9 +573,9 @@ Public Class NewProject_Register
 
             End If
 
-        'Catch ex As Exception
-        '    MetroFramework.MetroMessageBox.Show(Me, ex.Message)
-        'End Try
+        Catch ex As Exception
+            MessageBox.Show(Me, ex.Message)
+        End Try
     End Sub
 
     Dim Proj_ClassP1, Proj_ClassP2, P1plusP2 As String

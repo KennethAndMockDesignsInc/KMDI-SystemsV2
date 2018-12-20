@@ -1,14 +1,16 @@
-﻿Imports System.Data.SqlClient
+﻿Imports System.ComponentModel
+Imports System.Data.SqlClient
 
 Public Class PD_SalesJobOrder
 
     Dim ClientsName As String
+    Public PD_SalesJobOrder_BGW As BackgroundWorker = New BackgroundWorker
 
     Sub Start_OnLoadBGW()
-        If OnLoad_BGW.IsBusy <> True Then
+        If PD_SalesJobOrder_BGW.IsBusy <> True Then
             LoadingPbox.Visible = True
             SalesJobOrder_Pnl.Visible = False
-            OnLoad_BGW.RunWorkerAsync()
+            PD_SalesJobOrder_BGW.RunWorkerAsync()
         Else
             MetroFramework.MetroMessageBox.Show(Me, "Please Wait!", "Loading", MessageBoxButtons.OK, MessageBoxIcon.Stop)
         End If
@@ -16,11 +18,13 @@ Public Class PD_SalesJobOrder
     Sub onformLoad()
         Reset_labels()
         BGW_Func_turn = "Onload"
-        QUERY_INSTANCE = "Loading_using_EqualSearch"
-        QueryBUILD = QuerySearchHeadArrays(5) & QueryMidArrays(4) & QueryConditionArrays(2)
         Start_OnLoadBGW()
     End Sub
     Private Sub PD_SalesJobOrder_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        PD_SalesJobOrder_BGW.WorkerSupportsCancellation = True
+        PD_SalesJobOrder_BGW.WorkerReportsProgress = True
+        AddHandler PD_SalesJobOrder_BGW.DoWork, AddressOf PD_SalesJobOrder_BGW_DoWork
+        AddHandler PD_SalesJobOrder_BGW.RunWorkerCompleted, AddressOf PD_SalesJobOrder_BGW_RunWorkerCompleted
         onformLoad()
     End Sub
 
@@ -61,53 +65,80 @@ Public Class PD_SalesJobOrder
 
     Dim newInstanceOfThisFrm As PD_SalesJobOrder
 
-    Private Sub OnLoad_BGW_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles OnLoad_BGW.DoWork
+    Private Sub PD_SalesJobOrder_BGW_DoWork(sender As Object, e As DoWorkEventArgs)
         Try
-            If BGW_Func_turn = "Onload" Then
-                Query_Select(SearchStr)
-            ElseIf BGW_Func_turn = "2ndload" Then
-                QUERY_INSTANCE = "Loading_using_EqualSearch"
-                QueryBUILD = QuerySearchHeadArrays(6) & QueryMidArrays(5) & QueryConditionArrays(1) & " AND OWN.[CLIENT_STATUS] = 'Current Owner'"
-                Query_Select(PD_ID)
-            ElseIf BGW_Func_turn = "3rdload" Then
-                QUERY_INSTANCE = "Loading_using_EqualSearch"
-                QueryBUILD = QuerySearchHeadArrays(6) & QueryMidArrays(5) & QueryConditionArrays(1) & " AND OWN.[CLIENT_STATUS] = 'Previous Owner'"
-                Query_Select(PD_ID)
-            ElseIf BGW_Func_turn = "AEIC_LBL_POPULATE" Then
-                QUERY_INSTANCE = "Loading_using_EqualSearch"
-                QueryBUILD = "SELECT AE_TBL.FULLNAME FROM (" & QuerySearchHeadArrays(4) &
-                    QueryMidArrays(3) & " ) AS AE_TBL
-                    JOIN A_NEW_PROJECT_DETAILS [PD]
-                    ON	AE_TBL.PD_ID_REF = PD.PD_ID
-                    WHERE PD_ID = @EqualSearch AND AE_TBL.[AE_STATUS] = 1 AND PD.[PD_STATUS] = 1"
-                Query_Select(PD_ID)
-            ElseIf BGW_Func_turn = "SEARCH_FOR_SUB_JO" Then
-                QUERY_INSTANCE = "Read_using_SearchString"
-                QueryBUILD = "SELECT SUB_JO FROM [A_NEW_CONTRACT_DETAILS] WHERE SUB_JO = @SearchString"
-                QUERY_SELECT_WITH_READER(JoRefNo, BGW_Func_turn)
-            ElseIf BGW_Func_turn = "Update_Me" Then
-                PD_SalesJobOrder_Update(Sub_Jo, JoRefNo, JoDate, FileLabelAs,
-                                        JoDesc, JoAttach, Remarks, BlankPage,
-                                        VatProfile, PaymentTerms, PaymentMode, DownPayment, PaymentDate,
-                                        AddressTo_cmbox, AddressTo_txbox, EstdDelDate, ModeOfDel,
-                                        ModeOfShip, OutOfTown, DelGoodsTo, DelAddress, SpInstr, ContractType,
-                                        BalOfDP, C_ID, CompanyName_txbox, CUST_ID, ProjectLabel, PertDetails, PD_ID)
-            End If
+            Select Case BGW_Func_turn
+                Case "Onload"
+                    QUERY_INSTANCE = "Loading_using_EqualSearch"
+                    Query_Select_STP(SearchStr, "PD_stp_SalesJobOrder_CTDnPD")
+                Case "2ndload"
+                    QUERY_INSTANCE = "Loading_using_EqualSearch"
+                    Query_Select_STP(PD_ID, "PD_stp_SalesJobOrder_CLIENTS")
+                Case "AEIC_LBL_POPULATE"
+                    QUERY_INSTANCE = "Loading_using_EqualSearch"
+                    Query_Select_STP(PD_ID, "PD_stp_SalesJobOrder_AEIC")
+            End Select
+            'If BGW_Func_turn = "Onload" Then
+            '    QUERY_INSTANCE = "Loading_using_EqualSearch"
+            'QueryBUILD = QuerySearchHeadArrays(5) & QueryMidArrays(4) & QueryConditionArrays(2)
+            'Query_Select_STP(SearchStr, "PD_stp_SalesJobOrder_CTDnPD")
+            'ElseIf BGW_Func_turn = "2ndload" Then
+            '    QUERY_INSTANCE = "Loading_using_EqualSearch"
+            'QueryBUILD = QuerySearchHeadArrays(6) & QueryMidArrays(5) & QueryConditionArrays(1) & " AND OWN.[CLIENT_STATUS] = 'Current Owner'"
+            'Query_Select_STP(PD_ID, "PD_stp_SalesJobOrder_CLIENTS")
+            'ElseIf BGW_Func_turn = "3rdload" Then
+            '    QUERY_INSTANCE = "Loading_using_EqualSearch"
+            '    QueryBUILD = QuerySearchHeadArrays(6) & QueryMidArrays(5) & QueryConditionArrays(1) & " AND OWN.[CLIENT_STATUS] = 'Previous Owner'"
+            '    Query_Select(PD_ID)
+            'ElseIf BGW_Func_turn = "AEIC_LBL_POPULATE" Then
+            '    QUERY_INSTANCE = "Loading_using_EqualSearch"
+            '    QueryBUILD = "SELECT AE_TBL.FULLNAME FROM (" & QuerySearchHeadArrays(4) &
+            '        QueryMidArrays(3) & " ) AS AE_TBL
+            '        JOIN A_NEW_PROJECT_DETAILS [PD]
+            '        ON	AE_TBL.PD_ID_REF = PD.PD_ID
+            '        WHERE PD_ID = @EqualSearch AND AE_TBL.[AE_STATUS] = 1 AND PD.[PD_STATUS] = 1"
+            '    Query_Select(PD_ID)
+            'ElseIf BGW_Func_turn = "SEARCH_FOR_SUB_JO" Then
+            '    QUERY_INSTANCE = "Read_using_SearchString"
+            '    QueryBUILD = "SELECT SUB_JO FROM [A_NEW_CONTRACT_DETAILS] WHERE SUB_JO = @SearchString"
+            '    QUERY_SELECT_WITH_READER(JoRefNo, BGW_Func_turn)
+            'ElseIf BGW_Func_turn = "Update_Me" Then
+            '    PD_SalesJobOrder_Update(Sub_Jo, JoRefNo, JoDate, FileLabelAs,
+            '                            JoDesc, JoAttach, Remarks, BlankPage,
+            '                            VatProfile, PaymentTerms, PaymentMode, DownPayment, PaymentDate,
+            '                            AddressTo_cmbox, AddressTo_txbox, EstdDelDate, ModeOfDel,
+            '                            ModeOfShip, OutOfTown, DelGoodsTo, DelAddress, SpInstr, ContractType,
+            '                            BalOfDP, C_ID, CompanyName_txbox, CUST_ID, ProjectLabel, PertDetails, PD_ID)
+            'End If
         Catch ex As SqlException
             'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
             If ex.Number = -2 Then
                 MetroFramework.MetroMessageBox.Show(Me, "Click ok to Reconnect", "Request Timeout", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            ElseIf ex.Number = 1232 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Please check internet connection.", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                PD_SalesJobOrder_BGW.CancelAsync()
+            ElseIf ex.Number = 1232 Or ex.Number = 121 Then
+                MetroFramework.MetroMessageBox.Show(Me, "Please check internet connection", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
             ElseIf ex.Number = 19 Then
                 MetroFramework.MetroMessageBox.Show(Me, "Sorry our server is under maintenance." & vbCrLf & "Please be patient, will come back A.S.A.P", "Server is down", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            ElseIf ex.Number <> -2 And ex.Number <> 1232 And ex.Number <> 19 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Contact the Programmers now.", "You need some help?", MessageBoxButtons.OK, MessageBoxIcon.Stop)
-                MetroFramework.MetroMessageBox.Show(Me, ex.Message)
+            ElseIf ex.Number <> -2 And ex.Number <> 1232 And ex.Number <> 19 And ex.Number <> 121 Then
+                Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+                Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                           "SQL Transaction Error Number: " & ex.Number & vbCrLf &
+                                           "SQL Transaction Error Message: " & ex.Message)
+                Log_File.Close()
             End If
-            OnLoad_BGW.CancelAsync()
-        Catch ex2 As Exception
-        MessageBox.Show(Me, ex2.Message)
+            sql_Err_msg = ex.Message
+            sql_Err_no = ex.Number
+            Try
+                transaction.Rollback()
+                sql_Transaction_result = "Rollback"
+            Catch ex2 As Exception
+                Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+                Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                           "Rollback Error Message: " & ex2.Message)
+                Log_File.Close()
+            End Try
+        Catch ex22 As Exception
+            'MetroFramework.MetroMessageBox.Show(Me, ex22.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
         End Try
     End Sub
 
@@ -127,7 +158,7 @@ Public Class PD_SalesJobOrder
         BalOfDP_lbl.Text = ""
     End Sub
 
-    Private Sub OnLoad_BGW_RunWorkerCompleted(sender As Object, e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles OnLoad_BGW.RunWorkerCompleted
+    Private Sub PD_SalesJobOrder_BGW_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs)
         Try
             Me.Width = 800
             Me.Height = 600
@@ -141,119 +172,224 @@ Public Class PD_SalesJobOrder
                 FullAddress_Tbox.Text = Project_Details.FULLADDRESS
                 JoRefNo_Tbox.Text = Project_Details.JO
                 Dim rownum As Integer = sqlBindingSource.Count
-                If BGW_Func_turn = "Onload" Then
-                    If rownum <> 0 Or rownum <> Nothing Then
-                        For Each row In sqlBindingSource
-                            PD_ID = row("PD_ID")
-                            ProjectLabel_Tbox.Text = row("PROJECT_LABEL")
-                            JoDate_DTP.Value = row("JOB_ORDER_NO_DATE")
-                            FileLabelAs_Cbox.Text = row("FILE_LABEL_AS")
-                            QuoteRefNo_Lbl.Text = row("QUOTE_REF_NO")
-                            QuoteDate_Lbl.Text = row("QUOTE_DATE")
-                            ContractType_Cbox.Text = row("CONTRACT_TYPE")
-                            ProjectType_Lbl.Text = row("PROJECT_TYPE")
-                            ProjSource_Lbl.Text = row("PROJECT_SOURCE")
-                            JoDesc_Tbox.Text = row("JOB_ORDER_DESC")
-                            JoAttach_RTbox.Text = row("JO_ATTACHMENT")
-                            PrevJoNo_Lbl.Text = row("PREV_JOB_ORDER_NO")
-                            PrevQuoteNo_Lbl.Text = row("ORIGIN")
-                            PrevQuoteDate_Lbl.Text = row("ORIGIN_DATE")
-                            PertDetails_RTbox.Text = row("PERTINENT_DETAILS")
-                            Remarks_RTbox.Text = row("SPECIAL_COMMENTS")
-                            VatProfile_Cbox.Text = row("CONTRACT_VAT_PROFILE")
-                            VatPercent_Tbox.Text = row("VAT")
-                            PaymentTerms_Cbox.Text = row("PAYMENT_TERMS")
-                            PaymentMode_Cbox.Text = row("PAYMENT_MODE")
-                            DownPayment_Tbox.Text = row("DOWN_PAYMENT")
-                            PaymentDate_Tbox.Text = row("PAYMENT_DATE")
-                            BalOfDP_lbl.Text = row("BAL_OF_DP")
-                            AddressTo_Cbox.Text = row("ADDRESS_BILLING")
-                            AddressTo_Tbox.Text = row("ADDRESS_TO")
-                            EstdDelDate_Tbox.Text = row("ESTD_DEL_DATE")
-                            ModeOfDel_Cbox.Text = row("MODE_OF_DEL")
-                            ModeOfShip_Cbox.Text = row("MODE_OF_SHIP")
-                            OutOfTown_Cbox.Text = row("OUT_OF_TOWN_CHARGES")
-                            DelGoodsTo_Cbox.Text = row("DEL_GOODS")
-                            DelAddress_RTbox.Text = row("DELGOODS_TO")
-                            SpInstr_RTbox.Text = row("OTHER_PERTINENT_INFO")
-                            BlankPage_Tbox.Text = row("BLANK_PAGE")
-                            UnitNo = row("UnitNo")
-                            Establishment = row("ESTABLISHMENT")
-                            HouseNo = row("NO")
-                            Street = row("STREET")
-                            Village = row("VILLAGE")
-                            Brgy = row("BRGY_MUNICIPALITY")
-                            CityMunicipality = row("TOWN_DISTRICT")
-                            Province = row("PROVINCE")
-                            Area = row("AREA")
-                        Next row
-                        BGW_Func_turn = "2ndload"
-                        is_CTD_bool = True
-                        is_SalesJobOrder_bool = False
-                        Start_OnLoadBGW()
-                    End If
-                ElseIf BGW_Func_turn = "2ndload" Then
-                    For Each row2 In sqlBindingSource
-                        CompanyName_Tbox.Text = row2("COMPANY_NAME")
-                        CustRefNo_Lbl.Text = row2("CUST_REF_NO")
-                        ClientsName = row2("CLIENTS_NAME")
-                        CUST_ID = row2("CUST_ID")
-                    Next row2
-                    BGW_Func_turn = "3rdload"
-                    is_CTD_bool = True
-                    is_SalesJobOrder_bool = False
-                    Start_OnLoadBGW()
-                ElseIf BGW_Func_turn = "3rdload" Then
-                    For Each row3 In sqlBindingSource
-                        PrevOwner_Lbl.Text = row3("CLIENTS_NAME")
-                    Next row3
-                    BGW_Func_turn = "AEIC_LBL_POPULATE"
-                    is_CTD_bool = True
-                    is_SalesJobOrder_bool = False
-                    Start_OnLoadBGW()
-                ElseIf BGW_Func_turn = "AEIC_LBL_POPULATE" Then
-                    Dim lbl_output_seq As Integer
-                    For Each rowAEIC In sqlBindingSource
-                        lbl_output_seq += 1
-                        If AEIC_Lbl.Width > 350 Then
-                            AEIC_Lbl.FontSize = MetroFramework.MetroLabelSize.Small
-                            AEIC_Lbl.FontWeight = MetroFramework.MetroLabelWeight.Light
-                        End If
-                        If rownum <> lbl_output_seq Then
-                            If lbl_output_seq Mod 2 = 0 Then
-                                AEIC_Lbl.Text += rowAEIC("FULLNAME") & " && " & vbCrLf
-                            Else
-                                AEIC_Lbl.Text += rowAEIC("FULLNAME") & " && "
-                            End If
-                        Else
-                            AEIC_Lbl.Text += rowAEIC("FULLNAME")
-                        End If
-                    Next rowAEIC
-                    LoadingPbox.Visible = False
-                    SalesJobOrder_Pnl.Visible = True
-                ElseIf BGW_Func_turn = "SEARCH_FOR_SUB_JO" Then
-                    If QUERY_SELECT_WITH_READER_bool = True Then
-                        If MetroFramework.MetroMessageBox.Show(Me, "Proceed Anyway?" & vbCrLf & "This might cause a duplicate J.O Ref. No.", "Existing J.O Ref. No.", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) = DialogResult.Yes Then
-                            BGW_Func_turn = "Update_Me"
-                            Start_OnLoadBGW()
-                        End If
-                    ElseIf QUERY_SELECT_WITH_READER_bool = False Then
-                        BGW_Func_turn = "Update_Me"
-                        Start_OnLoadBGW()
-                    End If
-                    LoadingPbox.Visible = False
-                    SalesJobOrder_Pnl.Visible = True
-                ElseIf BGW_Func_turn = "Update_Me" Then
-                    If ErrorMsg = Nothing And ErrorNum = Nothing Then
-                        MetroFramework.MetroMessageBox.Show(Me, "Successfully Updated", "", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                        SearchStr = PD_ID
-                        Project_Details.PD_DGV_DoubleCLick()
-                        Me.Close()
-                    Else
-                        MetroFramework.MetroMessageBox.Show(Me, ErrorMsg, ErrorNum.ToString, MessageBoxButtons.OK, MessageBoxIcon.Error)
-                    End If
+                If (sql_Err_no = "" Or sql_Err_no = Nothing) AndAlso
+                   (sql_Err_msg = "" Or sql_Err_msg = Nothing) Then
+                    If sql_Transaction_result = "Committed" Then
+                        Select Case BGW_Func_turn
+                            Case "Onload"
+                                If rownum <> 0 Or rownum <> Nothing Then
+                                    For Each row In sqlBindingSource
+                                        PD_ID = row("PD_ID")
+                                        ProjectLabel_Tbox.Text = row("PROJECT_LABEL")
+                                        JoDate_DTP.Value = row("JOB_ORDER_NO_DATE")
+                                        FileLabelAs_Cbox.Text = row("FILE_LABEL_AS")
+                                        'QuoteRefNo_Lbl.Text = row("QUOTE_REF_NO")
+                                        'QuoteDate_Lbl.Text = row("QUOTE_DATE")
+                                        ContractType_Cbox.Text = row("CONTRACT_TYPE")
+                                        ProjectType_Lbl.Text = row("PROJECT_TYPE")
+                                        ProjSource_Lbl.Text = row("PROJECT_SOURCE")
+                                        JoDesc_Tbox.Text = row("JOB_ORDER_DESC")
+                                        JoAttach_RTbox.Text = row("JO_ATTACHMENT")
+                                        PrevJoNo_Lbl.Text = row("PREV_JOB_ORDER_NO")
+                                        'PrevQuoteNo_Lbl.Text = row("ORIGIN")
+                                        'PrevQuoteDate_Lbl.Text = row("ORIGIN_DATE")
+                                        PertDetails_RTbox.Text = row("PERTINENT_DETAILS")
+                                        Remarks_RTbox.Text = row("SPECIAL_COMMENTS")
+                                        VatProfile_Cbox.Text = row("CONTRACT_VAT_PROFILE")
+                                        VatPercent_Tbox.Text = row("VAT")
+                                        PaymentTerms_Cbox.Text = row("PAYMENT_TERMS")
+                                        PaymentMode_Cbox.Text = row("PAYMENT_MODE")
+                                        DownPayment_Tbox.Text = row("DOWN_PAYMENT")
+                                        PaymentDate_Tbox.Text = row("PAYMENT_DATE")
+                                        BalOfDP_lbl.Text = row("BAL_OF_DP")
+                                        AddressTo_Cbox.Text = row("ADDRESS_BILLING")
+                                        AddressTo_Tbox.Text = row("ADDRESS_TO")
+                                        EstdDelDate_Tbox.Text = row("ESTD_DEL_DATE")
+                                        ModeOfDel_Cbox.Text = row("MODE_OF_DEL")
+                                        ModeOfShip_Cbox.Text = row("MODE_OF_SHIP")
+                                        OutOfTown_Cbox.Text = row("OUT_OF_TOWN_CHARGES")
+                                        DelGoodsTo_Cbox.Text = row("DEL_GOODS")
+                                        DelAddress_RTbox.Text = row("DELGOODS_TO")
+                                        SpInstr_RTbox.Text = row("OTHER_PERTINENT_INFO")
+                                        BlankPage_Tbox.Text = row("BLANK_PAGE")
+                                        UnitNo = row("UnitNo")
+                                        Establishment = row("ESTABLISHMENT")
+                                        HouseNo = row("NO")
+                                        Street = row("STREET")
+                                        Village = row("VILLAGE")
+                                        Brgy = row("BRGY_MUNICIPALITY")
+                                        CityMunicipality = row("TOWN_DISTRICT")
+                                        Province = row("PROVINCE")
+                                        Area = row("AREA")
+                                    Next row
+                                    BGW_Func_turn = "2ndload"
+                                    is_CTD_bool = True
+                                    is_SalesJobOrder_bool = False
+                                    Start_OnLoadBGW()
+                                End If
+                            Case "2ndload"
+                                For Each row2 In sqlBindingSource
+                                    Dim CLIENT_STATUS As String
+                                    CLIENT_STATUS = row2("CLIENT_STATUS")
+                                    If CLIENT_STATUS = "Current Owner" Then
+                                        CompanyName_Tbox.Text = row2("COMPANY_NAME")
+                                        CustRefNo_Lbl.Text = row2("CUST_REF_NO")
+                                        ClientsName = row2("CLIENTS_NAME")
+                                        CUST_ID = row2("CUST_ID")
+                                    ElseIf CLIENT_STATUS = "Previous Owner" Then
+                                        PrevOwner_Lbl.Text = row2("CLIENTS_NAME")
+                                    End If
+                                Next row2
+                                BGW_Func_turn = "AEIC_LBL_POPULATE"
+                                is_CTD_bool = True
+                                is_SalesJobOrder_bool = False
+                                Start_OnLoadBGW()
+                            Case "AEIC_LBL_POPULATE"
+                                Dim lbl_output_seq As Integer
+                                For Each rowAEIC In sqlBindingSource
+                                    lbl_output_seq += 1
+                                    If AEIC_Lbl.Width > 350 Then
+                                        AEIC_Lbl.FontSize = MetroFramework.MetroLabelSize.Small
+                                        AEIC_Lbl.FontWeight = MetroFramework.MetroLabelWeight.Light
+                                    End If
+                                    If rownum <> lbl_output_seq Then
+                                        If lbl_output_seq Mod 2 = 0 Then
+                                            AEIC_Lbl.Text += rowAEIC("FULLNAME") & " && " & vbCrLf
+                                        Else
+                                            AEIC_Lbl.Text += rowAEIC("FULLNAME") & " && "
+                                        End If
+                                    Else
+                                        AEIC_Lbl.Text += rowAEIC("FULLNAME")
+                                    End If
+                                Next rowAEIC
+                        End Select
 
+                        'If BGW_Func_turn = "Onload" Then
+                        '    If rownum <> 0 Or rownum <> Nothing Then
+                        '        For Each row In sqlBindingSource
+                        '            PD_ID = row("PD_ID")
+                        '            ProjectLabel_Tbox.Text = row("PROJECT_LABEL")
+                        '            JoDate_DTP.Value = row("JOB_ORDER_NO_DATE")
+                        '            FileLabelAs_Cbox.Text = row("FILE_LABEL_AS")
+                        '            'QuoteRefNo_Lbl.Text = row("QUOTE_REF_NO")
+                        '            'QuoteDate_Lbl.Text = row("QUOTE_DATE")
+                        '            ContractType_Cbox.Text = row("CONTRACT_TYPE")
+                        '            ProjectType_Lbl.Text = row("PROJECT_TYPE")
+                        '            ProjSource_Lbl.Text = row("PROJECT_SOURCE")
+                        '            JoDesc_Tbox.Text = row("JOB_ORDER_DESC")
+                        '            JoAttach_RTbox.Text = row("JO_ATTACHMENT")
+                        '            PrevJoNo_Lbl.Text = row("PREV_JOB_ORDER_NO")
+                        '            'PrevQuoteNo_Lbl.Text = row("ORIGIN")
+                        '            'PrevQuoteDate_Lbl.Text = row("ORIGIN_DATE")
+                        '            PertDetails_RTbox.Text = row("PERTINENT_DETAILS")
+                        '            Remarks_RTbox.Text = row("SPECIAL_COMMENTS")
+                        '            VatProfile_Cbox.Text = row("CONTRACT_VAT_PROFILE")
+                        '            VatPercent_Tbox.Text = row("VAT")
+                        '            PaymentTerms_Cbox.Text = row("PAYMENT_TERMS")
+                        '            PaymentMode_Cbox.Text = row("PAYMENT_MODE")
+                        '            DownPayment_Tbox.Text = row("DOWN_PAYMENT")
+                        '            PaymentDate_Tbox.Text = row("PAYMENT_DATE")
+                        '            BalOfDP_lbl.Text = row("BAL_OF_DP")
+                        '            AddressTo_Cbox.Text = row("ADDRESS_BILLING")
+                        '            AddressTo_Tbox.Text = row("ADDRESS_TO")
+                        '            EstdDelDate_Tbox.Text = row("ESTD_DEL_DATE")
+                        '            ModeOfDel_Cbox.Text = row("MODE_OF_DEL")
+                        '            ModeOfShip_Cbox.Text = row("MODE_OF_SHIP")
+                        '            OutOfTown_Cbox.Text = row("OUT_OF_TOWN_CHARGES")
+                        '            DelGoodsTo_Cbox.Text = row("DEL_GOODS")
+                        '            DelAddress_RTbox.Text = row("DELGOODS_TO")
+                        '            SpInstr_RTbox.Text = row("OTHER_PERTINENT_INFO")
+                        '            BlankPage_Tbox.Text = row("BLANK_PAGE")
+                        '            UnitNo = row("UnitNo")
+                        '            Establishment = row("ESTABLISHMENT")
+                        '            HouseNo = row("NO")
+                        '            Street = row("STREET")
+                        '            Village = row("VILLAGE")
+                        '            Brgy = row("BRGY_MUNICIPALITY")
+                        '            CityMunicipality = row("TOWN_DISTRICT")
+                        '            Province = row("PROVINCE")
+                        '            Area = row("AREA")
+                        '        Next row
+                        '        BGW_Func_turn = "2ndload"
+                        '        is_CTD_bool = True
+                        '        is_SalesJobOrder_bool = False
+                        '        Start_OnLoadBGW()
+                        '    End If
+
+                        'ElseIf BGW_Func_turn = "2ndload" Then
+                        '    For Each row2 In sqlBindingSource
+                        '        Dim CLIENT_STATUS As String
+                        '        CLIENT_STATUS = row2("CLIENT_STATUS")
+                        '        If CLIENT_STATUS = "Current Owner" Then
+                        '            CompanyName_Tbox.Text = row2("COMPANY_NAME")
+                        '            CustRefNo_Lbl.Text = row2("CUST_REF_NO")
+                        '            ClientsName = row2("CLIENTS_NAME")
+                        '            CUST_ID = row2("CUST_ID")
+                        '        ElseIf CLIENT_STATUS = "Previous Owner" Then
+                        '            PrevOwner_Lbl.Text = row2("CLIENTS_NAME")
+                        '        End If
+                        '    Next row2
+                        '    'BGW_Func_turn = "AEIC_LBL_POPULATE"
+                        '    'is_CTD_bool = True
+                        '    'is_SalesJobOrder_bool = False
+                        '    'Start_OnLoadBGW()
+                        '    'ElseIf BGW_Func_turn = "3rdload" Then
+                        '    '    For Each row3 In sqlBindingSource
+                        '    '        PrevOwner_Lbl.Text = row3("CLIENTS_NAME")
+                        '    '    Next row3
+                        '    '    BGW_Func_turn = "AEIC_LBL_POPULATE"
+                        '    '    is_CTD_bool = True
+                        '    '    is_SalesJobOrder_bool = False
+                        '    '    Start_OnLoadBGW()
+                        'ElseIf BGW_Func_turn = "AEIC_LBL_POPULATE" Then
+                        '    Dim lbl_output_seq As Integer
+                        '    For Each rowAEIC In sqlBindingSource
+                        '        lbl_output_seq += 1
+                        '        If AEIC_Lbl.Width > 350 Then
+                        '            AEIC_Lbl.FontSize = MetroFramework.MetroLabelSize.Small
+                        '            AEIC_Lbl.FontWeight = MetroFramework.MetroLabelWeight.Light
+                        '        End If
+                        '        If rownum <> lbl_output_seq Then
+                        '            If lbl_output_seq Mod 2 = 0 Then
+                        '                AEIC_Lbl.Text += rowAEIC("FULLNAME") & " && " & vbCrLf
+                        '            Else
+                        '                AEIC_Lbl.Text += rowAEIC("FULLNAME") & " && "
+                        '            End If
+                        '        Else
+                        '            AEIC_Lbl.Text += rowAEIC("FULLNAME")
+                        '        End If
+                        '    Next rowAEIC
+                        'ElseIf BGW_Func_turn = "SEARCH_FOR_SUB_JO" Then
+                        '    If QUERY_SELECT_WITH_READER_bool = True Then
+                        '        If MetroFramework.MetroMessageBox.Show(Me, "Proceed Anyway?" & vbCrLf & "This might cause a duplicate J.O Ref. No.", "Existing J.O Ref. No.", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) = DialogResult.Yes Then
+                        '            BGW_Func_turn = "Update_Me"
+                        '            Start_OnLoadBGW()
+                        '        End If
+                        '    ElseIf QUERY_SELECT_WITH_READER_bool = False Then
+                        '        BGW_Func_turn = "Update_Me"
+                        '        Start_OnLoadBGW()
+                        '    End If
+                        '    LoadingPbox.Visible = False
+                        '    SalesJobOrder_Pnl.Visible = True
+                        'ElseIf BGW_Func_turn = "Update_Me" Then
+                        '    MetroFramework.MetroMessageBox.Show(Me, "Success", " ", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                        '    SearchStr = PD_ID
+                        '    Project_Details.PD_DGV_DoubleCLick()
+                        '    Me.Close()
+
+                        'End If
+                    ElseIf sql_Transaction_result = "Rollback" Then
+                        MetroFramework.MetroMessageBox.Show(Me, "Failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                    End If
+                Else
+                    MetroFramework.MetroMessageBox.Show(Me, "Transaction failed", "Contact the Developers", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 End If
+                sql_Err_msg = Nothing
+                sql_Err_no = Nothing
+                sql_Transaction_result = ""
+
+                LoadingPbox.Visible = False
+                SalesJobOrder_Pnl.Visible = True
 
                 If JoDate = "1900-01-01" Then
                     JoDate_DTP.Value = Now
