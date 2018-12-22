@@ -32,6 +32,15 @@ Partial Class Form1
         Me.Button5 = New System.Windows.Forms.Button()
         Me.Button6 = New System.Windows.Forms.Button()
         Me.LoadingPboxRNP = New System.Windows.Forms.PictureBox()
+        Me.MetroTextButton1 = New MetroFramework.Controls.MetroTextBox.MetroTextButton()
+        Me.MetroTextButton2 = New MetroFramework.Controls.MetroTextBox.MetroTextButton()
+        Me.MetroTextButton3 = New MetroFramework.Controls.MetroTextBox.MetroTextButton()
+        Me.MetroTextButton4 = New MetroFramework.Controls.MetroTextBox.MetroTextButton()
+        Me.MetroTextButton5 = New MetroFramework.Controls.MetroTextBox.MetroTextButton()
+        Me.MetroTextButton6 = New MetroFramework.Controls.MetroTextBox.MetroTextButton()
+        Me.MetroTextButton7 = New MetroFramework.Controls.MetroTextBox.MetroTextButton()
+        Me.MetroTextButton8 = New MetroFramework.Controls.MetroTextBox.MetroTextButton()
+        Me.MetroTextButton9 = New MetroFramework.Controls.MetroTextBox.MetroTextButton()
         CType(Me.LoadingPboxRNP, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -123,11 +132,119 @@ Partial Class Form1
         Me.LoadingPboxRNP.TabStop = False
         Me.LoadingPboxRNP.Visible = False
         '
+        'MetroTextButton1
+        '
+        Me.MetroTextButton1.Image = Nothing
+        Me.MetroTextButton1.Location = New System.Drawing.Point(12, 233)
+        Me.MetroTextButton1.Name = "MetroTextButton1"
+        Me.MetroTextButton1.Size = New System.Drawing.Size(75, 23)
+        Me.MetroTextButton1.TabIndex = 15
+        Me.MetroTextButton1.Text = "Asterisk"
+        Me.MetroTextButton1.UseSelectable = True
+        Me.MetroTextButton1.UseVisualStyleBackColor = True
+        '
+        'MetroTextButton2
+        '
+        Me.MetroTextButton2.Image = Nothing
+        Me.MetroTextButton2.Location = New System.Drawing.Point(93, 233)
+        Me.MetroTextButton2.Name = "MetroTextButton2"
+        Me.MetroTextButton2.Size = New System.Drawing.Size(75, 23)
+        Me.MetroTextButton2.TabIndex = 16
+        Me.MetroTextButton2.Text = "Error"
+        Me.MetroTextButton2.UseSelectable = True
+        Me.MetroTextButton2.UseVisualStyleBackColor = True
+        '
+        'MetroTextButton3
+        '
+        Me.MetroTextButton3.Image = Nothing
+        Me.MetroTextButton3.Location = New System.Drawing.Point(174, 233)
+        Me.MetroTextButton3.Name = "MetroTextButton3"
+        Me.MetroTextButton3.Size = New System.Drawing.Size(75, 23)
+        Me.MetroTextButton3.TabIndex = 17
+        Me.MetroTextButton3.Text = "Exclamation"
+        Me.MetroTextButton3.UseSelectable = True
+        Me.MetroTextButton3.UseVisualStyleBackColor = True
+        '
+        'MetroTextButton4
+        '
+        Me.MetroTextButton4.Image = Nothing
+        Me.MetroTextButton4.Location = New System.Drawing.Point(255, 233)
+        Me.MetroTextButton4.Name = "MetroTextButton4"
+        Me.MetroTextButton4.Size = New System.Drawing.Size(75, 23)
+        Me.MetroTextButton4.TabIndex = 18
+        Me.MetroTextButton4.Text = "Hand"
+        Me.MetroTextButton4.UseSelectable = True
+        Me.MetroTextButton4.UseVisualStyleBackColor = True
+        '
+        'MetroTextButton5
+        '
+        Me.MetroTextButton5.Image = Nothing
+        Me.MetroTextButton5.Location = New System.Drawing.Point(12, 262)
+        Me.MetroTextButton5.Name = "MetroTextButton5"
+        Me.MetroTextButton5.Size = New System.Drawing.Size(75, 23)
+        Me.MetroTextButton5.TabIndex = 19
+        Me.MetroTextButton5.Text = "Information"
+        Me.MetroTextButton5.UseSelectable = True
+        Me.MetroTextButton5.UseVisualStyleBackColor = True
+        '
+        'MetroTextButton6
+        '
+        Me.MetroTextButton6.Image = Nothing
+        Me.MetroTextButton6.Location = New System.Drawing.Point(93, 262)
+        Me.MetroTextButton6.Name = "MetroTextButton6"
+        Me.MetroTextButton6.Size = New System.Drawing.Size(75, 23)
+        Me.MetroTextButton6.TabIndex = 20
+        Me.MetroTextButton6.Text = "None"
+        Me.MetroTextButton6.UseSelectable = True
+        Me.MetroTextButton6.UseVisualStyleBackColor = True
+        '
+        'MetroTextButton7
+        '
+        Me.MetroTextButton7.Image = Nothing
+        Me.MetroTextButton7.Location = New System.Drawing.Point(174, 262)
+        Me.MetroTextButton7.Name = "MetroTextButton7"
+        Me.MetroTextButton7.Size = New System.Drawing.Size(75, 23)
+        Me.MetroTextButton7.TabIndex = 21
+        Me.MetroTextButton7.Text = "Question"
+        Me.MetroTextButton7.UseSelectable = True
+        Me.MetroTextButton7.UseVisualStyleBackColor = True
+        '
+        'MetroTextButton8
+        '
+        Me.MetroTextButton8.Image = Nothing
+        Me.MetroTextButton8.Location = New System.Drawing.Point(255, 262)
+        Me.MetroTextButton8.Name = "MetroTextButton8"
+        Me.MetroTextButton8.Size = New System.Drawing.Size(75, 23)
+        Me.MetroTextButton8.TabIndex = 22
+        Me.MetroTextButton8.Text = "Stop"
+        Me.MetroTextButton8.UseSelectable = True
+        Me.MetroTextButton8.UseVisualStyleBackColor = True
+        '
+        'MetroTextButton9
+        '
+        Me.MetroTextButton9.Image = Nothing
+        Me.MetroTextButton9.Location = New System.Drawing.Point(336, 233)
+        Me.MetroTextButton9.Name = "MetroTextButton9"
+        Me.MetroTextButton9.Size = New System.Drawing.Size(75, 52)
+        Me.MetroTextButton9.TabIndex = 23
+        Me.MetroTextButton9.Text = "Warning"
+        Me.MetroTextButton9.UseSelectable = True
+        Me.MetroTextButton9.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(485, 231)
+        Me.ClientSize = New System.Drawing.Size(485, 294)
+        Me.Controls.Add(Me.MetroTextButton9)
+        Me.Controls.Add(Me.MetroTextButton8)
+        Me.Controls.Add(Me.MetroTextButton7)
+        Me.Controls.Add(Me.MetroTextButton6)
+        Me.Controls.Add(Me.MetroTextButton5)
+        Me.Controls.Add(Me.MetroTextButton4)
+        Me.Controls.Add(Me.MetroTextButton3)
+        Me.Controls.Add(Me.MetroTextButton2)
+        Me.Controls.Add(Me.MetroTextButton1)
         Me.Controls.Add(Me.LoadingPboxRNP)
         Me.Controls.Add(Me.Button6)
         Me.Controls.Add(Me.Button5)
@@ -155,4 +272,13 @@ Partial Class Form1
     Friend WithEvents Button5 As Button
     Friend WithEvents Button6 As Button
     Friend WithEvents LoadingPboxRNP As PictureBox
+    Friend WithEvents MetroTextButton1 As MetroFramework.Controls.MetroTextBox.MetroTextButton
+    Friend WithEvents MetroTextButton2 As MetroFramework.Controls.MetroTextBox.MetroTextButton
+    Friend WithEvents MetroTextButton3 As MetroFramework.Controls.MetroTextBox.MetroTextButton
+    Friend WithEvents MetroTextButton4 As MetroFramework.Controls.MetroTextBox.MetroTextButton
+    Friend WithEvents MetroTextButton5 As MetroFramework.Controls.MetroTextBox.MetroTextButton
+    Friend WithEvents MetroTextButton6 As MetroFramework.Controls.MetroTextBox.MetroTextButton
+    Friend WithEvents MetroTextButton7 As MetroFramework.Controls.MetroTextBox.MetroTextButton
+    Friend WithEvents MetroTextButton8 As MetroFramework.Controls.MetroTextBox.MetroTextButton
+    Friend WithEvents MetroTextButton9 As MetroFramework.Controls.MetroTextBox.MetroTextButton
 End Class

@@ -239,4 +239,40 @@ Begin Transaction
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
     End Sub
+
+    Private Sub MetroTextButton1_Click(sender As Object, e As EventArgs) Handles MetroTextButton1.Click
+        MetroFramework.MetroMessageBox.Show(Me, "Asterisk", "AbortRetryIgnore", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Asterisk)
+    End Sub
+
+    Private Sub MetroTextButton2_Click(sender As Object, e As EventArgs) Handles MetroTextButton2.Click
+        MetroFramework.MetroMessageBox.Show(Me, "Error", "OK", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    End Sub
+
+    Private Sub MetroTextButton3_Click(sender As Object, e As EventArgs) Handles MetroTextButton3.Click
+        MetroFramework.MetroMessageBox.Show(Me, "Exclamation", "OKCancel", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation)
+    End Sub
+
+    Private Sub MetroTextButton4_Click(sender As Object, e As EventArgs) Handles MetroTextButton4.Click
+        MetroFramework.MetroMessageBox.Show(Me, "Hand", "RetryCancel", MessageBoxButtons.RetryCancel, MessageBoxIcon.Hand)
+    End Sub
+
+    Private Sub MetroTextButton6_Click(sender As Object, e As EventArgs) Handles MetroTextButton6.Click
+        MetroFramework.MetroMessageBox.Show(Me, "None", "YesNo", MessageBoxButtons.YesNo, MessageBoxIcon.None)
+    End Sub
+
+    Private Sub MetroTextButton7_Click(sender As Object, e As EventArgs) Handles MetroTextButton7.Click
+        MetroFramework.MetroMessageBox.Show(Me, "Question", "YesNoCancel", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question)
+    End Sub
+
+    Private Sub MetroTextButton8_Click(sender As Object, e As EventArgs) Handles MetroTextButton8.Click
+        MetroFramework.MetroMessageBox.Show(Me, "Stop", " ", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+    End Sub
+
+    Private Sub MetroTextButton9_Click(sender As Object, e As EventArgs) Handles MetroTextButton9.Click
+        MetroFramework.MetroMessageBox.Show(Me, "Warning", " ", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+    End Sub
+
+    Private Sub MetroTextButton5_Click(sender As Object, e As EventArgs) Handles MetroTextButton5.Click
+        MetroFramework.MetroMessageBox.Show(Me, "Information", " ", MessageBoxButtons.OK, MessageBoxIcon.Information)
+    End Sub
 End Class

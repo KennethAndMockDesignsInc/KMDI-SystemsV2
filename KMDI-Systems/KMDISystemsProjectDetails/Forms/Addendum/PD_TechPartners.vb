@@ -66,9 +66,9 @@ Public Class PD_TechPartners
                     PD_UpdateComp_Operations(Me, "Delete", COMP_ID)
                 End If
             ElseIf PD_TechPartners_BGW_TODO = "INSERT_IN_TP_NATURE" Then
-                PD_Addendum_Update_TechPartners(Me, C_ID, TP_NATURE, COMP_ID, EMP_ID, EMP_POSITION, TP_ID)
+                PD_Addendum_Update_TechPartners(Me, CD_ID, TP_NATURE, COMP_ID, EMP_ID, EMP_POSITION, TP_ID)
             ElseIf PD_TechPartners_BGW_TODO = "Search_if_Deleted" Then
-                PD_Addendum_TechPartners_SearchIfDeleted(TP_ID, C_ID, TP_NATURE)
+                PD_Addendum_TechPartners_SearchIfDeleted(TP_ID, CD_ID, TP_NATURE)
             ElseIf PD_TechPartners_BGW_TODO = "Return_Deleted_TP_NATURE" Then
                 PD_Addendum_TechPartners_ReturnDeletedRow(Me, TPN_ID_SearchIfDeleted)
             End If

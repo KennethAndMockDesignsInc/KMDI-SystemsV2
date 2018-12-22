@@ -270,7 +270,7 @@ Public Class Project_Details
                 PD_ID = SearchStr
             ElseIf is_CTD_bool = False Or is_SalesJobOrder_bool = True Then
                 SearchStr = ProjectDetailsDGV.Item("ID", e.RowIndex).Value.ToString
-                C_ID = SearchStr
+                CD_ID = SearchStr
                 JO = ProjectDetailsDGV.Item("JO#", e.RowIndex).Value.ToString
             End If
             FULLADDRESS = ProjectDetailsDGV.Item("ADDRESS", e.RowIndex).Value.ToString
@@ -290,7 +290,7 @@ Public Class Project_Details
                     PD_ID = SearchStr
                 ElseIf is_CTD_bool = False Or is_SalesJobOrder_bool = True Then
                     SearchStr = ProjectDetailsDGV.Item("ID", e.RowIndex).Value.ToString
-                    C_ID = SearchStr
+                    CD_ID = SearchStr
                     JO = ProjectDetailsDGV.Item("JO#", e.RowIndex).Value.ToString
                 End If
                 FULLADDRESS = ProjectDetailsDGV.Item("ADDRESS", e.RowIndex).Value.ToString

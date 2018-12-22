@@ -120,9 +120,9 @@ Public Class PD_Addendum
                                             QUOTE_DATE,
                                             PROFILE_FINISH " & QueryMidArrays(11) & QueryConditionArrays(2) &
                                      " AND CQN_STATUS = 1 AND WD_STATUS = 1"
-                    Query_Select(C_ID)
+                    Query_Select(CD_ID)
                 Case "UPDATE_ADDENDUM_QuoteRefNo"
-                    PD_Addendum_Update_QuoteRefNo(C_ID, arr_WD_ID.Item(UPDATE_ADDENDUM_QuoteRefNo_WD_ID_counter))
+                    PD_Addendum_Update_QuoteRefNo(CD_ID, arr_WD_ID.Item(UPDATE_ADDENDUM_QuoteRefNo_WD_ID_counter))
             End Select
 
         Catch ex As SqlException
@@ -380,7 +380,7 @@ Public Class PD_Addendum
                 Select Case ADDENDUM_BGW_TODO
                     Case "Onload"
                         For Each row In sqlBindingSource
-                            C_ID = row("CD_ID")
+                            CD_ID = row("CD_ID")
                             FIle_Label_As = row("FILE_LABEL_AS")
                             ProjectLabel = row("PROJECT_LABEL")
                             JORefNo_Lbl.Text = row("SUB_JO")

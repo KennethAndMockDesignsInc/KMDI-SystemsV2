@@ -5,6 +5,8 @@ Module ProjectDetailsModule
 
     Public is_CTD_bool As Boolean = False ' True if searching for Contracts, False if searching for Projects
     Public is_SalesJobOrder_bool As Boolean = False ' True if PD_SalesJobOrder.Show, False if not
+    Public return_bool As Boolean
+
     Public SearchStr As String = Nothing
 
     Public QueryBUILD As String
@@ -15,7 +17,7 @@ Module ProjectDetailsModule
     Public InsertedPD_ID As Integer = Nothing, InsertedCustID As Integer = Nothing, InsertedC_ID As Integer = Nothing
     Public ErrorMsg, ErrorNum As String
 
-    Public PD_ID, CUST_ID, OWN_REP_ID, C_ID As Integer
+    Public PD_ID, CUST_ID, OWN_REP_ID, CD_ID As Integer
     Public TPN_ID, TPN_ID_SearchIfDeleted As Integer
     Public PD_Addendum_Update_QuoteRefNo_counter As Integer = 0
 
@@ -232,6 +234,10 @@ Module ProjectDetailsModule
                     Case "Loading_using_EqualSearch"
                         is_SalesJobOrder_bool = True
                         sqlCommand.Parameters.AddWithValue("@EqualSearch", SearchString)
+                End Select
+                Select Case StoredProcedureName
+                    Case "PD_stp_SalesJobOrder_SubJoSearch"
+                        return_bool = sqlCommand.ExecuteScalar
                 End Select
 
                 transaction.Commit()
@@ -559,12 +565,13 @@ Module ProjectDetailsModule
                                        ByVal OTHER_PERTINENT_INFO As String,
                                        ByVal CONTRACT_TYPE As String,
                                        ByVal BAL_OF_DP As String,
-                                       ByVal C_ID As Integer,
+                                       ByVal CD_ID As Integer,
                                        ByVal COMPANY_NAME As String,
                                        ByVal CUST_ID As Integer,
                                        ByVal PROJECT_LABEL As String,
                                        ByVal PERTINENT_DETAILS As String,
-                                       ByVal PD_ID As Integer)
+                                       ByVal PD_ID As Integer,
+                                       ByVal StoredProcedure As String)
         'Query = "BEGIN TRANSACTION
         '         Begin Try
 
@@ -623,12 +630,12 @@ Module ProjectDetailsModule
         '        End Catch"
         Using sqlcon As New SqlConnection(sqlcnstr)
             sqlcon.Open()
-            Using sqlcmd As SqlCommand = sqlcon.CreateCommand()
-                transaction = sqlcon.BeginTransaction("UPDATE_SALES_JOB_ORDER")
-                sqlcmd.Connection = sqlcon
-                sqlcmd.Transaction = transaction
-                sqlcmd.CommandText = "PD_stp_SalesJobOrder"
-                sqlcmd.CommandType = CommandType.StoredProcedure
+            Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
+                transaction = sqlcon.BeginTransaction(StoredProcedure)
+                sqlCommand.Connection = sqlcon
+                sqlCommand.Transaction = transaction
+                sqlCommand.CommandText = StoredProcedure
+                sqlCommand.CommandType = CommandType.StoredProcedure
 
                 sqlCommand.Parameters.AddWithValue("@JOB_ORDER_NO", JOB_ORDER_NO)
                 sqlCommand.Parameters.AddWithValue("@PARENTJONO", JOB_ORDER_NO)
@@ -655,13 +662,18 @@ Module ProjectDetailsModule
                 sqlCommand.Parameters.AddWithValue("@OTHER_PERTINENT_INFO", OTHER_PERTINENT_INFO)
                 sqlCommand.Parameters.AddWithValue("@CONTRACT_TYPE", CONTRACT_TYPE)
                 sqlCommand.Parameters.AddWithValue("@BAL_OF_DP", BAL_OF_DP)
-                sqlCommand.Parameters.AddWithValue("@C_ID", C_ID)
+                sqlCommand.Parameters.AddWithValue("@CD_ID", CD_ID)
                 sqlCommand.Parameters.AddWithValue("@COMPANY_NAME", COMPANY_NAME)
                 sqlCommand.Parameters.AddWithValue("@CUST_ID", CUST_ID)
                 sqlCommand.Parameters.AddWithValue("@PROJECT_LABEL", PROJECT_LABEL)
                 sqlCommand.Parameters.AddWithValue("@PERTINENT_DETAILS", PERTINENT_DETAILS)
                 sqlCommand.Parameters.AddWithValue("@PD_ID", PD_ID)
-                sqlcmd.ExecuteNonQuery()
+                Dim NumOfRowsAffected As Integer = sqlCommand.ExecuteNonQuery()
+                If NumOfRowsAffected <> 0 Then
+                    return_bool = True
+                Else
+                    return_bool = False
+                End If
 
                 transaction.Commit()
                 sql_Transaction_result = "Committed"
