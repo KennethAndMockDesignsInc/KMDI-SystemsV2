@@ -28,11 +28,9 @@ Partial Class Project_Details
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Project_Details))
-        Me.ProjectDetailsBGW = New System.ComponentModel.BackgroundWorker()
         Me.ProjectDetailsDGV = New MetroFramework.Controls.MetroGrid()
         Me.LoadingPB = New System.Windows.Forms.PictureBox()
         Me.ProjectDetailsLBL = New MetroFramework.Controls.MetroLabel()
-        Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
         Me.PD_ContextMenu = New MetroFramework.Controls.MetroContextMenu(Me.components)
         Me.NewProjectToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SalesJobOrderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -41,11 +39,6 @@ Partial Class Project_Details
         CType(Me.LoadingPB, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PD_ContextMenu.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'ProjectDetailsBGW
-        '
-        Me.ProjectDetailsBGW.WorkerReportsProgress = True
-        Me.ProjectDetailsBGW.WorkerSupportsCancellation = True
         '
         'ProjectDetailsDGV
         '
@@ -127,11 +120,6 @@ Partial Class Project_Details
         Me.ProjectDetailsLBL.TabIndex = 607
         Me.ProjectDetailsLBL.Text = "P R O J E C T   D E T A I L S"
         '
-        'BackgroundWorker1
-        '
-        Me.BackgroundWorker1.WorkerReportsProgress = True
-        Me.BackgroundWorker1.WorkerSupportsCancellation = True
-        '
         'PD_ContextMenu
         '
         Me.PD_ContextMenu.Font = New System.Drawing.Font("Segoe UI", 9.0!)
@@ -178,11 +166,9 @@ Partial Class Project_Details
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents ProjectDetailsBGW As System.ComponentModel.BackgroundWorker
     Friend WithEvents LoadingPB As PictureBox
     Friend WithEvents ProjectDetailsDGV As MetroFramework.Controls.MetroGrid
     Friend WithEvents ProjectDetailsLBL As MetroFramework.Controls.MetroLabel
-    Friend WithEvents BackgroundWorker1 As System.ComponentModel.BackgroundWorker
     Friend WithEvents PD_ContextMenu As MetroFramework.Controls.MetroContextMenu
     Friend WithEvents NewProjectToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents SalesJobOrderToolStripMenuItem As ToolStripMenuItem

@@ -4,8 +4,13 @@
         is_SalesJobOrder_bool = False
         Project_Details.ProjectDetailsLBL.Text = "P R O J E C T   D E T A I L S"
         SearchStr = SearchTbox.Text
-        QUERY_INSTANCE = "Loading_using_SearchString"
-        QueryBUILD = QuerySearchHeadArrays(0) & QueryMidArrays(0) & QueryConditionArrays(0) & " " & QueryORDERArrays(0)
+        If Replace(SearchTbox.Text, " ", "") = "" Then
+            Project_Details.PD_BGW_TODO = "Onload"
+        ElseIf Replace(SearchTbox.Text, " ", "") <> "" Then
+            Project_Details.PD_BGW_TODO = "Search"
+        End If
+        'QUERY_INSTANCE = "Loading_using_SearchString"
+        'QueryBUILD = QuerySearchHeadArrays(0) & QueryMidArrays(0) & QueryConditionArrays(0) & " " & QueryORDERArrays(0)
         Project_Details.Start_ProjectDetailsBGW()
         Project_Details.ProjectDetailsDGV.Focus()
         Project_Details.ProjectDetailsDGV.Select()
