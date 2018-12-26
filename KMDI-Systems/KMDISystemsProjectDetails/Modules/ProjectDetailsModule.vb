@@ -153,7 +153,9 @@ Module ProjectDetailsModule
 	                                        ON	CTD.CD_ID = CD_ID_REF " '11 JOIN CD > CQN > WD
     }
 
-    Public QueryConditionArrays() As String = {"WHERE ([PD].[PD_ID] like @SearchString OR
+    Public QueryConditionArrays() As String = {"WHERE ([CTD].[JOB_ORDER_NO] like @SearchString OR 
+                                                      [CTD].[SUB_JO] like @SearchString OR 
+                                                      [PD].[PD_ID] like @SearchString OR
                                                       [PD].[PROJECT_LABEL] like @SearchString OR
                                                       [PD].[ACTIVITIES] like @SearchString OR
                                                       [PD].[REFFERED_BY] like @SearchString OR
@@ -173,8 +175,7 @@ Module ProjectDetailsModule
                                                       [PD].[AREA] like @SearchString OR
                                                       [PD].[FULLADD] like @SearchString OR
                                                       [PD].[CONSTRUCTION_STAGE] like @SearchString OR
-                                                      [PD].[PERTINENT_DETAILS] like @SearchString OR
-                                                      [CTD].[JOB_ORDER_NO] like @SearchString) AND [PD_STATUS] = 1 AND [JOB_ORDER_NO] = [PARENTJONO] ", '0 SEARCH ON PD
+                                                      [PD].[PERTINENT_DETAILS] like @SearchString) AND [PD_STATUS] = 1 AND [JOB_ORDER_NO] = [PARENTJONO] ", '0 SEARCH ON PD
                                                "WHERE [PD_ID] = @EqualSearch AND [PD_STATUS] = 1 ", '1
                                                "WHERE [CTD].[CD_ID] = @EqualSearch AND [CTD].[STATUS_AVAILABILITY] = 1 "  '2
     }

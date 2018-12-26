@@ -78,9 +78,12 @@ Public Class PD_SalesJobOrder
                 Case "AEIC_LBL_POPULATE"
                     QUERY_INSTANCE = "Loading_using_EqualSearch"
                     Query_Select_STP(PD_ID, "PD_stp_SalesJobOrder_AEIC")
-                Case "QUOTE_REF_NO"
+                Case "QUOTE_REF_NO_CUR"
                     QUERY_INSTANCE = "Loading_using_EqualSearch"
-                    Query_Select_STP(CD_ID, "PD_stp_SalesJobOrder_QRefNo")
+                    Query_Select_STP(CD_ID, "PD_stp_SalesJobOrder_QRef_Cur")
+                Case "QUOTE_REF_NO_PREV"
+                    QUERY_INSTANCE = "Loading_using_EqualSearch"
+                    Query_Select_STP(CD_ID, "PD_stp_SalesJobOrder_QRef_Prev")
                 Case "SEARCH_FOR_SUB_JO"
                     QUERY_INSTANCE = "Loading_using_EqualSearch"
                     Query_Select_STP(JoRefNo_OnClickUpdate, "PD_stp_SalesJobOrder_SubJoSearch")
@@ -92,38 +95,6 @@ Public Class PD_SalesJobOrder
                                     ModeOfShip, OutOfTown, DelGoodsTo, DelAddress, SpInstr, ContractType,
                                     BalOfDP, CD_ID, CompanyName_txbox, CUST_ID, ProjectLabel, PertDetails, PD_ID, "PD_stp_SalesJobOrder_Update")
             End Select
-            'If BGW_Func_turn = "Onload" Then
-            '    QUERY_INSTANCE = "Loading_using_EqualSearch"
-            'QueryBUILD = QuerySearchHeadArrays(5) & QueryMidArrays(4) & QueryConditionArrays(2)
-            'Query_Select_STP(SearchStr, "PD_stp_SalesJobOrder_CTDnPD")
-            'ElseIf BGW_Func_turn = "2ndload" Then
-            '    QUERY_INSTANCE = "Loading_using_EqualSearch"
-            'QueryBUILD = QuerySearchHeadArrays(6) & QueryMidArrays(5) & QueryConditionArrays(1) & " AND OWN.[CLIENT_STATUS] = 'Current Owner'"
-            'Query_Select_STP(PD_ID, "PD_stp_SalesJobOrder_CLIENTS")
-            'ElseIf BGW_Func_turn = "3rdload" Then
-            '    QUERY_INSTANCE = "Loading_using_EqualSearch"
-            '    QueryBUILD = QuerySearchHeadArrays(6) & QueryMidArrays(5) & QueryConditionArrays(1) & " AND OWN.[CLIENT_STATUS] = 'Previous Owner'"
-            '    Query_Select(PD_ID)
-            'ElseIf BGW_Func_turn = "AEIC_LBL_POPULATE" Then
-            '    QUERY_INSTANCE = "Loading_using_EqualSearch"
-            '    QueryBUILD = "SELECT AE_TBL.FULLNAME FROM (" & QuerySearchHeadArrays(4) &
-            '        QueryMidArrays(3) & " ) AS AE_TBL
-            '        JOIN A_NEW_PROJECT_DETAILS [PD]
-            '        ON	AE_TBL.PD_ID_REF = PD.PD_ID
-            '        WHERE PD_ID = @EqualSearch AND AE_TBL.[AE_STATUS] = 1 AND PD.[PD_STATUS] = 1"
-            '    Query_Select(PD_ID)
-            'ElseIf BGW_Func_turn = "SEARCH_FOR_SUB_JO" Then
-            '    QUERY_INSTANCE = "Read_using_SearchString"
-            '    QueryBUILD = "SELECT SUB_JO FROM [A_NEW_CONTRACT_DETAILS] WHERE SUB_JO = @SearchString"
-            '    QUERY_SELECT_WITH_READER(JoRefNo, BGW_Func_turn)
-            'ElseIf BGW_Func_turn = "Update_Me" Then
-            'PD_SalesJobOrder_Update(Sub_Jo, JoRefNo_OnClickUpdate, JoDate, FileLabelAs,
-            '                        JoDesc, JoAttach, Remarks, BlankPage,
-            '                        VatProfile, PaymentTerms, PaymentMode, DownPayment, PaymentDate,
-            '                        AddressTo_cmbox, AddressTo_txbox, EstdDelDate, ModeOfDel,
-            '                        ModeOfShip, OutOfTown, DelGoodsTo, DelAddress, SpInstr, ContractType,
-            '                        BalOfDP, C_ID, CompanyName_txbox, CUST_ID, ProjectLabel, PertDetails, PD_ID, "PD_stp_SalesJobOrder_Update")
-            'End If
         Catch ex As SqlException
             'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
             If ex.Number = -2 Then
@@ -276,26 +247,63 @@ Public Class PD_SalesJobOrder
                                         AEIC_Lbl.Text += rowAEIC("FULLNAME")
                                     End If
                                 Next rowAEIC
-                                BGW_Func_turn = "QUOTE_REF_NO"
+                                BGW_Func_turn = "QUOTE_REF_NO_CUR"
                                 is_CTD_bool = True
                                 is_SalesJobOrder_bool = False
                                 Start_OnLoadBGW()
-                            Case "QUOTE_REF_NO"
-                                Dim Qdate As Date
+                            Case "QUOTE_REF_NO_CUR"
+                                Dim QREF_DATE As Date
+                                Dim QREF_NO As String
+
                                 For Each row In sqlBindingSource
                                     QuoteRefNo_Populate_counter += 1
-                                    Qdate = row("QUOTE_DATE")
+                                    QREF_NO = row("QUOTE_NO")
+                                    QREF_DATE = row("QUOTE_DATE")
+
                                     If sqlBindingSource.Count = 1 Then
-                                        QuoteRefNo_Lbl.Text = row("QUOTE_NO")
-                                        QuoteDate_Lbl.Text = Qdate.ToString("MMM-dd-yyyy")
+                                        QuoteRefNo_Lbl.Text = QREF_NO
+                                        QuoteDate_Lbl.Text = QREF_DATE.ToString("MMM-dd-yyyy")
+
                                     ElseIf sqlBindingSource.Count > 1 And QuoteRefNo_Populate_counter <> sqlBindingSource.Count Then
-                                        QuoteRefNo_Lbl.Text += row("QUOTE_NO") & ", "
-                                        QuoteDate_Lbl.Text += Qdate.ToString("MMM-dd-yyyy") & ", "
+                                        QuoteRefNo_Lbl.Text += QREF_NO & ", "
+                                        QuoteDate_Lbl.Text += QREF_DATE.ToString("MMM-dd-yyyy") & ", "
+
                                     ElseIf sqlBindingSource.Count > 1 And QuoteRefNo_Populate_counter = sqlBindingSource.Count Then
-                                        QuoteRefNo_Lbl.Text += row("QUOTE_NO")
-                                        QuoteDate_Lbl.Text += Qdate.ToString("MMM-dd-yyyy")
+                                        QuoteRefNo_Lbl.Text += QREF_NO
+                                        QuoteDate_Lbl.Text += QREF_DATE.ToString("MMM-dd-yyyy")
+
                                     End If
                                 Next
+
+                                QuoteRefNo_Populate_counter = 0
+                                BGW_Func_turn = "QUOTE_REF_NO_PREV"
+                                is_CTD_bool = True
+                                is_SalesJobOrder_bool = False
+                                Start_OnLoadBGW()
+                            Case "QUOTE_REF_NO_PREV"
+                                Dim QREF_DATE As Date
+                                Dim QREF_NO As String
+
+                                For Each row In sqlBindingSource
+                                    QuoteRefNo_Populate_counter += 1
+                                    QREF_NO = row("QUOTE_NO")
+                                    QREF_DATE = row("QUOTE_DATE")
+
+                                    If sqlBindingSource.Count = 1 Then
+                                        PrevQuoteNo_Lbl.Text = QREF_NO
+                                        PrevQuoteDate_Lbl.Text = QREF_DATE.ToString("MMM-dd-yyyy")
+
+                                    ElseIf sqlBindingSource.Count > 1 And QuoteRefNo_Populate_counter <> sqlBindingSource.Count Then
+                                        PrevQuoteNo_Lbl.Text += QREF_NO & ", "
+                                        PrevQuoteDate_Lbl.Text += QREF_DATE.ToString("MMM-dd-yyyy") & ", "
+
+                                    ElseIf sqlBindingSource.Count > 1 And QuoteRefNo_Populate_counter = sqlBindingSource.Count Then
+                                        PrevQuoteNo_Lbl.Text += QREF_NO
+                                        PrevQuoteDate_Lbl.Text += QREF_DATE.ToString("MMM-dd-yyyy")
+
+                                    End If
+                                Next
+
                                 QuoteRefNo_Populate_counter = 0
                             Case "SEARCH_FOR_SUB_JO"
                                 If return_bool = True Then
