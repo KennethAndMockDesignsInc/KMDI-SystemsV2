@@ -22,11 +22,19 @@ Public Class PD_SalesJobOrder
         Start_OnLoadBGW()
     End Sub
     Private Sub PD_SalesJobOrder_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        PD_SalesJobOrder_BGW.WorkerSupportsCancellation = True
-        PD_SalesJobOrder_BGW.WorkerReportsProgress = True
-        AddHandler PD_SalesJobOrder_BGW.DoWork, AddressOf PD_SalesJobOrder_BGW_DoWork
-        AddHandler PD_SalesJobOrder_BGW.RunWorkerCompleted, AddressOf PD_SalesJobOrder_BGW_RunWorkerCompleted
-        onformLoad()
+        Try
+            PD_SalesJobOrder_BGW.WorkerSupportsCancellation = True
+            PD_SalesJobOrder_BGW.WorkerReportsProgress = True
+            AddHandler PD_SalesJobOrder_BGW.DoWork, AddressOf PD_SalesJobOrder_BGW_DoWork
+            AddHandler PD_SalesJobOrder_BGW.RunWorkerCompleted, AddressOf PD_SalesJobOrder_BGW_RunWorkerCompleted
+            onformLoad()
+        Catch ex As Exception
+            MessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message)
+            Log_File.Close()
+        End Try
     End Sub
 
     Private Sub Panel2_MouseClick(sender As Object, e As MouseEventArgs) Handles Panel2.MouseClick
@@ -97,20 +105,6 @@ Public Class PD_SalesJobOrder
             End Select
         Catch ex As SqlException
             'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
-            If ex.Number = -2 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Click ok to Reconnect", "Request Timeout", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                PD_SalesJobOrder_BGW.CancelAsync()
-            ElseIf ex.Number = 1232 Or ex.Number = 121 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Please check internet connection", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            ElseIf ex.Number = 19 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Sorry our server is under maintenance." & vbCrLf & "Please be patient, will come back A.S.A.P", "Server is down", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            ElseIf ex.Number <> -2 And ex.Number <> 1232 And ex.Number <> 19 And ex.Number <> 121 Then
-                Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
-                Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-                                           "SQL Transaction Error Number: " & ex.Number & vbCrLf &
-                                           "SQL Transaction Error Message: " & ex.Message)
-                Log_File.Close()
-            End If
             sql_Err_msg = ex.Message
             sql_Err_no = ex.Number
             Try
@@ -119,11 +113,15 @@ Public Class PD_SalesJobOrder
             Catch ex2 As Exception
                 Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
                 Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-                                           "Rollback Error Message: " & ex2.Message)
+                                           "Rollback Error Message: " & ex2.Message & vbCrLf)
                 Log_File.Close()
             End Try
         Catch ex22 As Exception
-            'MetroFramework.MetroMessageBox.Show(Me, ex22.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
+            MessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex22.Message & vbCrLf)
+            Log_File.Close()
         End Try
     End Sub
 
@@ -149,14 +147,27 @@ Public Class PD_SalesJobOrder
             Me.Height = 600
             If e.Error IsNot Nothing Or e.Cancelled = True Then
                 '' if BackgroundWorker terminated due to error
-                MetroFramework.MetroMessageBox.Show(Me, "Error Occured", "Closing", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Me.Close()
+                MessageBox.Show("Error or Cancelled")
             Else
                 '' otherwise it completed normally
-
                 Dim rownum As Integer = sqlBindingSource.Count
-                If (sql_Err_no = "" Or sql_Err_no = Nothing) AndAlso
-                   (sql_Err_msg = "" Or sql_Err_msg = Nothing) Then
+
+                If sql_Err_no = -2 Then
+                    Dim result As Integer = MetroFramework.MetroMessageBox.Show(Me, "Click ok to Reconnect" & vbCrLf & "Cancel to Exit",
+                                                       "Request Timeout", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation)
+                    If result = DialogResult.OK Then
+                        Start_OnLoadBGW()
+                        Exit Sub
+                    ElseIf result = DialogResult.Cancel Then
+                        Dispose()
+                        Exit Sub
+                    End If
+                ElseIf sql_Err_no = 1232 Or sql_Err_no = 121 Then
+                    MetroFramework.MetroMessageBox.Show(Me, "Please check internet connection", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                ElseIf sql_Err_no = 19 Then
+                    MetroFramework.MetroMessageBox.Show(Me, "Sorry our server is under maintenance." & vbCrLf & "Please be patient, will come back A.S.A.P", "Server is down", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                ElseIf (sql_Err_no = "" Or sql_Err_no = Nothing) AndAlso
+                       (sql_Err_msg = "" Or sql_Err_msg = Nothing) Then
                     If sql_Transaction_result = "Committed" Then
                         Select Case BGW_Func_turn
                             Case "Onload"
@@ -331,6 +342,11 @@ Public Class PD_SalesJobOrder
                         MetroFramework.MetroMessageBox.Show(Me, "Failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                     End If
                 Else
+                    Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+                    Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                           "SQL Transaction Error Number: " & sql_Err_no & vbCrLf &
+                                           "SQL Transaction Error Message: " & sql_Err_msg)
+                    Log_File.Close()
                     MetroFramework.MetroMessageBox.Show(Me, "Transaction failed", "Contact the Developers", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 End If
                 sql_Err_msg = Nothing
@@ -361,7 +377,11 @@ Public Class PD_SalesJobOrder
             End If
 
         Catch ex As Exception
-            MessageBox.Show(Me, ex.Message)
+            'MessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message)
+            Log_File.Close()
         End Try
     End Sub
 
@@ -450,29 +470,54 @@ Public Class PD_SalesJobOrder
     End Sub
 
     Private Sub FileLabelAs_Cbox_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles FileLabelAs_Cbox.SelectionChangeCommitted
-        If FileLabelAs_Cbox.Text = "Proj/Client`s Name" Then
-            ProjectLabel_Tbox.Text = ClientsName
-        ElseIf FileLabelAs_Cbox.Text = "Company Name" Then
-            ProjectLabel_Tbox.Text = CompanyName_Tbox.Text
-        End If
+        Try
+            If FileLabelAs_Cbox.Text = "Proj/Client`s Name" Then
+                ProjectLabel_Tbox.Text = ClientsName
+            ElseIf FileLabelAs_Cbox.Text = "Company Name" Then
+                ProjectLabel_Tbox.Text = CompanyName_Tbox.Text
+            End If
+        Catch ex As Exception
+            MessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message)
+            Log_File.Close()
+        End Try
     End Sub
 
     Private Sub AddressTo_Cbox_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles AddressTo_Cbox.SelectionChangeCommitted
-        If AddressTo_Cbox.SelectedIndex = 0 Then
-            AddressTo_Tbox.Text = ClientsName
-        ElseIf AddressTo_Cbox.SelectedIndex = 1 Then
-            AddressTo_Tbox.Text = CompanyName_Tbox.Text
-        ElseIf AddressTo_Cbox.SelectedIndex = 2 Then
-            AddressTo_Tbox.Text = ""
-        End If
+        Try
+            If AddressTo_Cbox.SelectedIndex = 0 Then
+                AddressTo_Tbox.Text = ClientsName
+            ElseIf AddressTo_Cbox.SelectedIndex = 1 Then
+                AddressTo_Tbox.Text = CompanyName_Tbox.Text
+            ElseIf AddressTo_Cbox.SelectedIndex = 2 Then
+                AddressTo_Tbox.Text = ""
+            End If
+        Catch ex As Exception
+            MessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message)
+            Log_File.Close()
+        End Try
     End Sub
 
     Private Sub DelGoodsTo_Cbox_TextChanged(sender As Object, e As EventArgs) Handles DelGoodsTo_Cbox.TextChanged
-        If DelGoodsTo_Cbox.Text.Contains("Project/Site Address") Then
-            DelAddress_RTbox.Text = FullAddress
-        ElseIf DelGoodsTo_Cbox.Text.Contains("Other Address") Then
-            DelAddress_RTbox.Text = ""
-        End If
+        Try
+            If DelGoodsTo_Cbox.Text.Contains("Project/Site Address") Then
+                DelAddress_RTbox.Text = FullAddress
+            ElseIf DelGoodsTo_Cbox.Text.Contains("Other Address") Then
+                DelAddress_RTbox.Text = ""
+            End If
+        Catch ex As Exception
+            MessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message)
+            Log_File.Close()
+        End Try
+
     End Sub
 
     Public ProjectLabel,
@@ -503,48 +548,51 @@ Public Class PD_SalesJobOrder
             BalOfDP,
             ContractType As String
 
-    'Private Sub FullAddress_Tbox_MouseClick(sender As Object, e As MouseEventArgs) Handles FullAddress_Tbox.MouseClick
-    '    Try
-    '        If e.Button = MouseButtons.Right Then
-    '            EditHeaderPartToolStripMenuItem.Visible = True
-    '            EditJOContractAttachmentsToolStripMenuItem.Visible = False
-    '            EditPertinentDetailsToolStripMenuItem.Visible = False
-    '            SJO_CMenu.Show()
-    '            SJO_CMenu.Location = New Point(MousePosition.X, MousePosition.Y)
-    '        End If
-    '    Catch ex As Exception
-    '        MsgBox(ex.Message)
-    '    End Try
-    'End Sub
-
     Private Sub DownPayment_Tbox_TextChanged(sender As Object, e As EventArgs) Handles DownPayment_Tbox.TextChanged
+        Try
+            Dim DownPayment_inputted As Double
+            DownPayment_inputted = Val(DownPayment_Tbox.Text)
+            If DownPayment_Tbox.Text = "" Or DownPayment_Tbox.Text = Nothing Then
+                DownPayment_inputted = 0
+            End If
 
-        Dim DownPayment_inputted As Double
-        DownPayment_inputted = Val(DownPayment_Tbox.Text)
-        If DownPayment_Tbox.Text = "" Or DownPayment_Tbox.Text = Nothing Then
-            DownPayment_inputted = 0
-        End If
+            If DownPayment_inputted >= 100.0 Then
+                DownPayment_Tbox.Text = 100.0
+            End If
 
-        If DownPayment_inputted >= 100.0 Then
-            DownPayment_Tbox.Text = 100.0
-        End If
+            BalOfDP_input = DownPayment_input - Val(DownPayment_Tbox.Text)
 
-        BalOfDP_input = DownPayment_input - Val(DownPayment_Tbox.Text)
+            BalOfDP_lbl.Text = BalOfDP_input & "%"
+        Catch ex As Exception
+            MessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message)
+            Log_File.Close()
+        End Try
 
-        BalOfDP_lbl.Text = BalOfDP_input & "%"
     End Sub
 
     Dim BalOfDP_input, DownPayment_input As Double
 
     Private Sub PaymentTerms_Cbox_TextChanged(sender As Object, e As EventArgs) Handles PaymentTerms_Cbox.TextChanged
-        If PaymentTerms_Cbox.Text.Contains("C.O.D") Or PaymentTerms_Cbox.Text.Contains("Free-Of-Charge") Or PaymentTerms_Cbox.Text.Contains("Full Payment") Then
-            DownPayment_input = 0
-        ElseIf PaymentTerms_Cbox.Text.Contains("Standard: 50%,40%,10%") Then
-            DownPayment_input = 50
-        ElseIf PaymentTerms_Cbox.Text.Contains("90%, 10%") Then
-            DownPayment_input = 90
-        End If
-        DownPayment_Tbox.Text = DownPayment_input
+        Try
+            If PaymentTerms_Cbox.Text.Contains("C.O.D") Or PaymentTerms_Cbox.Text.Contains("Free-Of-Charge") Or PaymentTerms_Cbox.Text.Contains("Full Payment") Then
+                DownPayment_input = 0
+            ElseIf PaymentTerms_Cbox.Text.Contains("Standard: 50%,40%,10%") Then
+                DownPayment_input = 50
+            ElseIf PaymentTerms_Cbox.Text.Contains("90%, 10%") Then
+                DownPayment_input = 90
+            End If
+            DownPayment_Tbox.Text = DownPayment_input
+        Catch ex As Exception
+            MessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message)
+            Log_File.Close()
+        End Try
+
     End Sub
 
     Private Sub Collections_Textboxes_KeyPress(sender As Object, e As KeyPressEventArgs) Handles VatPercent_Tbox.KeyPress, DownPayment_Tbox.KeyPress
@@ -564,44 +612,51 @@ Public Class PD_SalesJobOrder
     Public JoDate As Date
 
     Private Sub MetroButton1_Click(sender As Object, e As EventArgs) Handles Update_btn.Click
-        ProjectLabel = ProjectLabel_Tbox.Text
-        CompanyName_txbox = CompanyName_Tbox.Text
-        FullAddress = FullAddress_Tbox.Text
-        Sub_Jo = JoRefNo_Tbox.Text
-        JoRefNo_OnClickUpdate = JoRefNo_Tbox.Text
-        JoDate = JoDate_DTP.Value
-        FileLabelAs = FileLabelAs_Cbox.Text
-        JoDesc = JoDesc_Tbox.Text
-        JoAttach = JoAttach_RTbox.Text
-        PertDetails = PertDetails_RTbox.Text
-        Remarks = Remarks_RTbox.Text
-        BlankPage = BlankPage_Tbox.Text
-        VatProfile = VatProfile_Cbox.Text
-        PaymentTerms = PaymentTerms_Cbox.Text
-        PaymentMode = PaymentMode_Cbox.Text
-        DownPayment = DownPayment_Tbox.Text
-        PaymentDate = PaymentDate_Tbox.Text
-        AddressTo_cmbox = AddressTo_Cbox.Text
-        AddressTo_txbox = AddressTo_Tbox.Text
-        EstdDelDate = EstdDelDate_Tbox.Text
-        ModeOfDel = ModeOfDel_Cbox.Text
-        ModeOfShip = ModeOfShip_Cbox.Text
-        OutOfTown = OutOfTown_Cbox.Text
-        DelGoodsTo = DelGoodsTo_Cbox.Text
-        DelAddress = DelAddress_RTbox.Text
-        SpInstr = SpInstr_RTbox.Text
-        BalOfDP = BalOfDP_lbl.Text
-        ContractType = ContractType_Cbox.Text
-        If Trim(JoRefNo_Tbox.Text).Length <> 11 Then
-            If JoRefNo_OnClickUpdate = JoRefNo_Onload Then
-                BGW_Func_turn = "Update"
-                Start_OnLoadBGW()
-                'MsgBox("JoRefNo_OnClickUpdate = JoRefNo_Onload")
-            ElseIf JoRefNo_OnClickUpdate <> JoRefNo_Onload Then
-                'MsgBox("JoRefNo_OnClickUpdate <> JoRefNo_Onload")
-                BGW_Func_turn = "SEARCH_FOR_SUB_JO"
-                Start_OnLoadBGW()
+        Try
+            ProjectLabel = ProjectLabel_Tbox.Text
+            CompanyName_txbox = CompanyName_Tbox.Text
+            FullAddress = FullAddress_Tbox.Text
+            Sub_Jo = JoRefNo_Tbox.Text
+            JoRefNo_OnClickUpdate = JoRefNo_Tbox.Text
+            JoDate = JoDate_DTP.Value
+            FileLabelAs = FileLabelAs_Cbox.Text
+            JoDesc = JoDesc_Tbox.Text
+            JoAttach = JoAttach_RTbox.Text
+            PertDetails = PertDetails_RTbox.Text
+            Remarks = Remarks_RTbox.Text
+            BlankPage = BlankPage_Tbox.Text
+            VatProfile = VatProfile_Cbox.Text
+            PaymentTerms = PaymentTerms_Cbox.Text
+            PaymentMode = PaymentMode_Cbox.Text
+            DownPayment = DownPayment_Tbox.Text
+            PaymentDate = PaymentDate_Tbox.Text
+            AddressTo_cmbox = AddressTo_Cbox.Text
+            AddressTo_txbox = AddressTo_Tbox.Text
+            EstdDelDate = EstdDelDate_Tbox.Text
+            ModeOfDel = ModeOfDel_Cbox.Text
+            ModeOfShip = ModeOfShip_Cbox.Text
+            OutOfTown = OutOfTown_Cbox.Text
+            DelGoodsTo = DelGoodsTo_Cbox.Text
+            DelAddress = DelAddress_RTbox.Text
+            SpInstr = SpInstr_RTbox.Text
+            BalOfDP = BalOfDP_lbl.Text
+            ContractType = ContractType_Cbox.Text
+            If Trim(JoRefNo_Tbox.Text).Length <> 11 Then
+                If JoRefNo_OnClickUpdate = JoRefNo_Onload Then
+                    BGW_Func_turn = "Update"
+                    Start_OnLoadBGW()
+                ElseIf JoRefNo_OnClickUpdate <> JoRefNo_Onload Then
+                    BGW_Func_turn = "SEARCH_FOR_SUB_JO"
+                    Start_OnLoadBGW()
+                End If
             End If
-        End If
+        Catch ex As Exception
+            MessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message)
+            Log_File.Close()
+        End Try
+
     End Sub
 End Class
