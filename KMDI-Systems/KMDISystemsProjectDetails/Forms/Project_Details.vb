@@ -1,5 +1,4 @@
 ﻿Imports System.ComponentModel
-Imports System.Data.SqlClient
 
 Public Class Project_Details
     Public PD_ID_REF_Str As String = Nothing
@@ -68,27 +67,26 @@ Public Class Project_Details
         Start_ProjectDetailsBGW()
     End Sub
 
-    Sub BackToProject()
-        is_CTD_bool = False
-        is_SalesJobOrder_bool = False
-        ProjectDetailsLBL.Text = "P R O J E C T   D E T A I L S"
-        QUERY_INSTANCE = "Loading_using_SearchString"
-        SearchStr = ""
-        QueryBUILD = QuerySearchHeadArrays(0) & QueryMidArrays(0) & QueryConditionArrays(0) &
-                         " " & QueryORDERArrays(0)
-        Start_ProjectDetailsBGW()
-    End Sub
+    'Sub BackToProject()
+    '    is_CTD_bool = False
+    '    is_SalesJobOrder_bool = False
+    '    ProjectDetailsLBL.Text = "P R O J E C T   D E T A I L S"
+    '    QUERY_INSTANCE = "Loading_using_SearchString"
+    '    SearchStr = ""
+    '    QueryBUILD = QuerySearchHeadArrays(0) & QueryMidArrays(0) & QueryConditionArrays(0) &
+    '                     " " & QueryORDERArrays(0)
+    '    Start_ProjectDetailsBGW()
+    'End Sub
 
     Private Sub SearchFn(sender As Object, e As KeyEventArgs) Handles ProjectDetailsDGV.KeyDown, Me.KeyDown, ProjectDetailsLBL.KeyDown
         If e.KeyCode = Keys.F2 Or (e.Control And e.KeyCode = Keys.F) Then
             PD_SearchFRM.Show()
             PD_SearchFRM.TopMost = True
         ElseIf e.KeyCode = Keys.F5 Or e.KeyCode = Keys.Back Or e.KeyCode = Keys.Escape Then
+            is_CTD_bool = False
+            is_SalesJobOrder_bool = False
             PD_BGW_TODO = "Onload"
             Start_ProjectDetailsBGW()
-            'ElseIf e.KeyCode = Keys.Enter And is_CTD_bool = False Then
-            '    ProjectDetailsDGV.ClearSelection
-            '    PD_DGV_DoubleCLick()
         ElseIf e.KeyValue = 93 Then
             PD_ContextMenu.Show()
             PD_ContextMenu.Location = New Point(0, 0)
@@ -104,25 +102,15 @@ Public Class Project_Details
                 Case "Search"
                     QUERY_INSTANCE = "Loading_using_SearchString"
                     Query_Select_STP(SearchStr, "PD_stp_ProjectDetails_Search")
+                Case "Contracts_Load"
+                    QUERY_INSTANCE = "Loading_using_EqualSearch"
+                    Query_Select_STP(SearchStr, "PD_stp_ContractDetails_Load")
             End Select
-        Catch ex As SqlException
-            'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
-            sql_Err_msg = ex.Message
-            sql_Err_no = ex.Number
-            Try
-                transaction.Rollback()
-                sql_Transaction_result = "Rollback"
-            Catch ex2 As Exception
-                Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
-                Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-                                           "Rollback Error Message: " & ex2.Message & vbCrLf)
-                Log_File.Close()
-            End Try
-        Catch ex22 As Exception
+        Catch ex As Exception
             MessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
             Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-                                       "Error Message: " & ex22.Message & vbCrLf)
+                                       "Error Message: " & ex.Message & vbCrLf)
             Log_File.Close()
         End Try
     End Sub
@@ -155,8 +143,6 @@ Public Class Project_Details
                 ElseIf (sql_Err_no = "" Or sql_Err_no = Nothing) AndAlso
                        (sql_Err_msg = "" Or sql_Err_msg = Nothing) Then
                     If sql_Transaction_result = "Committed" Then
-                        'Select Case PD_BGW_TODO
-                        '    Case "Onload"
                         ProjectDetailsDGV.DataSource = Nothing
                         ProjectDetailsDGV.Enabled = True
                         ProjectDetailsDGV.DataSource = sqlBindingSource
@@ -176,13 +162,13 @@ Public Class Project_Details
                         LoadingPB.Visible = False
                         ProjectDetailsDGV.Focus()
                         ProjectDetailsDGV.Select()
-                        'End Select
+
                     End If
                 Else
                     Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
                     Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
                                            "SQL Transaction Error Number: " & sql_Err_no & vbCrLf &
-                                           "SQL Transaction Error Message: " & sql_Err_msg)
+                                           "SQL Transaction Error Message: " & sql_Err_msg & vbCrLf)
                     Log_File.Close()
                     MetroFramework.MetroMessageBox.Show(Me, "Transaction failed", "Contact the Developers", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 End If
@@ -192,7 +178,7 @@ Public Class Project_Details
             MessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
             Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-                                       "Error Message: " & ex.Message)
+                                       "Error Message: " & ex.Message & vbCrLf)
             Log_File.Close()
         End Try
     End Sub
@@ -311,7 +297,10 @@ Public Class Project_Details
     Private Sub ProjectDetailsDGV_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles ProjectDetailsDGV.MouseDoubleClick
         'If ProjectDetailsDGV.RowCount >= 0 And e.RowIndex >= 0 Then
         If e.Button = MouseButtons.Left And is_CTD_bool = False Then
-            PD_DGV_DoubleCLick()
+            'PD_DGV_DoubleCLick()
+            is_CTD_bool = True
+            PD_BGW_TODO = "Contracts_Load"
+            Start_ProjectDetailsBGW()
         End If
         'End If
     End Sub

@@ -212,44 +212,58 @@ Module ProjectDetailsModule
 
     Public Sub Query_Select_STP(ByVal SearchString As String,
                                 Optional StoredProcedureName As String = "")
+        Try
+            sqlDataSet = New DataSet
+            sqlDataAdapter = New SqlDataAdapter
+            sqlBindingSource = New BindingSource
 
-        sqlDataSet = New DataSet
-        sqlDataAdapter = New SqlDataAdapter
-        sqlBindingSource = New BindingSource
+            sqlDataSet.Clear()
+            sqlBindingSource.Clear()
 
-        sqlDataSet.Clear()
-        sqlBindingSource.Clear()
+            Using sqlcon As New SqlConnection(sqlcnstr)
+                sqlcon.Open()
+                Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
+                    transaction = sqlcon.BeginTransaction(StoredProcedureName)
+                    sqlCommand.Connection = sqlcon
+                    sqlCommand.Transaction = transaction
+                    sqlCommand.CommandText = StoredProcedureName
+                    sqlCommand.CommandType = CommandType.StoredProcedure
 
-        Using sqlcon As New SqlConnection(sqlcnstr)
-            sqlcon.Open()
-            Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
-                transaction = sqlcon.BeginTransaction(StoredProcedureName)
-                sqlCommand.Connection = sqlcon
-                sqlCommand.Transaction = transaction
-                sqlCommand.CommandText = StoredProcedureName
-                sqlCommand.CommandType = CommandType.StoredProcedure
+                    Select Case QUERY_INSTANCE
+                        Case "Loading_using_SearchString"
+                            sqlCommand.Parameters.AddWithValue("@SearchString", "%" & SearchString & "%")
+                        Case "Loading_using_EqualSearch"
+                            is_SalesJobOrder_bool = True
+                            sqlCommand.Parameters.AddWithValue("@EqualSearch", SearchString)
+                    End Select
+                    Select Case StoredProcedureName
+                        Case "PD_stp_SalesJobOrder_SubJoSearch"
+                            return_bool = sqlCommand.ExecuteScalar
+                    End Select
 
-                Select Case QUERY_INSTANCE
-                    Case "Loading_using_SearchString"
-                        sqlCommand.Parameters.AddWithValue("@SearchString", "%" & SearchString & "%")
-                    Case "Loading_using_EqualSearch"
-                        is_SalesJobOrder_bool = True
-                        sqlCommand.Parameters.AddWithValue("@EqualSearch", SearchString)
-                End Select
-                Select Case StoredProcedureName
-                    Case "PD_stp_SalesJobOrder_SubJoSearch"
-                        return_bool = sqlCommand.ExecuteScalar
-                End Select
+                    transaction.Commit()
+                    sql_Transaction_result = "Committed"
 
-                transaction.Commit()
-                sql_Transaction_result = "Committed"
-
-                sqlDataAdapter.SelectCommand = sqlCommand
-                sqlDataAdapter.Fill(sqlDataSet, "QUERY_DETAILS")
-                sqlBindingSource.DataSource = sqlDataSet
-                sqlBindingSource.DataMember = "QUERY_DETAILS"
+                    sqlDataAdapter.SelectCommand = sqlCommand
+                    sqlDataAdapter.Fill(sqlDataSet, "QUERY_DETAILS")
+                    sqlBindingSource.DataSource = sqlDataSet
+                    sqlBindingSource.DataMember = "QUERY_DETAILS"
+                End Using
             End Using
-        End Using
+        Catch ex As SqlException
+            'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
+            sql_Err_msg = ex.Message
+            sql_Err_no = ex.Number
+            Try
+                transaction.Rollback()
+                sql_Transaction_result = "Rollback"
+            Catch ex2 As Exception
+                Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+                Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                           "Rollback Error Message: " & ex2.Message & vbCrLf)
+                Log_File.Close()
+            End Try
+        End Try
     End Sub
 
     Public QUERY_SELECT_WITH_READER_VAL As String
