@@ -177,7 +177,7 @@ Partial Class ContractRecordsFRM
         Me.ContractRecordsDGV.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Silver
         Me.ContractRecordsDGV.ReadOnly = True
         Me.ContractRecordsDGV.RowHeadersWidth = 30
-        Me.ContractRecordsDGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.ContractRecordsDGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect
         Me.ContractRecordsDGV.Size = New System.Drawing.Size(1160, 625)
         Me.ContractRecordsDGV.StateCommon.Background.Color1 = System.Drawing.Color.White
         Me.ContractRecordsDGV.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList

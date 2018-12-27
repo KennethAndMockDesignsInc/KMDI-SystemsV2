@@ -10,10 +10,6 @@ Public Class ContractRecordsFRM
     Public UserAcctRestrictions As String
     Public SearchScope As String
 
-    'Public QueryFunction As String
-    'Public QueryBody As String
-    'Public QueryCondition As String
-
     Dim stp_Name As String
     Public PDID As String
 
@@ -57,11 +53,29 @@ Public Class ContractRecordsFRM
     Dim ChangePBVisibility As PBVisibilityDelegate
 
     Private Sub ContractRecordsGridView_ColumnHeaderMouseClick(sender As Object, e As DataGridViewCellMouseEventArgs) Handles ContractRecordsDGV.ColumnHeaderMouseClick
-        If e.Button = MouseButtons.Right Then
+        Try
+            If e.Button = MouseButtons.Right Then
 
-        ElseIf e.Button = MouseButtons.Left Then
-            Grid_Display()
-        End If
+                Dim frm As Form = ContractRecordsViewFRM
+
+                With ContractRecordsViewFRM
+                    .Location = New Point(MousePosition)
+                    Select Case frm.Visible
+                        Case True
+                            .BringToFront()
+                        Case False
+                            .Show()
+                            .BringToFront()
+                            .OkBTN.Focus()
+                    End Select
+                End With
+
+            ElseIf e.Button = MouseButtons.Left Then
+                Grid_Display()
+            End If
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     Private Sub ContractRecords_Load(sender As Object, e As EventArgs) Handles Me.Load
@@ -202,7 +216,8 @@ Public Class ContractRecordsFRM
 
     Private Sub ContractRecordsDGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs) Handles ContractRecordsDGV.RowPostPaint
         Try
-            sql.RowPostPaintContractRecords(sender, e)
+            'sql.RowPostPaintContractRecords(sender, e)
+            rowpostpaint(sender, e)
         Catch ex As Exception
         End Try
     End Sub
@@ -366,6 +381,12 @@ Public Class ContractRecordsFRM
                         StartWorker()
                     Case "SecondF2"
                         OpenContractItems()
+                    Case "ItemSearchInitialF2"
+                        SearchString = PDID
+                        StartWorker()
+                    Case "ItemSearchSecondF2"
+                        SearchString = PDID
+                        StartWorker()
                 End Select
             End If
         Catch ex As Exception
@@ -586,11 +607,22 @@ Public Class ContractRecordsFRM
     End Sub
     Private Sub ContractsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ContractsToolStripMenuItem.Click
         Try
-            ActionTaken = "Search"
-            SearchItemFN = "SecondF2"
-            SearchScope = "Specific"
-
-            StartWorker()
+            Select Case SearchItemFN
+                Case "InitialF2"
+                    ActionTaken = "Search"
+                    SearchItemFN = "SecondF2"
+                    SearchScope = "Specific"
+                    SearchString = PDID
+                    StartWorker()
+                Case "SecondF2"
+                    OpenContractItems()
+                Case "ItemSearchInitialF2"
+                    SearchString = PDID
+                    StartWorker()
+                Case "ItemSearchSecondF2"
+                    SearchString = PDID
+                    StartWorker()
+            End Select
         Catch ex As Exception
 
         End Try
@@ -760,13 +792,14 @@ Public Class ContractRecordsFRM
                 SearchFRM.Dispose()
                 ContractItemsFRM.Dispose()
                 ContractImagesFRM.Dispose()
+                ContractRecordsViewFRM.Dispose()
                 Dispose()
             Else
                 e.Cancel = True
             End If
 
         Catch ex As Exception
-            MessageBox.Show(ex.ToString)
+            'MessageBox.Show(ex.ToString)
         End Try
     End Sub
 

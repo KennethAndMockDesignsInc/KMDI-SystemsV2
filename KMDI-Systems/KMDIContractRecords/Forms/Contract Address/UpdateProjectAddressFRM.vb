@@ -7,7 +7,9 @@ Public Class UpdateProjectAddressFRM
     Public ActionTaken As String
     Public SearchString As String
 
-    Public RequiredField As Boolean
+    Public RequiredField As Boolean = True
+
+    Public err As String
 
     Dim stp_Name As String
 
@@ -37,6 +39,8 @@ Public Class UpdateProjectAddressFRM
         Area__Required_CBX.SelectedIndex = -1
         FullAddress = ""
         ActionTaken = "Search"
+        RequiredField = True
+        err = Nothing
     End Sub
 
     Public Sub LoadInitialSetUp()
@@ -91,10 +95,8 @@ Public Class UpdateProjectAddressFRM
                                Province,
                                Area,
                                FullAddress)
-            MessageBox.Show(UnitNo)
 
         Catch ex As Exception
-            MessageBox.Show(ex.ToString)
             UpdateProjectAddressBGW.WorkerSupportsCancellation = True
             UpdateProjectAddressBGW.CancelAsync()
         End Try
@@ -129,6 +131,28 @@ Public Class UpdateProjectAddressFRM
                         Me.Close()
                     Case "Delete"
                 End Select
+            ElseIf err IsNot Nothing Then
+                Select Case ActionTaken
+                    Case "Search"
+                        MetroMessageBox.Show(Me, "Search" & vbCrLf & vbCrLf & err, "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                        Me.Close()
+                    Case "Add"
+                    Case "Update"
+                        MetroMessageBox.Show(Me, "Update" & vbCrLf & vbCrLf & err, "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                        Me.Close()
+                    Case "Delete"
+                End Select
+            ElseIf err <> "" Then
+                Select Case ActionTaken
+                    Case "Search"
+                        MetroMessageBox.Show(Me, "Search" & vbCrLf & vbCrLf & err, "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                        Me.Close()
+                    Case "Add"
+                    Case "Update"
+                        MetroMessageBox.Show(Me, "Update" & vbCrLf & vbCrLf & err, "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                        Me.Close()
+                    Case "Delete"
+                End Select
             Else
                 Try
                     Select Case ActionTaken
@@ -137,12 +161,12 @@ Public Class UpdateProjectAddressFRM
                                 UI_Display()
                             Else
                                 MetroMessageBox.Show(Me, "The system has encountered an error during recovery of address information. This page will now close.", "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                                Me.Close()
+                                Close()
                             End If
                         Case "Add"
                         Case "Update"
                             If MetroMessageBox.Show(Me, "Information has been succesfully updated in the database. Do you want to close this page?", "Information has been saved", MessageBoxButtons.YesNo, MessageBoxIcon.Information) = DialogResult.Yes Then
-                                Me.Close()
+                                Close()
                             Else
                                 LoadInitialSetUp()
                             End If
@@ -184,343 +208,15 @@ Public Class UpdateProjectAddressFRM
         Brgy = Trim(Replace(Brgy_TBX.Text, ",", ""))
         CityMunicipality = Trim(Replace(CityMunicipality__Required_TBX.Text, ",", ""))
         Province = Trim(Replace(Province__Required_TBX.Text, ",", ""))
-        FullAddress = ""
 
-        Select Case UnitNo
-            Case ""
-                FullAddress = FullAddress
-            Case Else
-                FullAddress = UnitNo
-        End Select
-
-        Select Case Establishment
-            Case ""
-                FullAddress = FullAddress
-            Case Else
-                FullAddress = FullAddress & " " & Establishment
-        End Select
-
-        Select Case HouseNo
-            Case ""
-                FullAddress = FullAddress
-            Case Else
-                FullAddress = FullAddress & " " & HouseNo
-        End Select
-
-        Select Case Street
-            Case ""
-                FullAddress = FullAddress
-            Case Else
-                FullAddress = FullAddress & " " & Street
-        End Select
-
-        Select Case Village
-            Case ""
-                FullAddress = FullAddress
-            Case Else
-                Select Case HouseNo
-                    Case ""
-                        Select Case Street
-                            Case ""
-                                FullAddress = FullAddress & " " & Village
-                            Case Else
-                                FullAddress = FullAddress & ", " & Village
-                        End Select
-                    Case Else
-                        Select Case Street
-                            Case ""
-                                FullAddress = FullAddress & " " & Village
-                            Case Else
-                                FullAddress = FullAddress & ", " & Village
-                        End Select
-                End Select
-        End Select
-
-        Select Case Brgy
-            Case ""
-                FullAddress = FullAddress
-            Case Else
-                Select Case HouseNo
-                    Case ""
-                        Select Case Street
-                            Case ""
-                                Select Case Village
-                                    Case ""
-                                        FullAddress = FullAddress & " " & Brgy
-                                    Case Else
-                                        FullAddress = FullAddress & ", " & Brgy
-                                End Select
-                            Case Else
-                                Select Case Village
-                                    Case ""
-                                        FullAddress = FullAddress & ", " & Brgy
-                                    Case Else
-                                        FullAddress = FullAddress & ", " & Brgy
-                                End Select
-                        End Select
-                    Case Else
-                        Select Case Street
-                            Case ""
-                                Select Case Village
-                                    Case ""
-                                        FullAddress = FullAddress & " " & Brgy
-                                    Case Else
-                                        FullAddress = FullAddress & ", " & Brgy
-                                End Select
-                            Case Else
-                                Select Case Village
-                                    Case ""
-                                        FullAddress = FullAddress & ", " & Brgy
-                                    Case Else
-                                        FullAddress = FullAddress & ", " & Brgy
-                                End Select
-                        End Select
-                End Select
-        End Select
-
-        Select Case CityMunicipality
-            Case ""
-                FullAddress = FullAddress
-            Case Else
-                Select Case HouseNo
-                    Case ""
-                        Select Case Street
-                            Case ""
-                                Select Case Village
-                                    Case ""
-                                        Select Case Brgy
-                                            Case ""
-                                                FullAddress = FullAddress & " " & CityMunicipality
-                                            Case Else
-                                                FullAddress = FullAddress & ", " & CityMunicipality
-                                        End Select
-                                    Case Else
-                                        Select Case Brgy
-                                            Case ""
-                                                FullAddress = FullAddress & ", " & CityMunicipality
-                                            Case Else
-                                                FullAddress = FullAddress & ", " & CityMunicipality
-                                        End Select
-                                End Select
-                            Case Else
-                                Select Case Village
-                                    Case ""
-                                        Select Case Brgy
-                                            Case ""
-                                                FullAddress = FullAddress & ", " & CityMunicipality
-                                            Case Else
-                                                FullAddress = FullAddress & ", " & CityMunicipality
-                                        End Select
-                                    Case Else
-                                        Select Case Brgy
-                                            Case ""
-                                                FullAddress = FullAddress & ", " & CityMunicipality
-                                            Case Else
-                                                FullAddress = FullAddress & ", " & CityMunicipality
-                                        End Select
-                                End Select
-                        End Select
-                    Case Else
-                        Select Case Street
-                            Case ""
-                                Select Case Village
-                                    Case ""
-                                        Select Case Brgy
-                                            Case ""
-                                                FullAddress = FullAddress & " " & CityMunicipality
-                                            Case Else
-                                                FullAddress = FullAddress & ", " & CityMunicipality
-                                        End Select
-                                    Case Else
-                                        Select Case Brgy
-                                            Case ""
-                                                FullAddress = FullAddress & ", " & CityMunicipality
-                                            Case Else
-                                                FullAddress = FullAddress & ", " & CityMunicipality
-                                        End Select
-                                End Select
-                            Case Else
-                                Select Case Village
-                                    Case ""
-                                        Select Case Brgy
-                                            Case ""
-                                                FullAddress = FullAddress & ", " & CityMunicipality
-                                            Case Else
-                                                FullAddress = FullAddress & ", " & CityMunicipality
-                                        End Select
-                                    Case Else
-                                        Select Case Brgy
-                                            Case ""
-                                                FullAddress = FullAddress & ", " & CityMunicipality
-                                            Case Else
-                                                FullAddress = FullAddress & ", " & CityMunicipality
-                                        End Select
-                                End Select
-                        End Select
-                End Select
-        End Select
-
-        Select Case Province
-            Case ""
-                FullAddress = FullAddress
-            Case Else
-                Select Case HouseNo
-                    Case ""
-                        Select Case Street
-                            Case ""
-                                Select Case Village
-                                    Case ""
-                                        Select Case Brgy
-                                            Case ""
-                                                Select Case CityMunicipality
-                                                    Case ""
-                                                        FullAddress = FullAddress & " " & Province
-                                                    Case Else
-                                                        FullAddress = FullAddress & ", " & Province
-                                                End Select
-                                            Case Else
-                                                Select Case CityMunicipality
-                                                    Case ""
-                                                        FullAddress = FullAddress & ", " & Province
-                                                    Case Else
-                                                        FullAddress = FullAddress & ", " & Province
-                                                End Select
-                                        End Select
-                                    Case Else
-                                        Select Case Brgy
-                                            Case ""
-                                                Select Case CityMunicipality
-                                                    Case ""
-                                                        FullAddress = FullAddress & ", " & Province
-                                                    Case Else
-                                                        FullAddress = FullAddress & ", " & Province
-                                                End Select
-                                            Case Else
-                                                Select Case CityMunicipality
-                                                    Case ""
-                                                        FullAddress = FullAddress & ", " & Province
-                                                    Case Else
-                                                        FullAddress = FullAddress & ", " & Province
-                                                End Select
-                                        End Select
-                                End Select
-                            Case Else
-                                Select Case Village
-                                    Case ""
-                                        Select Case Brgy
-                                            Case ""
-                                                Select Case CityMunicipality
-                                                    Case ""
-                                                        FullAddress = FullAddress & ", " & Province
-                                                    Case Else
-                                                        FullAddress = FullAddress & ", " & Province
-                                                End Select
-                                            Case Else
-                                                Select Case CityMunicipality
-                                                    Case ""
-                                                        FullAddress = FullAddress & ", " & Province
-                                                    Case Else
-                                                        FullAddress = FullAddress & ", " & Province
-                                                End Select
-                                        End Select
-                                    Case Else
-                                        Select Case Brgy
-                                            Case ""
-                                                Select Case CityMunicipality
-                                                    Case ""
-                                                        FullAddress = FullAddress & ", " & Province
-                                                    Case Else
-                                                        FullAddress = FullAddress & ", " & Province
-                                                End Select
-                                            Case Else
-                                                Select Case CityMunicipality
-                                                    Case ""
-                                                        FullAddress = FullAddress & ", " & Province
-                                                    Case Else
-                                                        FullAddress = FullAddress & ", " & Province
-                                                End Select
-                                        End Select
-                                End Select
-                        End Select
-                    Case Else
-                        Select Case Street
-                            Case ""
-                                Select Case Village
-                                    Case ""
-                                        Select Case Brgy
-                                            Case ""
-                                                Select Case CityMunicipality
-                                                    Case ""
-                                                        FullAddress = FullAddress & " " & Province
-                                                    Case Else
-                                                        FullAddress = FullAddress & ", " & Province
-                                                End Select
-                                            Case Else
-                                                Select Case CityMunicipality
-                                                    Case ""
-                                                        FullAddress = FullAddress & ", " & Province
-                                                    Case Else
-                                                        FullAddress = FullAddress & ", " & Province
-                                                End Select
-                                        End Select
-                                    Case Else
-                                        Select Case Brgy
-                                            Case ""
-                                                Select Case CityMunicipality
-                                                    Case ""
-                                                        FullAddress = FullAddress & ", " & Province
-                                                    Case Else
-                                                        FullAddress = FullAddress & ", " & Province
-                                                End Select
-                                            Case Else
-                                                Select Case CityMunicipality
-                                                    Case ""
-                                                        FullAddress = FullAddress & ", " & Province
-                                                    Case Else
-                                                        FullAddress = FullAddress & ", " & Province
-                                                End Select
-                                        End Select
-                                End Select
-                            Case Else
-                                Select Case Village
-                                    Case ""
-                                        Select Case Brgy
-                                            Case ""
-                                                Select Case CityMunicipality
-                                                    Case ""
-                                                        FullAddress = FullAddress & ", " & Province
-                                                    Case Else
-                                                        FullAddress = FullAddress & ", " & Province
-                                                End Select
-                                            Case Else
-                                                Select Case CityMunicipality
-                                                    Case ""
-                                                        FullAddress = FullAddress & ", " & Province
-                                                    Case Else
-                                                        FullAddress = FullAddress & ", " & Province
-                                                End Select
-                                        End Select
-                                    Case Else
-                                        Select Case Brgy
-                                            Case ""
-                                                Select Case CityMunicipality
-                                                    Case ""
-                                                        FullAddress = FullAddress & ", " & Province
-                                                    Case Else
-                                                        FullAddress = FullAddress & ", " & Province
-                                                End Select
-                                            Case Else
-                                                Select Case CityMunicipality
-                                                    Case ""
-                                                        FullAddress = FullAddress & ", " & Province
-                                                    Case Else
-                                                        FullAddress = FullAddress & ", " & Province
-                                                End Select
-                                        End Select
-                                End Select
-                        End Select
-                End Select
-        End Select
+        AddressFormat(UnitNo,
+                      Establishment,
+                      HouseNo,
+                      Street,
+                      Village,
+                      Brgy,
+                      CityMunicipality,
+                      Province)
 
         FullAddress = Trim(FullAddress)
         Area = Trim(Replace(Area__Required_CBX.Text, ",", ""))
@@ -532,13 +228,13 @@ Public Class UpdateProjectAddressFRM
                 Case ""
                     Street__Required_TBX.UseStyleColors = True
                     Street__Required_TBX.Focus()
-                    Address_TTP.Show("This fill is required.", Street__Required_TBX)
+                    Address_TTP.Show("This field is required.", Street__Required_TBX)
                     RequiredField = False
                     Exit Sub
                 Case Nothing
                     Street__Required_TBX.UseStyleColors = True
                     Street__Required_TBX.Focus()
-                    Address_TTP.Show("This fill is required.", Street__Required_TBX)
+                    Address_TTP.Show("This field is required.", Street__Required_TBX)
                     RequiredField = False
                     Exit Sub
             End Select
@@ -547,13 +243,13 @@ Public Class UpdateProjectAddressFRM
                 Case ""
                     CityMunicipality__Required_TBX.UseStyleColors = True
                     CityMunicipality__Required_TBX.Focus()
-                    Address_TTP.Show("This fill is required.", CityMunicipality__Required_TBX)
+                    Address_TTP.Show("This field is required.", CityMunicipality__Required_TBX)
                     RequiredField = False
                     Exit Sub
                 Case Nothing
                     CityMunicipality__Required_TBX.UseStyleColors = True
                     CityMunicipality__Required_TBX.Focus()
-                    Address_TTP.Show("This fill is required.", CityMunicipality__Required_TBX)
+                    Address_TTP.Show("This field is required.", CityMunicipality__Required_TBX)
                     RequiredField = False
                     Exit Sub
             End Select
@@ -562,13 +258,13 @@ Public Class UpdateProjectAddressFRM
                 Case ""
                     Province__Required_TBX.UseStyleColors = True
                     Province__Required_TBX.Focus()
-                    Address_TTP.Show("This fill is required.", Province__Required_TBX)
+                    Address_TTP.Show("This field is required.", Province__Required_TBX)
                     RequiredField = False
                     Exit Sub
                 Case Nothing
                     Province__Required_TBX.UseStyleColors = True
                     Province__Required_TBX.Focus()
-                    Address_TTP.Show("This fill is required.", Province__Required_TBX)
+                    Address_TTP.Show("This field is required.", Province__Required_TBX)
                     RequiredField = False
                     Exit Sub
             End Select
@@ -577,13 +273,13 @@ Public Class UpdateProjectAddressFRM
                 Case ""
                     Area__Required_CBX.UseStyleColors = True
                     Area__Required_CBX.Focus()
-                    Address_TTP.Show("This fill is required.", Area__Required_CBX)
+                    Address_TTP.Show("This field is required.", Area__Required_CBX)
                     RequiredField = False
                     Exit Sub
                 Case Nothing
                     Area__Required_CBX.UseStyleColors = True
                     Area__Required_CBX.Focus()
-                    Address_TTP.Show("This fill is required.", Area__Required_CBX)
+                    Address_TTP.Show("This field is required.", Area__Required_CBX)
                     RequiredField = False
                     Exit Sub
             End Select
@@ -607,7 +303,7 @@ Public Class UpdateProjectAddressFRM
                     RequiredField = True
             End Select
         Catch ex As Exception
-            MessageBox.Show(ex.ToString)
+
         End Try
     End Sub
 

@@ -134,10 +134,16 @@
     <Compile Include="KMDIContractRecords\Forms\Contract Ownership\UpdateOwnerFRM.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="KMDIContractRecords\Forms\Contract Records\ContractRecordsFRM.Designer.vb">
+    <Compile Include="KMDIContractRecords\Forms\Contract Records\Forms\ContractRecordsFRM.Designer.vb">
       <DependentUpon>ContractRecordsFRM.vb</DependentUpon>
     </Compile>
-    <Compile Include="KMDIContractRecords\Forms\Contract Records\ContractRecordsFRM.vb">
+    <Compile Include="KMDIContractRecords\Forms\Contract Records\Forms\ContractRecordsFRM.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="KMDIContractRecords\Forms\Contract Records\Forms\ContractRecordsViewFRM.Designer.vb">
+      <DependentUpon>ContractRecordsViewFRM.vb</DependentUpon>
+    </Compile>
+    <Compile Include="KMDIContractRecords\Forms\Contract Records\Forms\ContractRecordsViewFRM.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="KMDIContractRecords\Forms\Search Function\SearchFRM.Designer.vb">
@@ -347,8 +353,11 @@
     <EmbeddedResource Include="KMDIContractRecords\Forms\Contract Ownership\UpdateOwnerFRM.resx">
       <DependentUpon>UpdateOwnerFRM.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="KMDIContractRecords\Forms\Contract Records\ContractRecordsFRM.resx">
+    <EmbeddedResource Include="KMDIContractRecords\Forms\Contract Records\Forms\ContractRecordsFRM.resx">
       <DependentUpon>ContractRecordsFRM.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KMDIContractRecords\Forms\Contract Records\Forms\ContractRecordsViewFRM.resx">
+      <DependentUpon>ContractRecordsViewFRM.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="KMDIContractRecords\Forms\Search Function\SearchFRM.resx">
       <DependentUpon>SearchFRM.vb</DependentUpon>
@@ -456,6 +465,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="KMDIContractRecords\Forms\Contract Records\Class\" />
     <Folder Include="KMDISystemsAccount\Module\" />
     <Folder Include="KMDISystemsCosting\Module\" />
     <Folder Include="KMDISystemsCosting\WinDoorMaker\Module\" />

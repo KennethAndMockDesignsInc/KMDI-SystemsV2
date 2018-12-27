@@ -23,6 +23,7 @@ Partial Class ContractImagesFRM
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ContractImagesFRM))
         Me.ContractImages_PNL = New System.Windows.Forms.Panel()
         Me.ContractImages_LBL = New MetroFramework.Controls.MetroLabel()
         Me.Load_PB = New MetroFramework.Controls.MetroProgressBar()
@@ -126,6 +127,7 @@ Partial Class ContractImagesFRM
         Me.Controls.Add(Me.Load_PB)
         Me.Controls.Add(Me.ContractImages_LBL)
         Me.Controls.Add(Me.ContractImages_PNL)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "ContractImagesFRM"
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show
         Me.Style = MetroFramework.MetroColorStyle.Silver
