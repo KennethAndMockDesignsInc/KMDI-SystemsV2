@@ -1,5 +1,4 @@
-﻿Imports System.ComponentModel
-Imports System.Data.SqlClient
+﻿Imports System.Data.SqlClient
 
 Public Class KMDI_MainFRM
 
@@ -478,6 +477,7 @@ Public Class KMDI_MainFRM
                 KMDISystemsLogin.Password_TBX.Clear()
                 KMDISystemsLogin.UserName_TBX.Select()
                 'KMDISystemsLogin.CleanSlateProtocol()
+                ContractRecordsFRM.Dispose()
             Else
                 e.Cancel = True
                 Exit Sub

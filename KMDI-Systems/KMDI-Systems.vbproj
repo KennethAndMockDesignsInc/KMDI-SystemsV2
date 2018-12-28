@@ -152,10 +152,10 @@
     <Compile Include="KMDIContractRecords\Forms\Search Function\SearchFRM.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="KMDIContractRecords\Forms\Views\InitialF2.Designer.vb">
+    <Compile Include="KMDIContractRecords\Forms\Contract Records\Class\InitialF2.Designer.vb">
       <DependentUpon>InitialF2.vb</DependentUpon>
     </Compile>
-    <Compile Include="KMDIContractRecords\Forms\Views\InitialF2.vb" />
+    <Compile Include="KMDIContractRecords\Forms\Contract Records\Class\InitialF2.vb" />
     <Compile Include="KMDISystemsAccount\ManageAccounts\Forms\AccountUpdate.Designer.vb">
       <DependentUpon>AccountUpdate.vb</DependentUpon>
     </Compile>
@@ -362,7 +362,7 @@
     <EmbeddedResource Include="KMDIContractRecords\Forms\Search Function\SearchFRM.resx">
       <DependentUpon>SearchFRM.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="KMDIContractRecords\Forms\Views\InitialF2.resx">
+    <EmbeddedResource Include="KMDIContractRecords\Forms\Contract Records\Class\InitialF2.resx">
       <DependentUpon>InitialF2.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="KMDISystemsAccount\ManageAccounts\Forms\AccountUpdate.resx">
@@ -465,7 +465,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="KMDIContractRecords\Forms\Contract Records\Class\" />
     <Folder Include="KMDISystemsAccount\Module\" />
     <Folder Include="KMDISystemsCosting\Module\" />
     <Folder Include="KMDISystemsCosting\WinDoorMaker\Module\" />

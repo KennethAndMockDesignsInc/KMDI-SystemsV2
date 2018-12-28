@@ -793,6 +793,7 @@ Public Class ContractRecordsFRM
                 ContractItemsFRM.Dispose()
                 ContractImagesFRM.Dispose()
                 ContractRecordsViewFRM.Dispose()
+                UpdateProjectAddressFRM.Dispose()
                 Dispose()
             Else
                 e.Cancel = True
