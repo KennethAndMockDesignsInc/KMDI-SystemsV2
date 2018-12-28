@@ -148,6 +148,7 @@ Partial Class PD_PertDetails
         Me.ClientSize = New System.Drawing.Size(532, 368)
         Me.Controls.Add(Me.LoadingPbox)
         Me.Controls.Add(Me.MetroTabControl1)
+        Me.MaximizeBox = False
         Me.Name = "PD_PertDetails"
         Me.Style = MetroFramework.MetroColorStyle.Silver
         Me.Text = "Pertinent Detail(s) / Specialification(s) "

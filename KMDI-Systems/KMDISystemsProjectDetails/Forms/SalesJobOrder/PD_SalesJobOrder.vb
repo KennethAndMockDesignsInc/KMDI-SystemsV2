@@ -8,13 +8,23 @@ Public Class PD_SalesJobOrder
     Dim QuoteRefNo_Populate_counter As Integer
 
     Sub Start_OnLoadBGW()
-        If PD_SalesJobOrder_BGW.IsBusy <> True Then
-            LoadingPbox.Visible = True
-            SalesJobOrder_Pnl.Visible = False
-            PD_SalesJobOrder_BGW.RunWorkerAsync()
-        Else
-            MetroFramework.MetroMessageBox.Show(Me, "Please Wait!", "Loading", MessageBoxButtons.OK, MessageBoxIcon.Stop)
-        End If
+        Try
+            If PD_SalesJobOrder_BGW.IsBusy <> True Then
+                LoadingPbox.Visible = True
+                SalesJobOrder_Pnl.Visible = False
+                PD_SalesJobOrder_BGW.RunWorkerAsync()
+            Else
+                Throw New Exception
+            End If
+        Catch ex As Exception
+            MetroFramework.MetroMessageBox.Show(Me, "Please Wait!", "Loading", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
+            Log_File.Close()
+        End Try
+
     End Sub
     Sub onformLoad()
         Reset_labels()

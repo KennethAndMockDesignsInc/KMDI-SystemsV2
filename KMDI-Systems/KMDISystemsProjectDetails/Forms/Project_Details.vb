@@ -16,7 +16,7 @@ Public Class Project_Details
                 SalesJobOrderToolStripMenuItem.Visible = False
             End If
         Else
-            MetroFramework.MetroMessageBox.Show(Me, "Please Wait!", "Loading", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+            MetroFramework.MetroMessageBox.Show(Me, "Please Wait!", "Loading", MessageBoxButtons.OK, MessageBoxIcon.Warning)
         End If
     End Sub
 
@@ -55,7 +55,7 @@ Public Class Project_Details
             If e.KeyCode = Keys.F2 Or (e.Control And e.KeyCode = Keys.F) Then
                 PD_SearchFRM.Show()
                 PD_SearchFRM.TopMost = True
-            ElseIf e.KeyCode = Keys.F5 Or e.KeyCode = Keys.Back Or e.KeyCode = Keys.Escape Then
+            ElseIf e.KeyCode = Keys.F5 Or e.KeyCode = Keys.Back Then
                 is_CTD_bool = False
                 is_SalesJobOrder_bool = False
                 PD_BGW_TODO = "Onload"
@@ -63,6 +63,8 @@ Public Class Project_Details
             ElseIf e.KeyValue = 93 Then
                 PD_ContextMenu.Show()
                 PD_ContextMenu.Location = New Point(0, 0)
+            ElseIf e.KeyCode = Keys.Escape Then
+                Close()
             End If
         Catch ex As Exception
             MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
@@ -131,22 +133,23 @@ Public Class Project_Details
                         ProjectDetailsDGV.Enabled = True
                         ProjectDetailsDGV.DataSource = sqlBindingSource
 
-                        If is_CTD_bool = True Then
-                            ProjectDetailsDGV.Columns("ID").Visible = False
+                        If ProjectDetailsDGV.RowCount = 0 Then
+                            ProjectDetailsDGV.DataSource = Nothing
+                        Else
+                            If is_CTD_bool = True Then
+                                ProjectDetailsDGV.Columns("ID").Visible = False
+                            End If
+
+                            If ProjectDetailsDGV.Columns.Count <> 0 Then
+                                ProjectDetailsDGV.Columns("PD_ID").Visible = False
+                            End If
+
+                            With ProjectDetailsDGV
+                                .DefaultCellStyle.BackColor = Color.White
+                                .AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke
+                            End With
+
                         End If
-
-                        If ProjectDetailsDGV.Columns.Count <> 0 Then
-                            ProjectDetailsDGV.Columns("PD_ID").Visible = False
-                        End If
-
-                        With ProjectDetailsDGV
-                            .DefaultCellStyle.BackColor = Color.White
-                            .AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke
-                        End With
-                        LoadingPB.Visible = False
-                        ProjectDetailsDGV.Focus()
-                        ProjectDetailsDGV.Select()
-
                     End If
                 Else
                     Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
@@ -158,6 +161,9 @@ Public Class Project_Details
                     MetroFramework.MetroMessageBox.Show(Me, "Transaction failed", "Contact the Developers", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 End If
             End If
+            LoadingPB.Visible = False
+            ProjectDetailsDGV.Focus()
+            ProjectDetailsDGV.Select()
             RESET()
         Catch ex As Exception
             MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
@@ -220,6 +226,8 @@ Public Class Project_Details
     Private Sub ProjectDetailsDGV_MouseClick(sender As Object, e As MouseEventArgs) Handles ProjectDetailsDGV.MouseClick
         Try
             If e.Button = MouseButtons.XButton1 Then
+                is_CTD_bool = False
+                is_SalesJobOrder_bool = False
                 PD_BGW_TODO = "Onload"
                 Start_ProjectDetailsBGW()
             ElseIf e.Button = MouseButtons.Right Then
@@ -291,8 +299,21 @@ Public Class Project_Details
         If MetroFramework.MetroMessageBox.Show(Me, "Are you sure you want to Exit?", " ", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then
             e.Cancel = True
         Else
-            KMDI_MainFRM.BringToFront()
             e.Cancel = False
+            KMDI_MainFRM.BringToFront()
+            NewProject_Register.Dispose()
+            PD_SearchFRM.Dispose()
+            PD_UpdateHeader.Dispose()
+
+            PD_Addendum.Dispose()
+            PD_TechPartners.Dispose()
+            PD_UpdateCOMP.Dispose()
+            PD_UpdateEMP.Dispose()
+
+            PD_SalesJobOrder.Dispose()
+            PD_JoAttach.Dispose()
+            PD_PertDetails.Dispose()
+            Dispose()
         End If
     End Sub
 

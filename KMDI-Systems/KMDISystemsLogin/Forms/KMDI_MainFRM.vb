@@ -366,10 +366,6 @@ Public Class KMDI_MainFRM
     End Sub
 
     Private Sub ProjAssignmentTile_Click(sender As Object, e As EventArgs) Handles ProjAssesmentTile.Click
-        'If Application.OpenForms().OfType(Of ProjectAssignment).Any Then
-        '    ProjectAssignment.Dispose()
-        'End If
-        'ProjectAssignment.Show()
         Project_Details.Show()
     End Sub
 

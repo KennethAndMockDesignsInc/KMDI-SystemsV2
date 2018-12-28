@@ -146,222 +146,6 @@ Public Class PD_Addendum
             MessageBox.Show(Me, ex2.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
         End Try
     End Sub
-
-    Private Sub ProjectLabel_Cbox_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ProjectLabel_Cbox.SelectionChangeCommitted
-        'Dim ProjectLabel As String
-        ProjectLabel = ProjectLabel_Cbox.Text.Replace("&&", "&")
-        If ProjectLabel = OwnersName Then
-            FIle_Label_As = "Proj/Client`s Name"
-        ElseIf ProjectLabel = CompanyName_Str Then
-            FIle_Label_As = "Company Name"
-        End If
-    End Sub
-
-    Private Sub EditHeaderPartToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EditHeaderPartToolStripMenuItem.Click
-        PD_UpdateHeader.UnitNo_Tbox.Text = UnitNo
-        PD_UpdateHeader.Establishment_Tbox.Text = Establishment
-        PD_UpdateHeader.HouseNo_Tbox.Text = HouseNo
-        PD_UpdateHeader.Street_Tbox_Required.Text = Street
-        PD_UpdateHeader.Village_Tbox.Text = Village
-        PD_UpdateHeader.Brgy_Tbox.Text = Brgy
-        PD_UpdateHeader.City_Tbox_Required.Text = CityMunicipality
-        PD_UpdateHeader.Province_Tbox_Required.Text = Province
-        PD_UpdateHeader.Area_Cbox_Required.Text = Area
-        PD_UpdateHeader.disFormOpenedBy = "Addendum"
-        PD_UpdateHeader.Show()
-    End Sub
-
-    Private Sub Header_Pnl_MouseClick(sender As Object, e As MouseEventArgs) Handles Header_Pnl.MouseClick
-        Try
-            If e.Button = MouseButtons.Right Then
-                EditHeaderPartToolStripMenuItem.Visible = True
-                EditTechnicalPartnersToolStripMenuItem.Visible = False
-                Addendum_CMenu.Show()
-                Addendum_CMenu.Location = New Point(MousePosition.X, MousePosition.Y)
-            End If
-        Catch ex As Exception
-            MsgBox(ex.Message)
-        End Try
-    End Sub
-
-    Private Sub TechPartners_Pnl_MouseClick(sender As Object, e As MouseEventArgs) Handles TechPartners_Pnl.MouseClick
-        Try
-            If e.Button = MouseButtons.Right Then
-                EditHeaderPartToolStripMenuItem.Visible = False
-                EditTechnicalPartnersToolStripMenuItem.Visible = True
-                Addendum_CMenu.Show()
-                Addendum_CMenu.Location = New Point(MousePosition.X, MousePosition.Y)
-            End If
-        Catch ex As Exception
-            MsgBox(ex.Message)
-        End Try
-    End Sub
-
-    Private Sub EditTechnicalPartnersToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EditTechnicalPartnersToolStripMenuItem.Click
-        PD_TechPartners.Show()
-    End Sub
-
-    Private Sub ArchDesign_DGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs) Handles ArchDesign_DGV.RowPostPaint
-        rowpostpaint(sender, e)
-    End Sub
-
-    Private Sub IntrDesign_DGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs) Handles IntrDesign_DGV.RowPostPaint
-        rowpostpaint(sender, e)
-    End Sub
-
-    Private Sub ConsMngmt_DGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs) Handles ConsMngmt_DGV.RowPostPaint
-        rowpostpaint(sender, e)
-    End Sub
-
-    Private Sub GenCon_DGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs) Handles GenCon_DGV.RowPostPaint
-        rowpostpaint(sender, e)
-    End Sub
-
-    Private Sub PD_Addendum_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        Try
-            If MetroFramework.MetroMessageBox.Show(Me, "Are you sure you want to Exit?", " ", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                Project_Details.BringToFront()
-                If Application.OpenForms().OfType(Of PD_TechPartners).Any Then
-                    PD_TechPartners.Dispose()
-                End If
-                If Application.OpenForms().OfType(Of PD_UpdateHeader).Any Then
-                    PD_UpdateHeader.Dispose()
-                End If
-                e.Cancel = False
-            Else
-                e.Cancel = True
-            End If
-        Catch ex As Exception
-            MessageBox.Show(ex.Message)
-        End Try
-    End Sub
-
-    Dim OwnersRep, OwnersRepHomeCno, OwnersRepOfficeCno, OwnersRepMobileCno, OwnersNameHomeCno,
-        OwnersNameOfficeCno, OwnersNameMobile, ConStage, SiteMeeting, SpInstr, CUST_ID, CUST_ID_REP As String
-
-    Private Sub ConsMngmt_DGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs) Handles ConsMngmt_DGV.RowEnter
-        Try
-            ArchDesign_DGV.ClearSelection()
-            GenCon_DGV.ClearSelection()
-            IntrDesign_DGV.ClearSelection()
-
-            If (e.RowIndex >= 0 And e.ColumnIndex >= 0) Then
-                TPN_ID = ConsMngmt_DGV.Item("TPN_ID", e.RowIndex).Value
-            End If
-        Catch ex As Exception
-            MsgBox(ex.Message)
-        End Try
-    End Sub
-
-    Private Sub GenCon_DGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs) Handles GenCon_DGV.RowEnter
-        Try
-            ArchDesign_DGV.ClearSelection()
-            ConsMngmt_DGV.ClearSelection()
-            IntrDesign_DGV.ClearSelection()
-            If (e.RowIndex >= 0 And e.ColumnIndex >= 0) Then
-                TPN_ID = GenCon_DGV.Item("TPN_ID", e.RowIndex).Value
-            End If
-        Catch ex As Exception
-            MsgBox(ex.Message)
-        End Try
-    End Sub
-
-    Private Sub QuoteRefNo_Tbox_Leave(sender As Object, e As EventArgs) Handles QuoteRefNo_Tbox.Leave
-        CheckLockQNo()
-    End Sub
-
-    Private Sub QuoteRefNo_Tbox_KeyDown(sender As Object, e As KeyEventArgs) Handles QuoteRefNo_Tbox.KeyDown
-        If e.KeyCode = Keys.Enter Then
-            CheckLockQNo()
-        End If
-    End Sub
-
-    Private Sub IntrDesign_DGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs) Handles IntrDesign_DGV.RowEnter
-        Try
-            ConsMngmt_DGV.ClearSelection()
-            GenCon_DGV.ClearSelection()
-            ArchDesign_DGV.ClearSelection()
-            If (e.RowIndex >= 0 And e.ColumnIndex >= 0) Then
-                TPN_ID = IntrDesign_DGV.Item("TPN_ID", e.RowIndex).Value
-            End If
-        Catch ex As Exception
-            MsgBox(ex.Message)
-        End Try
-    End Sub
-
-    Private Sub ConsMngmt_DGV_UserDeletingRow(sender As Object, e As DataGridViewRowCancelEventArgs) Handles ConsMngmt_DGV.UserDeletingRow
-        ADDENDUM_BGW_TODO = "TPN_DELETE"
-        Start_PD_Addendum_BGW(False, True)
-    End Sub
-
-    Private Sub GenCon_DGV_UserDeletingRow(sender As Object, e As DataGridViewRowCancelEventArgs) Handles GenCon_DGV.UserDeletingRow
-        ADDENDUM_BGW_TODO = "TPN_DELETE"
-        Start_PD_Addendum_BGW(False, True)
-    End Sub
-
-    Private Sub IntrDesign_DGV_UserDeletingRow(sender As Object, e As DataGridViewRowCancelEventArgs) Handles IntrDesign_DGV.UserDeletingRow
-        ADDENDUM_BGW_TODO = "TPN_DELETE"
-        Start_PD_Addendum_BGW(False, True)
-    End Sub
-
-    Public TPN_ID As Integer
-    Private Sub ArchDesign_DGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs) Handles ArchDesign_DGV.RowEnter
-        Try
-            ConsMngmt_DGV.ClearSelection()
-            GenCon_DGV.ClearSelection()
-            IntrDesign_DGV.ClearSelection()
-            If (e.RowIndex >= 0 And e.ColumnIndex >= 0) Then
-                TPN_ID = ArchDesign_DGV.Item("TPN_ID", e.RowIndex).Value
-            End If
-        Catch ex As Exception
-            MsgBox(ex.Message)
-        End Try
-    End Sub
-
-    Private Sub ArchDesign_DGV_UserDeletingRow(sender As Object, e As DataGridViewRowCancelEventArgs) Handles ArchDesign_DGV.UserDeletingRow
-        ADDENDUM_BGW_TODO = "TPN_DELETE"
-        Start_PD_Addendum_BGW(False, True)
-    End Sub
-
-    Dim CompanyName_Str, OwnersName, ProjectLabel As String
-
-    Dim FIle_Label_As As String = Nothing, QuoteRefNo As String = Nothing
-
-    Private Sub Update_btn_Click(sender As Object, e As EventArgs) Handles Update_btn.Click
-        Try
-            ProjectLabel = ProjectLabel_Cbox.Text.Replace("&&", "&")
-            QuoteRefNo = QuoteRefNo_Tbox.Text
-            OwnersName = OwnersName_Tbox.Text
-            OwnersNameHomeCno = OwnersNameHomeCno_Tbox.Text
-            OwnersNameOfficeCno = OwnersNameOfficeCno_Tbox.Text
-            OwnersNameMobile = OwnersNameMobile_Tbox.Text
-            OwnersRep = OwnersRep_Tbox.Text
-            OwnersRepHomeCno = OwnersRepHomeCno_Tbox.Text
-            OwnersRepOfficeCno = OwnersRepOfficeCno_Tbox.Text
-            OwnersRepMobileCno = OwnersRepMobileCno_Tbox.Text
-            ConStage = ConStage_Tbox.Text
-            SiteMeeting = SiteMeeting_Tbox.Text
-            SpInstr = SpInstr_RTbox.Text
-
-            If ProjectLabel = Nothing Or ProjectLabel = "" Then
-                MetroFramework.MetroMessageBox.Show(Me, "Please select Project Name.", " ", MessageBoxButtons.OK)
-            Else
-                If QuoteRefNo_Tbox.Text = Nothing Or QuoteRefNo_Tbox.Text = "" Then
-                    MetroFramework.MetroMessageBox.Show(Me, "Please select input Quote Ref No", " ", MessageBoxButtons.OK)
-                Else
-                    If QuoteRefNo_Tbox.Enabled = True Then
-                        MetroFramework.MetroMessageBox.Show(Me, "Please lock first the Quote Ref No", " ", MessageBoxButtons.OK)
-                    ElseIf QuoteRefNo_Tbox.Enabled = False Then
-                        ADDENDUM_BGW_TODO = "UPDATE_ADDENDUM"
-                        Start_PD_Addendum_BGW(False, True)
-                    End If
-                End If
-            End If
-        Catch ex As Exception
-            MsgBox(ex.Message)
-        End Try
-    End Sub
-
     Private Sub PD_Addendum_BGW_RunWorkerCompleted(ByVal sender As Object, ByVal e As RunWorkerCompletedEventArgs)
         Try
             Me.Width = 800
@@ -669,6 +453,221 @@ Public Class PD_Addendum
             LoadingPbox.Visible = False
         Catch ex As Exception
             MessageBox.Show(Me, ex.Message)
+        End Try
+    End Sub
+
+    Private Sub ProjectLabel_Cbox_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ProjectLabel_Cbox.SelectionChangeCommitted
+        'Dim ProjectLabel As String
+        ProjectLabel = ProjectLabel_Cbox.Text.Replace("&&", "&")
+        If ProjectLabel = OwnersName Then
+            FIle_Label_As = "Proj/Client`s Name"
+        ElseIf ProjectLabel = CompanyName_Str Then
+            FIle_Label_As = "Company Name"
+        End If
+    End Sub
+
+    Private Sub EditHeaderPartToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EditHeaderPartToolStripMenuItem.Click
+        PD_UpdateHeader.UnitNo_Tbox.Text = UnitNo
+        PD_UpdateHeader.Establishment_Tbox.Text = Establishment
+        PD_UpdateHeader.HouseNo_Tbox.Text = HouseNo
+        PD_UpdateHeader.Street_Tbox_Required.Text = Street
+        PD_UpdateHeader.Village_Tbox.Text = Village
+        PD_UpdateHeader.Brgy_Tbox.Text = Brgy
+        PD_UpdateHeader.City_Tbox_Required.Text = CityMunicipality
+        PD_UpdateHeader.Province_Tbox_Required.Text = Province
+        PD_UpdateHeader.Area_Cbox_Required.Text = Area
+        PD_UpdateHeader.disFormOpenedBy = "Addendum"
+        PD_UpdateHeader.Show()
+    End Sub
+
+    Private Sub Header_Pnl_MouseClick(sender As Object, e As MouseEventArgs) Handles Header_Pnl.MouseClick
+        Try
+            If e.Button = MouseButtons.Right Then
+                EditHeaderPartToolStripMenuItem.Visible = True
+                EditTechnicalPartnersToolStripMenuItem.Visible = False
+                Addendum_CMenu.Show()
+                Addendum_CMenu.Location = New Point(MousePosition.X, MousePosition.Y)
+            End If
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
+    End Sub
+
+    Private Sub TechPartners_Pnl_MouseClick(sender As Object, e As MouseEventArgs) Handles TechPartners_Pnl.MouseClick
+        Try
+            If e.Button = MouseButtons.Right Then
+                EditHeaderPartToolStripMenuItem.Visible = False
+                EditTechnicalPartnersToolStripMenuItem.Visible = True
+                Addendum_CMenu.Show()
+                Addendum_CMenu.Location = New Point(MousePosition.X, MousePosition.Y)
+            End If
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
+    End Sub
+
+    Private Sub EditTechnicalPartnersToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EditTechnicalPartnersToolStripMenuItem.Click
+        PD_TechPartners.Show()
+    End Sub
+
+    Private Sub ArchDesign_DGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs) Handles ArchDesign_DGV.RowPostPaint
+        rowpostpaint(sender, e)
+    End Sub
+
+    Private Sub IntrDesign_DGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs) Handles IntrDesign_DGV.RowPostPaint
+        rowpostpaint(sender, e)
+    End Sub
+
+    Private Sub ConsMngmt_DGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs) Handles ConsMngmt_DGV.RowPostPaint
+        rowpostpaint(sender, e)
+    End Sub
+
+    Private Sub GenCon_DGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs) Handles GenCon_DGV.RowPostPaint
+        rowpostpaint(sender, e)
+    End Sub
+
+    Private Sub PD_Addendum_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        Try
+            If MetroFramework.MetroMessageBox.Show(Me, "Are you sure you want to Exit?", " ", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+                Project_Details.BringToFront()
+                If Application.OpenForms().OfType(Of PD_TechPartners).Any Then
+                    PD_TechPartners.Dispose()
+                End If
+                If Application.OpenForms().OfType(Of PD_UpdateHeader).Any Then
+                    PD_UpdateHeader.Dispose()
+                End If
+                e.Cancel = False
+            Else
+                e.Cancel = True
+            End If
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
+    End Sub
+
+    Dim OwnersRep, OwnersRepHomeCno, OwnersRepOfficeCno, OwnersRepMobileCno, OwnersNameHomeCno,
+        OwnersNameOfficeCno, OwnersNameMobile, ConStage, SiteMeeting, SpInstr, CUST_ID, CUST_ID_REP As String
+
+    Private Sub ConsMngmt_DGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs) Handles ConsMngmt_DGV.RowEnter
+        Try
+            ArchDesign_DGV.ClearSelection()
+            GenCon_DGV.ClearSelection()
+            IntrDesign_DGV.ClearSelection()
+
+            If (e.RowIndex >= 0 And e.ColumnIndex >= 0) Then
+                TPN_ID = ConsMngmt_DGV.Item("TPN_ID", e.RowIndex).Value
+            End If
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
+    End Sub
+
+    Private Sub GenCon_DGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs) Handles GenCon_DGV.RowEnter
+        Try
+            ArchDesign_DGV.ClearSelection()
+            ConsMngmt_DGV.ClearSelection()
+            IntrDesign_DGV.ClearSelection()
+            If (e.RowIndex >= 0 And e.ColumnIndex >= 0) Then
+                TPN_ID = GenCon_DGV.Item("TPN_ID", e.RowIndex).Value
+            End If
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
+    End Sub
+
+    Private Sub QuoteRefNo_Tbox_Leave(sender As Object, e As EventArgs) Handles QuoteRefNo_Tbox.Leave
+        CheckLockQNo()
+    End Sub
+
+    Private Sub QuoteRefNo_Tbox_KeyDown(sender As Object, e As KeyEventArgs) Handles QuoteRefNo_Tbox.KeyDown
+        If e.KeyCode = Keys.Enter Then
+            CheckLockQNo()
+        End If
+    End Sub
+
+    Private Sub IntrDesign_DGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs) Handles IntrDesign_DGV.RowEnter
+        Try
+            ConsMngmt_DGV.ClearSelection()
+            GenCon_DGV.ClearSelection()
+            ArchDesign_DGV.ClearSelection()
+            If (e.RowIndex >= 0 And e.ColumnIndex >= 0) Then
+                TPN_ID = IntrDesign_DGV.Item("TPN_ID", e.RowIndex).Value
+            End If
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
+    End Sub
+
+    Private Sub ConsMngmt_DGV_UserDeletingRow(sender As Object, e As DataGridViewRowCancelEventArgs) Handles ConsMngmt_DGV.UserDeletingRow
+        ADDENDUM_BGW_TODO = "TPN_DELETE"
+        Start_PD_Addendum_BGW(False, True)
+    End Sub
+
+    Private Sub GenCon_DGV_UserDeletingRow(sender As Object, e As DataGridViewRowCancelEventArgs) Handles GenCon_DGV.UserDeletingRow
+        ADDENDUM_BGW_TODO = "TPN_DELETE"
+        Start_PD_Addendum_BGW(False, True)
+    End Sub
+
+    Private Sub IntrDesign_DGV_UserDeletingRow(sender As Object, e As DataGridViewRowCancelEventArgs) Handles IntrDesign_DGV.UserDeletingRow
+        ADDENDUM_BGW_TODO = "TPN_DELETE"
+        Start_PD_Addendum_BGW(False, True)
+    End Sub
+
+    Public TPN_ID As Integer
+    Private Sub ArchDesign_DGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs) Handles ArchDesign_DGV.RowEnter
+        Try
+            ConsMngmt_DGV.ClearSelection()
+            GenCon_DGV.ClearSelection()
+            IntrDesign_DGV.ClearSelection()
+            If (e.RowIndex >= 0 And e.ColumnIndex >= 0) Then
+                TPN_ID = ArchDesign_DGV.Item("TPN_ID", e.RowIndex).Value
+            End If
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
+    End Sub
+
+    Private Sub ArchDesign_DGV_UserDeletingRow(sender As Object, e As DataGridViewRowCancelEventArgs) Handles ArchDesign_DGV.UserDeletingRow
+        ADDENDUM_BGW_TODO = "TPN_DELETE"
+        Start_PD_Addendum_BGW(False, True)
+    End Sub
+
+    Dim CompanyName_Str, OwnersName, ProjectLabel As String
+
+    Dim FIle_Label_As As String = Nothing, QuoteRefNo As String = Nothing
+
+    Private Sub Update_btn_Click(sender As Object, e As EventArgs) Handles Update_btn.Click
+        Try
+            ProjectLabel = ProjectLabel_Cbox.Text.Replace("&&", "&")
+            QuoteRefNo = QuoteRefNo_Tbox.Text
+            OwnersName = OwnersName_Tbox.Text
+            OwnersNameHomeCno = OwnersNameHomeCno_Tbox.Text
+            OwnersNameOfficeCno = OwnersNameOfficeCno_Tbox.Text
+            OwnersNameMobile = OwnersNameMobile_Tbox.Text
+            OwnersRep = OwnersRep_Tbox.Text
+            OwnersRepHomeCno = OwnersRepHomeCno_Tbox.Text
+            OwnersRepOfficeCno = OwnersRepOfficeCno_Tbox.Text
+            OwnersRepMobileCno = OwnersRepMobileCno_Tbox.Text
+            ConStage = ConStage_Tbox.Text
+            SiteMeeting = SiteMeeting_Tbox.Text
+            SpInstr = SpInstr_RTbox.Text
+
+            If ProjectLabel = Nothing Or ProjectLabel = "" Then
+                MetroFramework.MetroMessageBox.Show(Me, "Please select Project Name.", " ", MessageBoxButtons.OK)
+            Else
+                If QuoteRefNo_Tbox.Text = Nothing Or QuoteRefNo_Tbox.Text = "" Then
+                    MetroFramework.MetroMessageBox.Show(Me, "Please select input Quote Ref No", " ", MessageBoxButtons.OK)
+                Else
+                    If QuoteRefNo_Tbox.Enabled = True Then
+                        MetroFramework.MetroMessageBox.Show(Me, "Please lock first the Quote Ref No", " ", MessageBoxButtons.OK)
+                    ElseIf QuoteRefNo_Tbox.Enabled = False Then
+                        ADDENDUM_BGW_TODO = "UPDATE_ADDENDUM"
+                        Start_PD_Addendum_BGW(False, True)
+                    End If
+                End If
+            End If
+        Catch ex As Exception
+            MsgBox(ex.Message)
         End Try
     End Sub
 
