@@ -1,14 +1,17 @@
-﻿Imports System.Data.SqlClient
+﻿Imports System.ComponentModel
+Imports System.Data.SqlClient
 
 Public Class PD_SalesJobOrder
 
     Dim ClientsName As String
+    Public PD_SalesJobOrder_BGW As BackgroundWorker = New BackgroundWorker
+    Dim QuoteRefNo_Populate_counter As Integer
 
     Sub Start_OnLoadBGW()
-        If OnLoad_BGW.IsBusy <> True Then
+        If PD_SalesJobOrder_BGW.IsBusy <> True Then
             LoadingPbox.Visible = True
             SalesJobOrder_Pnl.Visible = False
-            OnLoad_BGW.RunWorkerAsync()
+            PD_SalesJobOrder_BGW.RunWorkerAsync()
         Else
             MetroFramework.MetroMessageBox.Show(Me, "Please Wait!", "Loading", MessageBoxButtons.OK, MessageBoxIcon.Stop)
         End If
@@ -16,12 +19,24 @@ Public Class PD_SalesJobOrder
     Sub onformLoad()
         Reset_labels()
         BGW_Func_turn = "Onload"
-        QUERY_INSTANCE = "Loading_using_EqualSearch"
-        QueryBUILD = QuerySearchHeadArrays(5) & QueryMidArrays(4) & QueryConditionArrays(2)
         Start_OnLoadBGW()
     End Sub
     Private Sub PD_SalesJobOrder_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        onformLoad()
+        Try
+            PD_SalesJobOrder_BGW.WorkerSupportsCancellation = True
+            PD_SalesJobOrder_BGW.WorkerReportsProgress = True
+            AddHandler PD_SalesJobOrder_BGW.DoWork, AddressOf PD_SalesJobOrder_BGW_DoWork
+            AddHandler PD_SalesJobOrder_BGW.RunWorkerCompleted, AddressOf PD_SalesJobOrder_BGW_RunWorkerCompleted
+            onformLoad()
+        Catch ex As Exception
+            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
+            Log_File.Close()
+        End Try
     End Sub
 
     Private Sub Panel2_MouseClick(sender As Object, e As MouseEventArgs) Handles Panel2.MouseClick
@@ -34,80 +49,86 @@ Public Class PD_SalesJobOrder
                 SJO_CMenu.Location = New Point(MousePosition.X, MousePosition.Y)
             End If
         Catch ex As Exception
-            MsgBox(ex.Message)
+            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
+            Log_File.Close()
         End Try
     End Sub
 
     Private Sub VatProfile_Cbox_TextChanged(sender As Object, e As EventArgs) Handles VatProfile_Cbox.TextChanged
-        If VatProfile_Cbox.Text.Contains("Exclusive") Then
-            VatPercent_Tbox.Visible = False
-            VatPercent_Lbl.Visible = False
-        ElseIf VatProfile_Cbox.Text.Contains("Inclusive") Then
-            VatPercent_Tbox.Visible = True
-            VatPercent_Lbl.Visible = True
-            VatPercent_Tbox.Enabled = True
-            If VatProfile_Cbox.Text.Contains("VAT Inclusive (30%)") Then
-                VatPercent_Tbox.Enabled = False
-                VatPercent_Tbox.Text = Val(12 * 0.3)
-            ElseIf VatProfile_Cbox.Text.Contains("VAT Inclusive (40%)") Then
-                VatPercent_Tbox.Enabled = False
-                VatPercent_Tbox.Text = Val(12 * 0.4)
-            ElseIf VatProfile_Cbox.Text.Contains("VAT Inclusive (50%)") Then
-                VatPercent_Tbox.Enabled = False
-                VatPercent_Tbox.Text = Val(12 * 0.5)
+        Try
+            If VatProfile_Cbox.Text.Contains("Exclusive") Then
+                VatPercent_Tbox.Visible = False
+                VatPercent_Lbl.Visible = False
+            ElseIf VatProfile_Cbox.Text.Contains("Inclusive") Then
+                VatPercent_Tbox.Visible = True
+                VatPercent_Lbl.Visible = True
+                VatPercent_Tbox.Enabled = True
+                If VatProfile_Cbox.Text.Contains("VAT Inclusive (30%)") Then
+                    VatPercent_Tbox.Enabled = False
+                    VatPercent_Tbox.Text = Val(12 * 0.3)
+                ElseIf VatProfile_Cbox.Text.Contains("VAT Inclusive (40%)") Then
+                    VatPercent_Tbox.Enabled = False
+                    VatPercent_Tbox.Text = Val(12 * 0.4)
+                ElseIf VatProfile_Cbox.Text.Contains("VAT Inclusive (50%)") Then
+                    VatPercent_Tbox.Enabled = False
+                    VatPercent_Tbox.Text = Val(12 * 0.5)
+                End If
             End If
-        End If
+        Catch ex As Exception
+            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
+            Log_File.Close()
+        End Try
     End Sub
 
     Dim newInstanceOfThisFrm As PD_SalesJobOrder
 
-    Private Sub OnLoad_BGW_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles OnLoad_BGW.DoWork
+    Private Sub PD_SalesJobOrder_BGW_DoWork(sender As Object, e As DoWorkEventArgs)
         Try
-            If BGW_Func_turn = "Onload" Then
-                Query_Select(SearchStr)
-            ElseIf BGW_Func_turn = "2ndload" Then
-                QUERY_INSTANCE = "Loading_using_EqualSearch"
-                QueryBUILD = QuerySearchHeadArrays(6) & QueryMidArrays(5) & QueryConditionArrays(1) & " AND OWN.[CLIENT_STATUS] = 'Current Owner'"
-                Query_Select(PD_ID)
-            ElseIf BGW_Func_turn = "3rdload" Then
-                QUERY_INSTANCE = "Loading_using_EqualSearch"
-                QueryBUILD = QuerySearchHeadArrays(6) & QueryMidArrays(5) & QueryConditionArrays(1) & " AND OWN.[CLIENT_STATUS] = 'Previous Owner'"
-                Query_Select(PD_ID)
-            ElseIf BGW_Func_turn = "AEIC_LBL_POPULATE" Then
-                QUERY_INSTANCE = "Loading_using_EqualSearch"
-                QueryBUILD = "SELECT AE_TBL.FULLNAME FROM (" & QuerySearchHeadArrays(4) &
-                    QueryMidArrays(3) & " ) AS AE_TBL
-                    JOIN A_NEW_PROJECT_DETAILS [PD]
-                    ON	AE_TBL.PD_ID_REF = PD.PD_ID
-                    WHERE PD_ID = @EqualSearch AND AE_TBL.[AE_STATUS] = 1 AND PD.[PD_STATUS] = 1"
-                Query_Select(PD_ID)
-            ElseIf BGW_Func_turn = "SEARCH_FOR_SUB_JO" Then
-                QUERY_INSTANCE = "Read_using_SearchString"
-                QueryBUILD = "SELECT SUB_JO FROM [A_NEW_CONTRACT_DETAILS] WHERE SUB_JO = @SearchString"
-                QUERY_SELECT_WITH_READER(JoRefNo)
-            ElseIf BGW_Func_turn = "Update_Me" Then
-                PD_SalesJobOrder_Update(Sub_Jo, JoRefNo, JoDate, FileLabelAs,
-                                        JoDesc, JoAttach, Remarks, BlankPage,
-                                        VatProfile, PaymentTerms, PaymentMode, DownPayment, PaymentDate,
-                                        AddressTo_cmbox, AddressTo_txbox, EstdDelDate, ModeOfDel,
-                                        ModeOfShip, OutOfTown, DelGoodsTo, DelAddress, SpInstr, ContractType,
-                                        BalOfDP, C_ID, CompanyName_txbox, CUST_ID, ProjectLabel, PertDetails, PD_ID)
-            End If
-        Catch ex As SqlException
-            'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
-            If ex.Number = -2 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Click ok to Reconnect", "Request Timeout", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            ElseIf ex.Number = 1232 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Please check internet connection.", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            ElseIf ex.Number = 19 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Sorry our server is under maintenance." & vbCrLf & "Please be patient, will come back A.S.A.P", "Server is down", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            ElseIf ex.Number <> -2 And ex.Number <> 1232 And ex.Number <> 19 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Contact the Programmers now.", "You need some help?", MessageBoxButtons.OK, MessageBoxIcon.Stop)
-                MetroFramework.MetroMessageBox.Show(Me, ex.Message)
-            End If
-            OnLoad_BGW.CancelAsync()
-        Catch ex2 As Exception
-        MessageBox.Show(Me, ex2.Message)
+            Select Case BGW_Func_turn
+                Case "Onload"
+                    QUERY_INSTANCE = "Loading_using_EqualSearch"
+                    Query_Select_STP(SearchStr, "PD_stp_SalesJobOrder_CTDnPD")
+                Case "2ndload"
+                    QUERY_INSTANCE = "Loading_using_EqualSearch"
+                    Query_Select_STP(PD_ID, "PD_stp_SalesJobOrder_CLIENTS")
+                Case "AEIC_LBL_POPULATE"
+                    QUERY_INSTANCE = "Loading_using_EqualSearch"
+                    Query_Select_STP(PD_ID, "PD_stp_SalesJobOrder_AEIC")
+                Case "QUOTE_REF_NO_CUR"
+                    QUERY_INSTANCE = "Loading_using_EqualSearch"
+                    Query_Select_STP(CD_ID, "PD_stp_SalesJobOrder_QRef_Cur")
+                Case "QUOTE_REF_NO_PREV"
+                    QUERY_INSTANCE = "Loading_using_EqualSearch"
+                    Query_Select_STP(CD_ID, "PD_stp_SalesJobOrder_QRef_Prev")
+                Case "SEARCH_FOR_SUB_JO"
+                    QUERY_INSTANCE = "Loading_using_EqualSearch"
+                    Query_Select_STP(JoRefNo_OnClickUpdate, "PD_stp_SalesJobOrder_SubJoSearch")
+                Case "Update"
+                    PD_SalesJobOrder_Update(Sub_Jo, JoRefNo_OnClickUpdate, JoDate, FileLabelAs,
+                                    JoDesc, JoAttach, Remarks, BlankPage,
+                                    VatProfile, PaymentTerms, PaymentMode, DownPayment, PaymentDate,
+                                    AddressTo_cmbox, AddressTo_txbox, EstdDelDate, ModeOfDel,
+                                    ModeOfShip, OutOfTown, DelGoodsTo, DelAddress, SpInstr, ContractType,
+                                    BalOfDP, CD_ID, CompanyName_txbox, CUST_ID, ProjectLabel, PertDetails, PD_ID, "PD_stp_SalesJobOrder_Update")
+            End Select
+        Catch ex As Exception
+            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
+            Log_File.Close()
         End Try
     End Sub
 
@@ -127,133 +148,220 @@ Public Class PD_SalesJobOrder
         BalOfDP_lbl.Text = ""
     End Sub
 
-    Private Sub OnLoad_BGW_RunWorkerCompleted(sender As Object, e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles OnLoad_BGW.RunWorkerCompleted
+    Private Sub PD_SalesJobOrder_BGW_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs)
         Try
             Me.Width = 800
             Me.Height = 600
             If e.Error IsNot Nothing Or e.Cancelled = True Then
                 '' if BackgroundWorker terminated due to error
-                MetroFramework.MetroMessageBox.Show(Me, "Error Occured", "Closing", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Me.Close()
+                MessageBox.Show("Error or Cancelled")
             Else
                 '' otherwise it completed normally
-
-                FullAddress_Tbox.Text = Project_Details.FULLADDRESS
-                JoRefNo_Tbox.Text = Project_Details.JO
                 Dim rownum As Integer = sqlBindingSource.Count
-                If BGW_Func_turn = "Onload" Then
-                    If rownum <> 0 Or rownum <> Nothing Then
-                        For Each row In sqlBindingSource
-                            PD_ID = row("PD_ID")
-                            ProjectLabel_Tbox.Text = row("PROJECT_LABEL")
-                            JoDate_DTP.Value = row("JOB_ORDER_NO_DATE")
-                            FileLabelAs_Cbox.Text = row("FILE_LABEL_AS")
-                            QuoteRefNo_Lbl.Text = row("QUOTE_REF_NO")
-                            QuoteDate_Lbl.Text = row("QUOTE_DATE")
-                            ContractType_Cbox.Text = row("CONTRACT_TYPE")
-                            ProjectType_Lbl.Text = row("PROJECT_TYPE")
-                            ProjSource_Lbl.Text = row("PROJECT_SOURCE")
-                            JoDesc_Tbox.Text = row("JOB_ORDER_DESC")
-                            JoAttach_RTbox.Text = row("JO_ATTACHMENT")
-                            PrevJoNo_Lbl.Text = row("PREV_JOB_ORDER_NO")
-                            PrevQuoteNo_Lbl.Text = row("ORIGIN")
-                            PrevQuoteDate_Lbl.Text = row("ORIGIN_DATE")
-                            PertDetails_RTbox.Text = row("PERTINENT_DETAILS")
-                            Remarks_RTbox.Text = row("SPECIAL_COMMENTS")
-                            VatProfile_Cbox.Text = row("CONTRACT_VAT_PROFILE")
-                            VatPercent_Tbox.Text = row("VAT")
-                            PaymentTerms_Cbox.Text = row("PAYMENT_TERMS")
-                            PaymentMode_Cbox.Text = row("PAYMENT_MODE")
-                            DownPayment_Tbox.Text = row("DOWN_PAYMENT")
-                            PaymentDate_Tbox.Text = row("PAYMENT_DATE")
-                            BalOfDP_lbl.Text = row("BAL_OF_DP")
-                            AddressTo_Cbox.Text = row("ADDRESS_BILLING")
-                            AddressTo_Tbox.Text = row("ADDRESS_TO")
-                            EstdDelDate_Tbox.Text = row("ESTD_DEL_DATE")
-                            ModeOfDel_Cbox.Text = row("MODE_OF_DEL")
-                            ModeOfShip_Cbox.Text = row("MODE_OF_SHIP")
-                            OutOfTown_Cbox.Text = row("OUT_OF_TOWN_CHARGES")
-                            DelGoodsTo_Cbox.Text = row("DEL_GOODS")
-                            DelAddress_RTbox.Text = row("DELGOODS_TO")
-                            SpInstr_RTbox.Text = row("OTHER_PERTINENT_INFO")
-                            BlankPage_Tbox.Text = row("BLANK_PAGE")
-                            UnitNo = row("UnitNo")
-                            Establishment = row("ESTABLISHMENT")
-                            HouseNo = row("NO")
-                            Street = row("STREET")
-                            Village = row("VILLAGE")
-                            Brgy = row("BRGY_MUNICIPALITY")
-                            CityMunicipality = row("TOWN_DISTRICT")
-                            Province = row("PROVINCE")
-                            Area = row("AREA")
-                        Next row
-                        BGW_Func_turn = "2ndload"
-                        is_CTD_bool = True
-                        is_SalesJobOrder_bool = False
-                        Start_OnLoadBGW()
-                    End If
-                ElseIf BGW_Func_turn = "2ndload" Then
-                    For Each row2 In sqlBindingSource
-                        CompanyName_Tbox.Text = row2("COMPANY_NAME")
-                        CustRefNo_Lbl.Text = row2("CUST_REF_NO")
-                        ClientsName = row2("CLIENTS_NAME")
-                        CUST_ID = row2("CUST_ID")
-                    Next row2
-                    BGW_Func_turn = "3rdload"
-                    is_CTD_bool = True
-                    is_SalesJobOrder_bool = False
-                    Start_OnLoadBGW()
-                ElseIf BGW_Func_turn = "3rdload" Then
-                    For Each row3 In sqlBindingSource
-                        PrevOwner_Lbl.Text = row3("CLIENTS_NAME")
-                    Next row3
-                    BGW_Func_turn = "AEIC_LBL_POPULATE"
-                    is_CTD_bool = True
-                    is_SalesJobOrder_bool = False
-                    Start_OnLoadBGW()
-                ElseIf BGW_Func_turn = "AEIC_LBL_POPULATE" Then
-                    Dim lbl_output_seq As Integer
-                    For Each rowAEIC In sqlBindingSource
-                        lbl_output_seq += 1
-                        If AEIC_Lbl.Width > 350 Then
-                            AEIC_Lbl.FontSize = MetroFramework.MetroLabelSize.Small
-                            AEIC_Lbl.FontWeight = MetroFramework.MetroLabelWeight.Light
-                        End If
-                        If rownum <> lbl_output_seq Then
-                            If lbl_output_seq Mod 2 = 0 Then
-                                AEIC_Lbl.Text += rowAEIC("FULLNAME") & " && " & vbCrLf
-                            Else
-                                AEIC_Lbl.Text += rowAEIC("FULLNAME") & " && "
-                            End If
-                        Else
-                            AEIC_Lbl.Text += rowAEIC("FULLNAME")
-                        End If
-                    Next rowAEIC
-                    LoadingPbox.Visible = False
-                    SalesJobOrder_Pnl.Visible = True
-                ElseIf BGW_Func_turn = "SEARCH_FOR_SUB_JO" Then
-                    If QUERY_SELECT_WITH_READER_bool = True Then
-                        If MetroFramework.MetroMessageBox.Show(Me, "Proceed Anyway?" & vbCrLf & "This might cause a duplicate J.O Ref. No.", "Existing J.O Ref. No.", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) = DialogResult.Yes Then
-                            BGW_Func_turn = "Update_Me"
-                            Start_OnLoadBGW()
-                        End If
-                    ElseIf QUERY_SELECT_WITH_READER_bool = False Then
-                        BGW_Func_turn = "Update_Me"
-                        Start_OnLoadBGW()
-                    End If
-                    LoadingPbox.Visible = False
-                    SalesJobOrder_Pnl.Visible = True
-                ElseIf BGW_Func_turn = "Update_Me" Then
-                    If ErrorMsg = Nothing And ErrorNum = Nothing Then
-                        MetroFramework.MetroMessageBox.Show(Me, "Successfully Updated", "", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                        SearchStr = PD_ID
-                        Project_Details.PD_DGV_DoubleCLick()
-                        Me.Close()
-                    Else
-                        MetroFramework.MetroMessageBox.Show(Me, ErrorMsg, ErrorNum.ToString, MessageBoxButtons.OK, MessageBoxIcon.Error)
-                    End If
 
+                If sql_Err_no = -2 Then
+                    Dim result As Integer = MetroFramework.MetroMessageBox.Show(Me, "Click ok to Reconnect" & vbCrLf & "Cancel to Exit",
+                                                       "Request Timeout", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation)
+                    If result = DialogResult.OK Then
+                        Start_OnLoadBGW()
+                        Exit Sub
+                    ElseIf result = DialogResult.Cancel Then
+                        Dispose()
+                        Exit Sub
+                    End If
+                ElseIf sql_Err_no = 1232 Or sql_Err_no = 121 Then
+                    MetroFramework.MetroMessageBox.Show(Me, "Please check internet connection", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                ElseIf sql_Err_no = 19 Then
+                    MetroFramework.MetroMessageBox.Show(Me, "Sorry our server is under maintenance." & vbCrLf & "Please be patient, will come back A.S.A.P", "Server is down", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                ElseIf (sql_Err_no = "" Or sql_Err_no = Nothing) AndAlso
+                       (sql_Err_msg = "" Or sql_Err_msg = Nothing) Then
+                    If sql_Transaction_result = "Committed" Then
+                        Select Case BGW_Func_turn
+                            Case "Onload"
+                                If rownum <> 0 Or rownum <> Nothing Then
+                                    For Each row In sqlBindingSource
+                                        PD_ID = row("PD_ID")
+                                        JoRefNo_Onload = row("SUB_JO")
+                                        JoRefNo_Tbox.Text = JoRefNo_Onload
+
+                                        ProjectLabel_Tbox.Text = row("PROJECT_LABEL")
+                                        JoDate_DTP.Value = row("JOB_ORDER_NO_DATE")
+                                        FileLabelAs_Cbox.Text = row("FILE_LABEL_AS")
+                                        ContractType_Cbox.Text = row("CONTRACT_TYPE")
+                                        ProjectType_Lbl.Text = row("PROJECT_TYPE")
+                                        ProjSource_Lbl.Text = row("PROJECT_SOURCE")
+                                        JoDesc_Tbox.Text = row("JOB_ORDER_DESC")
+                                        JoAttach_RTbox.Text = row("JO_ATTACHMENT")
+                                        PrevJoNo_Lbl.Text = row("PREV_JOB_ORDER_NO")
+                                        PertDetails_RTbox.Text = row("PERTINENT_DETAILS")
+                                        Remarks_RTbox.Text = row("SPECIAL_COMMENTS")
+                                        VatProfile_Cbox.Text = row("CONTRACT_VAT_PROFILE")
+                                        VatPercent_Tbox.Text = row("VAT")
+                                        PaymentTerms_Cbox.Text = row("PAYMENT_TERMS")
+                                        PaymentMode_Cbox.Text = row("PAYMENT_MODE")
+                                        DownPayment_Tbox.Text = row("DOWN_PAYMENT")
+                                        PaymentDate_Tbox.Text = row("PAYMENT_DATE")
+                                        BalOfDP_lbl.Text = row("BAL_OF_DP")
+                                        AddressTo_Cbox.Text = row("ADDRESS_BILLING")
+                                        AddressTo_Tbox.Text = row("ADDRESS_TO")
+                                        EstdDelDate_Tbox.Text = row("ESTD_DEL_DATE")
+                                        ModeOfDel_Cbox.Text = row("MODE_OF_DEL")
+                                        ModeOfShip_Cbox.Text = row("MODE_OF_SHIP")
+                                        OutOfTown_Cbox.Text = row("OUT_OF_TOWN_CHARGES")
+                                        DelGoodsTo_Cbox.Text = row("DEL_GOODS")
+                                        DelAddress_RTbox.Text = row("DELGOODS_TO")
+                                        SpInstr_RTbox.Text = row("OTHER_PERTINENT_INFO")
+                                        BlankPage_Tbox.Text = row("BLANK_PAGE")
+                                        UnitNo = row("UnitNo")
+                                        Establishment = row("ESTABLISHMENT")
+                                        HouseNo = row("NO")
+                                        Street = row("STREET")
+                                        Village = row("VILLAGE")
+                                        Brgy = row("BRGY_MUNICIPALITY")
+                                        CityMunicipality = row("TOWN_DISTRICT")
+                                        Province = row("PROVINCE")
+                                        Area = row("AREA")
+                                    Next row
+                                    AddressFormat(UnitNo, Establishment, HouseNo, Street,
+                                                  Village, Brgy, CityMunicipality, Province)
+                                    FullAddress_Tbox.Text = FullAddress
+                                    BGW_Func_turn = "2ndload"
+                                    is_CTD_bool = True
+                                    is_SalesJobOrder_bool = False
+                                    Start_OnLoadBGW()
+                                End If
+                            Case "2ndload"
+                                For Each row2 In sqlBindingSource
+                                    Dim CLIENT_STATUS As String
+                                    CLIENT_STATUS = row2("CLIENT_STATUS")
+                                    If CLIENT_STATUS = "Current Owner" Then
+                                        CompanyName_Tbox.Text = row2("COMPANY_NAME")
+                                        CustRefNo_Lbl.Text = row2("CUST_REF_NO")
+                                        ClientsName = row2("CLIENTS_NAME")
+                                        CUST_ID = row2("CUST_ID")
+                                    ElseIf CLIENT_STATUS = "Previous Owner" Then
+                                        PrevOwner_Lbl.Text = row2("CLIENTS_NAME")
+                                    End If
+                                Next row2
+                                BGW_Func_turn = "AEIC_LBL_POPULATE"
+                                is_CTD_bool = True
+                                is_SalesJobOrder_bool = False
+                                Start_OnLoadBGW()
+                            Case "AEIC_LBL_POPULATE"
+                                Dim lbl_output_seq As Integer
+                                For Each rowAEIC In sqlBindingSource
+                                    lbl_output_seq += 1
+                                    If AEIC_Lbl.Width > 350 Then
+                                        AEIC_Lbl.FontSize = MetroFramework.MetroLabelSize.Small
+                                        AEIC_Lbl.FontWeight = MetroFramework.MetroLabelWeight.Light
+                                    End If
+                                    If rownum <> lbl_output_seq Then
+                                        If lbl_output_seq Mod 2 = 0 Then
+                                            AEIC_Lbl.Text += rowAEIC("FULLNAME") & " && " & vbCrLf
+                                        Else
+                                            AEIC_Lbl.Text += rowAEIC("FULLNAME") & " && "
+                                        End If
+                                    Else
+                                        AEIC_Lbl.Text += rowAEIC("FULLNAME")
+                                    End If
+                                Next rowAEIC
+                                BGW_Func_turn = "QUOTE_REF_NO_CUR"
+                                is_CTD_bool = True
+                                is_SalesJobOrder_bool = False
+                                Start_OnLoadBGW()
+                            Case "QUOTE_REF_NO_CUR"
+                                Dim QREF_DATE As Date
+                                Dim QREF_NO As String
+
+                                For Each row In sqlBindingSource
+                                    QuoteRefNo_Populate_counter += 1
+                                    QREF_NO = row("QUOTE_NO")
+                                    QREF_DATE = row("QUOTE_DATE")
+
+                                    If sqlBindingSource.Count = 1 Then
+                                        QuoteRefNo_Lbl.Text = QREF_NO
+                                        QuoteDate_Lbl.Text = QREF_DATE.ToString("MMM-dd-yyyy")
+
+                                    ElseIf sqlBindingSource.Count > 1 And QuoteRefNo_Populate_counter <> sqlBindingSource.Count Then
+                                        QuoteRefNo_Lbl.Text += QREF_NO & ", "
+                                        QuoteDate_Lbl.Text += QREF_DATE.ToString("MMM-dd-yyyy") & ", "
+
+                                    ElseIf sqlBindingSource.Count > 1 And QuoteRefNo_Populate_counter = sqlBindingSource.Count Then
+                                        QuoteRefNo_Lbl.Text += QREF_NO
+                                        QuoteDate_Lbl.Text += QREF_DATE.ToString("MMM-dd-yyyy")
+
+                                    End If
+                                Next
+
+                                QuoteRefNo_Populate_counter = 0
+                                BGW_Func_turn = "QUOTE_REF_NO_PREV"
+                                is_CTD_bool = True
+                                is_SalesJobOrder_bool = False
+                                Start_OnLoadBGW()
+                            Case "QUOTE_REF_NO_PREV"
+                                Dim QREF_DATE As Date
+                                Dim QREF_NO As String
+
+                                For Each row In sqlBindingSource
+                                    QuoteRefNo_Populate_counter += 1
+                                    QREF_NO = row("QUOTE_NO")
+                                    QREF_DATE = row("QUOTE_DATE")
+
+                                    If sqlBindingSource.Count = 1 Then
+                                        PrevQuoteNo_Lbl.Text = QREF_NO
+                                        PrevQuoteDate_Lbl.Text = QREF_DATE.ToString("MMM-dd-yyyy")
+
+                                    ElseIf sqlBindingSource.Count > 1 And QuoteRefNo_Populate_counter <> sqlBindingSource.Count Then
+                                        PrevQuoteNo_Lbl.Text += QREF_NO & ", "
+                                        PrevQuoteDate_Lbl.Text += QREF_DATE.ToString("MMM-dd-yyyy") & ", "
+
+                                    ElseIf sqlBindingSource.Count > 1 And QuoteRefNo_Populate_counter = sqlBindingSource.Count Then
+                                        PrevQuoteNo_Lbl.Text += QREF_NO
+                                        PrevQuoteDate_Lbl.Text += QREF_DATE.ToString("MMM-dd-yyyy")
+
+                                    End If
+                                Next
+
+                                QuoteRefNo_Populate_counter = 0
+                            Case "SEARCH_FOR_SUB_JO"
+                                If return_bool = True Then
+                                    If MetroFramework.MetroMessageBox.Show(Me, "Proceed Anyway?" & vbCrLf & "This might cause a duplicate J.O Ref. No.", "Existing J.O Ref. No.", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) = DialogResult.Yes Then
+                                        BGW_Func_turn = "Update"
+                                        Start_OnLoadBGW()
+                                    End If
+                                ElseIf return_bool = False Then
+                                    BGW_Func_turn = "Update"
+                                    Start_OnLoadBGW()
+                                End If
+                                return_bool = False
+                            Case "Update"
+                                If return_bool = True Then
+                                    MetroFramework.MetroMessageBox.Show(Me, "Success", " ", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                                    Reset_labels()
+                                    BGW_Func_turn = "Onload"
+                                    Start_OnLoadBGW()
+                                ElseIf return_bool = False Then
+                                    MetroFramework.MetroMessageBox.Show(Me, "Failed", " ", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                                End If
+                        End Select
+
+                    ElseIf sql_Transaction_result = "Rollback" Then
+                        MetroFramework.MetroMessageBox.Show(Me, "Failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                    End If
+                Else
+                    Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+                    Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                           "SQL Transaction Error Number: " & sql_Err_no & vbCrLf &
+                                           "SQL Transaction Error Message: " & sql_Err_msg)
+                    Log_File.Close()
+                    MetroFramework.MetroMessageBox.Show(Me, "Transaction failed", "Contact the Developers", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 End If
+                sql_Err_msg = Nothing
+                sql_Err_no = Nothing
+                sql_Transaction_result = ""
+
+                LoadingPbox.Visible = False
+                SalesJobOrder_Pnl.Visible = True
 
                 If JoDate = "1900-01-01" Then
                     JoDate_DTP.Value = Now
@@ -276,7 +384,13 @@ Public Class PD_SalesJobOrder
             End If
 
         Catch ex As Exception
-            MessageBox.Show(Me, ex.Message)
+            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
+            Log_File.Close()
         End Try
     End Sub
 
@@ -285,17 +399,27 @@ Public Class PD_SalesJobOrder
     End Sub
 
     Private Sub EditHeaderPartToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EditHeaderPartToolStripMenuItem.Click
-        PD_UpdateHeader.UnitNo_Tbox.Text = UnitNo
-        PD_UpdateHeader.Establishment_Tbox.Text = Establishment
-        PD_UpdateHeader.HouseNo_Tbox.Text = HouseNo
-        PD_UpdateHeader.Street_Tbox_Required.Text = Street
-        PD_UpdateHeader.Village_Tbox.Text = Village
-        PD_UpdateHeader.Brgy_Tbox.Text = Brgy
-        PD_UpdateHeader.City_Tbox_Required.Text = CityMunicipality
-        PD_UpdateHeader.Province_Tbox_Required.Text = Province
-        PD_UpdateHeader.Area_Cbox_Required.Text = Area
-        PD_UpdateHeader.disFormOpenedBy = "SalesJobOrder"
-        PD_UpdateHeader.Show()
+        Try
+            PD_UpdateHeader.UnitNo_Tbox.Text = UnitNo
+            PD_UpdateHeader.Establishment_Tbox.Text = Establishment
+            PD_UpdateHeader.HouseNo_Tbox.Text = HouseNo
+            PD_UpdateHeader.Street_Tbox_Required.Text = Street
+            PD_UpdateHeader.Village_Tbox.Text = Village
+            PD_UpdateHeader.Brgy_Tbox.Text = Brgy
+            PD_UpdateHeader.City_Tbox_Required.Text = CityMunicipality
+            PD_UpdateHeader.Province_Tbox_Required.Text = Province
+            PD_UpdateHeader.Area_Cbox_Required.Text = Area
+            PD_UpdateHeader.disFormOpenedBy = "SalesJobOrder"
+            PD_UpdateHeader.Show()
+        Catch ex As Exception
+            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
+            Log_File.Close()
+        End Try
     End Sub
 
     Private Sub EditJOContractAttachmentsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EditJOContractAttachmentsToolStripMenuItem.Click
@@ -313,7 +437,13 @@ Public Class PD_SalesJobOrder
                 SJO_CMenu.Location = New Point(MousePosition.X, MousePosition.Y)
             End If
         Catch ex As Exception
-            MsgBox(ex.Message)
+            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
+            Log_File.Close()
         End Try
     End Sub
 
@@ -327,7 +457,13 @@ Public Class PD_SalesJobOrder
                 SJO_CMenu.Location = New Point(MousePosition.X, MousePosition.Y)
             End If
         Catch ex As Exception
-            MsgBox(ex.Message)
+            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
+            Log_File.Close()
         End Try
     End Sub
 
@@ -346,7 +482,13 @@ Public Class PD_SalesJobOrder
                 SJO_CMenu.Location = New Point(MousePosition.X, MousePosition.Y)
             End If
         Catch ex As Exception
-            MsgBox(ex.Message)
+            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
+            Log_File.Close()
         End Try
     End Sub
 
@@ -360,40 +502,77 @@ Public Class PD_SalesJobOrder
                 SJO_CMenu.Location = New Point(MousePosition.X, MousePosition.Y)
             End If
         Catch ex As Exception
-            MsgBox(ex.Message)
+            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
+            Log_File.Close()
         End Try
     End Sub
 
     Private Sub FileLabelAs_Cbox_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles FileLabelAs_Cbox.SelectionChangeCommitted
-        If FileLabelAs_Cbox.Text = "Proj/Client`s Name" Then
-            ProjectLabel_Tbox.Text = ClientsName
-        ElseIf FileLabelAs_Cbox.Text = "Company Name" Then
-            ProjectLabel_Tbox.Text = CompanyName_Tbox.Text
-        End If
+        Try
+            If FileLabelAs_Cbox.Text = "Proj/Client`s Name" Then
+                ProjectLabel_Tbox.Text = ClientsName
+            ElseIf FileLabelAs_Cbox.Text = "Company Name" Then
+                ProjectLabel_Tbox.Text = CompanyName_Tbox.Text
+            End If
+        Catch ex As Exception
+            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
+            Log_File.Close()
+        End Try
     End Sub
 
     Private Sub AddressTo_Cbox_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles AddressTo_Cbox.SelectionChangeCommitted
-        If AddressTo_Cbox.SelectedIndex = 0 Then
-            AddressTo_Tbox.Text = ClientsName
-        ElseIf AddressTo_Cbox.SelectedIndex = 1 Then
-            AddressTo_Tbox.Text = CompanyName_Tbox.Text
-        ElseIf AddressTo_Cbox.SelectedIndex = 2 Then
-            AddressTo_Tbox.Text = ""
-        End If
+        Try
+            If AddressTo_Cbox.SelectedIndex = 0 Then
+                AddressTo_Tbox.Text = ClientsName
+            ElseIf AddressTo_Cbox.SelectedIndex = 1 Then
+                AddressTo_Tbox.Text = CompanyName_Tbox.Text
+            ElseIf AddressTo_Cbox.SelectedIndex = 2 Then
+                AddressTo_Tbox.Text = ""
+            End If
+        Catch ex As Exception
+            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
+            Log_File.Close()
+        End Try
     End Sub
 
     Private Sub DelGoodsTo_Cbox_TextChanged(sender As Object, e As EventArgs) Handles DelGoodsTo_Cbox.TextChanged
-        If DelGoodsTo_Cbox.Text.Contains("Project/Site Address") Then
-            DelAddress_RTbox.Text = FullAddress
-        ElseIf DelGoodsTo_Cbox.Text.Contains("Other Address") Then
-            DelAddress_RTbox.Text = ""
-        End If
+        Try
+            If DelGoodsTo_Cbox.Text.Contains("Project/Site Address") Then
+                DelAddress_RTbox.Text = FullAddress
+            ElseIf DelGoodsTo_Cbox.Text.Contains("Other Address") Then
+                DelAddress_RTbox.Text = ""
+            End If
+        Catch ex As Exception
+            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
+            Log_File.Close()
+        End Try
+
     End Sub
 
     Public ProjectLabel,
             CompanyName_txbox,
-            FullAddress,
-            JoRefNo,
+            JoRefNo_Onload,
+            JoRefNo_OnClickUpdate,
             Sub_Jo,
             FileLabelAs,
             JoDesc,
@@ -418,52 +597,74 @@ Public Class PD_SalesJobOrder
             BalOfDP,
             ContractType As String
 
-    'Private Sub FullAddress_Tbox_MouseClick(sender As Object, e As MouseEventArgs) Handles FullAddress_Tbox.MouseClick
-    '    Try
-    '        If e.Button = MouseButtons.Right Then
-    '            EditHeaderPartToolStripMenuItem.Visible = True
-    '            EditJOContractAttachmentsToolStripMenuItem.Visible = False
-    '            EditPertinentDetailsToolStripMenuItem.Visible = False
-    '            SJO_CMenu.Show()
-    '            SJO_CMenu.Location = New Point(MousePosition.X, MousePosition.Y)
-    '        End If
-    '    Catch ex As Exception
-    '        MsgBox(ex.Message)
-    '    End Try
-    'End Sub
-
     Private Sub DownPayment_Tbox_TextChanged(sender As Object, e As EventArgs) Handles DownPayment_Tbox.TextChanged
+        Try
+            Dim DownPayment_inputted As Double
+            DownPayment_inputted = Val(DownPayment_Tbox.Text)
+            If DownPayment_Tbox.Text = "" Or DownPayment_Tbox.Text = Nothing Then
+                DownPayment_inputted = 0
+            End If
 
-        Dim DownPayment_inputted As Double
-        DownPayment_inputted = Val(DownPayment_Tbox.Text)
-        If DownPayment_Tbox.Text = "" Or DownPayment_Tbox.Text = Nothing Then
-            DownPayment_inputted = 0
-        End If
+            If DownPayment_inputted >= 100.0 Then
+                DownPayment_Tbox.Text = 100.0
+            End If
 
-        If DownPayment_inputted >= 100.0 Then
-            DownPayment_Tbox.Text = 100.0
-        End If
+            BalOfDP_input = DownPayment_input - Val(DownPayment_Tbox.Text)
 
-        BalOfDP_input = DownPayment_input - Val(DownPayment_Tbox.Text)
+            BalOfDP_lbl.Text = BalOfDP_input & "%"
+        Catch ex As Exception
+            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
+            Log_File.Close()
+        End Try
 
-        BalOfDP_lbl.Text = BalOfDP_input & "%"
     End Sub
 
     Dim BalOfDP_input, DownPayment_input As Double
 
     Private Sub PaymentTerms_Cbox_TextChanged(sender As Object, e As EventArgs) Handles PaymentTerms_Cbox.TextChanged
-        If PaymentTerms_Cbox.Text.Contains("C.O.D") Or PaymentTerms_Cbox.Text.Contains("Free-Of-Charge") Or PaymentTerms_Cbox.Text.Contains("Full Payment") Then
-            DownPayment_input = 0
-        ElseIf PaymentTerms_Cbox.Text.Contains("Standard: 50%,40%,10%") Then
-            DownPayment_input = 50
-        ElseIf PaymentTerms_Cbox.Text.Contains("90%, 10%") Then
-            DownPayment_input = 90
-        End If
-        DownPayment_Tbox.Text = DownPayment_input
+        Try
+            If PaymentTerms_Cbox.Text.Contains("C.O.D") Or PaymentTerms_Cbox.Text.Contains("Free-Of-Charge") Or PaymentTerms_Cbox.Text.Contains("Full Payment") Then
+                DownPayment_input = 0
+            ElseIf PaymentTerms_Cbox.Text.Contains("Standard: 50%,40%,10%") Then
+                DownPayment_input = 50
+            ElseIf PaymentTerms_Cbox.Text.Contains("90%, 10%") Then
+                DownPayment_input = 90
+            End If
+            DownPayment_Tbox.Text = DownPayment_input
+        Catch ex As Exception
+            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
+            Log_File.Close()
+        End Try
+
     End Sub
 
     Private Sub Collections_Textboxes_KeyPress(sender As Object, e As KeyPressEventArgs) Handles VatPercent_Tbox.KeyPress, DownPayment_Tbox.KeyPress
-        e.Handled = Not (Char.IsDigit(e.KeyChar) Or e.KeyChar = "." Or Asc(e.KeyChar) = 8)
+        Try
+            If (Asc(e.KeyChar) <> 13 AndAlso Asc(e.KeyChar) <> 8 AndAlso Not IsNumeric(e.KeyChar)) Or e.KeyChar = "." Or Asc(e.KeyChar) = 8 Then
+                e.Handled = True
+                Throw New Exception()
+            Else
+                e.Handled = False
+            End If
+        Catch ex As Exception
+            MetroFramework.MetroMessageBox.Show(Me, "Numbers only", "User Warning",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                               "Inputting: " & e.KeyChar & vbCrLf &
+                               "Trace: " & ex.StackTrace & vbCrLf)
+            Log_File.Close()
+        End Try
     End Sub
 
     Private Sub PD_SalesJobOrder_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
@@ -479,37 +680,53 @@ Public Class PD_SalesJobOrder
     Public JoDate As Date
 
     Private Sub MetroButton1_Click(sender As Object, e As EventArgs) Handles Update_btn.Click
-        ProjectLabel = ProjectLabel_Tbox.Text
-        CompanyName_txbox = CompanyName_Tbox.Text
-        FullAddress = FullAddress_Tbox.Text
-        Sub_Jo = JoRefNo_Tbox.Text
-        JoRefNo = Replace(JoRefNo_Tbox.Text, " ", "")
-        JoDate = JoDate_DTP.Value
-        FileLabelAs = FileLabelAs_Cbox.Text
-        JoDesc = JoDesc_Tbox.Text
-        JoAttach = JoAttach_RTbox.Text
-        PertDetails = PertDetails_RTbox.Text
-        Remarks = Remarks_RTbox.Text
-        BlankPage = BlankPage_Tbox.Text
-        VatProfile = VatProfile_Cbox.Text
-        PaymentTerms = PaymentTerms_Cbox.Text
-        PaymentMode = PaymentMode_Cbox.Text
-        DownPayment = DownPayment_Tbox.Text
-        PaymentDate = PaymentDate_Tbox.Text
-        AddressTo_cmbox = AddressTo_Cbox.Text
-        AddressTo_txbox = AddressTo_Tbox.Text
-        EstdDelDate = EstdDelDate_Tbox.Text
-        ModeOfDel = ModeOfDel_Cbox.Text
-        ModeOfShip = ModeOfShip_Cbox.Text
-        OutOfTown = OutOfTown_Cbox.Text
-        DelGoodsTo = DelGoodsTo_Cbox.Text
-        DelAddress = DelAddress_RTbox.Text
-        SpInstr = SpInstr_RTbox.Text
-        BalOfDP = BalOfDP_lbl.Text
-        ContractType = ContractType_Cbox.Text
-        If Trim(JoRefNo_Tbox.Text).Length <> 11 Then
-            BGW_Func_turn = "SEARCH_FOR_SUB_JO"
-            Start_OnLoadBGW()
-        End If
+        Try
+            ProjectLabel = ProjectLabel_Tbox.Text
+            CompanyName_txbox = CompanyName_Tbox.Text
+            FullAddress = FullAddress_Tbox.Text
+            Sub_Jo = JoRefNo_Tbox.Text
+            JoRefNo_OnClickUpdate = JoRefNo_Tbox.Text
+            JoDate = JoDate_DTP.Value
+            FileLabelAs = FileLabelAs_Cbox.Text
+            JoDesc = JoDesc_Tbox.Text
+            JoAttach = JoAttach_RTbox.Text
+            PertDetails = PertDetails_RTbox.Text
+            Remarks = Remarks_RTbox.Text
+            BlankPage = BlankPage_Tbox.Text
+            VatProfile = VatProfile_Cbox.Text
+            PaymentTerms = PaymentTerms_Cbox.Text
+            PaymentMode = PaymentMode_Cbox.Text
+            DownPayment = DownPayment_Tbox.Text
+            PaymentDate = PaymentDate_Tbox.Text
+            AddressTo_cmbox = AddressTo_Cbox.Text
+            AddressTo_txbox = AddressTo_Tbox.Text
+            EstdDelDate = EstdDelDate_Tbox.Text
+            ModeOfDel = ModeOfDel_Cbox.Text
+            ModeOfShip = ModeOfShip_Cbox.Text
+            OutOfTown = OutOfTown_Cbox.Text
+            DelGoodsTo = DelGoodsTo_Cbox.Text
+            DelAddress = DelAddress_RTbox.Text
+            SpInstr = SpInstr_RTbox.Text
+            BalOfDP = BalOfDP_lbl.Text
+            ContractType = ContractType_Cbox.Text
+            If Trim(JoRefNo_Tbox.Text).Length <> 11 Then
+                If JoRefNo_OnClickUpdate = JoRefNo_Onload Then
+                    BGW_Func_turn = "Update"
+                    Start_OnLoadBGW()
+                ElseIf JoRefNo_OnClickUpdate <> JoRefNo_Onload Then
+                    BGW_Func_turn = "SEARCH_FOR_SUB_JO"
+                    Start_OnLoadBGW()
+                End If
+            End If
+        Catch ex As Exception
+            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
+            Log_File.Close()
+        End Try
+
     End Sub
 End Class

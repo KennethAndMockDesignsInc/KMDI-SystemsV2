@@ -141,7 +141,7 @@ Partial Class PD_UpdateEMP
         Me.EmpAF_Tbox.ForeColor = System.Drawing.Color.Black
         Me.EmpAF_Tbox.Lines = New String(-1) {}
         Me.EmpAF_Tbox.Location = New System.Drawing.Point(130, 189)
-        Me.EmpAF_Tbox.MaxLength = 32767
+        Me.EmpAF_Tbox.MaxLength = 12
         Me.EmpAF_Tbox.Name = "EmpAF_Tbox"
         Me.EmpAF_Tbox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
         Me.EmpAF_Tbox.ScrollBars = System.Windows.Forms.ScrollBars.None
@@ -379,6 +379,7 @@ Partial Class PD_UpdateEMP
         '
         'PD_UpdateEMP
         '
+        Me.AcceptButton = Me.Save_Btn
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(498, 429)

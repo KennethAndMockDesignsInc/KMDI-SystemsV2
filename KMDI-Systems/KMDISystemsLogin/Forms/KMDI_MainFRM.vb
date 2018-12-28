@@ -39,7 +39,7 @@ Public Class KMDI_MainFRM
                             ToVisibleEngrPaneL = 1
 
                         Case addendum
-                            ProjAssignmentTile.Visible = True
+                            ProjAssesmentTile.Visible = True
                             ToVisibleSNOPaneL = 1
                         Case SalesItinerary
                             SalesItineraryTile.Visible = True
@@ -182,7 +182,7 @@ Public Class KMDI_MainFRM
                 CallerInfoTile.Visible = True
                 ExterrnalDamagesTile.Visible = True
                 SalesItineraryTile.Visible = True
-                ProjAssignmentTile.Visible = True
+                ProjAssesmentTile.Visible = True
 
                 ToVisibleSNOPaneL = 1
 
@@ -201,7 +201,7 @@ Public Class KMDI_MainFRM
                 CallerInfoTile.Visible = True
                 ExterrnalDamagesTile.Visible = True
                 SalesItineraryTile.Visible = True
-                ProjAssignmentTile.Visible = True
+                ProjAssesmentTile.Visible = True
 
 
                 ToVisibleSNOPaneL = 1
@@ -215,7 +215,7 @@ Public Class KMDI_MainFRM
                 EngrSDSubmittalTile.Visible = True
                 ExterrnalDamagesTile.Visible = True
                 SalesItineraryTile.Visible = True
-                ProjAssignmentTile.Visible = True
+                ProjAssesmentTile.Visible = True
 
                 ToVisibleSNOPaneL = 1
                 ToVisibleEngrPaneL = 1
@@ -230,7 +230,7 @@ Public Class KMDI_MainFRM
             EngrsItineraryTIle.Visible = True
             EngrSDSubmittalTile.Visible = True
 
-            ProjAssignmentTile.Visible = True
+            ProjAssesmentTile.Visible = True
             SalesItineraryTile.Visible = True
             SalesMonitoringTile.Visible = True
             SUSTile.Visible = True
@@ -301,7 +301,7 @@ Public Class KMDI_MainFRM
         DRReportTile.Visible = False
         EngrsItineraryTIle.Visible = False
         EngrSDSubmittalTile.Visible = False
-        ProjAssignmentTile.Visible = False
+        ProjAssesmentTile.Visible = False
         SalesItineraryTile.Visible = False
         SalesMonitoringTile.Visible = False
         SUSTile.Visible = False
@@ -365,7 +365,7 @@ Public Class KMDI_MainFRM
         End If
     End Sub
 
-    Private Sub ProjAssignmentTile_Click(sender As Object, e As EventArgs) Handles ProjAssignmentTile.Click
+    Private Sub ProjAssignmentTile_Click(sender As Object, e As EventArgs) Handles ProjAssesmentTile.Click
         If Application.OpenForms().OfType(Of ProjectAssignment).Any Then
             ProjectAssignment.Dispose()
         End If

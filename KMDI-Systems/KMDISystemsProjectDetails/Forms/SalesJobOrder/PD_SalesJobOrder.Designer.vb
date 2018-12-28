@@ -162,7 +162,6 @@ Partial Class PD_SalesJobOrder
         Me.MetroLabel8 = New MetroFramework.Controls.MetroLabel()
         Me.MetroLabel7 = New MetroFramework.Controls.MetroLabel()
         Me.MetroLabel6 = New MetroFramework.Controls.MetroLabel()
-        Me.OnLoad_BGW = New System.ComponentModel.BackgroundWorker()
         Me.LoadingPbox = New System.Windows.Forms.PictureBox()
         Me.SJO_CMenu = New MetroFramework.Controls.MetroContextMenu(Me.components)
         Me.EditHeaderPartToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -2004,11 +2003,6 @@ Partial Class PD_SalesJobOrder
         Me.MetroLabel6.TabIndex = 3
         Me.MetroLabel6.Text = "Project / Clients Name"
         '
-        'OnLoad_BGW
-        '
-        Me.OnLoad_BGW.WorkerReportsProgress = True
-        Me.OnLoad_BGW.WorkerSupportsCancellation = True
-        '
         'LoadingPbox
         '
         Me.LoadingPbox.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -2233,7 +2227,6 @@ Partial Class PD_SalesJobOrder
     Friend WithEvents OutOfTown_Cbox As ComboBox
     Friend WithEvents DelGoodsTo_Cbox As ComboBox
     Friend WithEvents AddressTo_Tbox As MetroFramework.Controls.MetroTextBox
-    Friend WithEvents OnLoad_BGW As System.ComponentModel.BackgroundWorker
     Friend WithEvents LoadingPbox As PictureBox
     Friend WithEvents DelAddress_RTbox As RichTextBox
     Friend WithEvents VatPercent_Tbox As MetroFramework.Controls.MetroTextBox

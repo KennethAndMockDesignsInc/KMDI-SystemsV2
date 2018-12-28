@@ -80,12 +80,6 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="ThoughtWorks.QRCode">
-      <HintPath>..\packages\ThoughtWorks.QRCode dll\ThoughtWorks.QRCode.dll</HintPath>
-    </Reference>
-    <Reference Include="Transitions">
-      <HintPath>..\packages\Transition dll\Transitions.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Import Include="Microsoft.VisualBasic" />
@@ -101,6 +95,12 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Form1.Designer.vb">
+      <DependentUpon>Form1.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form1.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="KMDIContractItems\Class\KMDIContractItemsClass.vb" />
     <Compile Include="KMDIContractItems\Forms\ContractItemsFRM.Designer.vb">
       <DependentUpon>ContractItemsFRM.vb</DependentUpon>
@@ -338,6 +338,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="KMDIContractItems\Forms\ContractItemsFRM.resx">
       <DependentUpon>ContractItemsFRM.vb</DependentUpon>
     </EmbeddedResource>
