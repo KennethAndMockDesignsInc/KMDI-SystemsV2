@@ -134,10 +134,16 @@
     <Compile Include="KMDIContractRecords\Forms\Contract Ownership\UpdateOwnerFRM.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="KMDIContractRecords\Forms\Contract Records\ContractRecordsFRM.Designer.vb">
+    <Compile Include="KMDIContractRecords\Forms\Contract Records\Forms\ContractRecordsFRM.Designer.vb">
       <DependentUpon>ContractRecordsFRM.vb</DependentUpon>
     </Compile>
-    <Compile Include="KMDIContractRecords\Forms\Contract Records\ContractRecordsFRM.vb">
+    <Compile Include="KMDIContractRecords\Forms\Contract Records\Forms\ContractRecordsFRM.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="KMDIContractRecords\Forms\Contract Records\Forms\ContractRecordsViewFRM.Designer.vb">
+      <DependentUpon>ContractRecordsViewFRM.vb</DependentUpon>
+    </Compile>
+    <Compile Include="KMDIContractRecords\Forms\Contract Records\Forms\ContractRecordsViewFRM.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="KMDIContractRecords\Forms\Search Function\SearchFRM.Designer.vb">
@@ -146,10 +152,10 @@
     <Compile Include="KMDIContractRecords\Forms\Search Function\SearchFRM.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="KMDIContractRecords\Forms\Views\InitialF2.Designer.vb">
+    <Compile Include="KMDIContractRecords\Forms\Contract Records\Class\InitialF2.Designer.vb">
       <DependentUpon>InitialF2.vb</DependentUpon>
     </Compile>
-    <Compile Include="KMDIContractRecords\Forms\Views\InitialF2.vb" />
+    <Compile Include="KMDIContractRecords\Forms\Contract Records\Class\InitialF2.vb" />
     <Compile Include="KMDISystemsAccount\ManageAccounts\Forms\AccountUpdate.Designer.vb">
       <DependentUpon>AccountUpdate.vb</DependentUpon>
     </Compile>
@@ -350,13 +356,16 @@
     <EmbeddedResource Include="KMDIContractRecords\Forms\Contract Ownership\UpdateOwnerFRM.resx">
       <DependentUpon>UpdateOwnerFRM.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="KMDIContractRecords\Forms\Contract Records\ContractRecordsFRM.resx">
+    <EmbeddedResource Include="KMDIContractRecords\Forms\Contract Records\Forms\ContractRecordsFRM.resx">
       <DependentUpon>ContractRecordsFRM.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KMDIContractRecords\Forms\Contract Records\Forms\ContractRecordsViewFRM.resx">
+      <DependentUpon>ContractRecordsViewFRM.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="KMDIContractRecords\Forms\Search Function\SearchFRM.resx">
       <DependentUpon>SearchFRM.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="KMDIContractRecords\Forms\Views\InitialF2.resx">
+    <EmbeddedResource Include="KMDIContractRecords\Forms\Contract Records\Class\InitialF2.resx">
       <DependentUpon>InitialF2.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="KMDISystemsAccount\ManageAccounts\Forms\AccountUpdate.resx">

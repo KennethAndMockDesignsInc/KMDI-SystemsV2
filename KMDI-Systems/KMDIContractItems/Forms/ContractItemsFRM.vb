@@ -2,6 +2,8 @@
 Imports MetroFramework
 Imports MetroFramework.Controls
 Imports ComponentFactory.Krypton.Toolkit
+Imports System.Net
+Imports System.IO
 
 Public Class ContractItemsFRM
     Dim sql As New KMDIContractItemsClass
@@ -447,6 +449,7 @@ Public Class ContractItemsFRM
         FMid_PNL.Controls.Add(panel)
 
         '// Generate new item details
+        Dim picbox As New PictureBox
         Dim Lbl_Name As String
 
         For i As Integer = 0 To 11 - 1
@@ -466,6 +469,34 @@ Public Class ContractItemsFRM
                         Case 1
                             .Location = New Point(61, 9)
                             .Text = Replace(sql.ds.Tables("Frames").Rows(e.ProgressPercentage).Item(4).ToString, "&", "&&")
+
+                            With picbox
+                                '// Generate new picture box
+                                .Name = "Picbox_" & CStr(e.ProgressPercentage) & CStr(i)
+                                .Height = 90
+                                .Width = 100
+                                .Location = New Point(61, 28)
+                                .SizeMode = PictureBoxSizeMode.Zoom
+                                .BorderStyle = 0
+
+
+                                '// Get image location
+                                Dim ImageLink As String = sql.ds.Tables("Frames").Rows(e.ProgressPercentage).Item(18).ToString
+
+                                '// Access file from storage
+                                Dim objwebClient As WebClient
+                                Dim sURL As String = Trim(ImageLink)
+                                Dim objImage As MemoryStream
+                                Dim srcBmp As Bitmap
+
+                                objwebClient = New WebClient()
+                                objImage = New MemoryStream(objwebClient.DownloadData(sURL))
+                                srcBmp = CType(Bitmap.FromStream(objImage), Bitmap)
+
+                                .Image = srcBmp
+                                .Text = ImageLink
+                            End With
+
                         Case 2
                             .Location = New Point(215, 9)
                             .Text = Replace(sql.ds.Tables("Frames").Rows(e.ProgressPercentage).Item(3).ToString, "&", "&&")
@@ -536,8 +567,10 @@ Public Class ContractItemsFRM
                 End If
                 .UseCustomBackColor = True
             End With
+
             '// Add generated controls to panel
             panel.Controls.Add(Labels)
+            panel.Controls.Add(picbox)
         Next i
     End Sub
 

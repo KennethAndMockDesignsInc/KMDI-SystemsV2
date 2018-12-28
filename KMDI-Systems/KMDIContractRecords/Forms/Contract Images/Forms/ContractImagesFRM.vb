@@ -40,16 +40,20 @@ Public Class ContractImagesFRM
 
             LoadInitialSetUp()
         Catch ex As Exception
-            MessageBox.Show(ex.ToString)
+
         End Try
     End Sub
 
     Public Sub LoadInitialSetUp()
-        PageNo_LBL.Visible = False
-        GenerateImage = False
-        ActionTaken = "Search"
-        Load_LBL.Text = "Gathering information"
-        StartWorker()
+        Try
+            PageNo_LBL.Visible = False
+            GenerateImage = False
+            ActionTaken = "Search"
+            Load_LBL.Text = "Gathering information"
+            StartWorker()
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     Public Sub StartWorker()
@@ -65,7 +69,7 @@ Public Class ContractImagesFRM
                 MetroMessageBox.Show(Me, "System is gathering information.", "Please wait for a moment", MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         Catch ex As Exception
-            MetroMessageBox.Show(Me, "The system has encountered an error during recovery of the scanned contract" & vbCrLf & vbCrLf & ex.ToString, "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+            err = ex.ToString
         End Try
 
     End Sub

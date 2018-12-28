@@ -4,6 +4,8 @@ Module KMDISystemsGlobalModule
     Public AccountAutonum As String
     Public confirmQuery As Integer
 
+    Public ContractCollumns As Boolean
+
     Public Query As String
 
     Public dt As New DataTable
@@ -53,15 +55,6 @@ Module KMDISystemsGlobalModule
                              ByVal provinceAF As String)
 
         FullAddress = Nothing
-
-        UnitNo = Trim(Replace(Replace(unitnoAF, "'", "`"), ",", ""))
-        Establishment = Trim(Replace(Replace(establishmentAF, "'", "`"), ",", ""))
-        HouseNo = Trim(Replace(Replace(housenoAF, "'", "`"), ",", ""))
-        Street = Trim(Replace(Replace(streetAF, "'", "`"), ",", ""))
-        Village = Trim(Replace(Replace(villageAF, "'", "`"), ",", ""))
-        Brgy = Trim(Replace(Replace(brgyAF, "'", "`"), ",", ""))
-        CityMunicipality = Trim(Replace(Replace(cityAF, "'", "`"), ",", ""))
-        Province = Trim(Replace(Replace(provinceAF, "'", "`"), ",", ""))
 
         Select Case UnitNo
             Case ""
