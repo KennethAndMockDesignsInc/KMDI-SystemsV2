@@ -290,8 +290,8 @@ Public Class Project_Details
     Private Sub Project_Details_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         If MetroFramework.MetroMessageBox.Show(Me, "Are you sure you want to Exit?", " ", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then
             e.Cancel = True
-            KMDI_MainFRM.BringToFront()
         Else
+            KMDI_MainFRM.BringToFront()
             e.Cancel = False
         End If
     End Sub
