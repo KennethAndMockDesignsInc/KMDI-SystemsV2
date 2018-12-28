@@ -1,7 +1,7 @@
 ﻿Imports System.Data.SqlClient
 Imports System.IO
 Module ProjectDetailsModule
-    Public sqlcnstr As String = "Data Source='121.58.229.248,49107';Network Library=DBMSSOCN;Initial Catalog='heretosave';User ID='kmdiadmin';Password='kmdiadmin';"
+    'Public sqlconnString As String = "Data Source='121.58.229.248,49107';Network Library=DBMSSOCN;Initial Catalog='heretosave';User ID='kmdiadmin';Password='kmdiadmin';"
 
     Public is_CTD_bool As Boolean = False ' True if searching for Contracts, False if searching for Projects
     Public is_SalesJobOrder_bool As Boolean = False ' True if PD_SalesJobOrder.Show, False if not
@@ -192,7 +192,7 @@ Module ProjectDetailsModule
         sqlDataSet.Clear()
         sqlBindingSource.Clear()
 
-        Using sqlcon As New SqlConnection(sqlcnstr)
+        Using sqlcon As New SqlConnection(sqlconnString)
             sqlcon.Open()
             Using sqlCommand As New SqlCommand(QueryBUILD, sqlcon)
                 Select Case QUERY_INSTANCE
@@ -220,7 +220,7 @@ Module ProjectDetailsModule
             sqlDataSet.Clear()
             sqlBindingSource.Clear()
 
-            Using sqlcon As New SqlConnection(sqlcnstr)
+            Using sqlcon As New SqlConnection(sqlconnString)
                 sqlcon.Open()
                 Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
                     transaction = sqlcon.BeginTransaction(StoredProcedureName)
@@ -272,7 +272,7 @@ Module ProjectDetailsModule
     Public QUERY_SELECT_WITH_READER_bool As Boolean
     Public Sub QUERY_SELECT_WITH_READER(ByVal SearchString As String,
                                         ByVal ReadBy As String)
-        Using sqlcon As New SqlConnection(sqlcnstr)
+        Using sqlcon As New SqlConnection(sqlconnString)
             sqlcon.Open()
             Using sqlCommand As New SqlCommand(QueryBUILD, sqlcon)
                 Select Case QUERY_INSTANCE
@@ -303,7 +303,7 @@ Module ProjectDetailsModule
         Query = "SELECT TP_ID FROM [A_NEW_TECHNICAL_PARTNERS] WHERE [COMP_ID_REF] = @COMP_ID_REF AND 
                                                                     [EMP_ID_REF] = @EMP_ID_REF AND
                                                                     [POSITION] = @POSITION"
-        Using sqlcon As New SqlConnection(sqlcnstr)
+        Using sqlcon As New SqlConnection(sqlconnString)
             sqlcon.Open()
             Using sqlCommand As New SqlCommand(Query, sqlcon)
                 sqlCommand.Parameters.AddWithValue("@COMP_ID_REF", COMP_ID_REF)
@@ -364,7 +364,7 @@ Module ProjectDetailsModule
                                                         @AREA,
                                                         @FULLADD)
                 SELECT @@IDENTITY AS [ID]"
-        Using sqlcon As New SqlConnection(sqlcnstr)
+        Using sqlcon As New SqlConnection(sqlconnString)
             sqlcon.Open()
             Using sqlCommand As New SqlCommand(Query, sqlcon)
                 sqlCommand.Parameters.AddWithValue("@PROJECT_SOURCE", PROJECT_SOURCE)
@@ -419,7 +419,7 @@ Module ProjectDetailsModule
                                                         @CLIENTS_EMAIL_ADD,
                                                         @COMPANY_NAME)
                 SELECT @@IDENTITY AS [ID]"
-        Using sqlcon As New SqlConnection(sqlcnstr)
+        Using sqlcon As New SqlConnection(sqlconnString)
             sqlcon.Open()
             Using sqlCommand As New SqlCommand(Query, sqlcon)
                 sqlCommand.Parameters.AddWithValue("@CLIENTS_NAME", CLIENTS_NAME)
@@ -452,7 +452,7 @@ Module ProjectDetailsModule
                                                          [AE_ID_REF])
                                                 VALUES  (@PD_ID_REF2,
                                                          @AE_ID_REF)"
-            Using sqlcon As New SqlConnection(sqlcnstr)
+            Using sqlcon As New SqlConnection(sqlconnString)
                 sqlcon.Open()
                 Using sqlCommand As New SqlCommand(Query, sqlcon)
                     sqlCommand.Parameters.AddWithValue("@PD_ID_REF2", PD_ID_REF)
@@ -475,7 +475,7 @@ Module ProjectDetailsModule
             Query = "INSERT INTO [A_NEW_CONTRACT_DETAILS]  ([PD_ID_REF])
                                                    VALUES  (@PD_ID_REF)
                 SELECT @@IDENTITY AS [ID]"
-            Using sqlcon As New SqlConnection(sqlcnstr)
+            Using sqlcon As New SqlConnection(sqlconnString)
                 sqlcon.Open()
                 Using sqlCommand As New SqlCommand(Query, sqlcon)
                     sqlCommand.Parameters.AddWithValue("@PD_ID_REF", PD_ID_REF)
@@ -504,7 +504,7 @@ Module ProjectDetailsModule
                                                 ,[CUST_ID_REF]
                                                 ,[CLIENT_STATUS])
                                         VALUES  (@PD_ID_REF,@CUST_ID_REF,@STATUS)"
-        Using sqlcon As New SqlConnection(sqlcnstr)
+        Using sqlcon As New SqlConnection(sqlconnString)
             sqlcon.Open()
             Using sqlCommand As New SqlCommand(Query, sqlcon)
                 sqlCommand.Parameters.AddWithValue("@PD_ID_REF", PD_ID_REF)
@@ -538,7 +538,7 @@ Module ProjectDetailsModule
                                                          @QUOTE_DATE,
                                                          @ORIGIN,
                                                          @ORIGIN_DATE)"
-        Using sqlcon As New SqlConnection(sqlcnstr)
+        Using sqlcon As New SqlConnection(sqlconnString)
             sqlcon.Open()
             Using sqlCommand As New SqlCommand(Query, sqlcon)
                 sqlCommand.Parameters.AddWithValue("@C_ID", C_ID)
@@ -590,7 +590,7 @@ Module ProjectDetailsModule
                                        ByVal PD_ID As Integer,
                                        ByVal StoredProcedure As String)
         Try
-            Using sqlcon As New SqlConnection(sqlcnstr)
+            Using sqlcon As New SqlConnection(sqlconnString)
                 sqlcon.Open()
                 Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
                     transaction = sqlcon.BeginTransaction(StoredProcedure)
@@ -702,7 +702,7 @@ Module ProjectDetailsModule
                      SET [EMP_STATUS] = 0
                     WHERE [EMP_ID] = @EMP_ID"
         End If
-        Using sqlcon As New SqlConnection(sqlcnstr)
+        Using sqlcon As New SqlConnection(sqlconnString)
             sqlcon.Open()
             Using sqlCommand As New SqlCommand(Query, sqlcon)
                 sqlCommand.Parameters.AddWithValue("@NAME", NAME)
@@ -758,7 +758,7 @@ Module ProjectDetailsModule
             Query = "UPDATE [A_NEW_COMPANY_DETAILS] SET [COMP_STATUS] = 0
                      WHERE [COMP_ID] = @COMP_ID"
         End If
-        Using sqlcon As New SqlConnection(sqlcnstr)
+        Using sqlcon As New SqlConnection(sqlconnString)
             sqlcon.Open()
             Using sqlCommand As New SqlCommand(Query, sqlcon)
                 sqlCommand.Parameters.AddWithValue("@OFFICENAME", OFFICENAME)
@@ -859,7 +859,7 @@ DECLARE @CUST_ID_REP_IDENTITY AS INTEGER
             'Rollback' AS [Transaction]
 			ROLLBACK TRANSACTION
 	End Catch"
-        Using sqlcon As New SqlConnection(sqlcnstr)
+        Using sqlcon As New SqlConnection(sqlconnString)
             sqlcon.Open()
             Using sqlCommand As New SqlCommand(Query, sqlcon)
                 sqlCommand.Parameters.AddWithValue("@PROJECT_LABEL", PROJECT_LABEL)
@@ -939,7 +939,7 @@ BEGIN CATCH
 			ROLLBACK TRANSACTION
 END CATCH
 "
-        Using sqlcon As New SqlConnection(sqlcnstr)
+        Using sqlcon As New SqlConnection(sqlconnString)
             sqlcon.Open()
             Using sqlCommand As New SqlCommand(Query, sqlcon)
                 sqlCommand.Parameters.AddWithValue("@NATURE", NATURE)
@@ -970,7 +970,7 @@ END CATCH
                                       ByVal TPN_ID As Integer)
         Query = " UPDATE [A_NEW_TECHNICAL_PARTNERS_NATURE] SET [TPN_STATUS] = 0 WHERE [TPN_ID] = @TPN_ID"
 
-        Using sqlcon As New SqlConnection(sqlcnstr)
+        Using sqlcon As New SqlConnection(sqlconnString)
             sqlcon.Open()
             Using sqlCommand As New SqlCommand(Query, sqlcon)
                 sqlCommand.Parameters.AddWithValue("@TPN_ID", TPN_ID)
@@ -993,7 +993,7 @@ END CATCH
                        [CD_ID_REF] = @CD_ID_REF AND
                        [NATURE] = @NATURE AND
                        [TPN_STATUS] = 0 "
-        Using sqlcon As New SqlConnection(sqlcnstr)
+        Using sqlcon As New SqlConnection(sqlconnString)
             sqlcon.Open()
             Using sqlCommand As New SqlCommand(Query, sqlcon)
                 sqlCommand.Parameters.AddWithValue("@NATURE", NATURE)
@@ -1015,7 +1015,7 @@ END CATCH
         Query = "UPDATE [A_NEW_TECHNICAL_PARTNERS_NATURE]
                  SET [TPN_STATUS] = 1
                  WHERE [TPN_ID] = @TPN_ID "
-        Using sqlcon As New SqlConnection(sqlcnstr)
+        Using sqlcon As New SqlConnection(sqlconnString)
             sqlcon.Open()
             Using sqlCommand As New SqlCommand(Query, sqlcon)
                 sqlCommand.Parameters.AddWithValue("@TPN_ID", TPN_ID)
@@ -1089,7 +1089,7 @@ DECLARE @CQN_STATUS AS BIT
 			ROLLBACK TRANSACTION
 	End Catch"
 
-        Using sqlcon As New SqlConnection(sqlcnstr)
+        Using sqlcon As New SqlConnection(sqlconnString)
             sqlcon.Open()
             Using sqlCommand As New SqlCommand(Query, sqlcon)
                 sqlCommand.Parameters.AddWithValue("@CD_ID", CD_ID)
@@ -1126,7 +1126,7 @@ DECLARE @CQN_STATUS AS BIT
                                   Optional CLIENTS_CONTACT_MOBILE As String = "",
                                   Optional CLIENTS_EMAIL_ADD As String = "",
                                   Optional COMPANY_NAME As String = "")
-        Using sqlcon As New SqlConnection(sqlcnstr)
+        Using sqlcon As New SqlConnection(sqlconnString)
             sqlcon.Open()
             Using sqlcmd As SqlCommand = sqlcon.CreateCommand()
                 transaction = sqlcon.BeginTransaction("INSERT_NEWPROJECT")

@@ -21,7 +21,7 @@ Begin Transaction
             'Rollback' AS [Transaction]
 			ROLLBACK TRANSACTION
 	End Catch"
-        Using sqlcon As New SqlConnection(sqlcnstr)
+        Using sqlcon As New SqlConnection(sqlconnString)
             sqlcon.Open()
             Using sqlCommand As New SqlCommand(TextBox1.Text, sqlcon)
                 sqlCommand.Parameters.AddWithValue("@SAMPLE_COL1", TextBox2.Text)
@@ -195,7 +195,7 @@ Begin Transaction
     'Dim list_int As New List(Of Integer)(New Integer() {1, 2, 3})
     Dim arr_sample As New List(Of Integer)(New Integer() {11, 22, 33})
     Public Sub INSERT_SAMPLE()
-        Using sqlcon As New SqlConnection(sqlcnstr)
+        Using sqlcon As New SqlConnection(sqlconnString)
             sqlcon.Open()
             Using sqlcmd As SqlCommand = sqlcon.CreateCommand()
                 transaction = sqlcon.BeginTransaction("SampleTransaction")
