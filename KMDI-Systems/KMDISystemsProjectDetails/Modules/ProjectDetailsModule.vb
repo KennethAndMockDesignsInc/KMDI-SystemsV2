@@ -46,7 +46,7 @@ Module ProjectDetailsModule
            EMP_MOBILENO As String = Nothing,
            EMP_POSITION As String = Nothing 'used in Technical Partners
 
-    Public sql_Err_no, sql_Err_msg, sql_Transaction_result As String
+    Public sql_Err_no, sql_Err_msg, sql_Err_StackTrace, sql_Transaction_result As String
 
     Public Log_File As StreamWriter
 
@@ -254,13 +254,15 @@ Module ProjectDetailsModule
             'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
             sql_Err_msg = ex.Message
             sql_Err_no = ex.Number
+            sql_Err_StackTrace = ex.StackTrace
             Try
                 transaction.Rollback()
                 sql_Transaction_result = "Rollback"
             Catch ex2 As Exception
                 Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
                 Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-                                           "Rollback Error Message: " & ex2.Message & vbCrLf)
+                                           "Rollback Error Message: " & ex2.Message & vbCrLf &
+                                           "Trace: " & ex2.StackTrace & vbCrLf)
                 Log_File.Close()
             End Try
         End Try
@@ -587,156 +589,73 @@ Module ProjectDetailsModule
                                        ByVal PERTINENT_DETAILS As String,
                                        ByVal PD_ID As Integer,
                                        ByVal StoredProcedure As String)
-        'Query = "BEGIN TRANSACTION
-        '         Begin Try
+        Try
+            Using sqlcon As New SqlConnection(sqlcnstr)
+                sqlcon.Open()
+                Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
+                    transaction = sqlcon.BeginTransaction(StoredProcedure)
+                    sqlCommand.Connection = sqlcon
+                    sqlCommand.Transaction = transaction
+                    sqlCommand.CommandText = StoredProcedure
+                    sqlCommand.CommandType = CommandType.StoredProcedure
 
-        '            UPDATE	A_NEW_CONTRACT_DETAILS
-        '            SET     JOB_ORDER_NO = @JOB_ORDER_NO,
-        '                    PARENTJONO = @PARENTJONO
-        '            WHERE	ID = @C_ID AND JOB_ORDER_NO = ''
+                    sqlCommand.Parameters.AddWithValue("@JOB_ORDER_NO", JOB_ORDER_NO)
+                    sqlCommand.Parameters.AddWithValue("@PARENTJONO", JOB_ORDER_NO)
+                    sqlCommand.Parameters.AddWithValue("@SUB_JO", SUB_JO)
+                    sqlCommand.Parameters.AddWithValue("@JOB_ORDER_NO_DATE", JOB_ORDER_NO_DATE)
+                    sqlCommand.Parameters.AddWithValue("@FILE_LABEL_AS", FILE_LABEL_AS)
+                    sqlCommand.Parameters.AddWithValue("@JOB_ORDER_DESC", JOB_ORDER_DESC)
+                    sqlCommand.Parameters.AddWithValue("@JO_ATTACHMENT", JO_ATTACHMENT)
+                    sqlCommand.Parameters.AddWithValue("@SPECIAL_COMMENTS", SPECIAL_COMMENTS)
+                    sqlCommand.Parameters.AddWithValue("@BLANK_PAGE", BLANK_PAGE)
+                    sqlCommand.Parameters.AddWithValue("@CONTRACT_VAT_PROFILE", CONTRACT_VAT_PROFILE)
+                    sqlCommand.Parameters.AddWithValue("@PAYMENT_TERMS", PAYMENT_TERMS)
+                    sqlCommand.Parameters.AddWithValue("@PAYMENT_MODE", PAYMENT_MODE)
+                    sqlCommand.Parameters.AddWithValue("@DOWN_PAYMENT", DOWN_PAYMENT)
+                    sqlCommand.Parameters.AddWithValue("@PAYMENT_DATE", PAYMENT_DATE)
+                    sqlCommand.Parameters.AddWithValue("@ADDRESS_BILLING", ADDRESS_BILLING)
+                    sqlCommand.Parameters.AddWithValue("@ADDRESS_TO", ADDRESS_TO)
+                    sqlCommand.Parameters.AddWithValue("@ESTD_DEL_DATE", ESTD_DEL_DATE)
+                    sqlCommand.Parameters.AddWithValue("@MODE_OF_DEL", MODE_OF_DEL)
+                    sqlCommand.Parameters.AddWithValue("@MODE_OF_SHIP", MODE_OF_SHIP)
+                    sqlCommand.Parameters.AddWithValue("@OUT_OF_TOWN_CHARGES", OUT_OF_TOWN_CHARGES)
+                    sqlCommand.Parameters.AddWithValue("@DEL_GOODS", DEL_GOODS)
+                    sqlCommand.Parameters.AddWithValue("@DELGOODS_TO", DELGOODS_TO)
+                    sqlCommand.Parameters.AddWithValue("@OTHER_PERTINENT_INFO", OTHER_PERTINENT_INFO)
+                    sqlCommand.Parameters.AddWithValue("@CONTRACT_TYPE", CONTRACT_TYPE)
+                    sqlCommand.Parameters.AddWithValue("@BAL_OF_DP", BAL_OF_DP)
+                    sqlCommand.Parameters.AddWithValue("@CD_ID", CD_ID)
+                    sqlCommand.Parameters.AddWithValue("@COMPANY_NAME", COMPANY_NAME)
+                    sqlCommand.Parameters.AddWithValue("@CUST_ID", CUST_ID)
+                    sqlCommand.Parameters.AddWithValue("@PROJECT_LABEL", PROJECT_LABEL)
+                    sqlCommand.Parameters.AddWithValue("@PERTINENT_DETAILS", PERTINENT_DETAILS)
+                    sqlCommand.Parameters.AddWithValue("@PD_ID", PD_ID)
+                    Dim NumOfRowsAffected As Integer = sqlCommand.ExecuteNonQuery()
+                    If NumOfRowsAffected <> 0 Then
+                        return_bool = True
+                    Else
+                        return_bool = False
+                    End If
 
-        '            UPDATE	A_NEW_CONTRACT_DETAILS
-        '            SET		SUB_JO = @SUB_JO,
-        '              JOB_ORDER_NO_DATE = @JOB_ORDER_NO_DATE,
-        '              FILE_LABEL_AS = @FILE_LABEL_AS,
-        '              JOB_ORDER_DESC = @JOB_ORDER_DESC,
-        '              JO_ATTACHMENT = @JO_ATTACHMENT,
-        '              SPECIAL_COMMENTS = @SPECIAL_COMMENTS,
-        '              BLANK_PAGE = @BLANK_PAGE,
-        '              CONTRACT_VAT_PROFILE = @CONTRACT_VAT_PROFILE ,
-        '              PAYMENT_TERMS = @PAYMENT_TERMS,
-        '              PAYMENT_MODE = @PAYMENT_MODE,
-        '              DOWN_PAYMENT = @DOWN_PAYMENT,
-        '              PAYMENT_DATE = @PAYMENT_DATE,
-        '              ADDRESS_BILLING = @ADDRESS_BILLING,
-        '              ADDRESS_TO = @ADDRESS_TO,
-        '              ESTD_DEL_DATE = @ESTD_DEL_DATE,
-        '              MODE_OF_DEL = @MODE_OF_DEL,
-        '              MODE_OF_SHIP = @MODE_OF_SHIP,
-        '              OUT_OF_TOWN_CHARGES = @OUT_OF_TOWN_CHARGES,
-        '              DEL_GOODS = @DEL_GOODS,
-        '              DELGOODS_TO = @DELGOODS_TO,
-        '              OTHER_PERTINENT_INFO = @OTHER_PERTINENT_INFO,
-        '                    CONTRACT_TYPE = @CONTRACT_TYPE,
-        '                    BAL_OF_DP = @BAL_OF_DP
-        '            WHERE	ID = @C_ID
-
-        '            UPDATE	A_NEW_CLIENT_DETAILS
-        '            SET		COMPANY_NAME = @COMPANY_NAME 
-        '            WHERE	CUST_ID = @CUST_ID
-
-        '            UPDATE	DBO.A_NEW_PROJECT_DETAILS
-        '            SET		PROJECT_LABEL = @PROJECT_LABEL,
-        '              PERTINENT_DETAILS = @PERTINENT_DETAILS
-        '            WHERE	PD_ID = @PD_ID
-
-        '         SELECT 
-        '		ERROR_NUMBER() AS ErrorNumber  
-        '	   ,ERROR_MESSAGE() AS ErrorMessage
-        '                                Commit Transaction
-
-        '         End try
-
-        '        Begin Catch
-        '        SELECT   
-        '        ERROR_NUMBER() AS ErrorNumber,
-        '        ERROR_MESSAGE() AS ErrorMessage
-        '        ROLLBACK TRANSACTION
-        '        End Catch"
-        Using sqlcon As New SqlConnection(sqlcnstr)
-            sqlcon.Open()
-            Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
-                transaction = sqlcon.BeginTransaction(StoredProcedure)
-                sqlCommand.Connection = sqlcon
-                sqlCommand.Transaction = transaction
-                sqlCommand.CommandText = StoredProcedure
-                sqlCommand.CommandType = CommandType.StoredProcedure
-
-                sqlCommand.Parameters.AddWithValue("@JOB_ORDER_NO", JOB_ORDER_NO)
-                sqlCommand.Parameters.AddWithValue("@PARENTJONO", JOB_ORDER_NO)
-                sqlCommand.Parameters.AddWithValue("@SUB_JO", SUB_JO)
-                sqlCommand.Parameters.AddWithValue("@JOB_ORDER_NO_DATE", JOB_ORDER_NO_DATE)
-                sqlCommand.Parameters.AddWithValue("@FILE_LABEL_AS", FILE_LABEL_AS)
-                sqlCommand.Parameters.AddWithValue("@JOB_ORDER_DESC", JOB_ORDER_DESC)
-                sqlCommand.Parameters.AddWithValue("@JO_ATTACHMENT", JO_ATTACHMENT)
-                sqlCommand.Parameters.AddWithValue("@SPECIAL_COMMENTS", SPECIAL_COMMENTS)
-                sqlCommand.Parameters.AddWithValue("@BLANK_PAGE", BLANK_PAGE)
-                sqlCommand.Parameters.AddWithValue("@CONTRACT_VAT_PROFILE", CONTRACT_VAT_PROFILE)
-                sqlCommand.Parameters.AddWithValue("@PAYMENT_TERMS", PAYMENT_TERMS)
-                sqlCommand.Parameters.AddWithValue("@PAYMENT_MODE", PAYMENT_MODE)
-                sqlCommand.Parameters.AddWithValue("@DOWN_PAYMENT", DOWN_PAYMENT)
-                sqlCommand.Parameters.AddWithValue("@PAYMENT_DATE", PAYMENT_DATE)
-                sqlCommand.Parameters.AddWithValue("@ADDRESS_BILLING", ADDRESS_BILLING)
-                sqlCommand.Parameters.AddWithValue("@ADDRESS_TO", ADDRESS_TO)
-                sqlCommand.Parameters.AddWithValue("@ESTD_DEL_DATE", ESTD_DEL_DATE)
-                sqlCommand.Parameters.AddWithValue("@MODE_OF_DEL", MODE_OF_DEL)
-                sqlCommand.Parameters.AddWithValue("@MODE_OF_SHIP", MODE_OF_SHIP)
-                sqlCommand.Parameters.AddWithValue("@OUT_OF_TOWN_CHARGES", OUT_OF_TOWN_CHARGES)
-                sqlCommand.Parameters.AddWithValue("@DEL_GOODS", DEL_GOODS)
-                sqlCommand.Parameters.AddWithValue("@DELGOODS_TO", DELGOODS_TO)
-                sqlCommand.Parameters.AddWithValue("@OTHER_PERTINENT_INFO", OTHER_PERTINENT_INFO)
-                sqlCommand.Parameters.AddWithValue("@CONTRACT_TYPE", CONTRACT_TYPE)
-                sqlCommand.Parameters.AddWithValue("@BAL_OF_DP", BAL_OF_DP)
-                sqlCommand.Parameters.AddWithValue("@CD_ID", CD_ID)
-                sqlCommand.Parameters.AddWithValue("@COMPANY_NAME", COMPANY_NAME)
-                sqlCommand.Parameters.AddWithValue("@CUST_ID", CUST_ID)
-                sqlCommand.Parameters.AddWithValue("@PROJECT_LABEL", PROJECT_LABEL)
-                sqlCommand.Parameters.AddWithValue("@PERTINENT_DETAILS", PERTINENT_DETAILS)
-                sqlCommand.Parameters.AddWithValue("@PD_ID", PD_ID)
-                Dim NumOfRowsAffected As Integer = sqlCommand.ExecuteNonQuery()
-                If NumOfRowsAffected <> 0 Then
-                    return_bool = True
-                Else
-                    return_bool = False
-                End If
-
-                transaction.Commit()
-                sql_Transaction_result = "Committed"
+                    transaction.Commit()
+                    sql_Transaction_result = "Committed"
+                End Using
             End Using
-        End Using
-
-        'Using sqlcon As New SqlConnection(sqlcnstr)
-        '    sqlcon.Open()
-        '    Using sqlCommand As New SqlCommand(Query, sqlcon)
-        '        sqlCommand.Parameters.AddWithValue("@JOB_ORDER_NO", JOB_ORDER_NO)
-        '        sqlCommand.Parameters.AddWithValue("@PARENTJONO", JOB_ORDER_NO)
-        '        sqlCommand.Parameters.AddWithValue("@SUB_JO", SUB_JO)
-        '        sqlCommand.Parameters.AddWithValue("@JOB_ORDER_NO_DATE", JOB_ORDER_NO_DATE)
-        '        sqlCommand.Parameters.AddWithValue("@FILE_LABEL_AS", FILE_LABEL_AS)
-        '        sqlCommand.Parameters.AddWithValue("@JOB_ORDER_DESC", JOB_ORDER_DESC)
-        '        sqlCommand.Parameters.AddWithValue("@JO_ATTACHMENT", JO_ATTACHMENT)
-        '        sqlCommand.Parameters.AddWithValue("@SPECIAL_COMMENTS", SPECIAL_COMMENTS)
-        '        sqlCommand.Parameters.AddWithValue("@BLANK_PAGE", BLANK_PAGE)
-        '        sqlCommand.Parameters.AddWithValue("@CONTRACT_VAT_PROFILE", CONTRACT_VAT_PROFILE)
-        '        sqlCommand.Parameters.AddWithValue("@PAYMENT_TERMS", PAYMENT_TERMS)
-        '        sqlCommand.Parameters.AddWithValue("@PAYMENT_MODE", PAYMENT_MODE)
-        '        sqlCommand.Parameters.AddWithValue("@DOWN_PAYMENT", DOWN_PAYMENT)
-        '        sqlCommand.Parameters.AddWithValue("@PAYMENT_DATE", PAYMENT_DATE)
-        '        sqlCommand.Parameters.AddWithValue("@ADDRESS_BILLING", ADDRESS_BILLING)
-        '        sqlCommand.Parameters.AddWithValue("@ADDRESS_TO", ADDRESS_TO)
-        '        sqlCommand.Parameters.AddWithValue("@ESTD_DEL_DATE", ESTD_DEL_DATE)
-        '        sqlCommand.Parameters.AddWithValue("@MODE_OF_DEL", MODE_OF_DEL)
-        '        sqlCommand.Parameters.AddWithValue("@MODE_OF_SHIP", MODE_OF_SHIP)
-        '        sqlCommand.Parameters.AddWithValue("@OUT_OF_TOWN_CHARGES", OUT_OF_TOWN_CHARGES)
-        '        sqlCommand.Parameters.AddWithValue("@DEL_GOODS", DEL_GOODS)
-        '        sqlCommand.Parameters.AddWithValue("@DELGOODS_TO", DELGOODS_TO)
-        '        sqlCommand.Parameters.AddWithValue("@OTHER_PERTINENT_INFO", OTHER_PERTINENT_INFO)
-        '        sqlCommand.Parameters.AddWithValue("@CONTRACT_TYPE", CONTRACT_TYPE)
-        '        sqlCommand.Parameters.AddWithValue("@BAL_OF_DP", BAL_OF_DP)
-        '        sqlCommand.Parameters.AddWithValue("@C_ID", C_ID)
-        '        sqlCommand.Parameters.AddWithValue("@COMPANY_NAME", COMPANY_NAME)
-        '        sqlCommand.Parameters.AddWithValue("@CUST_ID", CUST_ID)
-        '        sqlCommand.Parameters.AddWithValue("@PROJECT_LABEL", PROJECT_LABEL)
-        '        sqlCommand.Parameters.AddWithValue("@PERTINENT_DETAILS", PERTINENT_DETAILS)
-        '        sqlCommand.Parameters.AddWithValue("@PD_ID", PD_ID)
-        '        Using read As SqlDataReader = sqlCommand.ExecuteReader
-        '            While read.Read
-        '                ErrorMsg = read.Item("ErrorMessage").ToString
-        '                ErrorNum = read.Item("ErrorNumber").ToString
-        '            End While
-        '        End Using
-        '    End Using
-        'End Using
+        Catch ex As SqlException
+            sql_Err_msg = ex.Message
+            sql_Err_no = ex.Number
+            sql_Err_StackTrace = ex.StackTrace
+            Try
+                transaction.Rollback()
+                sql_Transaction_result = "Rollback"
+            Catch ex2 As Exception
+                Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+                Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                           "Rollback Error Message: " & ex2.Message & vbCrLf &
+                                           "Trace: " & ex2.StackTrace & vbCrLf)
+                Log_File.Close()
+            End Try
+        End Try
     End Sub
 
     Public Sub PD_UpdateEmp_Operations(ByVal FormName As Form,

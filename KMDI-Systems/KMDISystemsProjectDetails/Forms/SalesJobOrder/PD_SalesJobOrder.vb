@@ -29,10 +29,12 @@ Public Class PD_SalesJobOrder
             AddHandler PD_SalesJobOrder_BGW.RunWorkerCompleted, AddressOf PD_SalesJobOrder_BGW_RunWorkerCompleted
             onformLoad()
         Catch ex As Exception
-            MessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
             Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
             Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-                                       "Error Message: " & ex.Message)
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
             Log_File.Close()
         End Try
     End Sub
@@ -47,29 +49,45 @@ Public Class PD_SalesJobOrder
                 SJO_CMenu.Location = New Point(MousePosition.X, MousePosition.Y)
             End If
         Catch ex As Exception
-            MsgBox(ex.Message)
+            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
+            Log_File.Close()
         End Try
     End Sub
 
     Private Sub VatProfile_Cbox_TextChanged(sender As Object, e As EventArgs) Handles VatProfile_Cbox.TextChanged
-        If VatProfile_Cbox.Text.Contains("Exclusive") Then
-            VatPercent_Tbox.Visible = False
-            VatPercent_Lbl.Visible = False
-        ElseIf VatProfile_Cbox.Text.Contains("Inclusive") Then
-            VatPercent_Tbox.Visible = True
-            VatPercent_Lbl.Visible = True
-            VatPercent_Tbox.Enabled = True
-            If VatProfile_Cbox.Text.Contains("VAT Inclusive (30%)") Then
-                VatPercent_Tbox.Enabled = False
-                VatPercent_Tbox.Text = Val(12 * 0.3)
-            ElseIf VatProfile_Cbox.Text.Contains("VAT Inclusive (40%)") Then
-                VatPercent_Tbox.Enabled = False
-                VatPercent_Tbox.Text = Val(12 * 0.4)
-            ElseIf VatProfile_Cbox.Text.Contains("VAT Inclusive (50%)") Then
-                VatPercent_Tbox.Enabled = False
-                VatPercent_Tbox.Text = Val(12 * 0.5)
+        Try
+            If VatProfile_Cbox.Text.Contains("Exclusive") Then
+                VatPercent_Tbox.Visible = False
+                VatPercent_Lbl.Visible = False
+            ElseIf VatProfile_Cbox.Text.Contains("Inclusive") Then
+                VatPercent_Tbox.Visible = True
+                VatPercent_Lbl.Visible = True
+                VatPercent_Tbox.Enabled = True
+                If VatProfile_Cbox.Text.Contains("VAT Inclusive (30%)") Then
+                    VatPercent_Tbox.Enabled = False
+                    VatPercent_Tbox.Text = Val(12 * 0.3)
+                ElseIf VatProfile_Cbox.Text.Contains("VAT Inclusive (40%)") Then
+                    VatPercent_Tbox.Enabled = False
+                    VatPercent_Tbox.Text = Val(12 * 0.4)
+                ElseIf VatProfile_Cbox.Text.Contains("VAT Inclusive (50%)") Then
+                    VatPercent_Tbox.Enabled = False
+                    VatPercent_Tbox.Text = Val(12 * 0.5)
+                End If
             End If
-        End If
+        Catch ex As Exception
+            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
+            Log_File.Close()
+        End Try
     End Sub
 
     Dim newInstanceOfThisFrm As PD_SalesJobOrder
@@ -103,24 +121,13 @@ Public Class PD_SalesJobOrder
                                     ModeOfShip, OutOfTown, DelGoodsTo, DelAddress, SpInstr, ContractType,
                                     BalOfDP, CD_ID, CompanyName_txbox, CUST_ID, ProjectLabel, PertDetails, PD_ID, "PD_stp_SalesJobOrder_Update")
             End Select
-        Catch ex As SqlException
-            'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
-            sql_Err_msg = ex.Message
-            sql_Err_no = ex.Number
-            Try
-                transaction.Rollback()
-                sql_Transaction_result = "Rollback"
-            Catch ex2 As Exception
-                Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
-                Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-                                           "Rollback Error Message: " & ex2.Message & vbCrLf)
-                Log_File.Close()
-            End Try
-        Catch ex22 As Exception
-            MessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        Catch ex As Exception
+            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
             Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
             Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-                                       "Error Message: " & ex22.Message & vbCrLf)
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
             Log_File.Close()
         End Try
     End Sub
@@ -377,10 +384,12 @@ Public Class PD_SalesJobOrder
             End If
 
         Catch ex As Exception
-            MessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
             Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
             Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-                                       "Error Message: " & ex.Message)
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
             Log_File.Close()
         End Try
     End Sub
@@ -390,17 +399,27 @@ Public Class PD_SalesJobOrder
     End Sub
 
     Private Sub EditHeaderPartToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EditHeaderPartToolStripMenuItem.Click
-        PD_UpdateHeader.UnitNo_Tbox.Text = UnitNo
-        PD_UpdateHeader.Establishment_Tbox.Text = Establishment
-        PD_UpdateHeader.HouseNo_Tbox.Text = HouseNo
-        PD_UpdateHeader.Street_Tbox_Required.Text = Street
-        PD_UpdateHeader.Village_Tbox.Text = Village
-        PD_UpdateHeader.Brgy_Tbox.Text = Brgy
-        PD_UpdateHeader.City_Tbox_Required.Text = CityMunicipality
-        PD_UpdateHeader.Province_Tbox_Required.Text = Province
-        PD_UpdateHeader.Area_Cbox_Required.Text = Area
-        PD_UpdateHeader.disFormOpenedBy = "SalesJobOrder"
-        PD_UpdateHeader.Show()
+        Try
+            PD_UpdateHeader.UnitNo_Tbox.Text = UnitNo
+            PD_UpdateHeader.Establishment_Tbox.Text = Establishment
+            PD_UpdateHeader.HouseNo_Tbox.Text = HouseNo
+            PD_UpdateHeader.Street_Tbox_Required.Text = Street
+            PD_UpdateHeader.Village_Tbox.Text = Village
+            PD_UpdateHeader.Brgy_Tbox.Text = Brgy
+            PD_UpdateHeader.City_Tbox_Required.Text = CityMunicipality
+            PD_UpdateHeader.Province_Tbox_Required.Text = Province
+            PD_UpdateHeader.Area_Cbox_Required.Text = Area
+            PD_UpdateHeader.disFormOpenedBy = "SalesJobOrder"
+            PD_UpdateHeader.Show()
+        Catch ex As Exception
+            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
+            Log_File.Close()
+        End Try
     End Sub
 
     Private Sub EditJOContractAttachmentsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EditJOContractAttachmentsToolStripMenuItem.Click
@@ -418,7 +437,13 @@ Public Class PD_SalesJobOrder
                 SJO_CMenu.Location = New Point(MousePosition.X, MousePosition.Y)
             End If
         Catch ex As Exception
-            MsgBox(ex.Message)
+            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
+            Log_File.Close()
         End Try
     End Sub
 
@@ -432,7 +457,13 @@ Public Class PD_SalesJobOrder
                 SJO_CMenu.Location = New Point(MousePosition.X, MousePosition.Y)
             End If
         Catch ex As Exception
-            MsgBox(ex.Message)
+            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
+            Log_File.Close()
         End Try
     End Sub
 
@@ -451,7 +482,13 @@ Public Class PD_SalesJobOrder
                 SJO_CMenu.Location = New Point(MousePosition.X, MousePosition.Y)
             End If
         Catch ex As Exception
-            MsgBox(ex.Message)
+            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
+            Log_File.Close()
         End Try
     End Sub
 
@@ -465,7 +502,13 @@ Public Class PD_SalesJobOrder
                 SJO_CMenu.Location = New Point(MousePosition.X, MousePosition.Y)
             End If
         Catch ex As Exception
-            MsgBox(ex.Message)
+            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
+            Log_File.Close()
         End Try
     End Sub
 
@@ -477,10 +520,12 @@ Public Class PD_SalesJobOrder
                 ProjectLabel_Tbox.Text = CompanyName_Tbox.Text
             End If
         Catch ex As Exception
-            MessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
             Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
             Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-                                       "Error Message: " & ex.Message)
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
             Log_File.Close()
         End Try
     End Sub
@@ -495,10 +540,12 @@ Public Class PD_SalesJobOrder
                 AddressTo_Tbox.Text = ""
             End If
         Catch ex As Exception
-            MessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
             Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
             Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-                                       "Error Message: " & ex.Message)
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
             Log_File.Close()
         End Try
     End Sub
@@ -511,10 +558,12 @@ Public Class PD_SalesJobOrder
                 DelAddress_RTbox.Text = ""
             End If
         Catch ex As Exception
-            MessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
             Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
             Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-                                       "Error Message: " & ex.Message)
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
             Log_File.Close()
         End Try
 
@@ -564,10 +613,12 @@ Public Class PD_SalesJobOrder
 
             BalOfDP_lbl.Text = BalOfDP_input & "%"
         Catch ex As Exception
-            MessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
             Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
             Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-                                       "Error Message: " & ex.Message)
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
             Log_File.Close()
         End Try
 
@@ -586,17 +637,34 @@ Public Class PD_SalesJobOrder
             End If
             DownPayment_Tbox.Text = DownPayment_input
         Catch ex As Exception
-            MessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
             Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
             Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-                                       "Error Message: " & ex.Message)
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
             Log_File.Close()
         End Try
 
     End Sub
 
     Private Sub Collections_Textboxes_KeyPress(sender As Object, e As KeyPressEventArgs) Handles VatPercent_Tbox.KeyPress, DownPayment_Tbox.KeyPress
-        e.Handled = Not (Char.IsDigit(e.KeyChar) Or e.KeyChar = "." Or Asc(e.KeyChar) = 8)
+        Try
+            If (Asc(e.KeyChar) <> 13 AndAlso Asc(e.KeyChar) <> 8 AndAlso Not IsNumeric(e.KeyChar)) Or e.KeyChar = "." Or Asc(e.KeyChar) = 8 Then
+                e.Handled = True
+                Throw New Exception()
+            Else
+                e.Handled = False
+            End If
+        Catch ex As Exception
+            MetroFramework.MetroMessageBox.Show(Me, "Numbers only", "User Warning",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                               "Inputting: " & e.KeyChar & vbCrLf &
+                               "Trace: " & ex.StackTrace & vbCrLf)
+            Log_File.Close()
+        End Try
     End Sub
 
     Private Sub PD_SalesJobOrder_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
@@ -651,10 +719,12 @@ Public Class PD_SalesJobOrder
                 End If
             End If
         Catch ex As Exception
-            MessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
             Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
             Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-                                       "Error Message: " & ex.Message)
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
             Log_File.Close()
         End Try
 

@@ -275,4 +275,16 @@ Begin Transaction
     Private Sub MetroTextButton5_Click(sender As Object, e As EventArgs) Handles MetroTextButton5.Click
         MetroFramework.MetroMessageBox.Show(Me, "Information", " ", MessageBoxButtons.OK, MessageBoxIcon.Information)
     End Sub
+
+    Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
+        Try
+            'Project_Details.Dispose()
+            Dim a As Integer
+            a /= 0
+            MsgBox(a)
+        Catch ex As Exception
+            MsgBox(ex.Message)
+            MsgBox(ex.StackTrace)
+        End Try
+    End Sub
 End Class

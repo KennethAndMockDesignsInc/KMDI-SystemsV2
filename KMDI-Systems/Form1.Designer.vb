@@ -41,6 +41,7 @@ Partial Class Form1
         Me.MetroTextButton7 = New MetroFramework.Controls.MetroTextBox.MetroTextButton()
         Me.MetroTextButton8 = New MetroFramework.Controls.MetroTextBox.MetroTextButton()
         Me.MetroTextButton9 = New MetroFramework.Controls.MetroTextBox.MetroTextButton()
+        Me.Button7 = New System.Windows.Forms.Button()
         CType(Me.LoadingPboxRNP, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -231,11 +232,21 @@ Partial Class Form1
         Me.MetroTextButton9.UseSelectable = True
         Me.MetroTextButton9.UseVisualStyleBackColor = True
         '
+        'Button7
+        '
+        Me.Button7.Location = New System.Drawing.Point(417, 233)
+        Me.Button7.Name = "Button7"
+        Me.Button7.Size = New System.Drawing.Size(56, 52)
+        Me.Button7.TabIndex = 24
+        Me.Button7.Text = "ex.StackTrace"
+        Me.Button7.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(485, 294)
+        Me.Controls.Add(Me.Button7)
         Me.Controls.Add(Me.MetroTextButton9)
         Me.Controls.Add(Me.MetroTextButton8)
         Me.Controls.Add(Me.MetroTextButton7)
@@ -281,4 +292,5 @@ Partial Class Form1
     Friend WithEvents MetroTextButton7 As MetroFramework.Controls.MetroTextBox.MetroTextButton
     Friend WithEvents MetroTextButton8 As MetroFramework.Controls.MetroTextBox.MetroTextButton
     Friend WithEvents MetroTextButton9 As MetroFramework.Controls.MetroTextBox.MetroTextButton
+    Friend WithEvents Button7 As Button
 End Class
