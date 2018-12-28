@@ -40,7 +40,7 @@ Partial Class KMDI_MainFRM
         Me.AcctsLBL = New MetroFramework.Controls.MetroLabel()
         Me.SNOpanel = New MetroFramework.Controls.MetroPanel()
         Me.FlowLayoutPanel4 = New System.Windows.Forms.FlowLayoutPanel()
-        Me.ProjAssignmentTile = New MetroFramework.Controls.MetroTile()
+        Me.ProjAssesmentTile = New MetroFramework.Controls.MetroTile()
         Me.CheckBalTile = New MetroFramework.Controls.MetroTile()
         Me.SUSTile = New MetroFramework.Controls.MetroTile()
         Me.CallerInfoTile = New MetroFramework.Controls.MetroTile()
@@ -315,7 +315,7 @@ Partial Class KMDI_MainFRM
         '
         'FlowLayoutPanel4
         '
-        Me.FlowLayoutPanel4.Controls.Add(Me.ProjAssignmentTile)
+        Me.FlowLayoutPanel4.Controls.Add(Me.ProjAssesmentTile)
         Me.FlowLayoutPanel4.Controls.Add(Me.CheckBalTile)
         Me.FlowLayoutPanel4.Controls.Add(Me.SUSTile)
         Me.FlowLayoutPanel4.Controls.Add(Me.CallerInfoTile)
@@ -330,19 +330,19 @@ Partial Class KMDI_MainFRM
         Me.FlowLayoutPanel4.Size = New System.Drawing.Size(635, 140)
         Me.FlowLayoutPanel4.TabIndex = 4
         '
-        'ProjAssignmentTile
+        'ProjAssesmentTile
         '
-        Me.ProjAssignmentTile.ActiveControl = Nothing
-        Me.ProjAssignmentTile.Location = New System.Drawing.Point(69, 3)
-        Me.ProjAssignmentTile.Name = "ProjAssignmentTile"
-        Me.ProjAssignmentTile.Size = New System.Drawing.Size(128, 63)
-        Me.ProjAssignmentTile.Style = MetroFramework.MetroColorStyle.Green
-        Me.ProjAssignmentTile.TabIndex = 19
-        Me.ProjAssignmentTile.Text = "Project" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Assignment"
-        Me.ProjAssignmentTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
-        Me.ProjAssignmentTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
-        Me.ProjAssignmentTile.UseSelectable = True
-        Me.ProjAssignmentTile.Visible = False
+        Me.ProjAssesmentTile.ActiveControl = Nothing
+        Me.ProjAssesmentTile.Location = New System.Drawing.Point(69, 3)
+        Me.ProjAssesmentTile.Name = "ProjAssesmentTile"
+        Me.ProjAssesmentTile.Size = New System.Drawing.Size(128, 63)
+        Me.ProjAssesmentTile.Style = MetroFramework.MetroColorStyle.Green
+        Me.ProjAssesmentTile.TabIndex = 19
+        Me.ProjAssesmentTile.Text = "Project" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Assessment"
+        Me.ProjAssesmentTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
+        Me.ProjAssesmentTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
+        Me.ProjAssesmentTile.UseSelectable = True
+        Me.ProjAssesmentTile.Visible = False
         '
         'CheckBalTile
         '
@@ -938,7 +938,7 @@ Partial Class KMDI_MainFRM
     Friend WithEvents RecycleTile As MetroFramework.Controls.MetroTile
     Friend WithEvents SNOpanel As MetroFramework.Controls.MetroPanel
     Friend WithEvents FlowLayoutPanel4 As FlowLayoutPanel
-    Friend WithEvents ProjAssignmentTile As MetroFramework.Controls.MetroTile
+    Friend WithEvents ProjAssesmentTile As MetroFramework.Controls.MetroTile
     Friend WithEvents CheckBalTile As MetroFramework.Controls.MetroTile
     Friend WithEvents SUSTile As MetroFramework.Controls.MetroTile
     Friend WithEvents CallerInfoTile As MetroFramework.Controls.MetroTile
