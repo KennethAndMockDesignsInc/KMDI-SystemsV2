@@ -343,6 +343,7 @@ Public Class PD_SalesJobOrder
                                 ElseIf return_bool = False Then
                                     MetroFramework.MetroMessageBox.Show(Me, "Failed", " ", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                                 End If
+                                return_bool = False
                         End Select
 
                     ElseIf sql_Transaction_result = "Rollback" Then
