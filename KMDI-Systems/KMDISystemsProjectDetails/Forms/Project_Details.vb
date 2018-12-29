@@ -16,7 +16,7 @@ Public Class Project_Details
                 SalesJobOrderToolStripMenuItem.Visible = False
             End If
         Else
-            MetroFramework.MetroMessageBox.Show(Me, "Please Wait!", "Loading", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+            MetroFramework.MetroMessageBox.Show(Me, "Please Wait!", "Loading", MessageBoxButtons.OK, MessageBoxIcon.Warning)
         End If
     End Sub
 
@@ -55,7 +55,7 @@ Public Class Project_Details
             If e.KeyCode = Keys.F2 Or (e.Control And e.KeyCode = Keys.F) Then
                 PD_SearchFRM.Show()
                 PD_SearchFRM.TopMost = True
-            ElseIf e.KeyCode = Keys.F5 Or e.KeyCode = Keys.Back Or e.KeyCode = Keys.Escape Then
+            ElseIf e.KeyCode = Keys.F5 Or e.KeyCode = Keys.Back Then
                 is_CTD_bool = False
                 is_SalesJobOrder_bool = False
                 PD_BGW_TODO = "Onload"
@@ -63,6 +63,8 @@ Public Class Project_Details
             ElseIf e.KeyValue = 93 Then
                 PD_ContextMenu.Show()
                 PD_ContextMenu.Location = New Point(0, 0)
+            ElseIf e.KeyCode = Keys.Escape Then
+                Close()
             End If
         Catch ex As Exception
             MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
@@ -143,10 +145,6 @@ Public Class Project_Details
                             .DefaultCellStyle.BackColor = Color.White
                             .AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke
                         End With
-                        LoadingPB.Visible = False
-                        ProjectDetailsDGV.Focus()
-                        ProjectDetailsDGV.Select()
-
                     End If
                 Else
                     Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
@@ -159,6 +157,11 @@ Public Class Project_Details
                 End If
             End If
             RESET()
+
+            LoadingPB.Visible = False
+            ProjectDetailsDGV.Focus()
+            ProjectDetailsDGV.Select()
+
         Catch ex As Exception
             MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
                                                 MessageBoxButtons.OK, MessageBoxIcon.Error)

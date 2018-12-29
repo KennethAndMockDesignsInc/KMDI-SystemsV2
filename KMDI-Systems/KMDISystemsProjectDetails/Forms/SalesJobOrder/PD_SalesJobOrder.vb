@@ -13,7 +13,7 @@ Public Class PD_SalesJobOrder
             SalesJobOrder_Pnl.Visible = False
             PD_SalesJobOrder_BGW.RunWorkerAsync()
         Else
-            MetroFramework.MetroMessageBox.Show(Me, "Please Wait!", "Loading", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+            MetroFramework.MetroMessageBox.Show(Me, "Please Wait!", "Loading", MessageBoxButtons.OK, MessageBoxIcon.Warning)
         End If
     End Sub
     Sub onformLoad()

@@ -265,17 +265,17 @@ Public Class PD_TechPartners
     Dim DGV_CLICKED As String = "Emp_DGV"
     Private Sub Emp_DGV_MouseClick(sender As Object, e As MouseEventArgs) Handles Emp_DGV.MouseClick
         DGV_CLICKED = "Emp_DGV"
-        Emp_DGV.BorderStyle = 1
-        Comp_DGV.BorderStyle = 0
+        Emp_DGV.ColumnHeadersVisible = True
+        Comp_DGV.ColumnHeadersVisible = False
     End Sub
 
     Private Sub Comp_DGV_MouseClick(sender As Object, e As MouseEventArgs) Handles Comp_DGV.MouseClick
         DGV_CLICKED = "Comp_DGV"
-        Comp_DGV.BorderStyle = 1
-        Emp_DGV.BorderStyle = 0
+        Emp_DGV.ColumnHeadersVisible = False
+        Comp_DGV.ColumnHeadersVisible = True
     End Sub
 
-    Private Sub DGV_CellMouseClick(sender As Object, e As DataGridViewCellMouseEventArgs) Handles Emp_DGV.CellMouseClick, Comp_DGV.CellMouseClick
+    Private Sub DGV_CellMouseClick(sender As Object, e As DataGridViewCellMouseEventArgs) Handles Comp_DGV.CellMouseClick, Emp_DGV.CellMouseClick
         If (e.RowIndex >= 0 And e.ColumnIndex >= 0) Then
             If e.Button = MouseButtons.Right Then
                 TP_Cmenu.Show()

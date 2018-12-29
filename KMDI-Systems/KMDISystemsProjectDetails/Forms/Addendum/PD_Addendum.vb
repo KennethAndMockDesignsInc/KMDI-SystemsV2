@@ -205,15 +205,15 @@ Public Class PD_Addendum
         rowpostpaint(sender, e)
     End Sub
 
-    Private Sub IntrDesign_DGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs) Handles IntrDesign_DGV.RowPostPaint
+    Private Sub IntrDesign_DGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs)
         rowpostpaint(sender, e)
     End Sub
 
-    Private Sub ConsMngmt_DGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs) Handles ConsMngmt_DGV.RowPostPaint
+    Private Sub ConsMngmt_DGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs)
         rowpostpaint(sender, e)
     End Sub
 
-    Private Sub GenCon_DGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs) Handles GenCon_DGV.RowPostPaint
+    Private Sub GenCon_DGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs)
         rowpostpaint(sender, e)
     End Sub
 
@@ -239,7 +239,7 @@ Public Class PD_Addendum
     Dim OwnersRep, OwnersRepHomeCno, OwnersRepOfficeCno, OwnersRepMobileCno, OwnersNameHomeCno,
         OwnersNameOfficeCno, OwnersNameMobile, ConStage, SiteMeeting, SpInstr, CUST_ID, CUST_ID_REP As String
 
-    Private Sub ConsMngmt_DGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs) Handles ConsMngmt_DGV.RowEnter
+    Private Sub ConsMngmt_DGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs)
         Try
             ArchDesign_DGV.ClearSelection()
             GenCon_DGV.ClearSelection()
@@ -253,7 +253,7 @@ Public Class PD_Addendum
         End Try
     End Sub
 
-    Private Sub GenCon_DGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs) Handles GenCon_DGV.RowEnter
+    Private Sub GenCon_DGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs)
         Try
             ArchDesign_DGV.ClearSelection()
             ConsMngmt_DGV.ClearSelection()
@@ -276,7 +276,7 @@ Public Class PD_Addendum
         End If
     End Sub
 
-    Private Sub IntrDesign_DGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs) Handles IntrDesign_DGV.RowEnter
+    Private Sub IntrDesign_DGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs)
         Try
             ConsMngmt_DGV.ClearSelection()
             GenCon_DGV.ClearSelection()
@@ -289,17 +289,17 @@ Public Class PD_Addendum
         End Try
     End Sub
 
-    Private Sub ConsMngmt_DGV_UserDeletingRow(sender As Object, e As DataGridViewRowCancelEventArgs) Handles ConsMngmt_DGV.UserDeletingRow
+    Private Sub ConsMngmt_DGV_UserDeletingRow(sender As Object, e As DataGridViewRowCancelEventArgs)
         ADDENDUM_BGW_TODO = "TPN_DELETE"
         Start_PD_Addendum_BGW(False, True)
     End Sub
 
-    Private Sub GenCon_DGV_UserDeletingRow(sender As Object, e As DataGridViewRowCancelEventArgs) Handles GenCon_DGV.UserDeletingRow
+    Private Sub GenCon_DGV_UserDeletingRow(sender As Object, e As DataGridViewRowCancelEventArgs)
         ADDENDUM_BGW_TODO = "TPN_DELETE"
         Start_PD_Addendum_BGW(False, True)
     End Sub
 
-    Private Sub IntrDesign_DGV_UserDeletingRow(sender As Object, e As DataGridViewRowCancelEventArgs) Handles IntrDesign_DGV.UserDeletingRow
+    Private Sub IntrDesign_DGV_UserDeletingRow(sender As Object, e As DataGridViewRowCancelEventArgs)
         ADDENDUM_BGW_TODO = "TPN_DELETE"
         Start_PD_Addendum_BGW(False, True)
     End Sub
@@ -688,7 +688,7 @@ Public Class PD_Addendum
         Catch ex As Exception
             MessageBox.Show(ex.Message)
         End Try
-        
+
     End Sub
 
 End Class
