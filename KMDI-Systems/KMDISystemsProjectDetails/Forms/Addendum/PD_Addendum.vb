@@ -6,7 +6,7 @@ Public Class PD_Addendum
     Dim WD_ID, QUOTE_NO As String
     Dim count_ArchDesignBS As Integer
     Dim QuoteRefNo_Populate_counter As Integer
-
+    Dim ActivateCheckLockQNo As Boolean
     Sub Start_PD_Addendum_BGW(ByVal Panel_bool As Boolean,
                               ByVal Loading_bool As Boolean)
         If PD_Addendum_BGW.IsBusy <> True Then
@@ -33,6 +33,7 @@ Public Class PD_Addendum
         ProjSource_Lbl.Text = ""
         QuoteDate_Lbl.Text = ""
         ProjectLabel_Cbox.Items.Clear()
+        ActivateCheckLockQNo = False
     End Sub
 
     Private Sub PD_Addendum_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -123,7 +124,8 @@ Public Class PD_Addendum
                     '                 " AND CQN_STATUS = 1 AND WD_STATUS = 1"
                     Query_Select_STP(CD_ID, "PD_stp_SalesJobOrder_QRef_Cur")
                 Case "UPDATE_ADDENDUM_QuoteRefNo"
-                    PD_Addendum_Update_QuoteRefNo(CD_ID, arr_WD_ID.Item(UPDATE_ADDENDUM_QuoteRefNo_WD_ID_counter))
+                    PD_Addendum_Update_QuoteRefNo(CD_ID, arr_WD_ID.Item(UPDATE_ADDENDUM_QuoteRefNo_WD_ID_counter),
+                                                  "ADD_stp_Addendum_UPDQno")
             End Select
 
         Catch ex As SqlException
@@ -169,15 +171,12 @@ Public Class PD_Addendum
                             FIle_Label_As = row("FILE_LABEL_AS")
                             ProjectLabel = row("PROJECT_LABEL")
                             JORefNo_Lbl.Text = row("SUB_JO")
-                            'QuoteRefNo = row("QUOTE_NO")
-                            'QuoteDate_Lbl.Text = row("QUOTE_DATE")
                             ConStage_Tbox.Text = row("CONSTRUCTION_STAGE")
                             SiteMeeting_Tbox.Text = row("ACTIVITIES")
 
                             ProjClass_Lbl.Text = row("PROJECT_CLASSIFICATION")
                             ProjSource_Lbl.Text = row("PROJECT_SOURCE")
                             Competitors_Lbl.Text = row("COMPETITORS")
-                            'ProfileFin_Lbl.Text = row("PROFILE_FINISH")
                             SpInstr_RTbox.Text = row("OTHER_PERTINENT_INFO")
 
                             UnitNo = row("UnitNo")
@@ -190,9 +189,6 @@ Public Class PD_Addendum
                             Province = row("PROVINCE")
                             Area = row("AREA")
                         Next row
-                        'Lock_Btn.Text = "Unlock"
-                        'QuoteRefNo_Cbox.Enabled = False
-
                         If ArchDesignDT.Columns.Count = 0 And ConsMngmtDT.Columns.Count = 0 And
                         GenConDT.Columns.Count = 0 And IntrDesignDT.Columns.Count = 0 Then
                             For i = 0 To UBound(DTcols_str)
@@ -209,7 +205,7 @@ Public Class PD_Addendum
                         End If
 
                         If (QuoteRefNo <> Nothing Or QuoteRefNo <> "") And
-                       (JORefNo_Lbl.Text <> Nothing Or JORefNo_Lbl.Text <> "") Then
+                           (JORefNo_Lbl.Text <> Nothing Or JORefNo_Lbl.Text <> "") Then
                             QuoteRefNo_Tbox.Enabled = False
                         Else
                             QuoteRefNo_Tbox.Enabled = True
@@ -388,8 +384,8 @@ Public Class PD_Addendum
                         End If
                     Case "UPDATE_ADDENDUM"
                         If (sql_Err_no = "" Or sql_Err_no = Nothing) AndAlso
-                       (sql_Err_msg = "" Or sql_Err_msg = Nothing) Then
-                            If sql_Transaction_result = "Commited" Then
+                           (sql_Err_msg = "" Or sql_Err_msg = Nothing) Then
+                            If sql_Transaction_result = "Committed" Then
                                 If arr_WD_ID.Count > 0 Then
                                     ADDENDUM_BGW_TODO = "UPDATE_ADDENDUM_QuoteRefNo"
                                     Start_PD_Addendum_BGW(False, True)
@@ -517,15 +513,15 @@ Public Class PD_Addendum
         rowpostpaint(sender, e)
     End Sub
 
-    Private Sub IntrDesign_DGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs)
+    Private Sub IntrDesign_DGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs) Handles IntrDesign_DGV.RowPostPaint
         rowpostpaint(sender, e)
     End Sub
 
-    Private Sub ConsMngmt_DGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs)
+    Private Sub ConsMngmt_DGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs) Handles ConsMngmt_DGV.RowPostPaint
         rowpostpaint(sender, e)
     End Sub
 
-    Private Sub GenCon_DGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs)
+    Private Sub GenCon_DGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs) Handles GenCon_DGV.RowPostPaint
         rowpostpaint(sender, e)
     End Sub
 
@@ -551,7 +547,7 @@ Public Class PD_Addendum
     Dim OwnersRep, OwnersRepHomeCno, OwnersRepOfficeCno, OwnersRepMobileCno, OwnersNameHomeCno,
         OwnersNameOfficeCno, OwnersNameMobile, ConStage, SiteMeeting, SpInstr, CUST_ID, CUST_ID_REP As String
 
-    Private Sub ConsMngmt_DGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs)
+    Private Sub ConsMngmt_DGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs) Handles ConsMngmt_DGV.RowEnter
         Try
             ArchDesign_DGV.ClearSelection()
             GenCon_DGV.ClearSelection()
@@ -565,7 +561,7 @@ Public Class PD_Addendum
         End Try
     End Sub
 
-    Private Sub GenCon_DGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs)
+    Private Sub GenCon_DGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs) Handles GenCon_DGV.RowEnter
         Try
             ArchDesign_DGV.ClearSelection()
             ConsMngmt_DGV.ClearSelection()
@@ -588,7 +584,7 @@ Public Class PD_Addendum
         End If
     End Sub
 
-    Private Sub IntrDesign_DGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs)
+    Private Sub IntrDesign_DGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs) Handles IntrDesign_DGV.RowEnter
         Try
             ConsMngmt_DGV.ClearSelection()
             GenCon_DGV.ClearSelection()
@@ -601,17 +597,17 @@ Public Class PD_Addendum
         End Try
     End Sub
 
-    Private Sub ConsMngmt_DGV_UserDeletingRow(sender As Object, e As DataGridViewRowCancelEventArgs)
+    Private Sub ConsMngmt_DGV_UserDeletingRow(sender As Object, e As DataGridViewRowCancelEventArgs) Handles ConsMngmt_DGV.UserDeletingRow
         ADDENDUM_BGW_TODO = "TPN_DELETE"
         Start_PD_Addendum_BGW(False, True)
     End Sub
 
-    Private Sub GenCon_DGV_UserDeletingRow(sender As Object, e As DataGridViewRowCancelEventArgs)
+    Private Sub GenCon_DGV_UserDeletingRow(sender As Object, e As DataGridViewRowCancelEventArgs) Handles GenCon_DGV.UserDeletingRow
         ADDENDUM_BGW_TODO = "TPN_DELETE"
         Start_PD_Addendum_BGW(False, True)
     End Sub
 
-    Private Sub IntrDesign_DGV_UserDeletingRow(sender As Object, e As DataGridViewRowCancelEventArgs)
+    Private Sub IntrDesign_DGV_UserDeletingRow(sender As Object, e As DataGridViewRowCancelEventArgs) Handles IntrDesign_DGV.UserDeletingRow
         ADDENDUM_BGW_TODO = "TPN_DELETE"
         Start_PD_Addendum_BGW(False, True)
     End Sub
@@ -660,9 +656,11 @@ Public Class PD_Addendum
             Else
                 If QuoteRefNo_Tbox.Text = Nothing Or QuoteRefNo_Tbox.Text = "" Then
                     MetroFramework.MetroMessageBox.Show(Me, "Please select input Quote Ref No", " ", MessageBoxButtons.OK)
+                    QuoteRefNo_Tbox.Focus()
                 Else
                     If QuoteRefNo_Tbox.Enabled = True Then
                         MetroFramework.MetroMessageBox.Show(Me, "Please lock first the Quote Ref No", " ", MessageBoxButtons.OK)
+                        QuoteRefNo_Tbox.Focus()
                     ElseIf QuoteRefNo_Tbox.Enabled = False Then
                         ADDENDUM_BGW_TODO = "UPDATE_ADDENDUM"
                         Start_PD_Addendum_BGW(False, True)
@@ -684,6 +682,7 @@ Public Class PD_Addendum
                     Start_PD_Addendum_BGW(True, True)
                 Else
                     MetroFramework.MetroMessageBox.Show(Me, "Please input a valid Quote reference number.")
+                    QuoteRefNo_Tbox.Focus()
                 End If
             End If
         Catch ex As Exception

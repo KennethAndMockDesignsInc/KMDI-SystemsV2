@@ -31,6 +31,7 @@ Partial Class PD_TechPartners
         Me.Search_Tbox = New MetroFramework.Controls.MetroTextBox()
         Me.Operation_BTN = New MetroFramework.Controls.MetroButton()
         Me.Emp_DGV = New ComponentFactory.Krypton.Toolkit.KryptonDataGridView()
+        Me.EMPNAME = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Comp_DGV = New ComponentFactory.Krypton.Toolkit.KryptonDataGridView()
         Me.DataGridViewTextBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.TechPartners_DGV = New ComponentFactory.Krypton.Toolkit.KryptonDataGridView()
@@ -43,7 +44,6 @@ Partial Class PD_TechPartners
         Me.UpdateToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.LoadingPbox = New System.Windows.Forms.PictureBox()
-        Me.EMPNAME = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.TP_TabControl.SuspendLayout()
         Me.TP_Tab.SuspendLayout()
         CType(Me.Emp_DGV, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -198,6 +198,12 @@ Partial Class PD_TechPartners
         Me.Emp_DGV.TabIndex = 832
         Me.Emp_DGV.VirtualMode = True
         '
+        'EMPNAME
+        '
+        Me.EMPNAME.HeaderText = "NAME"
+        Me.EMPNAME.Name = "EMPNAME"
+        Me.EMPNAME.ReadOnly = True
+        '
         'Comp_DGV
         '
         Me.Comp_DGV.AllowUserToAddRows = False
@@ -345,12 +351,6 @@ Partial Class PD_TechPartners
         Me.LoadingPbox.TabIndex = 17
         Me.LoadingPbox.TabStop = False
         Me.LoadingPbox.Visible = False
-        '
-        'EMPNAME
-        '
-        Me.EMPNAME.HeaderText = "NAME"
-        Me.EMPNAME.Name = "EMPNAME"
-        Me.EMPNAME.ReadOnly = True
         '
         'PD_TechPartners
         '

@@ -95,6 +95,7 @@ Partial Class Project_Details
         Me.ProjectDetailsDGV.Cursor = System.Windows.Forms.Cursors.Hand
         Me.ProjectDetailsDGV.Dock = System.Windows.Forms.DockStyle.Fill
         Me.ProjectDetailsDGV.Location = New System.Drawing.Point(20, 60)
+        Me.ProjectDetailsDGV.MultiSelect = False
         Me.ProjectDetailsDGV.Name = "ProjectDetailsDGV"
         Me.ProjectDetailsDGV.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Silver
         Me.ProjectDetailsDGV.ReadOnly = True

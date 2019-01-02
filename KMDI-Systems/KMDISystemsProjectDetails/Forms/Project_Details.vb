@@ -223,6 +223,8 @@ Public Class Project_Details
     Private Sub ProjectDetailsDGV_MouseClick(sender As Object, e As MouseEventArgs) Handles ProjectDetailsDGV.MouseClick
         Try
             If e.Button = MouseButtons.XButton1 Then
+                is_CTD_bool = False
+                is_SalesJobOrder_bool = False
                 PD_BGW_TODO = "Onload"
                 Start_ProjectDetailsBGW()
             ElseIf e.Button = MouseButtons.Right Then

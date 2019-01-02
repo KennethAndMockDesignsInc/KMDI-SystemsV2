@@ -1282,7 +1282,8 @@ END CATCH
         End Try
     End Sub
     Public Sub PD_Addendum_Update_QuoteRefNo(ByVal CD_ID As String,
-                                             ByVal WD_ID As String)
+                                             ByVal WD_ID As String,
+                                             ByVal StoredProcedure As String)
         Dim QUERY_PART1 As String = "", QUERY_PART2 As String = ""
         Select Case PD_Addendum_Update_QuoteRefNo_counter
             Case = 0
@@ -1342,20 +1343,59 @@ DECLARE @CQN_STATUS AS BIT
 			ROLLBACK TRANSACTION
 	End Catch"
 
-        Using sqlcon As New SqlConnection(sqlconnString)
-            sqlcon.Open()
-            Using sqlCommand As New SqlCommand(Query, sqlcon)
-                sqlCommand.Parameters.AddWithValue("@CD_ID", CD_ID)
-                sqlCommand.Parameters.AddWithValue("@WD_ID", WD_ID)
-                'sqlCommand.Parameters.AddWithValue("@CQN_ID", CQN_ID)
-                Using read As SqlDataReader = sqlCommand.ExecuteReader
-                    read.Read()
-                    sql_Err_no = read.Item("ErrorNumber").ToString
-                    sql_Err_msg = read.Item("ErrorMessage").ToString
-                    sql_Transaction_result = read.Item("Transaction").ToString
+
+
+        Try
+            Using sqlcon As New SqlConnection(sqlconnString)
+                'sqlcon.Open()
+                'Using sqlCommand As New SqlCommand(Query, sqlcon)
+                '    sqlCommand.Parameters.AddWithValue("@CD_ID", CD_ID)
+                '    sqlCommand.Parameters.AddWithValue("@WD_ID", WD_ID)
+                '    'sqlCommand.Parameters.AddWithValue("@CQN_ID", CQN_ID)
+                '    Using read As SqlDataReader = sqlCommand.ExecuteReader
+                '        read.Read()
+                '        sql_Err_no = read.Item("ErrorNumber").ToString
+                '        sql_Err_msg = read.Item("ErrorMessage").ToString
+                '        sql_Transaction_result = read.Item("Transaction").ToString
+                '    End Using
+                'End Using
+                sqlcon.Open()
+                Using sqlcmd As SqlCommand = sqlcon.CreateCommand()
+                    transaction = sqlcon.BeginTransaction(StoredProcedure)
+                    sqlcmd.Connection = sqlcon
+                    sqlcmd.Transaction = transaction
+                    sqlcmd.CommandText = StoredProcedure
+                    sqlcmd.CommandType = CommandType.StoredProcedure
+
+                    sqlcmd.Parameters.AddWithValue("@CD_ID", CD_ID)
+                    sqlcmd.Parameters.AddWithValue("@WD_ID", WD_ID)
+                    sqlcmd.Parameters.AddWithValue("@PD_Addendum_Update_QuoteRefNo_counter", PD_Addendum_Update_QuoteRefNo_counter)
+                    Dim NumOfRowsAffected As Integer = sqlcmd.ExecuteNonQuery()
+                    If NumOfRowsAffected <> 0 Then
+                        return_bool = True
+                    Else
+                        return_bool = False
+                    End If
+
+                    transaction.Commit()
+                    sql_Transaction_result = "Committed"
                 End Using
             End Using
-        End Using
-        PD_Addendum_Update_QuoteRefNo_counter += 1
+            PD_Addendum_Update_QuoteRefNo_counter += 1
+        Catch ex As SqlException
+            sql_Err_msg = ex.Message
+            sql_Err_no = ex.Number
+            sql_Err_StackTrace = ex.StackTrace
+            Try
+                transaction.Rollback()
+                sql_Transaction_result = "Rollback"
+            Catch ex2 As Exception
+                Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+                Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                           "Rollback Error Message: " & ex2.Message & vbCrLf &
+                                           "Trace: " & ex2.StackTrace & vbCrLf)
+                Log_File.Close()
+            End Try
+        End Try
     End Sub
 End Module

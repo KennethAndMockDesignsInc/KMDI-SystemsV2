@@ -115,11 +115,11 @@ Public Class PD_SalesJobOrder
                     Query_Select_STP(JoRefNo_OnClickUpdate, "PD_stp_SalesJobOrder_SubJoSearch")
                 Case "Update"
                     PD_SalesJobOrder_Update(Sub_Jo, JoRefNo_OnClickUpdate, JoDate, FileLabelAs,
-                                    JoDesc, JoAttach, Remarks, BlankPage,
-                                    VatProfile, PaymentTerms, PaymentMode, DownPayment, PaymentDate,
-                                    AddressTo_cmbox, AddressTo_txbox, EstdDelDate, ModeOfDel,
-                                    ModeOfShip, OutOfTown, DelGoodsTo, DelAddress, SpInstr, ContractType,
-                                    BalOfDP, CD_ID, CompanyName_txbox, CUST_ID, ProjectLabel, PertDetails, PD_ID, "PD_stp_SalesJobOrder_Update")
+                                            JoDesc, JoAttach, Remarks, BlankPage,
+                                            VatProfile, PaymentTerms, PaymentMode, DownPayment, PaymentDate,
+                                            AddressTo_cmbox, AddressTo_txbox, EstdDelDate, ModeOfDel,
+                                            ModeOfShip, OutOfTown, DelGoodsTo, DelAddress, SpInstr, ContractType,
+                                            BalOfDP, CD_ID, CompanyName_txbox, CUST_ID, ProjectLabel, PertDetails, PD_ID, "PD_stp_SalesJobOrder_Update")
             End Select
         Catch ex As Exception
             MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",

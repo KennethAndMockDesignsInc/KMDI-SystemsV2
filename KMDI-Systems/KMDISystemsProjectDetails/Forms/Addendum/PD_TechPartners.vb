@@ -265,14 +265,18 @@ Public Class PD_TechPartners
     Dim DGV_CLICKED As String = "Emp_DGV"
     Private Sub Emp_DGV_MouseClick(sender As Object, e As MouseEventArgs) Handles Emp_DGV.MouseClick
         DGV_CLICKED = "Emp_DGV"
-        Emp_DGV.ColumnHeadersVisible = True
-        Comp_DGV.ColumnHeadersVisible = False
+        Emp_DGV.StateCommon.HeaderColumn.Content.Color1 = Color.White
+        Comp_DGV.StateCommon.HeaderColumn.Content.Color1 = Color.DimGray
+        'Emp_DGV.ColumnHeadersVisible = True
+        'Comp_DGV.ColumnHeadersVisible = False
     End Sub
 
     Private Sub Comp_DGV_MouseClick(sender As Object, e As MouseEventArgs) Handles Comp_DGV.MouseClick
         DGV_CLICKED = "Comp_DGV"
-        Emp_DGV.ColumnHeadersVisible = False
-        Comp_DGV.ColumnHeadersVisible = True
+        Comp_DGV.StateCommon.HeaderColumn.Content.Color1 = Color.White
+        Emp_DGV.StateCommon.HeaderColumn.Content.Color1 = Color.DimGray
+        'Emp_DGV.ColumnHeadersVisible = False
+        'Comp_DGV.ColumnHeadersVisible = True
     End Sub
 
     Private Sub DGV_CellMouseClick(sender As Object, e As DataGridViewCellMouseEventArgs) Handles Comp_DGV.CellMouseClick, Emp_DGV.CellMouseClick

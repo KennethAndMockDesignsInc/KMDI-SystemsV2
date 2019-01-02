@@ -37,6 +37,9 @@ Partial Class PD_Addendum
         Me.MetroLabel30 = New MetroFramework.Controls.MetroLabel()
         Me.MetroLabel37 = New MetroFramework.Controls.MetroLabel()
         Me.ArchDesign_DGV = New ComponentFactory.Krypton.Toolkit.KryptonDataGridView()
+        Me.IntrDesign_DGV = New ComponentFactory.Krypton.Toolkit.KryptonDataGridView()
+        Me.ConsMngmt_DGV = New ComponentFactory.Krypton.Toolkit.KryptonDataGridView()
+        Me.GenCon_DGV = New ComponentFactory.Krypton.Toolkit.KryptonDataGridView()
         Me.ProjectDetails_Pnl = New System.Windows.Forms.Panel()
         Me.ProfileFin_Lbl = New MetroFramework.Controls.MetroLabel()
         Me.Competitors_Lbl = New MetroFramework.Controls.MetroLabel()
@@ -85,23 +88,20 @@ Partial Class PD_Addendum
         Me.EditHeaderPartToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.EditTechnicalPartnersToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.LoadingPbox = New System.Windows.Forms.PictureBox()
-        Me.IntrDesign_DGV = New ComponentFactory.Krypton.Toolkit.KryptonDataGridView()
-        Me.ConsMngmt_DGV = New ComponentFactory.Krypton.Toolkit.KryptonDataGridView()
-        Me.GenCon_DGV = New ComponentFactory.Krypton.Toolkit.KryptonDataGridView()
         Me.PD_Addendum_Pnl.SuspendLayout()
         Me.Addendum_Pnl.SuspendLayout()
         Me.Panel4.SuspendLayout()
         Me.SpInstr_Pnl.SuspendLayout()
         Me.TechPartners_Pnl.SuspendLayout()
         CType(Me.ArchDesign_DGV, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.IntrDesign_DGV, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.ConsMngmt_DGV, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.GenCon_DGV, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.ProjectDetails_Pnl.SuspendLayout()
         Me.Header_Pnl.SuspendLayout()
         Me.Title_Pnl.SuspendLayout()
         Me.Addendum_CMenu.SuspendLayout()
         CType(Me.LoadingPbox, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.IntrDesign_DGV, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.ConsMngmt_DGV, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.GenCon_DGV, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'PD_Addendum_Pnl
@@ -261,6 +261,7 @@ Partial Class PD_Addendum
         Me.ArchDesign_DGV.ColumnHeadersHeight = 30
         Me.ArchDesign_DGV.Cursor = System.Windows.Forms.Cursors.Hand
         Me.ArchDesign_DGV.Location = New System.Drawing.Point(23, 34)
+        Me.ArchDesign_DGV.MultiSelect = False
         Me.ArchDesign_DGV.Name = "ArchDesign_DGV"
         Me.ArchDesign_DGV.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Silver
         Me.ArchDesign_DGV.ReadOnly = True
@@ -286,6 +287,117 @@ Partial Class PD_Addendum
         Me.ArchDesign_DGV.StateCommon.HeaderColumn.Content.Hint = ComponentFactory.Krypton.Toolkit.PaletteTextHint.AntiAlias
         Me.ArchDesign_DGV.TabIndex = 612
         Me.ArchDesign_DGV.VirtualMode = True
+        '
+        'IntrDesign_DGV
+        '
+        Me.IntrDesign_DGV.AllowUserToAddRows = False
+        Me.IntrDesign_DGV.AllowUserToOrderColumns = True
+        Me.IntrDesign_DGV.AllowUserToResizeRows = False
+        Me.IntrDesign_DGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells
+        Me.IntrDesign_DGV.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells
+        Me.IntrDesign_DGV.ColumnHeadersHeight = 30
+        Me.IntrDesign_DGV.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.IntrDesign_DGV.Location = New System.Drawing.Point(679, 34)
+        Me.IntrDesign_DGV.MultiSelect = False
+        Me.IntrDesign_DGV.Name = "IntrDesign_DGV"
+        Me.IntrDesign_DGV.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Silver
+        Me.IntrDesign_DGV.ReadOnly = True
+        Me.IntrDesign_DGV.RowHeadersWidth = 30
+        Me.IntrDesign_DGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.IntrDesign_DGV.Size = New System.Drawing.Size(624, 123)
+        Me.IntrDesign_DGV.StateCommon.Background.Color1 = System.Drawing.Color.White
+        Me.IntrDesign_DGV.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList
+        Me.IntrDesign_DGV.StateCommon.DataCell.Border.DrawBorders = CType((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) _
+            Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) _
+            Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right), ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)
+        Me.IntrDesign_DGV.StateCommon.DataCell.Border.Width = 0
+        Me.IntrDesign_DGV.StateCommon.DataCell.Content.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.IntrDesign_DGV.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(CType(CType(11, Byte), Integer), CType(CType(19, Byte), Integer), CType(CType(36, Byte), Integer))
+        Me.IntrDesign_DGV.StateCommon.HeaderColumn.Back.Color2 = System.Drawing.Color.FromArgb(CType(CType(11, Byte), Integer), CType(CType(19, Byte), Integer), CType(CType(36, Byte), Integer))
+        Me.IntrDesign_DGV.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Dashed
+        Me.IntrDesign_DGV.StateCommon.HeaderColumn.Border.DrawBorders = CType((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) _
+            Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) _
+            Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right), ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)
+        Me.IntrDesign_DGV.StateCommon.HeaderColumn.Border.Width = 0
+        Me.IntrDesign_DGV.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White
+        Me.IntrDesign_DGV.StateCommon.HeaderColumn.Content.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.IntrDesign_DGV.StateCommon.HeaderColumn.Content.Hint = ComponentFactory.Krypton.Toolkit.PaletteTextHint.AntiAlias
+        Me.IntrDesign_DGV.TabIndex = 613
+        Me.IntrDesign_DGV.VirtualMode = True
+        '
+        'ConsMngmt_DGV
+        '
+        Me.ConsMngmt_DGV.AllowUserToAddRows = False
+        Me.ConsMngmt_DGV.AllowUserToOrderColumns = True
+        Me.ConsMngmt_DGV.AllowUserToResizeRows = False
+        Me.ConsMngmt_DGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells
+        Me.ConsMngmt_DGV.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells
+        Me.ConsMngmt_DGV.ColumnHeadersHeight = 30
+        Me.ConsMngmt_DGV.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.ConsMngmt_DGV.Location = New System.Drawing.Point(23, 186)
+        Me.ConsMngmt_DGV.MultiSelect = False
+        Me.ConsMngmt_DGV.Name = "ConsMngmt_DGV"
+        Me.ConsMngmt_DGV.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Silver
+        Me.ConsMngmt_DGV.ReadOnly = True
+        Me.ConsMngmt_DGV.RowHeadersWidth = 30
+        Me.ConsMngmt_DGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.ConsMngmt_DGV.Size = New System.Drawing.Size(624, 123)
+        Me.ConsMngmt_DGV.StateCommon.Background.Color1 = System.Drawing.Color.White
+        Me.ConsMngmt_DGV.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList
+        Me.ConsMngmt_DGV.StateCommon.DataCell.Border.DrawBorders = CType((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) _
+            Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) _
+            Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right), ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)
+        Me.ConsMngmt_DGV.StateCommon.DataCell.Border.Width = 0
+        Me.ConsMngmt_DGV.StateCommon.DataCell.Content.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ConsMngmt_DGV.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(CType(CType(11, Byte), Integer), CType(CType(19, Byte), Integer), CType(CType(36, Byte), Integer))
+        Me.ConsMngmt_DGV.StateCommon.HeaderColumn.Back.Color2 = System.Drawing.Color.FromArgb(CType(CType(11, Byte), Integer), CType(CType(19, Byte), Integer), CType(CType(36, Byte), Integer))
+        Me.ConsMngmt_DGV.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Dashed
+        Me.ConsMngmt_DGV.StateCommon.HeaderColumn.Border.DrawBorders = CType((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) _
+            Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) _
+            Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right), ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)
+        Me.ConsMngmt_DGV.StateCommon.HeaderColumn.Border.Width = 0
+        Me.ConsMngmt_DGV.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White
+        Me.ConsMngmt_DGV.StateCommon.HeaderColumn.Content.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ConsMngmt_DGV.StateCommon.HeaderColumn.Content.Hint = ComponentFactory.Krypton.Toolkit.PaletteTextHint.AntiAlias
+        Me.ConsMngmt_DGV.TabIndex = 614
+        Me.ConsMngmt_DGV.VirtualMode = True
+        '
+        'GenCon_DGV
+        '
+        Me.GenCon_DGV.AllowUserToAddRows = False
+        Me.GenCon_DGV.AllowUserToOrderColumns = True
+        Me.GenCon_DGV.AllowUserToResizeRows = False
+        Me.GenCon_DGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells
+        Me.GenCon_DGV.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells
+        Me.GenCon_DGV.ColumnHeadersHeight = 30
+        Me.GenCon_DGV.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.GenCon_DGV.Location = New System.Drawing.Point(679, 186)
+        Me.GenCon_DGV.MultiSelect = False
+        Me.GenCon_DGV.Name = "GenCon_DGV"
+        Me.GenCon_DGV.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Silver
+        Me.GenCon_DGV.ReadOnly = True
+        Me.GenCon_DGV.RowHeadersWidth = 30
+        Me.GenCon_DGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.GenCon_DGV.Size = New System.Drawing.Size(624, 123)
+        Me.GenCon_DGV.StateCommon.Background.Color1 = System.Drawing.Color.White
+        Me.GenCon_DGV.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList
+        Me.GenCon_DGV.StateCommon.DataCell.Border.DrawBorders = CType((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) _
+            Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) _
+            Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right), ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)
+        Me.GenCon_DGV.StateCommon.DataCell.Border.Width = 0
+        Me.GenCon_DGV.StateCommon.DataCell.Content.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GenCon_DGV.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(CType(CType(11, Byte), Integer), CType(CType(19, Byte), Integer), CType(CType(36, Byte), Integer))
+        Me.GenCon_DGV.StateCommon.HeaderColumn.Back.Color2 = System.Drawing.Color.FromArgb(CType(CType(11, Byte), Integer), CType(CType(19, Byte), Integer), CType(CType(36, Byte), Integer))
+        Me.GenCon_DGV.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Dashed
+        Me.GenCon_DGV.StateCommon.HeaderColumn.Border.DrawBorders = CType((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) _
+            Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) _
+            Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right), ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)
+        Me.GenCon_DGV.StateCommon.HeaderColumn.Border.Width = 0
+        Me.GenCon_DGV.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White
+        Me.GenCon_DGV.StateCommon.HeaderColumn.Content.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GenCon_DGV.StateCommon.HeaderColumn.Content.Hint = ComponentFactory.Krypton.Toolkit.PaletteTextHint.AntiAlias
+        Me.GenCon_DGV.TabIndex = 615
+        Me.GenCon_DGV.VirtualMode = True
         '
         'ProjectDetails_Pnl
         '
@@ -1067,114 +1179,6 @@ Partial Class PD_Addendum
         Me.LoadingPbox.TabStop = False
         Me.LoadingPbox.Visible = False
         '
-        'IntrDesign_DGV
-        '
-        Me.IntrDesign_DGV.AllowUserToAddRows = False
-        Me.IntrDesign_DGV.AllowUserToOrderColumns = True
-        Me.IntrDesign_DGV.AllowUserToResizeRows = False
-        Me.IntrDesign_DGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells
-        Me.IntrDesign_DGV.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells
-        Me.IntrDesign_DGV.ColumnHeadersHeight = 30
-        Me.IntrDesign_DGV.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.IntrDesign_DGV.Location = New System.Drawing.Point(679, 34)
-        Me.IntrDesign_DGV.Name = "IntrDesign_DGV"
-        Me.IntrDesign_DGV.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Silver
-        Me.IntrDesign_DGV.ReadOnly = True
-        Me.IntrDesign_DGV.RowHeadersWidth = 30
-        Me.IntrDesign_DGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.IntrDesign_DGV.Size = New System.Drawing.Size(624, 123)
-        Me.IntrDesign_DGV.StateCommon.Background.Color1 = System.Drawing.Color.White
-        Me.IntrDesign_DGV.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList
-        Me.IntrDesign_DGV.StateCommon.DataCell.Border.DrawBorders = CType((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) _
-            Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) _
-            Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right), ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)
-        Me.IntrDesign_DGV.StateCommon.DataCell.Border.Width = 0
-        Me.IntrDesign_DGV.StateCommon.DataCell.Content.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.IntrDesign_DGV.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(CType(CType(11, Byte), Integer), CType(CType(19, Byte), Integer), CType(CType(36, Byte), Integer))
-        Me.IntrDesign_DGV.StateCommon.HeaderColumn.Back.Color2 = System.Drawing.Color.FromArgb(CType(CType(11, Byte), Integer), CType(CType(19, Byte), Integer), CType(CType(36, Byte), Integer))
-        Me.IntrDesign_DGV.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Dashed
-        Me.IntrDesign_DGV.StateCommon.HeaderColumn.Border.DrawBorders = CType((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) _
-            Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) _
-            Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right), ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)
-        Me.IntrDesign_DGV.StateCommon.HeaderColumn.Border.Width = 0
-        Me.IntrDesign_DGV.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White
-        Me.IntrDesign_DGV.StateCommon.HeaderColumn.Content.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.IntrDesign_DGV.StateCommon.HeaderColumn.Content.Hint = ComponentFactory.Krypton.Toolkit.PaletteTextHint.AntiAlias
-        Me.IntrDesign_DGV.TabIndex = 613
-        Me.IntrDesign_DGV.VirtualMode = True
-        '
-        'ConsMngmt_DGV
-        '
-        Me.ConsMngmt_DGV.AllowUserToAddRows = False
-        Me.ConsMngmt_DGV.AllowUserToOrderColumns = True
-        Me.ConsMngmt_DGV.AllowUserToResizeRows = False
-        Me.ConsMngmt_DGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells
-        Me.ConsMngmt_DGV.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells
-        Me.ConsMngmt_DGV.ColumnHeadersHeight = 30
-        Me.ConsMngmt_DGV.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.ConsMngmt_DGV.Location = New System.Drawing.Point(23, 186)
-        Me.ConsMngmt_DGV.Name = "ConsMngmt_DGV"
-        Me.ConsMngmt_DGV.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Silver
-        Me.ConsMngmt_DGV.ReadOnly = True
-        Me.ConsMngmt_DGV.RowHeadersWidth = 30
-        Me.ConsMngmt_DGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.ConsMngmt_DGV.Size = New System.Drawing.Size(624, 123)
-        Me.ConsMngmt_DGV.StateCommon.Background.Color1 = System.Drawing.Color.White
-        Me.ConsMngmt_DGV.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList
-        Me.ConsMngmt_DGV.StateCommon.DataCell.Border.DrawBorders = CType((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) _
-            Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) _
-            Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right), ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)
-        Me.ConsMngmt_DGV.StateCommon.DataCell.Border.Width = 0
-        Me.ConsMngmt_DGV.StateCommon.DataCell.Content.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ConsMngmt_DGV.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(CType(CType(11, Byte), Integer), CType(CType(19, Byte), Integer), CType(CType(36, Byte), Integer))
-        Me.ConsMngmt_DGV.StateCommon.HeaderColumn.Back.Color2 = System.Drawing.Color.FromArgb(CType(CType(11, Byte), Integer), CType(CType(19, Byte), Integer), CType(CType(36, Byte), Integer))
-        Me.ConsMngmt_DGV.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Dashed
-        Me.ConsMngmt_DGV.StateCommon.HeaderColumn.Border.DrawBorders = CType((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) _
-            Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) _
-            Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right), ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)
-        Me.ConsMngmt_DGV.StateCommon.HeaderColumn.Border.Width = 0
-        Me.ConsMngmt_DGV.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White
-        Me.ConsMngmt_DGV.StateCommon.HeaderColumn.Content.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ConsMngmt_DGV.StateCommon.HeaderColumn.Content.Hint = ComponentFactory.Krypton.Toolkit.PaletteTextHint.AntiAlias
-        Me.ConsMngmt_DGV.TabIndex = 614
-        Me.ConsMngmt_DGV.VirtualMode = True
-        '
-        'GenCon_DGV
-        '
-        Me.GenCon_DGV.AllowUserToAddRows = False
-        Me.GenCon_DGV.AllowUserToOrderColumns = True
-        Me.GenCon_DGV.AllowUserToResizeRows = False
-        Me.GenCon_DGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells
-        Me.GenCon_DGV.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells
-        Me.GenCon_DGV.ColumnHeadersHeight = 30
-        Me.GenCon_DGV.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.GenCon_DGV.Location = New System.Drawing.Point(679, 186)
-        Me.GenCon_DGV.Name = "GenCon_DGV"
-        Me.GenCon_DGV.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Silver
-        Me.GenCon_DGV.ReadOnly = True
-        Me.GenCon_DGV.RowHeadersWidth = 30
-        Me.GenCon_DGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.GenCon_DGV.Size = New System.Drawing.Size(624, 123)
-        Me.GenCon_DGV.StateCommon.Background.Color1 = System.Drawing.Color.White
-        Me.GenCon_DGV.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList
-        Me.GenCon_DGV.StateCommon.DataCell.Border.DrawBorders = CType((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) _
-            Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) _
-            Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right), ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)
-        Me.GenCon_DGV.StateCommon.DataCell.Border.Width = 0
-        Me.GenCon_DGV.StateCommon.DataCell.Content.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GenCon_DGV.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(CType(CType(11, Byte), Integer), CType(CType(19, Byte), Integer), CType(CType(36, Byte), Integer))
-        Me.GenCon_DGV.StateCommon.HeaderColumn.Back.Color2 = System.Drawing.Color.FromArgb(CType(CType(11, Byte), Integer), CType(CType(19, Byte), Integer), CType(CType(36, Byte), Integer))
-        Me.GenCon_DGV.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Dashed
-        Me.GenCon_DGV.StateCommon.HeaderColumn.Border.DrawBorders = CType((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) _
-            Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) _
-            Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right), ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)
-        Me.GenCon_DGV.StateCommon.HeaderColumn.Border.Width = 0
-        Me.GenCon_DGV.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White
-        Me.GenCon_DGV.StateCommon.HeaderColumn.Content.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GenCon_DGV.StateCommon.HeaderColumn.Content.Hint = ComponentFactory.Krypton.Toolkit.PaletteTextHint.AntiAlias
-        Me.GenCon_DGV.TabIndex = 615
-        Me.GenCon_DGV.VirtualMode = True
-        '
         'PD_Addendum
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1194,6 +1198,9 @@ Partial Class PD_Addendum
         Me.TechPartners_Pnl.ResumeLayout(False)
         Me.TechPartners_Pnl.PerformLayout()
         CType(Me.ArchDesign_DGV, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.IntrDesign_DGV, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.ConsMngmt_DGV, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.GenCon_DGV, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ProjectDetails_Pnl.ResumeLayout(False)
         Me.ProjectDetails_Pnl.PerformLayout()
         Me.Header_Pnl.ResumeLayout(False)
@@ -1202,9 +1209,6 @@ Partial Class PD_Addendum
         Me.Title_Pnl.PerformLayout()
         Me.Addendum_CMenu.ResumeLayout(False)
         CType(Me.LoadingPbox, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.IntrDesign_DGV, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.ConsMngmt_DGV, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.GenCon_DGV, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
