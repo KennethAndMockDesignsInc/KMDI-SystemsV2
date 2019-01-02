@@ -196,10 +196,10 @@ Public Class PD_SalesJobOrder
                                         PertDetails_RTbox.Text = row("PERTINENT_DETAILS")
                                         Remarks_RTbox.Text = row("SPECIAL_COMMENTS")
                                         VatProfile_Cbox.Text = row("CONTRACT_VAT_PROFILE")
-                                        VatPercent_Tbox.Text = row("VAT")
+                                        VatPercent_Tbox.Text = row("VAT").ToString.Replace("%", "")
                                         PaymentTerms_Cbox.Text = row("PAYMENT_TERMS")
                                         PaymentMode_Cbox.Text = row("PAYMENT_MODE")
-                                        DownPayment_Tbox.Text = row("DOWN_PAYMENT")
+                                        DownPayment_Tbox.Text = row("DOWN_PAYMENT").ToString.Replace("%", "")
                                         PaymentDate_Tbox.Text = row("PAYMENT_DATE")
                                         BalOfDP_lbl.Text = row("BAL_OF_DP")
                                         AddressTo_Cbox.Text = row("ADDRESS_BILLING")
@@ -222,6 +222,8 @@ Public Class PD_SalesJobOrder
                                         Province = row("PROVINCE")
                                         Area = row("AREA")
                                     Next row
+                                    'DownPayment_Tbox.Text.Replace("%", "")
+                                    'VatPercent_Tbox.Text.Replace("%", "")
                                     AddressFormat(UnitNo, Establishment, HouseNo, Street,
                                                   Village, Brgy, CityMunicipality, Province)
                                     FullAddress_Tbox.Text = FullAddress
@@ -598,6 +600,26 @@ Public Class PD_SalesJobOrder
             BalOfDP,
             ContractType As String
 
+    Private Sub VatPercent_Tbox_TextChanged(sender As Object, e As EventArgs) Handles VatPercent_Tbox.TextChanged
+        Try
+            Dim VatPercent As Double
+            VatPercent = Val(VatPercent_Tbox.Text)
+
+            If VatPercent >= 100.0 Then
+                VatPercent_Tbox.Text = 100.0
+            End If
+
+        Catch ex As Exception
+            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
+            Log_File.Close()
+        End Try
+    End Sub
+
     Private Sub DownPayment_Tbox_TextChanged(sender As Object, e As EventArgs) Handles DownPayment_Tbox.TextChanged
         Try
             Dim DownPayment_inputted As Double
@@ -651,7 +673,7 @@ Public Class PD_SalesJobOrder
 
     Private Sub Collections_Textboxes_KeyPress(sender As Object, e As KeyPressEventArgs) Handles VatPercent_Tbox.KeyPress, DownPayment_Tbox.KeyPress
         Try
-            If (Asc(e.KeyChar) <> 13 AndAlso Asc(e.KeyChar) <> 8 AndAlso Not IsNumeric(e.KeyChar)) Or e.KeyChar = "." Or Asc(e.KeyChar) = 8 Then
+            If (Asc(e.KeyChar) <> 13 AndAlso Asc(e.KeyChar) <> 8 AndAlso Not IsNumeric(e.KeyChar)) Or e.KeyChar = "." Then
                 e.Handled = True
                 Throw New Exception()
             Else
@@ -662,7 +684,7 @@ Public Class PD_SalesJobOrder
                                                 MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
             Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-                               "Inputting: " & e.KeyChar & vbCrLf &
+                               "Inputting: " & Asc(e.KeyChar) & vbCrLf &
                                "Trace: " & ex.StackTrace & vbCrLf)
             Log_File.Close()
         End Try
@@ -672,6 +694,10 @@ Public Class PD_SalesJobOrder
         If MetroFramework.MetroMessageBox.Show(Me, "Do you want to exit?", "Exiting", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
             e.Cancel = False
             Project_Details.BringToFront()
+
+            PD_JoAttach.Dispose()
+            PD_PertDetails.Dispose()
+            Dispose()
         Else
             onformLoad()
             e.Cancel = True

@@ -529,12 +529,11 @@ Public Class PD_Addendum
         Try
             If MetroFramework.MetroMessageBox.Show(Me, "Are you sure you want to Exit?", " ", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                 Project_Details.BringToFront()
-                If Application.OpenForms().OfType(Of PD_TechPartners).Any Then
-                    PD_TechPartners.Dispose()
-                End If
-                If Application.OpenForms().OfType(Of PD_UpdateHeader).Any Then
-                    PD_UpdateHeader.Dispose()
-                End If
+
+                PD_TechPartners.Dispose()
+                PD_UpdateCOMP.Dispose()
+                PD_UpdateEMP.Dispose()
+                Dispose()
                 e.Cancel = False
             Else
                 e.Cancel = True

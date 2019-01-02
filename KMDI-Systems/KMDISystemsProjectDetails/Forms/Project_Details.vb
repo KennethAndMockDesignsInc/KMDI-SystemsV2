@@ -85,7 +85,7 @@ Public Class Project_Details
                     Query_Select_STP(SearchStr, "PD_stp_ProjectDetails_Onload")
                 Case "Search"
                     QUERY_INSTANCE = "Loading_using_SearchString"
-                    Query_Select_STP(SearchStr, "PD_stp_ProjectDetails_Search")
+                    Query_Select_STP(SearchStr, "PD_stp_ProjectDetails_Onload")
                 Case "Contracts_Load"
                     QUERY_INSTANCE = "Loading_using_EqualSearch"
                     Query_Select_STP(SearchStr, "PD_stp_ContractDetails_Load")
@@ -135,6 +135,14 @@ Public Class Project_Details
 
                         If is_CTD_bool = True Then
                             ProjectDetailsDGV.Columns("ID").Visible = False
+                            ProjectDetailsDGV.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None
+                            ProjectDetailsDGV.Columns(2).Width = ProjectDetailsDGV.Width * 0.1
+                            ProjectDetailsDGV.Columns(3).Width = ProjectDetailsDGV.Width * 0.12
+                            ProjectDetailsDGV.Columns(4).Width = ProjectDetailsDGV.Width * 0.12
+                            ProjectDetailsDGV.Columns(5).Width = ProjectDetailsDGV.Width * 0.12
+                            ProjectDetailsDGV.Columns(6).Width = ProjectDetailsDGV.Width * 0.5
+                        Else
+                            ProjectDetailsDGV.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
                         End If
 
                         If ProjectDetailsDGV.Columns.Count <> 0 Then
@@ -171,6 +179,13 @@ Public Class Project_Details
                                        "Trace: " & ex.StackTrace & vbCrLf)
             Log_File.Close()
         End Try
+
+        RESET()
+
+        LoadingPB.Visible = False
+        ProjectDetailsDGV.Focus()
+        ProjectDetailsDGV.Select()
+
     End Sub
 
     Private Sub ProjectDetailsDGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs) Handles ProjectDetailsDGV.RowPostPaint
@@ -297,6 +312,22 @@ Public Class Project_Details
             e.Cancel = True
         Else
             KMDI_MainFRM.BringToFront()
+
+            PD_UpdateHeader.Dispose()
+            PD_SearchFRM.Dispose()
+            NewProject_Register.Dispose()
+
+            PD_Addendum.Dispose()
+            PD_TechPartners.Dispose()
+            PD_UpdateCOMP.Dispose()
+            PD_UpdateEMP.Dispose()
+
+            PD_SalesJobOrder.Dispose()
+            PD_PertDetails.Dispose()
+            PD_JoAttach.Dispose()
+
+            Dispose()
+
             e.Cancel = False
         End If
     End Sub
