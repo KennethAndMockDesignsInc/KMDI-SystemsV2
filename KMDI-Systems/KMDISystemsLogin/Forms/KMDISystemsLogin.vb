@@ -175,7 +175,7 @@ Public Class KMDISystemsLogin
 
                 Else
                     With KMDI_MainFRM
-                        MetroMessageBox.Show(Me, "Login failed! Please Try again", "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
+                        MetroMessageBox.Show(Me, "Please try again", "Login failed", MessageBoxButtons.OK, MessageBoxIcon.Hand)
 
                         If Application.OpenForms().OfType(Of KMDI_MainFRM).Any Then
 

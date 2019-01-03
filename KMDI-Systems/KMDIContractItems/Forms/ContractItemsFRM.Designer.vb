@@ -317,7 +317,7 @@ Partial Class ContractItemsFRM
         '
         Me.SSubPrice_LBL.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.SSubPrice_LBL.FontWeight = MetroFramework.MetroLabelWeight.Regular
-        Me.SSubPrice_LBL.Location = New System.Drawing.Point(861, 9)
+        Me.SSubPrice_LBL.Location = New System.Drawing.Point(876, 9)
         Me.SSubPrice_LBL.Name = "SSubPrice_LBL"
         Me.SSubPrice_LBL.Size = New System.Drawing.Size(113, 19)
         Me.SSubPrice_LBL.TabIndex = 3

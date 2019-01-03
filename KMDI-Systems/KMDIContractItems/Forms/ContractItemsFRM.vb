@@ -11,9 +11,6 @@ Public Class ContractItemsFRM
     Public ActionTaken As String
     Public SearchItemFN As String
 
-    'Public QueryFunction As String
-    'Public QueryBody As String
-    'Public QueryCondition As String
     Dim stp_Name As String
 
     Public GenerateOutput As Boolean
@@ -69,6 +66,7 @@ Public Class ContractItemsFRM
                                 CIF_Screen_DGV.Columns.Clear()
                                 CIF_Screen_DGV.DataSource = Nothing
                                 CIF_Screen_DGV.DataMember = Nothing
+                                AddHandler CIF_Screen_DGV.RowPostPaint, AddressOf CIF_Screen_DGV_RowPostPaint
                             Case "Glass"
                             Case "Films"
                             Case "Mechanisms"
@@ -84,6 +82,12 @@ Public Class ContractItemsFRM
                 ContractItemsBGW.WorkerReportsProgress = True
                 ContractItemsBGW.WorkerSupportsCancellation = True
                 ContractItemsBGW.RunWorkerAsync()
+
+                Select Case ActionTaken
+                    Case "Russell"
+
+                    Case "Ej"
+                End Select
             Else
                 MetroMessageBox.Show(Me, "System is gathering information.", "Please wait for a moment", MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
@@ -109,8 +113,7 @@ Public Class ContractItemsFRM
                                             ContractItemsBGW.ReportProgress(i)
                                         Next i
                                     Else
-                                        'ContractItemsBGW.WorkerSupportsCancellation = True
-                                        'ContractItemsBGW.CancelAsync()
+                                        MessageBox.Show("No frames")
                                     End If
                                 Case "Screens"
                                     If sql.ds.Tables("Screens").Rows.Count > 0 Then
@@ -155,7 +158,7 @@ Public Class ContractItemsFRM
 
             End Select
         Catch ex As Exception
-            MsgBox(ex.ToString)
+            ErrorMessage = ex.ToString
             ContractItemsBGW.WorkerSupportsCancellation = True
             ContractItemsBGW.CancelAsync()
         End Try
@@ -253,12 +256,20 @@ Public Class ContractItemsFRM
                                             Next
 
                                             .ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
-                                            .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells
+                                            .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
+
 
                                             .Columns(2).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
                                             .Columns(4).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
                                             .Columns(5).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
                                             .Columns(6).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+
+                                            .Columns(0).AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader
+                                            .Columns(2).AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader
+                                            .Columns(4).AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader
+                                            .Columns(5).AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader
+                                            .Columns(6).AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader
+
 
                                             STotalQTY_LBL.Text = sql.ds.Tables("Screens").Rows(0).Item(19).ToString()
                                             SSubPrice_LBL.Text = sql.ds.Tables("Screens").Rows(0).Item(20).ToString()
@@ -267,7 +278,9 @@ Public Class ContractItemsFRM
                                         End With
 
                                     Catch ex As Exception
-                                        If MetroMessageBox.Show(Me, "The system has encountered an error during output of contract screen information. Would you like to refresh the system?", "Error has been found.", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) = DialogResult.Yes Then
+                                        ErrorMessage = ex.ToString
+                                        If MetroMessageBox.Show(Me, "The system has encountered an error during output of contract screen information. Would you like to refresh the system?" & vbCrLf & vbCrLf & ErrorMessage, "Error has been found.", MessageBoxButtons.YesNo, MessageBoxIcon.Error) = DialogResult.Yes Then
+                                            MessageBox.Show(ex.ToString)
                                             LoadInitialSetUp()
                                         Else
                                             Me.Close()
@@ -322,10 +335,10 @@ Public Class ContractItemsFRM
 
                 Try
                     If e.Cancelled = True Then
-                        MetroMessageBox.Show(Me, "The system has encountered an error during recovery of contract information. This page will now close." & vbCrLf & vbCrLf & ErrorMessage, "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                        MetroMessageBox.Show(Me, "The system has encountered an error during recovery of contract information. This page will now close." & vbCrLf & vbCrLf & ErrorMessage, "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Error)
                         Me.Close()
                     ElseIf e.Error IsNot Nothing Then
-                        MetroMessageBox.Show(Me, "The system has encountered an error during recovery of contract information. This page will now close.", "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                        MetroMessageBox.Show(Me, "The system has encountered an error during recovery of contract information. This page will now close." & vbCrLf & vbCrLf & ErrorMessage, "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Error)
                         Me.Close()
                     Else
                         GenerateOutput = False
@@ -357,10 +370,10 @@ Public Class ContractItemsFRM
             Case False
                 Try
                     If e.Cancelled = True Then
-                        MetroMessageBox.Show(Me, "The system has encountered an error during recovery of contract information. This page will now close.", "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                        MetroMessageBox.Show(Me, "The system has encountered an error during recovery of contract information. This page will now close.", "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Error)
                         Me.Close()
                     ElseIf e.Error IsNot Nothing Then
-                        MetroMessageBox.Show(Me, "The system has encountered an error during recovery of contract information. This page will now close.", "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                        MetroMessageBox.Show(Me, "The system has encountered an error during recovery of contract information. This page will now close.", "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Error)
                         Me.Close()
                     Else
                         Select Case ActionTaken
@@ -370,19 +383,20 @@ Public Class ContractItemsFRM
                                         If Read.HasRows = True Then
                                             CheckDataValues()
                                         Else
-
+                                            FSubTotal = "0.00"
                                         End If
                                     Case "Screens"
                                         If Read.HasRows = True Then
                                             CheckDataValues()
                                         Else
-
+                                            STotalQTY_LBL.Text = "0"
+                                            SSubPrice_LBL.Text = "0.00"
                                         End If
                                     Case "Glass"
                                         If Read.HasRows = True Then
                                             CheckDataValues()
                                         Else
-
+                                            GSubTotal = "0.00"
                                         End If
                                     Case "Films"
                                     Case "Mechanisms"
@@ -407,16 +421,12 @@ Public Class ContractItemsFRM
                     Select Case SearchItemFN
                         Case "Frames"
                             GenerateOutput = True
-                            FSubTotal = "0.00"
                             StartWorker()
                         Case "Screens"
                             GenerateOutput = True
-                            STotalQTY_LBL.Text = "0"
-                            SSubPrice_LBL.Text = "0.00"
                             StartWorker()
                         Case "Glass"
                             GenerateOutput = True
-                            GSubTotal = "0.00"
                             StartWorker()
                         Case "Films"
                         Case "Mechanisms"
@@ -428,7 +438,7 @@ Public Class ContractItemsFRM
                 Case "Delete"
             End Select
         Catch ex As Exception
-            MessageBox.Show(ex.ToString)
+            ErrorMessage = ex.ToString
         End Try
     End Sub
 
@@ -594,14 +604,24 @@ Public Class ContractItemsFRM
                                 .AllowUserToOrderColumns = True
                                 .AllowUserToResizeColumns = True
                                 .AllowUserToResizeRows = True
+                                .AllowUserToAddRows = False
                                 .AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells
-                                .AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells)
+                                .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
+                                '.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells)
                                 .CausesValidation = True
                                 .ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableWithAutoHeaderText
                                 .PaletteMode = PaletteMode.Office2010Silver
                                 .ColumnHeadersHeight = 30
                                 .ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing
                                 .ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None
+                                .RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.None
+                                With .GridStyles
+                                    .Style = DataGridViewStyle.List
+                                    .StyleColumn = DataGridViewStyle.List
+                                    .StyleDataCells = DataGridViewStyle.List
+                                    .StyleRow = DataGridViewStyle.List
+                                End With
+                                .HideOuterBorders = True
                                 .ReadOnly = True
                                 .ScrollBars = ScrollBars.Both
                                 .SelectionMode = DataGridViewSelectionMode.FullRowSelect
@@ -621,6 +641,7 @@ Public Class ContractItemsFRM
                                     .HeaderColumn.Back.Color2 = Color.FromArgb(11, 19, 36)
                                     .HeaderColumn.Back.ColorAngle = -1
                                     .HeaderColumn.Back.ColorStyle = PaletteColorStyle.Dashed
+                                    .HeaderColumn.Border.Width = 0
                                     .HeaderColumn.Content.Color1 = Color.White
                                     .HeaderColumn.Content.Color2 = Color.Transparent
                                     .HeaderColumn.Content.Font = New Font("Segoe UI", 11.25!, FontStyle.Bold, GraphicsUnit.Point, CType(0, Byte))
@@ -640,7 +661,7 @@ Public Class ContractItemsFRM
 
 
         Catch ex As Exception
-            MessageBox.Show(ex.ToString)
+            ErrorMessage = ex.ToString
         End Try
     End Sub
 
@@ -672,7 +693,7 @@ Public Class ContractItemsFRM
                 Case 6
             End Select
         Catch ex As Exception
-
+            ErrorMessage = ex.ToString
         End Try
     End Sub
 
@@ -826,13 +847,23 @@ Public Class ContractItemsFRM
         StartWorker()
     End Sub
 
-    Private Sub ContractItemsFRM_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown, CIF_TCTRL.KeyDown
+    Private Sub ContractItemsFRM_KeyDown(ByVal sender As System.Object, ByVal e As KeyEventArgs) Handles MyBase.KeyDown, CIF_TCTRL.KeyDown
         Try
             Select Case e.KeyCode
                 Case Keys.F5
                     RefreshPage()
             End Select
+
         Catch ex As Exception
+            ErrorMessage = ex.ToString
+        End Try
+    End Sub
+
+    Public Sub CIF_Screen_DGV_RowPostPaint(ByVal sender As System.Object, ByVal e As DataGridViewRowPostPaintEventArgs)
+        Try
+            rowpostpaint(sender, e)
+        Catch ex As Exception
+            ErrorMessage = ex.ToString
         End Try
     End Sub
 End Class
