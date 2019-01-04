@@ -47,6 +47,7 @@ Module ProjectDetailsModule
            EMP_POSITION As String = Nothing 'used in Technical Partners
 
     Public sql_Err_no, sql_Err_msg, sql_Err_StackTrace, sql_Transaction_result As String
+    Public sql_err_bool As Boolean = False
 
     Public Log_File As StreamWriter
 
@@ -265,6 +266,7 @@ Module ProjectDetailsModule
             End Using
         Catch ex As SqlException
             'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
+            sql_err_bool = True
             sql_Err_msg = ex.Message
             sql_Err_no = ex.Number
             sql_Err_StackTrace = ex.StackTrace
@@ -1021,54 +1023,71 @@ END CATCH
                                   Optional CLIENTS_CONTACT_MOBILE As String = "",
                                   Optional CLIENTS_EMAIL_ADD As String = "",
                                   Optional COMPANY_NAME As String = "")
-        Using sqlcon As New SqlConnection(sqlconnString)
-            sqlcon.Open()
-            Using sqlcmd As SqlCommand = sqlcon.CreateCommand()
-                transaction = sqlcon.BeginTransaction("INSERT_NEWPROJECT")
-                sqlcmd.Connection = sqlcon
-                sqlcmd.Transaction = transaction
-                sqlcmd.CommandText = "PD_stp_NewProject"
-                sqlcmd.CommandType = CommandType.StoredProcedure
+        Try
+            Using sqlcon As New SqlConnection(sqlconnString)
+                sqlcon.Open()
+                Using sqlcmd As SqlCommand = sqlcon.CreateCommand()
+                    transaction = sqlcon.BeginTransaction("INSERT_NEWPROJECT")
+                    sqlcmd.Connection = sqlcon
+                    sqlcmd.Transaction = transaction
+                    sqlcmd.CommandText = "PD_stp_NewProject"
+                    sqlcmd.CommandType = CommandType.StoredProcedure
 
-                sqlcmd.Parameters.AddWithValue("@PROJECT_SOURCE", PROJECT_SOURCE)
-                sqlcmd.Parameters.AddWithValue("@PROJECT_CLASSIFICATION", PROJECT_CLASSIFICATION)
-                sqlcmd.Parameters.AddWithValue("@COMPETITORS", COMPETITORS)
-                sqlcmd.Parameters.AddWithValue("@UNITNO", UNITNO)
-                sqlcmd.Parameters.AddWithValue("@ESTABLISHMENT", ESTABLISHMENT)
-                sqlcmd.Parameters.AddWithValue("@NO", NO)
-                sqlcmd.Parameters.AddWithValue("@STREET", STREET)
-                sqlcmd.Parameters.AddWithValue("@VILLAGE", VILLAGE)
-                sqlcmd.Parameters.AddWithValue("@BRGY_MUNICIPALITY", BRGY_MUNICIPALITY)
-                sqlcmd.Parameters.AddWithValue("@TOWN_DISTRICT", TOWN_DISTRICT)
-                sqlcmd.Parameters.AddWithValue("@PROVINCE", PROVINCE)
-                sqlcmd.Parameters.AddWithValue("@AREA", AREA)
-                sqlcmd.Parameters.AddWithValue("@FULLADD", FULLADD)
+                    sqlcmd.Parameters.AddWithValue("@PROJECT_SOURCE", PROJECT_SOURCE)
+                    sqlcmd.Parameters.AddWithValue("@PROJECT_CLASSIFICATION", PROJECT_CLASSIFICATION)
+                    sqlcmd.Parameters.AddWithValue("@COMPETITORS", COMPETITORS)
+                    sqlcmd.Parameters.AddWithValue("@UNITNO", UNITNO)
+                    sqlcmd.Parameters.AddWithValue("@ESTABLISHMENT", ESTABLISHMENT)
+                    sqlcmd.Parameters.AddWithValue("@NO", NO)
+                    sqlcmd.Parameters.AddWithValue("@STREET", STREET)
+                    sqlcmd.Parameters.AddWithValue("@VILLAGE", VILLAGE)
+                    sqlcmd.Parameters.AddWithValue("@BRGY_MUNICIPALITY", BRGY_MUNICIPALITY)
+                    sqlcmd.Parameters.AddWithValue("@TOWN_DISTRICT", TOWN_DISTRICT)
+                    sqlcmd.Parameters.AddWithValue("@PROVINCE", PROVINCE)
+                    sqlcmd.Parameters.AddWithValue("@AREA", AREA)
+                    sqlcmd.Parameters.AddWithValue("@FULLADD", FULLADD)
 
-                sqlcmd.Parameters.AddWithValue("@CLIENTS_NAME", CLIENTS_NAME)
-                sqlcmd.Parameters.AddWithValue("@OWNERS_NAME", OWNERS_NAME)
-                sqlcmd.Parameters.AddWithValue("@CLIENTS_CONTACT_NO", CLIENTS_CONTACT_NO)
-                sqlcmd.Parameters.AddWithValue("@CLIENTS_CONTACT_OFFICE", CLIENTS_CONTACT_OFFICE)
-                sqlcmd.Parameters.AddWithValue("@CLIENTS_CONTACT_MOBILE", CLIENTS_CONTACT_MOBILE)
-                sqlcmd.Parameters.AddWithValue("@CLIENTS_EMAIL_ADD", CLIENTS_EMAIL_ADD)
-                sqlcmd.Parameters.AddWithValue("@COMPANY_NAME", COMPANY_NAME)
-                Using read As SqlDataReader = sqlcmd.ExecuteReader
-                    read.Read()
-                    InsertedPD_ID = read.Item("PD_ID").ToString
-                End Using
-                For Each arr_AEID_int As Integer In arr_AEID
-                    sqlcmd.CommandText = "INSERT INTO [A_NEW_AE_ASSIGNMENT]  ([PD_ID_REF],[AE_ID_REF])
+                    sqlcmd.Parameters.AddWithValue("@CLIENTS_NAME", CLIENTS_NAME)
+                    sqlcmd.Parameters.AddWithValue("@OWNERS_NAME", OWNERS_NAME)
+                    sqlcmd.Parameters.AddWithValue("@CLIENTS_CONTACT_NO", CLIENTS_CONTACT_NO)
+                    sqlcmd.Parameters.AddWithValue("@CLIENTS_CONTACT_OFFICE", CLIENTS_CONTACT_OFFICE)
+                    sqlcmd.Parameters.AddWithValue("@CLIENTS_CONTACT_MOBILE", CLIENTS_CONTACT_MOBILE)
+                    sqlcmd.Parameters.AddWithValue("@CLIENTS_EMAIL_ADD", CLIENTS_EMAIL_ADD)
+                    sqlcmd.Parameters.AddWithValue("@COMPANY_NAME", COMPANY_NAME)
+                    Using read As SqlDataReader = sqlcmd.ExecuteReader
+                        read.Read()
+                        InsertedPD_ID = read.Item("PD_ID").ToString
+                    End Using
+                    For Each arr_AEID_int As Integer In arr_AEID
+                        sqlcmd.CommandText = "INSERT INTO [A_NEW_AE_ASSIGNMENT]  ([PD_ID_REF],[AE_ID_REF])
                                                                  VALUES  (@PD_ID_REF2" & arr_AEID_int & ",
                                                                           @AE_ID_REF" & arr_AEID_int & ")"
-                    sqlcmd.CommandType = CommandType.Text
-                    sqlcmd.Parameters.AddWithValue("@PD_ID_REF2" & arr_AEID_int, InsertedPD_ID)
-                    sqlcmd.Parameters.AddWithValue("@AE_ID_REF" & arr_AEID_int, arr_AEID_int)
-                    sqlcmd.ExecuteNonQuery()
-                Next
+                        sqlcmd.CommandType = CommandType.Text
+                        sqlcmd.Parameters.AddWithValue("@PD_ID_REF2" & arr_AEID_int, InsertedPD_ID)
+                        sqlcmd.Parameters.AddWithValue("@AE_ID_REF" & arr_AEID_int, arr_AEID_int)
+                        sqlcmd.ExecuteNonQuery()
+                    Next
 
-                transaction.Commit()
-                sql_Transaction_result = "Committed"
+                    transaction.Commit()
+                    sql_Transaction_result = "Committed"
+                End Using
             End Using
-        End Using
+        Catch ex As SqlException
+            sql_err_bool = True
+            sql_Err_msg = ex.Message
+            sql_Err_no = ex.Number
+            sql_Err_StackTrace = ex.StackTrace
+            Try
+                transaction.Rollback()
+                sql_Transaction_result = "Rollback"
+            Catch ex2 As Exception
+                Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+                Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                           "Rollback Error Message: " & ex2.Message & vbCrLf &
+                                           "Trace: " & ex2.StackTrace & vbCrLf)
+                Log_File.Close()
+            End Try
+        End Try
     End Sub
     Public Sub PD_SalesJobOrder_Update(ByVal SUB_JO As String,
                                        ByVal JOB_ORDER_NO As String,
@@ -1154,6 +1173,7 @@ END CATCH
                 End Using
             End Using
         Catch ex As SqlException
+            sql_err_bool = True
             sql_Err_msg = ex.Message
             sql_Err_no = ex.Number
             sql_Err_StackTrace = ex.StackTrace
@@ -1226,6 +1246,7 @@ END CATCH
                 End Using
             End Using
         Catch ex As SqlException
+            sql_err_bool = True
             sql_Err_msg = ex.Message
             sql_Err_no = ex.Number
             sql_Err_StackTrace = ex.StackTrace
@@ -1266,6 +1287,7 @@ END CATCH
                 End Using
             End Using
         Catch ex As SqlException
+            sql_err_bool = True
             sql_Err_msg = ex.Message
             sql_Err_no = ex.Number
             sql_Err_StackTrace = ex.StackTrace
@@ -1383,6 +1405,7 @@ DECLARE @CQN_STATUS AS BIT
             End Using
             PD_Addendum_Update_QuoteRefNo_counter += 1
         Catch ex As SqlException
+            sql_err_bool = True
             sql_Err_msg = ex.Message
             sql_Err_no = ex.Number
             sql_Err_StackTrace = ex.StackTrace

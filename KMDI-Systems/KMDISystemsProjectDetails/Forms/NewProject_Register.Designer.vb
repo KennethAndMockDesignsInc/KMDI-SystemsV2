@@ -23,14 +23,6 @@ Partial Class NewProject_Register
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle13 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle14 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle15 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle16 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.PrevNxt_PNL = New MetroFramework.Controls.MetroPanel()
         Me.Prev_Btn = New MetroFramework.Controls.MetroButton()
         Me.Next_Btn = New MetroFramework.Controls.MetroButton()
@@ -104,24 +96,21 @@ Partial Class NewProject_Register
         Me.Loading_LBL = New MetroFramework.Controls.MetroLabel()
         Me.LoadingPB = New System.Windows.Forms.PictureBox()
         Me.MetroLabel33 = New MetroFramework.Controls.MetroLabel()
-        Me.AEICSelectedDGV = New MetroFramework.Controls.MetroGrid()
-        Me.AUTONUM = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.index = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.FULLNAME = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.AEICListDGV = New MetroFramework.Controls.MetroGrid()
-        Me.AUTONUM1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.index1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.FULLNAME1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.MetroLabel6 = New MetroFramework.Controls.MetroLabel()
         Me.MetroLabel32 = New MetroFramework.Controls.MetroLabel()
+        Me.AEICListDGV = New ComponentFactory.Krypton.Toolkit.KryptonDataGridView()
+        Me.AUTONUM1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.INDEX1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.FULLNAME1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.AEICSelectedDGV = New ComponentFactory.Krypton.Toolkit.KryptonDataGridView()
+        Me.AUTONUM = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.INDEX = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.FULLNAME = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Warning_Tooltip = New MetroFramework.Components.MetroToolTip()
-        Me.AEIC_BGW = New System.ComponentModel.BackgroundWorker()
         Me.Register_CMenu = New MetroFramework.Controls.MetroContextMenu(Me.components)
         Me.AddToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.OnLoad_BGW = New System.ComponentModel.BackgroundWorker()
         Me.LoadingPboxRNP = New System.Windows.Forms.PictureBox()
-        Me.Insert_BGW = New System.ComponentModel.BackgroundWorker()
         Me.PrevNxt_PNL.SuspendLayout()
         Me.BreadCrumb_Tab.SuspendLayout()
         Me.ProjectDetails_Page.SuspendLayout()
@@ -130,8 +119,8 @@ Partial Class NewProject_Register
         Me.ClientDetails_Page.SuspendLayout()
         Me.AEIC_Page.SuspendLayout()
         CType(Me.LoadingPB, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.AEICSelectedDGV, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.AEICListDGV, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.AEICSelectedDGV, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Register_CMenu.SuspendLayout()
         CType(Me.LoadingPboxRNP, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -1346,10 +1335,10 @@ Partial Class NewProject_Register
         Me.AEIC_Page.Controls.Add(Me.Loading_LBL)
         Me.AEIC_Page.Controls.Add(Me.LoadingPB)
         Me.AEIC_Page.Controls.Add(Me.MetroLabel33)
-        Me.AEIC_Page.Controls.Add(Me.AEICSelectedDGV)
-        Me.AEIC_Page.Controls.Add(Me.AEICListDGV)
         Me.AEIC_Page.Controls.Add(Me.MetroLabel6)
         Me.AEIC_Page.Controls.Add(Me.MetroLabel32)
+        Me.AEIC_Page.Controls.Add(Me.AEICListDGV)
+        Me.AEIC_Page.Controls.Add(Me.AEICSelectedDGV)
         Me.AEIC_Page.HorizontalScrollbarBarColor = True
         Me.AEIC_Page.HorizontalScrollbarHighlightOnWheel = False
         Me.AEIC_Page.HorizontalScrollbarSize = 10
@@ -1395,158 +1384,6 @@ Partial Class NewProject_Register
         Me.MetroLabel33.TabIndex = 17
         Me.MetroLabel33.Text = "Selected Account Executive In-Charge"
         '
-        'AEICSelectedDGV
-        '
-        Me.AEICSelectedDGV.AllowUserToAddRows = False
-        Me.AEICSelectedDGV.AllowUserToDeleteRows = False
-        Me.AEICSelectedDGV.AllowUserToOrderColumns = True
-        Me.AEICSelectedDGV.AllowUserToResizeRows = False
-        Me.AEICSelectedDGV.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.AEICSelectedDGV.BackgroundColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.AEICSelectedDGV.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.AEICSelectedDGV.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None
-        Me.AEICSelectedDGV.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
-        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle9.BackColor = System.Drawing.Color.FromArgb(CType(CType(85, Byte), Integer), CType(CType(85, Byte), Integer), CType(CType(85, Byte), Integer))
-        DataGridViewCellStyle9.Font = New System.Drawing.Font("Segoe UI", 15.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel)
-        DataGridViewCellStyle9.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
-        DataGridViewCellStyle9.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(102, Byte), Integer), CType(CType(102, Byte), Integer), CType(CType(102, Byte), Integer))
-        DataGridViewCellStyle9.SelectionForeColor = System.Drawing.Color.FromArgb(CType(CType(17, Byte), Integer), CType(CType(17, Byte), Integer), CType(CType(17, Byte), Integer))
-        DataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.AEICSelectedDGV.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle9
-        Me.AEICSelectedDGV.ColumnHeadersHeight = 50
-        Me.AEICSelectedDGV.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.AUTONUM, Me.index, Me.FULLNAME})
-        DataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle10.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
-        DataGridViewCellStyle10.Font = New System.Drawing.Font("Segoe UI", 15.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel)
-        DataGridViewCellStyle10.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        DataGridViewCellStyle10.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(102, Byte), Integer), CType(CType(102, Byte), Integer), CType(CType(102, Byte), Integer))
-        DataGridViewCellStyle10.SelectionForeColor = System.Drawing.Color.FromArgb(CType(CType(17, Byte), Integer), CType(CType(17, Byte), Integer), CType(CType(17, Byte), Integer))
-        DataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.AEICSelectedDGV.DefaultCellStyle = DataGridViewCellStyle10
-        Me.AEICSelectedDGV.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically
-        Me.AEICSelectedDGV.EnableHeadersVisualStyles = False
-        Me.AEICSelectedDGV.Font = New System.Drawing.Font("Segoe UI", 11.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel)
-        Me.AEICSelectedDGV.GridColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.AEICSelectedDGV.Location = New System.Drawing.Point(8, 322)
-        Me.AEICSelectedDGV.MultiSelect = False
-        Me.AEICSelectedDGV.Name = "AEICSelectedDGV"
-        Me.AEICSelectedDGV.ReadOnly = True
-        Me.AEICSelectedDGV.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
-        DataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle11.BackColor = System.Drawing.Color.FromArgb(CType(CType(85, Byte), Integer), CType(CType(85, Byte), Integer), CType(CType(85, Byte), Integer))
-        DataGridViewCellStyle11.Font = New System.Drawing.Font("Segoe UI", 11.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel)
-        DataGridViewCellStyle11.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
-        DataGridViewCellStyle11.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(102, Byte), Integer), CType(CType(102, Byte), Integer), CType(CType(102, Byte), Integer))
-        DataGridViewCellStyle11.SelectionForeColor = System.Drawing.Color.FromArgb(CType(CType(17, Byte), Integer), CType(CType(17, Byte), Integer), CType(CType(17, Byte), Integer))
-        DataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.AEICSelectedDGV.RowHeadersDefaultCellStyle = DataGridViewCellStyle11
-        Me.AEICSelectedDGV.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
-        DataGridViewCellStyle12.SelectionBackColor = System.Drawing.Color.DarkGray
-        Me.AEICSelectedDGV.RowsDefaultCellStyle = DataGridViewCellStyle12
-        Me.AEICSelectedDGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.AEICSelectedDGV.Size = New System.Drawing.Size(323, 195)
-        Me.AEICSelectedDGV.Style = MetroFramework.MetroColorStyle.Silver
-        Me.AEICSelectedDGV.TabIndex = 16
-        Me.AEICSelectedDGV.UseStyleColors = True
-        '
-        'AUTONUM
-        '
-        Me.AUTONUM.HeaderText = "AUTONUM"
-        Me.AUTONUM.Name = "AUTONUM"
-        Me.AUTONUM.ReadOnly = True
-        '
-        'index
-        '
-        Me.index.HeaderText = "INDEX"
-        Me.index.Name = "index"
-        Me.index.ReadOnly = True
-        '
-        'FULLNAME
-        '
-        Me.FULLNAME.HeaderText = "FULLNAME"
-        Me.FULLNAME.Name = "FULLNAME"
-        Me.FULLNAME.ReadOnly = True
-        Me.FULLNAME.Width = 300
-        '
-        'AEICListDGV
-        '
-        Me.AEICListDGV.AllowUserToAddRows = False
-        Me.AEICListDGV.AllowUserToDeleteRows = False
-        Me.AEICListDGV.AllowUserToOrderColumns = True
-        Me.AEICListDGV.AllowUserToResizeRows = False
-        Me.AEICListDGV.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.AEICListDGV.BackgroundColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.AEICListDGV.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.AEICListDGV.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None
-        Me.AEICListDGV.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
-        DataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle13.BackColor = System.Drawing.Color.FromArgb(CType(CType(85, Byte), Integer), CType(CType(85, Byte), Integer), CType(CType(85, Byte), Integer))
-        DataGridViewCellStyle13.Font = New System.Drawing.Font("Segoe UI", 15.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel)
-        DataGridViewCellStyle13.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
-        DataGridViewCellStyle13.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(102, Byte), Integer), CType(CType(102, Byte), Integer), CType(CType(102, Byte), Integer))
-        DataGridViewCellStyle13.SelectionForeColor = System.Drawing.Color.FromArgb(CType(CType(17, Byte), Integer), CType(CType(17, Byte), Integer), CType(CType(17, Byte), Integer))
-        DataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.AEICListDGV.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle13
-        Me.AEICListDGV.ColumnHeadersHeight = 50
-        Me.AEICListDGV.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.AUTONUM1, Me.index1, Me.FULLNAME1})
-        DataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle14.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
-        DataGridViewCellStyle14.Font = New System.Drawing.Font("Segoe UI", 15.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel)
-        DataGridViewCellStyle14.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        DataGridViewCellStyle14.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(102, Byte), Integer), CType(CType(102, Byte), Integer), CType(CType(102, Byte), Integer))
-        DataGridViewCellStyle14.SelectionForeColor = System.Drawing.Color.FromArgb(CType(CType(17, Byte), Integer), CType(CType(17, Byte), Integer), CType(CType(17, Byte), Integer))
-        DataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.AEICListDGV.DefaultCellStyle = DataGridViewCellStyle14
-        Me.AEICListDGV.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically
-        Me.AEICListDGV.EnableHeadersVisualStyles = False
-        Me.AEICListDGV.Font = New System.Drawing.Font("Segoe UI", 11.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel)
-        Me.AEICListDGV.GridColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.AEICListDGV.Location = New System.Drawing.Point(8, 68)
-        Me.AEICListDGV.MultiSelect = False
-        Me.AEICListDGV.Name = "AEICListDGV"
-        Me.AEICListDGV.ReadOnly = True
-        Me.AEICListDGV.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
-        DataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle15.BackColor = System.Drawing.Color.FromArgb(CType(CType(85, Byte), Integer), CType(CType(85, Byte), Integer), CType(CType(85, Byte), Integer))
-        DataGridViewCellStyle15.Font = New System.Drawing.Font("Segoe UI", 11.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel)
-        DataGridViewCellStyle15.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
-        DataGridViewCellStyle15.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(102, Byte), Integer), CType(CType(102, Byte), Integer), CType(CType(102, Byte), Integer))
-        DataGridViewCellStyle15.SelectionForeColor = System.Drawing.Color.FromArgb(CType(CType(17, Byte), Integer), CType(CType(17, Byte), Integer), CType(CType(17, Byte), Integer))
-        DataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.AEICListDGV.RowHeadersDefaultCellStyle = DataGridViewCellStyle15
-        Me.AEICListDGV.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
-        DataGridViewCellStyle16.SelectionBackColor = System.Drawing.Color.DarkGray
-        Me.AEICListDGV.RowsDefaultCellStyle = DataGridViewCellStyle16
-        Me.AEICListDGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.AEICListDGV.Size = New System.Drawing.Size(323, 229)
-        Me.AEICListDGV.Style = MetroFramework.MetroColorStyle.Silver
-        Me.AEICListDGV.TabIndex = 15
-        Me.AEICListDGV.UseStyleColors = True
-        '
-        'AUTONUM1
-        '
-        Me.AUTONUM1.HeaderText = "AUTONUM"
-        Me.AUTONUM1.Name = "AUTONUM1"
-        Me.AUTONUM1.ReadOnly = True
-        '
-        'index1
-        '
-        Me.index1.HeaderText = "INDEX"
-        Me.index1.Name = "index1"
-        Me.index1.ReadOnly = True
-        '
-        'FULLNAME1
-        '
-        Me.FULLNAME1.HeaderText = "FULLNAME"
-        Me.FULLNAME1.Name = "FULLNAME1"
-        Me.FULLNAME1.ReadOnly = True
-        Me.FULLNAME1.Width = 300
-        '
         'MetroLabel6
         '
         Me.MetroLabel6.AutoSize = True
@@ -1568,6 +1405,128 @@ Partial Class NewProject_Register
         Me.MetroLabel32.TabIndex = 14
         Me.MetroLabel32.Text = "List of Account Executive In-Charge"
         '
+        'AEICListDGV
+        '
+        Me.AEICListDGV.AllowUserToAddRows = False
+        Me.AEICListDGV.AllowUserToDeleteRows = False
+        Me.AEICListDGV.AllowUserToOrderColumns = True
+        Me.AEICListDGV.AllowUserToResizeRows = False
+        Me.AEICListDGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells
+        Me.AEICListDGV.ColumnHeadersHeight = 30
+        Me.AEICListDGV.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.AUTONUM1, Me.INDEX1, Me.FULLNAME1})
+        Me.AEICListDGV.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.AEICListDGV.Location = New System.Drawing.Point(8, 68)
+        Me.AEICListDGV.MultiSelect = False
+        Me.AEICListDGV.Name = "AEICListDGV"
+        Me.AEICListDGV.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Silver
+        Me.AEICListDGV.ReadOnly = True
+        Me.AEICListDGV.RowHeadersWidth = 30
+        Me.AEICListDGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.AEICListDGV.Size = New System.Drawing.Size(323, 229)
+        Me.AEICListDGV.StateCommon.Background.Color1 = System.Drawing.Color.White
+        Me.AEICListDGV.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList
+        Me.AEICListDGV.StateCommon.DataCell.Border.DrawBorders = CType((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) _
+            Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) _
+            Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right), ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)
+        Me.AEICListDGV.StateCommon.DataCell.Border.Width = 0
+        Me.AEICListDGV.StateCommon.DataCell.Content.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.AEICListDGV.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(CType(CType(11, Byte), Integer), CType(CType(19, Byte), Integer), CType(CType(36, Byte), Integer))
+        Me.AEICListDGV.StateCommon.HeaderColumn.Back.Color2 = System.Drawing.Color.FromArgb(CType(CType(11, Byte), Integer), CType(CType(19, Byte), Integer), CType(CType(36, Byte), Integer))
+        Me.AEICListDGV.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Dashed
+        Me.AEICListDGV.StateCommon.HeaderColumn.Border.DrawBorders = CType((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) _
+            Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) _
+            Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right), ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)
+        Me.AEICListDGV.StateCommon.HeaderColumn.Border.Width = 0
+        Me.AEICListDGV.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White
+        Me.AEICListDGV.StateCommon.HeaderColumn.Content.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.AEICListDGV.StateCommon.HeaderColumn.Content.Hint = ComponentFactory.Krypton.Toolkit.PaletteTextHint.AntiAlias
+        Me.AEICListDGV.TabIndex = 833
+        Me.AEICListDGV.VirtualMode = True
+        '
+        'AUTONUM1
+        '
+        Me.AUTONUM1.HeaderText = "AUTONUM"
+        Me.AUTONUM1.Name = "AUTONUM1"
+        Me.AUTONUM1.ReadOnly = True
+        Me.AUTONUM1.Visible = False
+        Me.AUTONUM1.Width = 95
+        '
+        'INDEX1
+        '
+        Me.INDEX1.HeaderText = "INDEX"
+        Me.INDEX1.Name = "INDEX1"
+        Me.INDEX1.ReadOnly = True
+        Me.INDEX1.Visible = False
+        Me.INDEX1.Width = 69
+        '
+        'FULLNAME1
+        '
+        Me.FULLNAME1.HeaderText = "FULLNAME"
+        Me.FULLNAME1.Name = "FULLNAME1"
+        Me.FULLNAME1.ReadOnly = True
+        Me.FULLNAME1.Width = 118
+        '
+        'AEICSelectedDGV
+        '
+        Me.AEICSelectedDGV.AllowUserToAddRows = False
+        Me.AEICSelectedDGV.AllowUserToDeleteRows = False
+        Me.AEICSelectedDGV.AllowUserToOrderColumns = True
+        Me.AEICSelectedDGV.AllowUserToResizeRows = False
+        Me.AEICSelectedDGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells
+        Me.AEICSelectedDGV.ColumnHeadersHeight = 30
+        Me.AEICSelectedDGV.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.AUTONUM, Me.INDEX, Me.FULLNAME})
+        Me.AEICSelectedDGV.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.AEICSelectedDGV.Location = New System.Drawing.Point(8, 322)
+        Me.AEICSelectedDGV.MultiSelect = False
+        Me.AEICSelectedDGV.Name = "AEICSelectedDGV"
+        Me.AEICSelectedDGV.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Silver
+        Me.AEICSelectedDGV.ReadOnly = True
+        Me.AEICSelectedDGV.RowHeadersWidth = 30
+        Me.AEICSelectedDGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.AEICSelectedDGV.Size = New System.Drawing.Size(323, 195)
+        Me.AEICSelectedDGV.StateCommon.Background.Color1 = System.Drawing.Color.White
+        Me.AEICSelectedDGV.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList
+        Me.AEICSelectedDGV.StateCommon.DataCell.Border.DrawBorders = CType((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) _
+            Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) _
+            Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right), ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)
+        Me.AEICSelectedDGV.StateCommon.DataCell.Border.Width = 0
+        Me.AEICSelectedDGV.StateCommon.DataCell.Content.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.AEICSelectedDGV.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(CType(CType(11, Byte), Integer), CType(CType(19, Byte), Integer), CType(CType(36, Byte), Integer))
+        Me.AEICSelectedDGV.StateCommon.HeaderColumn.Back.Color2 = System.Drawing.Color.FromArgb(CType(CType(11, Byte), Integer), CType(CType(19, Byte), Integer), CType(CType(36, Byte), Integer))
+        Me.AEICSelectedDGV.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Dashed
+        Me.AEICSelectedDGV.StateCommon.HeaderColumn.Border.DrawBorders = CType((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) _
+            Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) _
+            Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right), ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)
+        Me.AEICSelectedDGV.StateCommon.HeaderColumn.Border.Width = 0
+        Me.AEICSelectedDGV.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White
+        Me.AEICSelectedDGV.StateCommon.HeaderColumn.Content.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.AEICSelectedDGV.StateCommon.HeaderColumn.Content.Hint = ComponentFactory.Krypton.Toolkit.PaletteTextHint.AntiAlias
+        Me.AEICSelectedDGV.TabIndex = 834
+        Me.AEICSelectedDGV.VirtualMode = True
+        '
+        'AUTONUM
+        '
+        Me.AUTONUM.HeaderText = "AUTONUM"
+        Me.AUTONUM.Name = "AUTONUM"
+        Me.AUTONUM.ReadOnly = True
+        Me.AUTONUM.Visible = False
+        Me.AUTONUM.Width = 95
+        '
+        'INDEX
+        '
+        Me.INDEX.HeaderText = "INDEX"
+        Me.INDEX.Name = "INDEX"
+        Me.INDEX.ReadOnly = True
+        Me.INDEX.Visible = False
+        Me.INDEX.Width = 69
+        '
+        'FULLNAME
+        '
+        Me.FULLNAME.HeaderText = "FULLNAME"
+        Me.FULLNAME.Name = "FULLNAME"
+        Me.FULLNAME.ReadOnly = True
+        Me.FULLNAME.Width = 118
+        '
         'Warning_Tooltip
         '
         Me.Warning_Tooltip.AutoPopDelay = 100
@@ -1576,11 +1535,6 @@ Partial Class NewProject_Register
         Me.Warning_Tooltip.Style = MetroFramework.MetroColorStyle.Blue
         Me.Warning_Tooltip.StyleManager = Nothing
         Me.Warning_Tooltip.Theme = MetroFramework.MetroThemeStyle.Dark
-        '
-        'AEIC_BGW
-        '
-        Me.AEIC_BGW.WorkerReportsProgress = True
-        Me.AEIC_BGW.WorkerSupportsCancellation = True
         '
         'Register_CMenu
         '
@@ -1601,11 +1555,6 @@ Partial Class NewProject_Register
         Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(107, 22)
         Me.DeleteToolStripMenuItem.Text = "Delete"
         '
-        'OnLoad_BGW
-        '
-        Me.OnLoad_BGW.WorkerReportsProgress = True
-        Me.OnLoad_BGW.WorkerSupportsCancellation = True
-        '
         'LoadingPboxRNP
         '
         Me.LoadingPboxRNP.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -1617,11 +1566,6 @@ Partial Class NewProject_Register
         Me.LoadingPboxRNP.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.LoadingPboxRNP.TabIndex = 12
         Me.LoadingPboxRNP.TabStop = False
-        '
-        'Insert_BGW
-        '
-        Me.Insert_BGW.WorkerReportsProgress = True
-        Me.Insert_BGW.WorkerSupportsCancellation = True
         '
         'NewProject_Register
         '
@@ -1651,8 +1595,8 @@ Partial Class NewProject_Register
         Me.AEIC_Page.ResumeLayout(False)
         Me.AEIC_Page.PerformLayout()
         CType(Me.LoadingPB, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.AEICSelectedDGV, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.AEICListDGV, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.AEICSelectedDGV, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Register_CMenu.ResumeLayout(False)
         CType(Me.LoadingPboxRNP, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
@@ -1730,23 +1674,20 @@ Partial Class NewProject_Register
     Friend WithEvents MetroLabel31 As MetroFramework.Controls.MetroLabel
     Friend WithEvents MetroLabel6 As MetroFramework.Controls.MetroLabel
     Friend WithEvents MetroLabel32 As MetroFramework.Controls.MetroLabel
-    Friend WithEvents AEICListDGV As MetroFramework.Controls.MetroGrid
-    Friend WithEvents AEICSelectedDGV As MetroFramework.Controls.MetroGrid
     Friend WithEvents MetroLabel33 As MetroFramework.Controls.MetroLabel
-    Friend WithEvents AEIC_BGW As System.ComponentModel.BackgroundWorker
     Friend WithEvents LoadingPB As PictureBox
     Friend WithEvents Loading_LBL As MetroFramework.Controls.MetroLabel
     Friend WithEvents Register_CMenu As MetroFramework.Controls.MetroContextMenu
     Friend WithEvents AddToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents DeleteToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents AUTONUM As DataGridViewTextBoxColumn
-    Friend WithEvents index As DataGridViewTextBoxColumn
-    Friend WithEvents FULLNAME As DataGridViewTextBoxColumn
-    Friend WithEvents AUTONUM1 As DataGridViewTextBoxColumn
-    Friend WithEvents index1 As DataGridViewTextBoxColumn
-    Friend WithEvents FULLNAME1 As DataGridViewTextBoxColumn
-    Friend WithEvents OnLoad_BGW As System.ComponentModel.BackgroundWorker
     Friend WithEvents LoadingPboxRNP As PictureBox
     Friend WithEvents Competitors_Cbox As ComboBox
-    Friend WithEvents Insert_BGW As System.ComponentModel.BackgroundWorker
+    Friend WithEvents AEICListDGV As ComponentFactory.Krypton.Toolkit.KryptonDataGridView
+    Friend WithEvents AUTONUM1 As DataGridViewTextBoxColumn
+    Friend WithEvents INDEX1 As DataGridViewTextBoxColumn
+    Friend WithEvents FULLNAME1 As DataGridViewTextBoxColumn
+    Friend WithEvents AEICSelectedDGV As ComponentFactory.Krypton.Toolkit.KryptonDataGridView
+    Friend WithEvents AUTONUM As DataGridViewTextBoxColumn
+    Friend WithEvents INDEX As DataGridViewTextBoxColumn
+    Friend WithEvents FULLNAME As DataGridViewTextBoxColumn
 End Class

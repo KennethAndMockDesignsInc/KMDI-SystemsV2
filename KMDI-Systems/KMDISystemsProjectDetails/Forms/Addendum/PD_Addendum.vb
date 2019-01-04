@@ -396,18 +396,17 @@ Public Class PD_Addendum
                                 MetroFramework.MetroMessageBox.Show(Me, "Failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                             End If
                         Else
-                            MetroFramework.MetroMessageBox.Show(Me, "Transaction failed", "Contact the Developers", MessageBoxButtons.OK, MessageBoxIcon.Error)
-
                             Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
-                            Log_File.WriteLine(vbCrLf & "Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
                                            "SQL Transaction Error Number: " & sql_Err_no & vbCrLf &
-                                           "SQL Transaction Error Message: " & sql_Err_msg & vbCrLf & "Useful Informations" & vbCrLf &
-                                           "UI :" & Me.Name & vbCrLf & "Code Block :PD_Addendum_BGW_RunWorkerCompleted" & vbCrLf &
-                                           "ADDENDUM_BGW_TODO :" & ADDENDUM_BGW_TODO)
+                                           "SQL Transaction Error Message: " & sql_Err_msg & vbCrLf &
+                                           "Trace: " & sql_Err_StackTrace & vbCrLf)
                             Log_File.Close()
                             sql_Err_msg = Nothing
                             sql_Err_no = Nothing
+                            sql_Err_StackTrace = Nothing
                             sql_Transaction_result = ""
+                            MetroFramework.MetroMessageBox.Show(Me, "Transaction failed", "Contact the Developers", MessageBoxButtons.OK, MessageBoxIcon.Error)
                         End If
 
                     Case "UPDATE_ADDENDUM_QuoteRefNo"
@@ -428,18 +427,17 @@ Public Class PD_Addendum
                                 MetroFramework.MetroMessageBox.Show(Me, "Failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                             End If
                         Else
-                            MetroFramework.MetroMessageBox.Show(Me, "Transaction failed", "Contact the Developers", MessageBoxButtons.OK, MessageBoxIcon.Error)
-
                             Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
-                            Log_File.WriteLine(vbCrLf & "Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
                                            "SQL Transaction Error Number: " & sql_Err_no & vbCrLf &
-                                           "SQL Transaction Error Message: " & sql_Err_msg & vbCrLf & "Useful Informations" & vbCrLf &
-                                           "UI :" & Me.Name & vbCrLf & "Code Block :PD_Addendum_BGW_RunWorkerCompleted" & vbCrLf &
-                                           "ADDENDUM_BGW_TODO :" & ADDENDUM_BGW_TODO)
+                                           "SQL Transaction Error Message: " & sql_Err_msg & vbCrLf &
+                                           "Trace: " & sql_Err_StackTrace & vbCrLf)
                             Log_File.Close()
                             sql_Err_msg = Nothing
                             sql_Err_no = Nothing
+                            sql_Err_StackTrace = Nothing
                             sql_Transaction_result = ""
+                            MetroFramework.MetroMessageBox.Show(Me, "Transaction failed", "Contact the Developers", MessageBoxButtons.OK, MessageBoxIcon.Error)
                         End If
 
                     Case "TPN_DELETE"

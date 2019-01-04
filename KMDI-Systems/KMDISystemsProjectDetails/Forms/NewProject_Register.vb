@@ -1,12 +1,13 @@
 ﻿Imports System.Data.SqlClient
 Imports System.ComponentModel
-Imports MetroFramework.Components
 
 Public Class NewProject_Register
 
     Public CountRequiredField As Integer
     Public CountFilledRequiredField As Integer = 0
     Dim selecting_bool As Boolean
+    Public NewProjects_BGW As BackgroundWorker = New BackgroundWorker
+    Dim NewProjects_TODO As String
 
     Sub Reset()
         selecting_bool = True
@@ -154,31 +155,61 @@ Public Class NewProject_Register
             If AEICSelectedDGVRows = 0 Then
                 MetroFramework.MetroMessageBox.Show(Me, "Please Assign AEIC", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Else
-                If Insert_BGW.IsBusy = False Then
-                    LoadingPboxRNP.Visible = True
-                    BreadCrumb_Tab.Enabled = False
-                    PrevNxt_PNL.Enabled = False
-                    Insert_BGW.RunWorkerAsync()
-                Else
-
-                End If
+                BreadCrumb_Tab.Enabled = False
+                PrevNxt_PNL.Enabled = False
+                NewProjects_TODO = "INSERT"
+                Start_NewProjects_BGW()
+                'If Insert_BGW.IsBusy = False Then
+                '    LoadingPboxRNP.Visible = True
+                '    Insert_BGW.RunWorkerAsync()
+                'Else
+                'End If
             End If
         End If
     End Sub
     Public AEICSelectedDGVRows As Integer
-    Private Sub NewProject_Register_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        sqlConnection.Close()
-        sqlConnection.ConnectionString = "Data Source='121.58.229.248,49107';Network Library=DBMSSOCN;Initial Catalog='heretosave';User ID='kmdiadmin';Password='kmdiadmin';"
-        AEICListDGV.Columns("AUTONUM1").Visible = False
-        AEICListDGV.Columns("index1").Visible = False
-        AEICSelectedDGV.Columns("AUTONUM").Visible = False
-        AEICSelectedDGV.Columns("index").Visible = False
-        selecting_bool = False
 
-
-        If OnLoad_BGW.IsBusy = False Then
-            OnLoad_BGW.RunWorkerAsync()
+    Public Sub Start_NewProjects_BGW()
+        If NewProjects_BGW.IsBusy <> True Then
+            If NewProjects_TODO = "AEIC_Load" Then
+                Loading_LBL.Visible = True
+                LoadingPB.Visible = True
+            Else
+                LoadingPboxRNP.Visible = True
+            End If
+            NewProjects_BGW.RunWorkerAsync()
+        Else
+            MetroFramework.MetroMessageBox.Show(Me, "Please Wait!", "Loading", MessageBoxButtons.OK, MessageBoxIcon.Warning)
         End If
+    End Sub
+
+    Private Sub NewProject_Register_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Try
+            'sqlConnection.Close()
+            'sqlConnection.ConnectionString = "Data Source='121.58.229.248,49107';Network Library=DBMSSOCN;Initial Catalog='heretosave';User ID='kmdiadmin';Password='kmdiadmin';"
+            'AEICListDGV.Columns("AUTONUM1").Visible = False
+            'AEICListDGV.Columns("index1").Visible = False
+            'AEICSelectedDGV.Columns("AUTONUM").Visible = False
+            'AEICSelectedDGV.Columns("index").Visible = False
+
+            NewProjects_BGW.WorkerSupportsCancellation = True
+            NewProjects_BGW.WorkerReportsProgress = True
+            AddHandler NewProjects_BGW.DoWork, AddressOf NewProjects_BGW_DoWork
+            AddHandler NewProjects_BGW.RunWorkerCompleted, AddressOf NewProjects_BGW_RunWorkerCompleted
+
+            selecting_bool = False
+            NewProjects_TODO = "Onload"
+            Start_NewProjects_BGW()
+
+        Catch ex As Exception
+            MessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
+            Log_File.Close()
+        End Try
+
     End Sub
 
     Private Sub BreadCrumb_Tab_SelectedIndexChanged(sender As Object, e As EventArgs) Handles BreadCrumb_Tab.SelectedIndexChanged
@@ -195,13 +226,8 @@ Public Class NewProject_Register
             ClientDetails_Page.Text = "Client Details  "
             AEIC_Page.Text = "AEIC Assignment"
         ElseIf BreadCrumb_Tab.SelectedIndex = 2 Then
-            If AEIC_BGW.IsBusy = False Then
-                If AEICListDGV.Rows.Count = 0 Then
-                    AEIC_BGW.RunWorkerAsync()
-                End If
-            Else
-                MetroFramework.MetroMessageBox.Show(Me, "Currently Loading", "Please Wait", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-            End If
+            NewProjects_TODO = "AEIC_LOAD"
+            Start_NewProjects_BGW()
             Prev_Btn.Visible = True
             Next_Btn.Text = "Finish"
             ProjectDetails_Page.Text = "Project Details >"
@@ -265,64 +291,64 @@ Public Class NewProject_Register
         rowpostpaint(sender, e)
     End Sub
 
-    Private Sub AEIC_BGW_DoWork(sender As Object, e As DoWorkEventArgs) Handles AEIC_BGW.DoWork
-        Try
-            QueryBUILD = "SELECT     [AUTONUM],
-                                     [FULLNAME]
-                          FROM       [KMDI_ACCT_TB] where ACCTTYPE = 'AEIC'"
-            Query_Select("")
-        Catch ex As SqlException
-            'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
-            If ex.Number = -2 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Click ok to Reconnect", "Request Timeout", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            ElseIf ex.Number = 1232 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Please check internet connection", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                AEIC_BGW.CancelAsync()
-            ElseIf ex.Number = 19 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Sorry our server is under maintenance." & vbCrLf & "Please be patient, will come back A.S.A.P", "Server is down", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                AEIC_BGW.CancelAsync()
-            ElseIf ex.Number <> -2 And ex.Number <> 1232 And ex.Number <> 19 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Contact the Programmers now", "You need some help?", MessageBoxButtons.OK, MessageBoxIcon.Stop)
-                MetroFramework.MetroMessageBox.Show(Me, ex.Message)
-                AEIC_BGW.CancelAsync()
-            End If
-        Catch ex2 As Exception
-            MetroFramework.MetroMessageBox.Show(Me, ex2.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
-        End Try
-    End Sub
+    'Private Sub AEIC_BGW_DoWork(sender As Object, e As DoWorkEventArgs)
+    '    Try
+    '        QueryBUILD = "SELECT     [AUTONUM],
+    '                                 [FULLNAME]
+    '                      FROM       [KMDI_ACCT_TB] where ACCTTYPE = 'AEIC'"
+    '        Query_Select("")
+    '    Catch ex As SqlException
+    '        'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
+    '        If ex.Number = -2 Then
+    '            MetroFramework.MetroMessageBox.Show(Me, "Click ok to Reconnect", "Request Timeout", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+    '        ElseIf ex.Number = 1232 Then
+    '            MetroFramework.MetroMessageBox.Show(Me, "Please check internet connection", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '            AEIC_BGW.CancelAsync()
+    '        ElseIf ex.Number = 19 Then
+    '            MetroFramework.MetroMessageBox.Show(Me, "Sorry our server is under maintenance." & vbCrLf & "Please be patient, will come back A.S.A.P", "Server is down", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '            AEIC_BGW.CancelAsync()
+    '        ElseIf ex.Number <> -2 And ex.Number <> 1232 And ex.Number <> 19 Then
+    '            MetroFramework.MetroMessageBox.Show(Me, "Contact the Programmers now", "You need some help?", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+    '            MetroFramework.MetroMessageBox.Show(Me, ex.Message)
+    '            AEIC_BGW.CancelAsync()
+    '        End If
+    '    Catch ex2 As Exception
+    '        MetroFramework.MetroMessageBox.Show(Me, ex2.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
+    '    End Try
+    'End Sub
 
-    Private Sub AEIC_BGW_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles AEIC_BGW.RunWorkerCompleted
-        Try
+    'Private Sub AEIC_BGW_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs)
+    '    Try
 
-            If e.Error IsNot Nothing Then
-                '' if BackgroundWorker terminated due to error
-                Loading_LBL.Text = "Error Occured"
-                LoadingPB.Enabled = False
-                MetroFramework.MetroMessageBox.Show(Me, "Error Occured", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            ElseIf e.Cancelled = True Then
-                '' otherwise if it was cancelled
-                Loading_LBL.Text = "An Error Occured"
-                LoadingPB.Enabled = False
-            Else
-                '' otherwise it completed normally
-                Dim rowIndex As Integer = 0
-                For Each row In sqlBindingSource
-                    AEICListDGV.Rows.Add(row("AUTONUM"), rowIndex, row("FULLNAME"))
-                    rowIndex += 1
-                Next row
-                'AEICListDGV.DataSource = sqlBindingSource
-                With AEICListDGV
-                    .DefaultCellStyle.BackColor = Color.White
-                    .AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke
-                End With
-                Loading_LBL.Visible = False
-                LoadingPB.Visible = False
-            End If
+    '        If e.Error IsNot Nothing Then
+    '            '' if BackgroundWorker terminated due to error
+    '            Loading_LBL.Text = "Error Occured"
+    '            LoadingPB.Enabled = False
+    '            MetroFramework.MetroMessageBox.Show(Me, "Error Occured", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '        ElseIf e.Cancelled = True Then
+    '            '' otherwise if it was cancelled
+    '            Loading_LBL.Text = "An Error Occured"
+    '            LoadingPB.Enabled = False
+    '        Else
+    '            '' otherwise it completed normally
+    '            Dim rowIndex As Integer = 0
+    '            For Each row In sqlBindingSource
+    '                AEICListDGV.Rows.Add(row("AUTONUM"), rowIndex, row("FULLNAME"))
+    '                rowIndex += 1
+    '            Next row
+    '            'AEICListDGV.DataSource = sqlBindingSource
+    '            With AEICListDGV
+    '                .DefaultCellStyle.BackColor = Color.White
+    '                .AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke
+    '            End With
+    '            Loading_LBL.Visible = False
+    '            LoadingPB.Visible = False
+    '        End If
 
-        Catch ex As Exception
-            MetroFramework.MetroMessageBox.Show(Me, ex.Message)
-        End Try
-    End Sub
+    '    Catch ex As Exception
+    '        MetroFramework.MetroMessageBox.Show(Me, ex.Message)
+    '    End Try
+    'End Sub
     Public AE_ID_ToAddnDel, AE_Fullname_ToAddnDel, AE_Index_ToAddnDel As String
 
     Private Sub AddToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AddToolStripMenuItem.Click
@@ -353,235 +379,328 @@ Public Class NewProject_Register
         End Try
     End Sub
 
-    Private Sub OnLoad_BGW_DoWork(sender As Object, e As DoWorkEventArgs) Handles OnLoad_BGW.DoWork
+    'Private Sub OnLoad_BGW_DoWork(sender As Object, e As DoWorkEventArgs) Handles OnLoad_BGW.DoWork
+    '    Try
+    '        QueryBUILD = "SELECT DISTINCT    [COMPETITORS]
+    '                      FROM               [A_NEW_PROJECT_DETAILS]
+    '                      WHERE              [PD_STATUS] = 1"
+    '        Query_Select("")
+    '    Catch ex As SqlException
+    '        'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
+    '        If ex.Number = -2 Then
+    '            MetroFramework.MetroMessageBox.Show(Me, "Click ok to Reconnect", "Request Timeout", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+    '        ElseIf ex.Number = 1232 Then
+    '            MetroFramework.MetroMessageBox.Show(Me, "Please check internet connection", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '            OnLoad_BGW.CancelAsync()
+    '        ElseIf ex.Number = 19 Then
+    '            MetroFramework.MetroMessageBox.Show(Me, "Sorry our server is under maintenance." & vbCrLf & "Please be patient, will come back A.S.A.P", "Server is down", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '            OnLoad_BGW.CancelAsync()
+    '        ElseIf ex.Number <> -2 And ex.Number <> 1232 And ex.Number <> 19 Then
+    '            MetroFramework.MetroMessageBox.Show(Me, "Contact the Programmers now", "You need some help?", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+    '            MetroFramework.MetroMessageBox.Show(Me, ex.Message)
+    '            OnLoad_BGW.CancelAsync()
+    '        End If
+    '    Catch ex2 As Exception
+    '        MetroFramework.MetroMessageBox.Show(Me, ex2.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
+    '    End Try
+    'End Sub
+    Private Sub NewProjects_BGW_DoWork(sender As Object, e As DoWorkEventArgs)
         Try
-            QueryBUILD = "SELECT DISTINCT    [COMPETITORS]
-                          FROM               [A_NEW_PROJECT_DETAILS]
-                          WHERE              [PD_STATUS] = 1"
-            Query_Select("")
-        Catch ex As SqlException
-            'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
-            If ex.Number = -2 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Click ok to Reconnect", "Request Timeout", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            ElseIf ex.Number = 1232 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Please check internet connection", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                OnLoad_BGW.CancelAsync()
-            ElseIf ex.Number = 19 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Sorry our server is under maintenance." & vbCrLf & "Please be patient, will come back A.S.A.P", "Server is down", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                OnLoad_BGW.CancelAsync()
-            ElseIf ex.Number <> -2 And ex.Number <> 1232 And ex.Number <> 19 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Contact the Programmers now", "You need some help?", MessageBoxButtons.OK, MessageBoxIcon.Stop)
-                MetroFramework.MetroMessageBox.Show(Me, ex.Message)
-                OnLoad_BGW.CancelAsync()
-            End If
-        Catch ex2 As Exception
-            MetroFramework.MetroMessageBox.Show(Me, ex2.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
-        End Try
-    End Sub
-
-    Private Sub OnLoad_BGW_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles OnLoad_BGW.RunWorkerCompleted
-        Try
-
-            If e.Error IsNot Nothing Then
-                '' if BackgroundWorker terminated due to error
-                MetroFramework.MetroMessageBox.Show(Me, "Please Restart!", "Error Occured", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            ElseIf e.Cancelled = True Then
-                '' otherwise if it was cancelled
-                MetroFramework.MetroMessageBox.Show(Me, "Please Restart!", "Error Occured", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Else
-                '' otherwise it completed normally
-                With Competitors_Cbox
-                    .DataSource = sqlBindingSource
-                    .ValueMember = "COMPETITORS"
-                    .DisplayMember = "COMPETITORS"
-                End With
-
-            End If
-            LoadingPboxRNP.Visible = False
-
+            Select Case NewProjects_TODO
+                Case "Onload"
+                    Query_Select_STP("", "PD_stp_NewProject_COMPETITORS")
+                Case "AEIC_LOAD"
+                    Query_Select_STP("", "PD_stp_NewProject_AELoad")
+                Case "INSERT"
+                    For i = 0 To AEICSelectedDGV.Rows.Count - 1
+                        arr_AEID.Add(AEICSelectedDGV.Rows(i).Cells("AUTONUM").Value.ToString)
+                    Next
+                    PD_Inserts_NewProj(Source, P1plusP2, Competitors, UnitNo, Establishment, HouseNo, Street, Village, Brgy,
+                                       CityMunicipality, Province, Area, FullAddress, ClientName, Owners, HomeCN, OfficeCn,
+                                       MobileCN, Email, Company_Name)
+            End Select
         Catch ex As Exception
-            MetroFramework.MetroMessageBox.Show(Me, ex.Message)
+            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
+            Log_File.Close()
         End Try
     End Sub
+    Private Sub NewProjects_BGW_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs)
+        Try
+            Select Case NewProjects_TODO
+                Case "Onload"
+                    With Competitors_Cbox
+                        .DataSource = sqlBindingSource
+                        .ValueMember = "COMPETITORS"
+                        .DisplayMember = "COMPETITORS"
+                    End With
+                Case "AEIC_LOAD"
+                    Dim rowIndex As Integer = 0
+                    For Each row In sqlBindingSource
+                        AEICListDGV.Rows.Add(row("AUTONUM"), rowIndex, row("FULLNAME"))
+                        rowIndex += 1
+                    Next row
+                    With AEICListDGV
+                        .DefaultCellStyle.BackColor = Color.White
+                        .AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke
+                    End With
+                    Loading_LBL.Visible = False
+                    LoadingPB.Visible = False
+                Case "INSERT"
+                    If sql_err_bool = True Then
+                        If sql_Transaction_result = "Committed" Then
+                            MetroFramework.MetroMessageBox.Show(Me, "Success", " ", MessageBoxButtons.OK, MessageBoxIcon.Information)
+
+                            Reset()
+
+                            BreadCrumb_Tab.Enabled = True
+                            PrevNxt_PNL.Enabled = True
+                            LoadingPboxRNP.Visible = False
+
+                            PD_CountSuccess = 0
+
+                            is_CTD_bool = False
+                            QueryBUILD = QuerySearchHeadArrays(0) & QueryMidArrays(0) & QueryConditionArrays(0) &
+                                 " " & QueryORDERArrays(0)
+                            SearchStr = ""
+                            Project_Details.Start_ProjectDetailsBGW()
+
+                            selecting_bool = False
+
+                            BreadCrumb_Tab.Enabled = True
+                            PrevNxt_PNL.Enabled = True
+                            LoadingPboxRNP.Visible = False
+                        ElseIf sql_Transaction_result = "Rollback" Then
+                            MetroFramework.MetroMessageBox.Show(Me, "Failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                        End If
+                    Else
+                        Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+                        Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                           "SQL Transaction Error Number: " & sql_Err_no & vbCrLf &
+                                           "SQL Transaction Error Message: " & sql_Err_msg & vbCrLf &
+                                           "Trace: " & sql_Err_StackTrace & vbCrLf)
+                        MetroFramework.MetroMessageBox.Show(Me, "Transaction failed", "Contact the Developers", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                    End If
+                    sql_err_bool = False
+                    sql_Err_msg = Nothing
+                    sql_Err_no = Nothing
+                    sql_Transaction_result = ""
+            End Select
+
+            LoadingPboxRNP.Visible = False
+        Catch ex As Exception
+            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
+            Log_File.Close()
+        End Try
+    End Sub
+    'Private Sub OnLoad_BGW_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles OnLoad_BGW.RunWorkerCompleted
+    '    Try
+
+    '        If e.Error IsNot Nothing Then
+    '            '' if BackgroundWorker terminated due to error
+    '            MetroFramework.MetroMessageBox.Show(Me, "Please Restart!", "Error Occured", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '        ElseIf e.Cancelled = True Then
+    '            '' otherwise if it was cancelled
+    '            MetroFramework.MetroMessageBox.Show(Me, "Please Restart!", "Error Occured", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '        Else
+    '            '' otherwise it completed normally
+    '            With Competitors_Cbox
+    '                .DataSource = sqlBindingSource
+    '                .ValueMember = "COMPETITORS"
+    '                .DisplayMember = "COMPETITORS"
+    '            End With
+
+    '        End If
+    '        LoadingPboxRNP.Visible = False
+
+    '    Catch ex As Exception
+    '        MetroFramework.MetroMessageBox.Show(Me, ex.Message)
+    '    End Try
+    'End Sub
 
     Public Source, Competitors, ClientName, Owners, HomeCN, OfficeCn, MobileCN, Email, Company_Name As String
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs)
-        Reset()
-    End Sub
+    'Private Sub Insert_BGW_DoWork(sender As Object, e As DoWorkEventArgs) Handles Insert_BGW.DoWork
+    '    Try
+    '        'A_NEW_PROJECT_DETAILS_Insert(Me,
+    '        '                             Source,
+    '        '                             P1plusP2,
+    '        '                             Competitors,
+    '        '                             UnitNo,
+    '        '                             Establishment,
+    '        '                             HouseNo,
+    '        '                             Street,
+    '        '                             Village,
+    '        '                             Brgy,
+    '        '                             CityMunicipality,
+    '        '                             Province,
+    '        '                             Area,
+    '        '                             FullAddress)
+    '        'A_NEW_CLIENT_DETAILS_Insert(Me,
+    '        '                            ClientName,
+    '        '                            Owners,
+    '        '                            HomeCN,
+    '        '                            OfficeCn,
+    '        '                            MobileCN,
+    '        '                            Email,
+    '        '                            Company_Name)
+    '        'A_NEW_CONTRACT_DETAILS_Insert(InsertedPD_ID, Me)
+    '        'A_NEW_OWNERS_TBL_Insert(InsertedPD_ID, InsertedCustID, "Current Owner", Me)
+    '        'A_NEW_CONTRACT_QUOTE_NO_Insert(InsertedC_ID, "", "", Me
+    '        For i = 0 To AEICSelectedDGV.Rows.Count - 1
+    '            arr_AEID.Add(AEICSelectedDGV.Rows(i).Cells("AUTONUM").Value.ToString)
+    '            'A_NEW_AE_ASSIGNMENT_Insert(InsertedPD_ID, AUTONUMid, Me)
+    '        Next
 
-    Private Sub Insert_BGW_DoWork(sender As Object, e As DoWorkEventArgs) Handles Insert_BGW.DoWork
-        Try
-            'A_NEW_PROJECT_DETAILS_Insert(Me,
-            '                             Source,
-            '                             P1plusP2,
-            '                             Competitors,
-            '                             UnitNo,
-            '                             Establishment,
-            '                             HouseNo,
-            '                             Street,
-            '                             Village,
-            '                             Brgy,
-            '                             CityMunicipality,
-            '                             Province,
-            '                             Area,
-            '                             FullAddress)
-            'A_NEW_CLIENT_DETAILS_Insert(Me,
-            '                            ClientName,
-            '                            Owners,
-            '                            HomeCN,
-            '                            OfficeCn,
-            '                            MobileCN,
-            '                            Email,
-            '                            Company_Name)
-            'A_NEW_CONTRACT_DETAILS_Insert(InsertedPD_ID, Me)
-            'A_NEW_OWNERS_TBL_Insert(InsertedPD_ID, InsertedCustID, "Current Owner", Me)
-            'A_NEW_CONTRACT_QUOTE_NO_Insert(InsertedC_ID, "", "", Me
-            For i = 0 To AEICSelectedDGV.Rows.Count - 1
-                arr_AEID.Add(AEICSelectedDGV.Rows(i).Cells("AUTONUM").Value.ToString)
-                'A_NEW_AE_ASSIGNMENT_Insert(InsertedPD_ID, AUTONUMid, Me)
-            Next
-
-            PD_Inserts_NewProj(Source,
-                               P1plusP2,
-                               Competitors,
-                               UnitNo,
-                               Establishment,
-                               HouseNo,
-                               Street,
-                               Village,
-                               Brgy,
-                               CityMunicipality,
-                               Province,
-                               Area,
-                               FullAddress, ClientName,
-                               Owners,
-                               HomeCN,
-                               OfficeCn,
-                               MobileCN,
-                               Email,
-                               Company_Name)
+    '        PD_Inserts_NewProj(Source,
+    '                           P1plusP2,
+    '                           Competitors,
+    '                           UnitNo,
+    '                           Establishment,
+    '                           HouseNo,
+    '                           Street,
+    '                           Village,
+    '                           Brgy,
+    '                           CityMunicipality,
+    '                           Province,
+    '                           Area,
+    '                           FullAddress, ClientName,
+    '                           Owners,
+    '                           HomeCN,
+    '                           OfficeCn,
+    '                           MobileCN,
+    '                           Email,
+    '                           Company_Name)
 
 
-        Catch ex As SqlException
-            'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
-            If ex.Number = -2 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Click ok to Reconnect", "Request Timeout", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                Insert_BGW.CancelAsync()
-            ElseIf ex.Number = 1232 Or ex.Number = 121 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Please check internet connection", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            ElseIf ex.Number = 19 Then
-                MetroFramework.MetroMessageBox.Show(Me, "Sorry our server is under maintenance." & vbCrLf & "Please be patient, will come back A.S.A.P", "Server is down", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            ElseIf ex.Number <> -2 And ex.Number <> 1232 And ex.Number <> 19 And ex.Number <> 121 Then
-                'MetroFramework.MetroMessageBox.Show(Me, "Transaction Failed", "Contact the Developers", MessageBoxButtons.OK, MessageBoxIcon.Stop)
-                Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
-                Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-                                           "SQL Transaction Error Number: " & ex.Number & vbCrLf &
-                                           "SQL Transaction Error Message: " & ex.Message)
-                Log_File.Close()
-            End If
-            sql_Err_msg = ex.Message
-            sql_Err_no = ex.Number
-            Try
-                transaction.Rollback()
-                sql_Transaction_result = "Rollback"
-            Catch ex2 As Exception
-                Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
-                Log_File.WriteLine(vbCrLf & "Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-                                           "Rollback Error Message: " & ex2.Message)
-                Log_File.Close()
-            End Try
-        Catch ex22 As Exception
-            'MetroFramework.MetroMessageBox.Show(Me, ex22.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
-        End Try
-    End Sub
+    '    Catch ex As SqlException
+    '        'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
+    '        If ex.Number = -2 Then
+    '            MetroFramework.MetroMessageBox.Show(Me, "Click ok to Reconnect", "Request Timeout", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+    '            Insert_BGW.CancelAsync()
+    '        ElseIf ex.Number = 1232 Or ex.Number = 121 Then
+    '            MetroFramework.MetroMessageBox.Show(Me, "Please check internet connection", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '        ElseIf ex.Number = 19 Then
+    '            MetroFramework.MetroMessageBox.Show(Me, "Sorry our server is under maintenance." & vbCrLf & "Please be patient, will come back A.S.A.P", "Server is down", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '        ElseIf ex.Number <> -2 And ex.Number <> 1232 And ex.Number <> 19 And ex.Number <> 121 Then
+    '            'MetroFramework.MetroMessageBox.Show(Me, "Transaction Failed", "Contact the Developers", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+    '            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+    '            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+    '                                       "SQL Transaction Error Number: " & ex.Number & vbCrLf &
+    '                                       "SQL Transaction Error Message: " & ex.Message)
+    '            Log_File.Close()
+    '        End If
+    '        sql_Err_msg = ex.Message
+    '        sql_Err_no = ex.Number
+    '        Try
+    '            transaction.Rollback()
+    '            sql_Transaction_result = "Rollback"
+    '        Catch ex2 As Exception
+    '            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+    '            Log_File.WriteLine(vbCrLf & "Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+    '                                       "Rollback Error Message: " & ex2.Message)
+    '            Log_File.Close()
+    '        End Try
+    '    Catch ex22 As Exception
+    '        'MetroFramework.MetroMessageBox.Show(Me, ex22.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Hand)
+    '    End Try
+    'End Sub
 
-    Private Sub Insert_BGW_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles Insert_BGW.RunWorkerCompleted
-        Try
+    'Private Sub Insert_BGW_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles Insert_BGW.RunWorkerCompleted
+    '    Try
 
-            If e.Error IsNot Nothing Then
-                '' if BackgroundWorker terminated due to error
-                MetroFramework.MetroMessageBox.Show(Me, "Please Restart!", "Error Occured", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            ElseIf e.Cancelled = True Then
-                '' otherwise if it was cancelled
-                MetroFramework.MetroMessageBox.Show(Me, "Please Restart!", "Error Occured", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Else
-                '' otherwise it completed normally
-                If (sql_Err_no = "" Or sql_Err_no = Nothing) AndAlso
-                       (sql_Err_msg = "" Or sql_Err_msg = Nothing) Then
-                    If sql_Transaction_result = "Committed" Then
-                        MetroFramework.MetroMessageBox.Show(Me, "Success", " ", MessageBoxButtons.OK, MessageBoxIcon.Information)
+    '        If e.Error IsNot Nothing Then
+    '            '' if BackgroundWorker terminated due to error
+    '            MetroFramework.MetroMessageBox.Show(Me, "Please Restart!", "Error Occured", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '        ElseIf e.Cancelled = True Then
+    '            '' otherwise if it was cancelled
+    '            MetroFramework.MetroMessageBox.Show(Me, "Please Restart!", "Error Occured", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '        Else
+    '            '' otherwise it completed normally
+    '            If (sql_Err_no = "" Or sql_Err_no = Nothing) AndAlso
+    '                   (sql_Err_msg = "" Or sql_Err_msg = Nothing) Then
+    '                If sql_Transaction_result = "Committed" Then
+    '                    MetroFramework.MetroMessageBox.Show(Me, "Success", " ", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
-                        Reset()
+    '                    Reset()
 
-                        BreadCrumb_Tab.Enabled = True
-                        PrevNxt_PNL.Enabled = True
-                        LoadingPboxRNP.Visible = False
+    '                    BreadCrumb_Tab.Enabled = True
+    '                    PrevNxt_PNL.Enabled = True
+    '                    LoadingPboxRNP.Visible = False
 
-                        PD_CountSuccess = 0
+    '                    PD_CountSuccess = 0
 
-                        is_CTD_bool = False
-                        QueryBUILD = QuerySearchHeadArrays(0) & QueryMidArrays(0) & QueryConditionArrays(0) &
-                             " " & QueryORDERArrays(0)
-                        SearchStr = ""
-                        Project_Details.Start_ProjectDetailsBGW()
+    '                    is_CTD_bool = False
+    '                    QueryBUILD = QuerySearchHeadArrays(0) & QueryMidArrays(0) & QueryConditionArrays(0) &
+    '                         " " & QueryORDERArrays(0)
+    '                    SearchStr = ""
+    '                    Project_Details.Start_ProjectDetailsBGW()
 
-                        selecting_bool = False
+    '                    selecting_bool = False
 
 
-                    ElseIf sql_Transaction_result = "Rollback" Then
-                        MetroFramework.MetroMessageBox.Show(Me, "Failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                    End If
-                Else
-                    MetroFramework.MetroMessageBox.Show(Me, "Transaction failed", "Contact the Developers", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '                ElseIf sql_Transaction_result = "Rollback" Then
+    '                    MetroFramework.MetroMessageBox.Show(Me, "Failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+    '                End If
+    '            Else
+    '                MetroFramework.MetroMessageBox.Show(Me, "Transaction failed", "Contact the Developers", MessageBoxButtons.OK, MessageBoxIcon.Error)
 
-                    'Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
-                    'Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-                    '           "SQL Transaction Error Number: " & sql_Err_no & vbCrLf &
-                    '           "SQL Transaction Error Message: " & sql_Err_msg & vbCrLf)
-                    'Log_File.Close()
+    '                'Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+    '                'Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+    '                '           "SQL Transaction Error Number: " & sql_Err_no & vbCrLf &
+    '                '           "SQL Transaction Error Message: " & sql_Err_msg & vbCrLf)
+    '                'Log_File.Close()
 
-                End If
-                sql_Err_msg = Nothing
-                sql_Err_no = Nothing
-                sql_Transaction_result = ""
+    '            End If
+    '            sql_Err_msg = Nothing
+    '            sql_Err_no = Nothing
+    '            sql_Transaction_result = ""
 
-                'Dim CountSelectedAE As Integer
-                'CountSelectedAE = (AEICSelectedDGV.RowCount) + 5
-                ''MsgBox("PD_CountSuccess: " & PD_CountSuccess & vbCrLf & "CountSelectedAE: " & CountSelectedAE)
-                'If PD_CountSuccess = CountSelectedAE Then
-                '    MetroFramework.MetroMessageBox.Show(Me, "Success", "", MessageBoxButtons.OK, MessageBoxIcon.None)
-                '    Reset()
+    '            'Dim CountSelectedAE As Integer
+    '            'CountSelectedAE = (AEICSelectedDGV.RowCount) + 5
+    '            ''MsgBox("PD_CountSuccess: " & PD_CountSuccess & vbCrLf & "CountSelectedAE: " & CountSelectedAE)
+    '            'If PD_CountSuccess = CountSelectedAE Then
+    '            '    MetroFramework.MetroMessageBox.Show(Me, "Success", "", MessageBoxButtons.OK, MessageBoxIcon.None)
+    '            '    Reset()
 
-                '    BreadCrumb_Tab.Enabled = True
-                '    PrevNxt_PNL.Enabled = True
-                '    LoadingPboxRNP.Visible = False
+    '            '    BreadCrumb_Tab.Enabled = True
+    '            '    PrevNxt_PNL.Enabled = True
+    '            '    LoadingPboxRNP.Visible = False
 
-                '    PD_CountSuccess = 0
+    '            '    PD_CountSuccess = 0
 
-                '    is_CTD_bool = False
-                '    QueryBUILD = QuerySearchHeadArrays(0) & QueryMidArrays(0) & QueryConditionArrays(0) &
-                '             " " & QueryORDERArrays(0)
-                '    SearchStr = ""
-                '    Project_Details.Start_ProjectDetailsBGW()
+    '            '    is_CTD_bool = False
+    '            '    QueryBUILD = QuerySearchHeadArrays(0) & QueryMidArrays(0) & QueryConditionArrays(0) &
+    '            '             " " & QueryORDERArrays(0)
+    '            '    SearchStr = ""
+    '            '    Project_Details.Start_ProjectDetailsBGW()
 
-                '    selecting_bool = False
+    '            '    selecting_bool = False
 
-                'Else
-                '    MetroFramework.MetroMessageBox.Show(Me, ErrorMsg, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                'End If
+    '            'Else
+    '            '    MetroFramework.MetroMessageBox.Show(Me, ErrorMsg, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '            'End If
 
-            End If
+    '        End If
 
-        Catch ex As Exception
-            MessageBox.Show(Me, ex.Message)
-        End Try
-    End Sub
+    '    Catch ex As Exception
+    '        MessageBox.Show(Me, ex.Message)
+    '    End Try
+    'End Sub
 
     Dim Proj_ClassP1, Proj_ClassP2, P1plusP2 As String
 
     Private Sub Competitors_Cbox_Enter(sender As Object, e As EventArgs) Handles Competitors_Cbox.Enter
-        If OnLoad_BGW.IsBusy Then
+        If NewProjects_BGW.IsBusy Then
             MetroFramework.MetroMessageBox.Show(Me, "Currently Loading", "Please Wait", MessageBoxButtons.OK, MessageBoxIcon.Warning)
         End If
     End Sub
@@ -620,7 +739,7 @@ Public Class NewProject_Register
         Next
     End Sub
 
-    Private Sub AEICListDGV_CellMouseClick(sender As Object, e As DataGridViewCellMouseEventArgs) Handles AEICListDGV.CellMouseClick
+    Private Sub AEICListDGV_CellMouseClick(sender As Object, e As DataGridViewCellMouseEventArgs)
         Try
             If (e.RowIndex >= 0 And e.ColumnIndex >= 0) Then
                 If e.Button = MouseButtons.Right Then
