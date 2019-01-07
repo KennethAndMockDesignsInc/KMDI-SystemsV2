@@ -100,15 +100,34 @@ Public Class NewProject_Register
 
             If CountFilledRequiredField = CountRequiredField Then
                 If BreadCrumb_Tab.SelectedIndex = 0 Then
-                    AddressFormat(UnitNo_Tbox.Text,
-                                  Establishment_Tbox.Text,
-                                  HouseNo_Tbox.Text,
-                                  Street_Tbox_Required.Text,
-                                  Village_Tbox.Text,
-                                  Brgy_Tbox.Text,
-                                  City_Tbox_Required.Text,
-                                  Province_Tbox_Required.Text)
+                    'MsgBox(UnitNo_Tbox.Text &
+                    '              Establishment_Tbox.Text &
+                    '              HouseNo_Tbox.Text &
+                    '              Street_Tbox_Required.Text &
+                    '              Village_Tbox.Text &
+                    '              Brgy_Tbox.Text &
+                    '              City_Tbox_Required.Text &
+                    '              Province_Tbox_Required.Text)
+                    UnitNo = Nothing
+                    Establishment = Nothing
+                    HouseNo = Nothing
+                    Street = Nothing
+                    Village = Nothing
+                    Brgy = Nothing
+                    CityMunicipality = Nothing
+                    Province = Nothing
+                    Area = Nothing
+                    AddressFormat(UnitNo_Tbox.Text, Establishment_Tbox.Text, HouseNo_Tbox.Text, Street_Tbox_Required.Text,
+                                  Village_Tbox.Text, Brgy_Tbox.Text, City_Tbox_Required.Text, Province_Tbox_Required.Text)
                     P1nP2()
+                    'MsgBox(UnitNo_Tbox.Text &
+                    '              Establishment_Tbox.Text &
+                    '              HouseNo_Tbox.Text &
+                    '              Street_Tbox_Required.Text &
+                    '              Village_Tbox.Text &
+                    '              Brgy_Tbox.Text &
+                    '              City_Tbox_Required.Text &
+                    '              Province_Tbox_Required.Text)
                     If MessageBox.Show(Me, "Project Source" & vbCrLf & vbCrLf &
                                 vbTab & "Source:    " & Source_Cbox_Required.Text & vbCrLf & vbCrLf &
                                 vbTab & "Name of Source:    " & SourceName_Tbox_Required.Text & vbCrLf & vbCrLf &
@@ -408,25 +427,27 @@ Public Class NewProject_Register
         Try
             Select Case NewProjects_TODO
                 Case "Onload"
-                    Query_Select_STP("", "PD_stp_NewProject_COMPETITORS")
+                    QUERY_INSTANCE = "Loading_using_EqualSearch"
+                    Query_Select_STP(1, "PD_stp_NewProject_COMPETITORS")
                 Case "AEIC_LOAD"
-                    Query_Select_STP("", "PD_stp_NewProject_AELoad")
+                    QUERY_INSTANCE = "Loading_using_EqualSearch"
+                    Query_Select_STP(1, "PD_stp_NewProject_AELoad")
                 Case "INSERT"
                     For i = 0 To AEICSelectedDGV.Rows.Count - 1
                         arr_AEID.Add(AEICSelectedDGV.Rows(i).Cells("AUTONUM").Value.ToString)
                     Next
-                    PD_Inserts_NewProj(Source, P1plusP2, Competitors, UnitNo, Establishment, HouseNo, Street, Village, Brgy,
+                    PD_Inserts_NewProj("PD_stp_NewProject", Source, P1plusP2, Competitors, UnitNo, Establishment, HouseNo, Street, Village, Brgy,
                                        CityMunicipality, Province, Area, FullAddress, ClientName, Owners, HomeCN, OfficeCn,
                                        MobileCN, Email, Company_Name)
             End Select
         Catch ex As Exception
-            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
-                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
-            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-                                       "Error Message: " & ex.Message & vbCrLf &
-                                       "Trace: " & ex.StackTrace & vbCrLf)
-            Log_File.Close()
+        MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                            MessageBoxButtons.OK, MessageBoxIcon.Error)
+        Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+        Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                   "Error Message: " & ex.Message & vbCrLf &
+                                   "Trace: " & ex.StackTrace & vbCrLf)
+        Log_File.Close()
         End Try
     End Sub
     Private Sub NewProjects_BGW_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs)
@@ -739,7 +760,7 @@ Public Class NewProject_Register
         Next
     End Sub
 
-    Private Sub AEICListDGV_CellMouseClick(sender As Object, e As DataGridViewCellMouseEventArgs)
+    Private Sub AEICListDGV_CellMouseClick(sender As Object, e As DataGridViewCellMouseEventArgs) Handles AEICListDGV.CellMouseClick
         Try
             If (e.RowIndex >= 0 And e.ColumnIndex >= 0) Then
                 If e.Button = MouseButtons.Right Then

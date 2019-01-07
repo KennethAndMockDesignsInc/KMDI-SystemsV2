@@ -393,6 +393,15 @@ Module KMDISystemsGlobalModule
         End Select
 
         FullAddress = Trim(FullAddress)
+        MsgBox(unitnoAF &
+                             establishmentAF &
+                             housenoAF &
+                             streetAF &
+                             villageAF &
+                             brgyAF &
+                             cityAF &
+                             provinceAF)
+        MsgBox("FullAddress: " & FullAddress)
     End Sub
 
 

@@ -1003,7 +1003,8 @@ END CATCH
     '        PD_Addendum_Update_QuoteRefNo_counter += 1
     '    End Sub
 
-    Public Sub PD_Inserts_NewProj(Optional PROJECT_SOURCE As String = "",
+    Public Sub PD_Inserts_NewProj(ByVal StoredProcedureName As String,
+                                  Optional PROJECT_SOURCE As String = "",
                                   Optional PROJECT_CLASSIFICATION As String = "",
                                   Optional COMPETITORS As String = "",
                                   Optional UNITNO As String = "",
@@ -1027,10 +1028,10 @@ END CATCH
             Using sqlcon As New SqlConnection(sqlconnString)
                 sqlcon.Open()
                 Using sqlcmd As SqlCommand = sqlcon.CreateCommand()
-                    transaction = sqlcon.BeginTransaction("INSERT_NEWPROJECT")
+                    transaction = sqlcon.BeginTransaction(StoredProcedureName)
                     sqlcmd.Connection = sqlcon
                     sqlcmd.Transaction = transaction
-                    sqlcmd.CommandText = "PD_stp_NewProject"
+                    sqlcmd.CommandText = StoredProcedureName
                     sqlcmd.CommandType = CommandType.StoredProcedure
 
                     sqlcmd.Parameters.AddWithValue("@PROJECT_SOURCE", PROJECT_SOURCE)

@@ -178,7 +178,7 @@ Partial Class NewProject_Register
         Me.BreadCrumb_Tab.Location = New System.Drawing.Point(23, 63)
         Me.BreadCrumb_Tab.Multiline = True
         Me.BreadCrumb_Tab.Name = "BreadCrumb_Tab"
-        Me.BreadCrumb_Tab.SelectedIndex = 2
+        Me.BreadCrumb_Tab.SelectedIndex = 0
         Me.BreadCrumb_Tab.Size = New System.Drawing.Size(348, 564)
         Me.BreadCrumb_Tab.TabIndex = 4
         Me.BreadCrumb_Tab.UseSelectable = True
@@ -1411,7 +1411,7 @@ Partial Class NewProject_Register
         Me.AEICListDGV.AllowUserToDeleteRows = False
         Me.AEICListDGV.AllowUserToOrderColumns = True
         Me.AEICListDGV.AllowUserToResizeRows = False
-        Me.AEICListDGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells
+        Me.AEICListDGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.AEICListDGV.ColumnHeadersHeight = 30
         Me.AEICListDGV.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.AUTONUM1, Me.INDEX1, Me.FULLNAME1})
         Me.AEICListDGV.Cursor = System.Windows.Forms.Cursors.Hand
@@ -1441,7 +1441,6 @@ Partial Class NewProject_Register
         Me.AEICListDGV.StateCommon.HeaderColumn.Content.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.AEICListDGV.StateCommon.HeaderColumn.Content.Hint = ComponentFactory.Krypton.Toolkit.PaletteTextHint.AntiAlias
         Me.AEICListDGV.TabIndex = 833
-        Me.AEICListDGV.VirtualMode = True
         '
         'AUTONUM1
         '
@@ -1449,7 +1448,6 @@ Partial Class NewProject_Register
         Me.AUTONUM1.Name = "AUTONUM1"
         Me.AUTONUM1.ReadOnly = True
         Me.AUTONUM1.Visible = False
-        Me.AUTONUM1.Width = 95
         '
         'INDEX1
         '
@@ -1457,14 +1455,12 @@ Partial Class NewProject_Register
         Me.INDEX1.Name = "INDEX1"
         Me.INDEX1.ReadOnly = True
         Me.INDEX1.Visible = False
-        Me.INDEX1.Width = 69
         '
         'FULLNAME1
         '
         Me.FULLNAME1.HeaderText = "FULLNAME"
         Me.FULLNAME1.Name = "FULLNAME1"
         Me.FULLNAME1.ReadOnly = True
-        Me.FULLNAME1.Width = 118
         '
         'AEICSelectedDGV
         '
@@ -1472,7 +1468,7 @@ Partial Class NewProject_Register
         Me.AEICSelectedDGV.AllowUserToDeleteRows = False
         Me.AEICSelectedDGV.AllowUserToOrderColumns = True
         Me.AEICSelectedDGV.AllowUserToResizeRows = False
-        Me.AEICSelectedDGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells
+        Me.AEICSelectedDGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.AEICSelectedDGV.ColumnHeadersHeight = 30
         Me.AEICSelectedDGV.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.AUTONUM, Me.INDEX, Me.FULLNAME})
         Me.AEICSelectedDGV.Cursor = System.Windows.Forms.Cursors.Hand
@@ -1502,7 +1498,6 @@ Partial Class NewProject_Register
         Me.AEICSelectedDGV.StateCommon.HeaderColumn.Content.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.AEICSelectedDGV.StateCommon.HeaderColumn.Content.Hint = ComponentFactory.Krypton.Toolkit.PaletteTextHint.AntiAlias
         Me.AEICSelectedDGV.TabIndex = 834
-        Me.AEICSelectedDGV.VirtualMode = True
         '
         'AUTONUM
         '
@@ -1510,7 +1505,6 @@ Partial Class NewProject_Register
         Me.AUTONUM.Name = "AUTONUM"
         Me.AUTONUM.ReadOnly = True
         Me.AUTONUM.Visible = False
-        Me.AUTONUM.Width = 95
         '
         'INDEX
         '
@@ -1518,14 +1512,12 @@ Partial Class NewProject_Register
         Me.INDEX.Name = "INDEX"
         Me.INDEX.ReadOnly = True
         Me.INDEX.Visible = False
-        Me.INDEX.Width = 69
         '
         'FULLNAME
         '
         Me.FULLNAME.HeaderText = "FULLNAME"
         Me.FULLNAME.Name = "FULLNAME"
         Me.FULLNAME.ReadOnly = True
-        Me.FULLNAME.Width = 118
         '
         'Warning_Tooltip
         '
