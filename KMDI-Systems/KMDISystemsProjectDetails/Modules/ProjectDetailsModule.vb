@@ -1,5 +1,4 @@
 ﻿Imports System.Data.SqlClient
-Imports System.IO
 Module ProjectDetailsModule
     'Public sqlconnString As String = "Data Source='121.58.229.248,49107';Network Library=DBMSSOCN;Initial Catalog='heretosave';User ID='kmdiadmin';Password='kmdiadmin';"
 
@@ -45,13 +44,6 @@ Module ProjectDetailsModule
            EMP_NAME As String = Nothing,
            EMP_MOBILENO As String = Nothing,
            EMP_POSITION As String = Nothing 'used in Technical Partners
-
-    Public sql_Err_no, sql_Err_msg, sql_Err_StackTrace, sql_Transaction_result As String
-    Public sql_err_bool As Boolean = False
-
-    Public Log_File As StreamWriter
-
-    Public transaction As SqlTransaction
 
     Public QuerySearchHeadArrays() As String = {SelDist & " TOP 100 [PD].[PD_ID],
                                                                     [CTD].[SUB_JO] AS [JO#],

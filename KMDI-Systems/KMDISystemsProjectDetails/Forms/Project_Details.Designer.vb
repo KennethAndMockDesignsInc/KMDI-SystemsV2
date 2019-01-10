@@ -89,7 +89,7 @@ Partial Class Project_Details
         Me.ProjectDetailsDGV.AllowUserToDeleteRows = False
         Me.ProjectDetailsDGV.AllowUserToOrderColumns = True
         Me.ProjectDetailsDGV.AllowUserToResizeRows = False
-        Me.ProjectDetailsDGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
+        Me.ProjectDetailsDGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells
         Me.ProjectDetailsDGV.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells
         Me.ProjectDetailsDGV.ColumnHeadersHeight = 30
         Me.ProjectDetailsDGV.Cursor = System.Windows.Forms.Cursors.Hand

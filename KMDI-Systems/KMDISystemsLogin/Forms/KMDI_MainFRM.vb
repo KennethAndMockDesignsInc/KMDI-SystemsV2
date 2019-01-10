@@ -488,4 +488,21 @@ Public Class KMDI_MainFRM
         End Try
     End Sub
 
+    Private Sub InventoryTile_Click(sender As Object, e As EventArgs) Handles InventoryTile.Click
+        Try
+
+            Dim frm As Form = MKTNG_Inventory
+            Select Case frm.Visible
+                Case True
+                    frm.BringToFront()
+                Case False
+                    frm.Show()
+                    frm.BringToFront()
+            End Select
+
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
 End Class

@@ -1,4 +1,5 @@
 ﻿Imports System.Data.SqlClient
+Imports System.IO
 Module KMDISystemsGlobalModule
     Public TileAccessOfLoggedAccount As String
     Public AccountAutonum As String
@@ -10,12 +11,25 @@ Module KMDISystemsGlobalModule
 
     Public dt As New DataTable
 
+    Public sql_Err_no, sql_Err_msg, sql_Err_StackTrace, sql_Transaction_result As String
+    Public sql_err_bool As Boolean = False
+
+    Public Log_File As StreamWriter
+
+    Public transaction As SqlTransaction
+
     Public EngrSDreq = "|01", DelReciepts = "|02", DR = "|03", DrReports = "|04", EngrsItinerary = "|05", EngrSDsubm = "|06", 'Engineering
      addendum = "|07", SalesItinerary = "|08", SalesMoni = "|09", SUS = "|10", CallerInfo = "|11", Collection = "|12", ExtDMGs = "|13", CheckBalance = "|14", 'Sales and OP
      ProdSDreq = "|15", CuttList = "|16", StatsMoni = "|17", GlassSpecs = "|18", ProdSDSubm = "|19", ' Production
      ArchiFirm = "|20", Inventory = "|21", Request = "|22", 'Marketing
      WinDoor As String = "|25" ' Costing
 
+    Public Sub RESET()
+        sql_Err_msg = Nothing
+        sql_Err_no = Nothing
+        sql_Err_StackTrace = Nothing
+        sql_Transaction_result = ""
+    End Sub
 
     Public Sub rowpostpaint(ByVal sender As Object, ByVal e As DataGridViewRowPostPaintEventArgs)
         Dim grid As DataGridView = DirectCast(sender, DataGridView)

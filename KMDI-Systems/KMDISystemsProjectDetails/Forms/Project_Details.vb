@@ -20,13 +20,6 @@ Public Class Project_Details
         End If
     End Sub
 
-    Sub RESET()
-        sql_Err_msg = Nothing
-        sql_Err_no = Nothing
-        sql_Err_StackTrace = Nothing
-        sql_Transaction_result = ""
-    End Sub
-
     Private Sub Project_Details_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
             Me.WindowState = FormWindowState.Maximized
