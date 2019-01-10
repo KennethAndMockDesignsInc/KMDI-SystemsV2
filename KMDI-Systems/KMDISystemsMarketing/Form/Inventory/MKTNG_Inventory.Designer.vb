@@ -22,12 +22,16 @@ Partial Class MKTNG_Inventory
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MKTNG_Inventory))
         Me.ProjectDetailsLBL = New MetroFramework.Controls.MetroLabel()
         Me.MktngInventoryDGV = New ComponentFactory.Krypton.Toolkit.KryptonDataGridView()
         Me.LoadingPB = New System.Windows.Forms.PictureBox()
+        Me.MktngInv_Cmenu = New MetroFramework.Controls.MetroContextMenu(Me.components)
+        Me.ColumnToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         CType(Me.MktngInventoryDGV, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LoadingPB, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.MktngInv_Cmenu.SuspendLayout()
         Me.SuspendLayout()
         '
         'ProjectDetailsLBL
@@ -91,6 +95,19 @@ Partial Class MKTNG_Inventory
         Me.LoadingPB.TabIndex = 611
         Me.LoadingPB.TabStop = False
         '
+        'MktngInv_Cmenu
+        '
+        Me.MktngInv_Cmenu.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        Me.MktngInv_Cmenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ColumnToolStripMenuItem})
+        Me.MktngInv_Cmenu.Name = "MktngInv_Cmenu"
+        Me.MktngInv_Cmenu.Size = New System.Drawing.Size(153, 48)
+        '
+        'ColumnToolStripMenuItem
+        '
+        Me.ColumnToolStripMenuItem.Name = "ColumnToolStripMenuItem"
+        Me.ColumnToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.ColumnToolStripMenuItem.Text = "Columns"
+        '
         'MKTNG_Inventory
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -107,6 +124,7 @@ Partial Class MKTNG_Inventory
         Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
         CType(Me.MktngInventoryDGV, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.LoadingPB, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.MktngInv_Cmenu.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -115,4 +133,6 @@ Partial Class MKTNG_Inventory
     Friend WithEvents ProjectDetailsLBL As MetroFramework.Controls.MetroLabel
     Friend WithEvents MktngInventoryDGV As ComponentFactory.Krypton.Toolkit.KryptonDataGridView
     Friend WithEvents LoadingPB As PictureBox
+    Friend WithEvents MktngInv_Cmenu As MetroFramework.Controls.MetroContextMenu
+    Friend WithEvents ColumnToolStripMenuItem As ToolStripMenuItem
 End Class

@@ -84,7 +84,7 @@ Public Class MKTNG_Inventory
                             .Columns("ITEM CODE").Visible = False
                             .Columns("ITEM_PICTURE").Visible = False
                             .Columns("MI_STATUS").Visible = False
-                            .Columns("DATE PURCHASED").DefaultCellStyle.Format = "MMM. dd,yyyy"
+                            .Columns("DATE PURCHASED").DefaultCellStyle.Format = "MMM. dd, yyyy"
                             .DefaultCellStyle.BackColor = Color.White
                             .AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke
                         End With
@@ -119,5 +119,35 @@ Public Class MKTNG_Inventory
 
     Private Sub MktngInventoryDGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs) Handles MktngInventoryDGV.RowPostPaint
         rowpostpaint(sender, e)
+    End Sub
+
+    Private Sub MktngInventoryDGV_ColumnHeaderMouseClick(sender As Object, e As DataGridViewCellMouseEventArgs) Handles MktngInventoryDGV.ColumnHeaderMouseClick
+        If e.Button = MouseButtons.Right Then
+            MktngInv_Cmenu.Show()
+            MktngInv_Cmenu.Location = New Point(MousePosition.X, MousePosition.Y)
+        End If
+    End Sub
+
+    Private Sub ColumnToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ColumnToolStripMenuItem.Click
+        Try
+            ColumnVisibility.CreateMetroChkBoxes(Me, "MktngInventoryDGV")
+            Dim frm As Form = ColumnVisibility
+            Select Case frm.Visible
+                Case True
+                    frm.BringToFront()
+                Case False
+                    frm.Show()
+                    frm.BringToFront()
+            End Select
+            Enabled = False
+        Catch ex As Exception
+            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Error Message: " & ex.Message & vbCrLf &
+                                       "Trace: " & ex.StackTrace & vbCrLf)
+            Log_File.Close()
+        End Try
     End Sub
 End Class

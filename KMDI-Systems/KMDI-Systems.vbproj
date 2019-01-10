@@ -247,6 +247,12 @@
     <Compile Include="KMDISystemsAccount\ManageAccounts\Forms\ChangeWritePermision.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="KMDISystemsMarketing\Form\Inventory\ColumnVisibility.Designer.vb">
+      <DependentUpon>ColumnVisibility.vb</DependentUpon>
+    </Compile>
+    <Compile Include="KMDISystemsMarketing\Form\Inventory\ColumnVisibility.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="KMDISystemsMarketing\Form\Inventory\MKTNG_Inventory.Designer.vb">
       <DependentUpon>MKTNG_Inventory.vb</DependentUpon>
     </Compile>
@@ -410,6 +416,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="KMDISystemsAccount\ManageAccounts\Forms\ChangeWritePermision.resx">
       <DependentUpon>ChangeWritePermision.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KMDISystemsMarketing\Form\Inventory\ColumnVisibility.resx">
+      <DependentUpon>ColumnVisibility.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="KMDISystemsMarketing\Form\Inventory\MKTNG_Inventory.resx">
       <DependentUpon>MKTNG_Inventory.vb</DependentUpon>
