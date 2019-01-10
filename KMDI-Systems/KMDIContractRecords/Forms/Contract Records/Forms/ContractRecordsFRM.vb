@@ -48,6 +48,8 @@ Public Class ContractRecordsFRM
 
     Public ErrorMessage As String
 
+    'Public GenerateOutput As Boolean
+
     Public ContractRecordsBGW As BackgroundWorker = New BackgroundWorker
     Public Delegate Sub PBVisibilityDelegate(ByVal Visibility As Boolean)
     Dim ChangePBVisibility As PBVisibilityDelegate
@@ -83,6 +85,7 @@ Public Class ContractRecordsFRM
             Me.WindowState = FormWindowState.Maximized
             AddHandler ContractRecordsBGW.DoWork, AddressOf ContractRecordsBGW_DoWork
             AddHandler ContractRecordsBGW.RunWorkerCompleted, AddressOf ContractRecordsBGW_RunWorkerCompleted
+
             ChangePBVisibility = AddressOf ChangeVisibility
 
             LoadInitialSetUp()
@@ -108,6 +111,7 @@ Public Class ContractRecordsFRM
                 ContractRecordsDGV.Columns.Clear()
                 ContractRecordsDGV.DataSource = Nothing
                 ContractRecordsDGV.DataMember = Nothing
+                ContractRecordsBGW.WorkerReportsProgress = True
                 ContractRecordsBGW.WorkerSupportsCancellation = True
                 ContractRecordsBGW.RunWorkerAsync()
             Else
@@ -122,7 +126,7 @@ Public Class ContractRecordsFRM
 
     Private Sub ContractRecordsBGW_DoWork(ByVal sender As System.Object, ByVal e As DoWorkEventArgs)
         Try
-            Me.Invoke(ChangePBVisibility, True)
+            Invoke(ChangePBVisibility, True)
             ActionTakenByUser()
 
             sql.ContractRecordsLoad(ActionTaken,
@@ -130,6 +134,7 @@ Public Class ContractRecordsFRM
                                     SearchScope,
                                     stp_Name,
                                     SearchString)
+
         Catch ex As Exception
             ErrorMessage = ex.ToString
             ContractRecordsBGW.WorkerSupportsCancellation = True
@@ -167,11 +172,11 @@ Public Class ContractRecordsFRM
 
     Private Sub ContractRecordsBGW_RunWorkerCompleted(ByVal sender As System.Object, ByVal e As RunWorkerCompletedEventArgs)
         Try
-            Me.Invoke(ChangePBVisibility, False)
+            Invoke(ChangePBVisibility, False)
             If e.Cancelled = True Then
                 Select Case ActionTaken
                     Case "Search"
-                        MetroMessageBox.Show(Me, "Please click OK button or press the Enter key then press F5 key to refresh the system." & vbCrLf & vbCrLf & ErrorMessage, "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                        MetroMessageBox.Show(Me, "Please click OK button or press the Enter key then press F5 key to refresh the system." & vbCrLf & vbCrLf & ErrorMessage, "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Error)
                     Case "Add"
                     Case "Update"
                     Case "Delete"
@@ -179,7 +184,7 @@ Public Class ContractRecordsFRM
             ElseIf e.Error IsNot Nothing Then
                 Select Case ActionTaken
                     Case "Search"
-                        MetroMessageBox.Show(Me, "Please click OK button or press the Enter key then press F5 to refresh the system." & vbCrLf & vbCrLf & ErrorMessage, "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                        MetroMessageBox.Show(Me, "Please click OK button or press the Enter key then press F5 to refresh the system." & vbCrLf & vbCrLf & ErrorMessage, "Error has been found.", MessageBoxButtons.OK, MessageBoxIcon.Error)
                     Case "Add"
                     Case "Update"
                     Case "Delete"
@@ -191,8 +196,12 @@ Public Class ContractRecordsFRM
                             If sql.ReadHasRows = True Then
                                 Grid_Display()
                             Else
-                                SearchFRM.Hide()
-                                MetroMessageBox.Show(Me, "No items where found in the database. Please refine search.", "No results found.", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                                SearchFRM.Close()
+                                MetroMessageBox.Show(Me, "Suggestion: " & vbCrLf & vbCrLf &
+                                                         "  *Make sure that all words are spelled correctly." & vbCrLf &
+                                                         "  *Try different keywords." & vbCrLf &
+                                                         "  *Try more general keywords." & vbCrLf &
+                                                         "  *Try fewer keywords.", "Your search - " & SearchString & " - did not match any information.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                                 SearchFRM.Show()
                                 SearchFRM.SearchTbox.Focus()
                             End If
@@ -216,7 +225,6 @@ Public Class ContractRecordsFRM
 
     Private Sub ContractRecordsDGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs) Handles ContractRecordsDGV.RowPostPaint
         Try
-            'sql.RowPostPaintContractRecords(sender, e)
             rowpostpaint(sender, e)
         Catch ex As Exception
         End Try
@@ -285,34 +293,32 @@ Public Class ContractRecordsFRM
                                 .Select()
                                 .DefaultCellStyle.BackColor = Color.White
                                 .RowsDefaultCellStyle.Font = New Font("Segoe UI", 12.0!, FontStyle.Regular)
+                                .Columns("PD_ID").Visible = False
                                 .Columns("JOB_ORDER_NO").Visible = False
-                                .Columns("PARENTJONO").Visible = False
-                                .Columns("UNITNO").Visible = False
-                                .Columns("ESTABLISHMENT").Visible = False
-                                .Columns("NO").Visible = False
-                                .Columns("STREET").Visible = False
-                                .Columns("VILLAGE").Visible = False
-                                .Columns("BRGY_MUNICIPALITY").Visible = False
-                                .Columns("TOWN_DISTRICT").Visible = False
-                                .Columns("PROVINCE").Visible = False
-                                .Columns("AREA").Visible = False
-                                .Columns("IMG").Visible = False
                                 .Columns("LOCK").Visible = False
-                                .Columns("Project Label").Frozen = True
+                                .Columns("IMG").Visible = False
+                                .Columns("JO#").Frozen = True
                                 .AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke
                             End With
 
                             For ImageCounter As Integer = 0 To ContractRecordsDGV.Rows.Count - 1 Step +1
+
                                 If Not ContractRecordsDGV.Rows(ImageCounter).Cells("IMG").Value = "" Then
                                     ContractRecordsDGV.Rows(ImageCounter).Cells("JO#").Style.Font = New Font("Segoe UI", 12.0!, FontStyle.Bold)
                                 End If
-                            Next
 
+                                If ContractRecordsDGV.Rows(ImageCounter).Cells("LOCK").Value.ToString = "1" Then
+                                    ContractRecordsDGV.Rows(ImageCounter).DefaultCellStyle.ForeColor = Color.Black
+                                    ContractRecordsDGV.Rows(ImageCounter).DefaultCellStyle.BackColor = Color.Khaki
+                                End If
+
+                            Next
                     End Select
                 Case "Add"
                 Case "Update"
                 Case "Delete"
             End Select
+
         Catch ex As Exception
             MessageBox.Show(ex.ToString)
         End Try
@@ -353,17 +359,44 @@ Public Class ContractRecordsFRM
                         Case "SecondF2"
                             OpenScannedContract()
                         Case "ItemSearchInitialF2"
+                            ActionTaken = "Search"
+                            SearchItemFN = "SecondF2"
+                            SearchScope = "Specific"
                             SearchString = PDID
                             StartWorker()
                         Case "ItemSearchSecondF2"
-                            SearchString = PDID
-                            StartWorker()
+                            OpenScannedContract()
+                            'SearchString = PDID
+                            'StartWorker()
                     End Select
                 Case Keys.Back
                     LoadInitialSetUp()
                 Case Keys.Escape
                     e.SuppressKeyPress = True
                     Close()
+                Case MouseButtons.XButton1
+                    LoadInitialSetUp()
+                Case MouseButtons.XButton2
+                    Select Case SearchItemFN
+                        Case "InitialF2"
+                            ActionTaken = "Search"
+                            SearchItemFN = "SecondF2"
+                            SearchScope = "Specific"
+                            SearchString = PDID
+                            StartWorker()
+                        Case "SecondF2"
+                            OpenScannedContract()
+                        Case "ItemSearchInitialF2"
+                            ActionTaken = "Search"
+                            SearchItemFN = "SecondF2"
+                            SearchScope = "Specific"
+                            SearchString = PDID
+                            StartWorker()
+                        Case "ItemSearchSecondF2"
+                            OpenScannedContract()
+                            'SearchString = PDID
+                            'StartWorker()
+                    End Select
             End Select
 
             If e.Control And e.KeyCode = Keys.F Then
@@ -382,11 +415,15 @@ Public Class ContractRecordsFRM
                     Case "SecondF2"
                         OpenContractItems()
                     Case "ItemSearchInitialF2"
+                        ActionTaken = "Search"
+                        SearchItemFN = "SecondF2"
+                        SearchScope = "Specific"
                         SearchString = PDID
                         StartWorker()
                     Case "ItemSearchSecondF2"
-                        SearchString = PDID
-                        StartWorker()
+                        OpenContractItems()
+                        'SearchString = PDID
+                        'StartWorker()
                 End Select
             End If
         Catch ex As Exception
@@ -434,23 +471,42 @@ Public Class ContractRecordsFRM
                             End Select
 
                             If ContractRecordsDGV.Item("LOCK", e.RowIndex).Value.ToString = "1" Then
-                                    'BackloadToolStripMenuItem.Visible = False
-                                Else
-                                    ''For adding of backloads
-                                    'BackloadFrameSash.JobOrderNoID = ContractRecordsDGV.Item("JOB_ORDER_NO", e.RowIndex).Value.ToString
-                                    'BackloadToolStripMenuItem.Visible = True
-                                    'SearchFRM.Hide()
+                                'BackloadToolStripMenuItem.Visible = False
+                            Else
+                                ''For adding of backloads
+                                'BackloadFrameSash.JobOrderNoID = ContractRecordsDGV.Item("JOB_ORDER_NO", e.RowIndex).Value.ToString
+                                'BackloadToolStripMenuItem.Visible = True
+                                'SearchFRM.Hide()
 
-                                End If
-                                Case "ItemSearchInitialF2"
-                                Case "ItemSearchSecondF2"
+                            End If
+                        Case "ItemSearchInitialF2"
+                        Case "ItemSearchSecondF2"
+                            '// For images of contracts
+                            JobOrderNoID = ContractRecordsDGV.Item("JOB_ORDER_NO", e.RowIndex).Value.ToString
+                            JOUserView = ContractRecordsDGV.Item("JO#", e.RowIndex).Value.ToString
+
+                            Select Case ContractRecordsDGV.Item("IMG", e.RowIndex).Value.ToString
+                                Case "yes"
+                                    JOWithImage = True
+                                Case Else
+                                    JOWithImage = False
                             End Select
-                        Case "Add"
+
+                            Select Case ContractRecordsDGV.Item("JO#", e.RowIndex).Value.ToString
+                                Case ""
+                                    JOWithItem = False
+                                Case Nothing
+                                    JOWithItem = False
+                                Case Else
+                                    JOWithItem = True
+                            End Select
+                    End Select
+                Case "Add"
                 Case "Update"
                 Case "Delete"
             End Select
         Catch ex As Exception
-
+            MessageBox.Show(ex.ToString)
         End Try
     End Sub
 
@@ -492,7 +548,7 @@ Public Class ContractRecordsFRM
                 End If
             End If
         Catch ex As Exception
-            MessageBox.Show(ex.ToString)
+            'MessageBox.Show(ex.ToString)
         End Try
     End Sub
 
@@ -511,7 +567,13 @@ Public Class ContractRecordsFRM
                             Case "SecondF2"
                                 OpenScannedContract()
                             Case "ItemSearchInitialF2"
+                                ActionTaken = "Search"
+                                SearchItemFN = "SecondF2"
+                                SearchScope = "Specific"
+                                SearchString = PDID
+                                StartWorker()
                             Case "ItemSearchSecondF2"
+                                OpenScannedContract()
                         End Select
                 End Select
 
@@ -617,11 +679,13 @@ Public Class ContractRecordsFRM
                 Case "SecondF2"
                     OpenContractItems()
                 Case "ItemSearchInitialF2"
+                    ActionTaken = "Search"
+                    SearchItemFN = "SecondF2"
+                    SearchScope = "Specific"
                     SearchString = PDID
                     StartWorker()
                 Case "ItemSearchSecondF2"
-                    SearchString = PDID
-                    StartWorker()
+                    OpenContractItems()
             End Select
         Catch ex As Exception
 
@@ -786,7 +850,7 @@ Public Class ContractRecordsFRM
     Private Sub ContractRecords_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         Try
 
-            If MetroMessageBox.Show(Me, "Do you wish to proceed?", "Contracts form closing", MessageBoxButtons.YesNo, MessageBoxIcon.Information) = DialogResult.Yes Then
+            If MetroMessageBox.Show(Me, "Do you wish to proceed?", "Contracts form closing", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                 KMDI_MainFRM.Show()
                 KMDI_MainFRM.BringToFront()
                 SearchFRM.Dispose()

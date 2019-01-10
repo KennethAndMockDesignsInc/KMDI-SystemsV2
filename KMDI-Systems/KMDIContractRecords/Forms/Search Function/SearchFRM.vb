@@ -3,15 +3,10 @@
 
     Private Sub SearchBTN_Click(sender As Object, e As EventArgs) Handles SearchBTN.Click
         Try
-
-            'ContractRecordsFRM.SearchString = Trim(Replace(Replace(SearchTbox.Text, "framesash", ""), "'", "`"))
-            ContractRecordsFRM.SearchString = Trim(Replace(SearchTbox.Text, "Item", ""))
+            ContractRecordsFRM.SearchString = Trim(Replace(SearchTbox.Text, "item", ""))
             If SearchTbox.Text = Nothing Then
-                'Me.Hide()
-                'MetroFramework.MetroMessageBox.Show(ContractRecordsFRM, "No search criteria.", "No criteria where inputted. Please refine search.", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                'Me.Show()
                 SearchTbox.Focus()
-            ElseIf SearchTbox.Text.Contains("Item") Then
+            ElseIf SearchTbox.Text.Contains("item") Then
                 ContractRecordsFRM.ActionTaken = "Search"
                 Select Case ContractRecordsFRM.SearchItemFN
                     Case "InitialF2"
