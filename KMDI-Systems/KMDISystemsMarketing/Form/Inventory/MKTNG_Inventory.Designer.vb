@@ -26,12 +26,12 @@ Partial Class MKTNG_Inventory
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MKTNG_Inventory))
         Me.ProjectDetailsLBL = New MetroFramework.Controls.MetroLabel()
         Me.MktngInventoryDGV = New ComponentFactory.Krypton.Toolkit.KryptonDataGridView()
-        Me.LoadingPB = New System.Windows.Forms.PictureBox()
         Me.MktngInv_Cmenu = New MetroFramework.Controls.MetroContextMenu(Me.components)
         Me.ColumnToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.LoadingPB = New System.Windows.Forms.PictureBox()
         CType(Me.MktngInventoryDGV, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.LoadingPB, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.MktngInv_Cmenu.SuspendLayout()
+        CType(Me.LoadingPB, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'ProjectDetailsLBL
@@ -51,8 +51,8 @@ Partial Class MKTNG_Inventory
         Me.MktngInventoryDGV.AllowUserToDeleteRows = False
         Me.MktngInventoryDGV.AllowUserToOrderColumns = True
         Me.MktngInventoryDGV.AllowUserToResizeRows = False
-        Me.MktngInventoryDGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells
-        Me.MktngInventoryDGV.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells
+        Me.MktngInventoryDGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
+        Me.MktngInventoryDGV.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells
         Me.MktngInventoryDGV.ColumnHeadersHeight = 30
         Me.MktngInventoryDGV.Cursor = System.Windows.Forms.Cursors.Hand
         Me.MktngInventoryDGV.Dock = System.Windows.Forms.DockStyle.Fill
@@ -84,6 +84,19 @@ Partial Class MKTNG_Inventory
         Me.MktngInventoryDGV.TabIndex = 610
         Me.MktngInventoryDGV.VirtualMode = True
         '
+        'MktngInv_Cmenu
+        '
+        Me.MktngInv_Cmenu.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        Me.MktngInv_Cmenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ColumnToolStripMenuItem})
+        Me.MktngInv_Cmenu.Name = "MktngInv_Cmenu"
+        Me.MktngInv_Cmenu.Size = New System.Drawing.Size(123, 26)
+        '
+        'ColumnToolStripMenuItem
+        '
+        Me.ColumnToolStripMenuItem.Name = "ColumnToolStripMenuItem"
+        Me.ColumnToolStripMenuItem.Size = New System.Drawing.Size(122, 22)
+        Me.ColumnToolStripMenuItem.Text = "Columns"
+        '
         'LoadingPB
         '
         Me.LoadingPB.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -94,19 +107,6 @@ Partial Class MKTNG_Inventory
         Me.LoadingPB.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.LoadingPB.TabIndex = 611
         Me.LoadingPB.TabStop = False
-        '
-        'MktngInv_Cmenu
-        '
-        Me.MktngInv_Cmenu.Font = New System.Drawing.Font("Segoe UI", 9.0!)
-        Me.MktngInv_Cmenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ColumnToolStripMenuItem})
-        Me.MktngInv_Cmenu.Name = "MktngInv_Cmenu"
-        Me.MktngInv_Cmenu.Size = New System.Drawing.Size(153, 48)
-        '
-        'ColumnToolStripMenuItem
-        '
-        Me.ColumnToolStripMenuItem.Name = "ColumnToolStripMenuItem"
-        Me.ColumnToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
-        Me.ColumnToolStripMenuItem.Text = "Columns"
         '
         'MKTNG_Inventory
         '
@@ -123,8 +123,8 @@ Partial Class MKTNG_Inventory
         Me.Style = MetroFramework.MetroColorStyle.Teal
         Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
         CType(Me.MktngInventoryDGV, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.LoadingPB, System.ComponentModel.ISupportInitialize).EndInit()
         Me.MktngInv_Cmenu.ResumeLayout(False)
+        CType(Me.LoadingPB, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

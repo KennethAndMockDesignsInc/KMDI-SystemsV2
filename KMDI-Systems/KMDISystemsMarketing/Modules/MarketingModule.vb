@@ -2,6 +2,9 @@
 Module MarketingModule
     Public Mktng_SearchStr As String = Nothing
     Public Mktng_QUERY_INSTANCE As String = Nothing
+
+    Public OpenedByFormName As Form
+    Public DGVStrGlobal As String
     Public Sub Mktng_Query_Select_STP(ByVal SearchString As String,
                                       Optional StoredProcedureName As String = "",
                                       Optional WillUseReader As Boolean = False)

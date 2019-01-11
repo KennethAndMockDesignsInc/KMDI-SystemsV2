@@ -1,4 +1,6 @@
 ﻿Imports System.ComponentModel
+Imports System.IO
+Imports System.Net
 Public Class MKTNG_Inventory
     Public MktngInventory_BGW As BackgroundWorker = New BackgroundWorker
     Public MktngInv_TODO As String
@@ -87,6 +89,7 @@ Public Class MKTNG_Inventory
                             .Columns("DATE PURCHASED").DefaultCellStyle.Format = "MMM. dd, yyyy"
                             .DefaultCellStyle.BackColor = Color.White
                             .AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke
+
                         End With
                     End If
                 Else
@@ -130,7 +133,8 @@ Public Class MKTNG_Inventory
 
     Private Sub ColumnToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ColumnToolStripMenuItem.Click
         Try
-            ColumnVisibility.CreateMetroChkBoxes(Me, "MktngInventoryDGV")
+            OpenedByFormName = Me
+            DGVStrGlobal = "MktngInventoryDGV"
             Dim frm As Form = ColumnVisibility
             Select Case frm.Visible
                 Case True
