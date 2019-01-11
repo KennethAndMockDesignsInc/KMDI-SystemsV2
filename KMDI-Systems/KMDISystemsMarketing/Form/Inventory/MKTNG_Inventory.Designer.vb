@@ -54,7 +54,6 @@ Partial Class MKTNG_Inventory
         Me.MktngInventoryDGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
         Me.MktngInventoryDGV.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells
         Me.MktngInventoryDGV.ColumnHeadersHeight = 30
-        Me.MktngInventoryDGV.Cursor = System.Windows.Forms.Cursors.Hand
         Me.MktngInventoryDGV.Dock = System.Windows.Forms.DockStyle.Fill
         Me.MktngInventoryDGV.Location = New System.Drawing.Point(21, 60)
         Me.MktngInventoryDGV.MultiSelect = False

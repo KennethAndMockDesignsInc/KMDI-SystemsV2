@@ -2,6 +2,9 @@
 'Imports System.Net
 
 Public Class ViewInventoryImage
+    Private Sub ViewInventoryImage_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+    End Sub
     '    Public ImageDisplay As String
     '    Private m_PanStartPoint As New Point
 

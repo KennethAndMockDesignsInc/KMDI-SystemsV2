@@ -1,13 +1,13 @@
 ﻿Imports System.ComponentModel
 Imports System.IO
 Imports System.Net
-Public Class MKTNG_Inventory
+Public Class MKTNG_Inventory2
     Public MktngInventory_BGW As BackgroundWorker = New BackgroundWorker
     Public MktngInv_TODO As String
 
     Public Sub Start_MktngInventoryBGW()
         If MktngInventory_BGW.IsBusy <> True Then
-            MktngInventoryDGV.Enabled = False
+            'MktngInventoryDGV.Enabled = False
             LoadingPB.Visible = True
             MktngInventory_BGW.RunWorkerAsync()
         Else
@@ -77,23 +77,13 @@ Public Class MKTNG_Inventory
                 ElseIf (sql_Err_no = "" Or sql_Err_no = Nothing) AndAlso
                        (sql_Err_msg = "" Or sql_Err_msg = Nothing) Then
                     If sql_Transaction_result = "Committed" Then
-                        MktngInventoryDGV.DataSource = Nothing
-                        MktngInventoryDGV.Enabled = True
-                        MktngInventoryDGV.DataSource = sqlBindingSource
-
-                        With MktngInventoryDGV
-                            .Columns("MI_ID").Visible = False
-                            .Columns("ITEM CODE").Visible = False
-                            .Columns("ITEM_PICTURE").Visible = False
-                            .Columns("MI_STATUS").Visible = False
-                            .Columns("PURCHASED PRICE").Visible = False
-                            .Columns("DISCOUNT").Visible = False
-                            .Columns("GENDER").Visible = False
-                            .Columns("DATE PURCHASED").DefaultCellStyle.Format = "MMM. dd, yyyy"
-                            .DefaultCellStyle.BackColor = Color.White
-                            .AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke
-
-                        End With
+                        For Each row In sqlBindingSource
+                            PictureBox1.ImageLocation = row("ITEM_PICTURE").ToString
+                            Label1.Text = row("DESCRIPTION") & vbCrLf &
+                                              row("BRAND") & vbCrLf &
+                                              row("COLOR") & vbCrLf &
+                                              row("QUANTITY") & vbCrLf
+                        Next
                     End If
                 Else
                     Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
@@ -109,8 +99,8 @@ Public Class MKTNG_Inventory
             RESET()
 
             LoadingPB.Visible = False
-            MktngInventoryDGV.Focus()
-            MktngInventoryDGV.Select()
+            'MktngInventoryDGV.Focus()
+            'MktngInventoryDGV.Select()
 
         Catch ex As Exception
             MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
@@ -123,42 +113,38 @@ Public Class MKTNG_Inventory
         End Try
     End Sub
 
-    Private Sub MktngInventoryDGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs) Handles MktngInventoryDGV.RowPostPaint
-        rowpostpaint(sender, e)
-    End Sub
+    'Private Sub MktngInventoryDGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs) Handles MktngInventoryDGV.RowPostPaint
+    '    rowpostpaint(sender, e)
+    'End Sub
 
-    Private Sub MktngInventoryDGV_ColumnHeaderMouseClick(sender As Object, e As DataGridViewCellMouseEventArgs) Handles MktngInventoryDGV.ColumnHeaderMouseClick
-        If e.Button = MouseButtons.Right Then
-            MktngInv_Cmenu.Show()
-            MktngInv_Cmenu.Location = New Point(MousePosition.X, MousePosition.Y)
-        End If
-    End Sub
+    'Private Sub MktngInventoryDGV_ColumnHeaderMouseClick(sender As Object, e As DataGridViewCellMouseEventArgs) Handles MktngInventoryDGV.ColumnHeaderMouseClick
+    '    If e.Button = MouseButtons.Right Then
+    '        MktngInv_Cmenu.Show()
+    '        MktngInv_Cmenu.Location = New Point(MousePosition.X, MousePosition.Y)
+    '    End If
+    'End Sub
 
-    Private Sub ColumnToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ColumnToolStripMenuItem.Click
-        Try
-            OpenedByFormName = Me
-            DGVStrGlobal = "MktngInventoryDGV"
-            Dim frm As Form = ColumnVisibility
-            Select Case frm.Visible
-                Case True
-                    frm.BringToFront()
-                Case False
-                    frm.Show()
-                    frm.BringToFront()
-            End Select
-            Enabled = False
-        Catch ex As Exception
-            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
-                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
-            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-                                       "Error Message: " & ex.Message & vbCrLf &
-                                       "Trace: " & ex.StackTrace & vbCrLf)
-            Log_File.Close()
-        End Try
-    End Sub
-
-    Private Sub ProjectDetailsLBL_Click(sender As Object, e As EventArgs) Handles ProjectDetailsLBL.Click
-        MKTNG_Inventory2.Show()
-    End Sub
+    'Private Sub ColumnToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ColumnToolStripMenuItem.Click
+    '    Try
+    '        OpenedByFormName = Me
+    '        DGVStrGlobal = "MktngInventoryDGV"
+    '        Dim frm As Form = ColumnVisibility
+    '        Select Case frm.Visible
+    '            Case True
+    '                frm.BringToFront()
+    '            Case False
+    '                frm.Show()
+    '                frm.BringToFront()
+    '        End Select
+    '        Enabled = False
+    '    Catch ex As Exception
+    '        MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
+    '                                            MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '        Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+    '        Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+    '                                   "Error Message: " & ex.Message & vbCrLf &
+    '                                   "Trace: " & ex.StackTrace & vbCrLf)
+    '        Log_File.Close()
+    '    End Try
+    'End Sub
 End Class
