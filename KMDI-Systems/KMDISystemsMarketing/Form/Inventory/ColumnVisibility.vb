@@ -22,7 +22,7 @@ Public Class ColumnVisibility
     Private Sub OkBtn_Click(sender As Object, e As EventArgs) Handles OkBtn.Click
         MKTNG_Inventory.Enabled = True
         MKTNG_Inventory.BringToFront()
-        Me.Dispose()
+        Hide()
     End Sub
 
     Private Sub ColumnVisibility_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing

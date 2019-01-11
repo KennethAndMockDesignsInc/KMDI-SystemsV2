@@ -24,7 +24,7 @@ Partial Class MKTNG_Inventory
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MKTNG_Inventory))
-        Me.ProjectDetailsLBL = New MetroFramework.Controls.MetroLabel()
+        Me.Mktng_InvLBL = New MetroFramework.Controls.MetroLabel()
         Me.MktngInventoryDGV = New ComponentFactory.Krypton.Toolkit.KryptonDataGridView()
         Me.MktngInv_Cmenu = New MetroFramework.Controls.MetroContextMenu(Me.components)
         Me.ColumnToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -34,16 +34,16 @@ Partial Class MKTNG_Inventory
         CType(Me.LoadingPB, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
-        'ProjectDetailsLBL
+        'Mktng_InvLBL
         '
-        Me.ProjectDetailsLBL.AutoSize = True
-        Me.ProjectDetailsLBL.FontSize = MetroFramework.MetroLabelSize.Tall
-        Me.ProjectDetailsLBL.FontWeight = MetroFramework.MetroLabelWeight.Bold
-        Me.ProjectDetailsLBL.Location = New System.Drawing.Point(15, 24)
-        Me.ProjectDetailsLBL.Name = "ProjectDetailsLBL"
-        Me.ProjectDetailsLBL.Size = New System.Drawing.Size(156, 25)
-        Me.ProjectDetailsLBL.TabIndex = 608
-        Me.ProjectDetailsLBL.Text = "I N V E N T O R Y"
+        Me.Mktng_InvLBL.AutoSize = True
+        Me.Mktng_InvLBL.FontSize = MetroFramework.MetroLabelSize.Tall
+        Me.Mktng_InvLBL.FontWeight = MetroFramework.MetroLabelWeight.Bold
+        Me.Mktng_InvLBL.Location = New System.Drawing.Point(15, 24)
+        Me.Mktng_InvLBL.Name = "Mktng_InvLBL"
+        Me.Mktng_InvLBL.Size = New System.Drawing.Size(156, 25)
+        Me.Mktng_InvLBL.TabIndex = 608
+        Me.Mktng_InvLBL.Text = "I N V E N T O R Y"
         '
         'MktngInventoryDGV
         '
@@ -114,7 +114,7 @@ Partial Class MKTNG_Inventory
         Me.ClientSize = New System.Drawing.Size(1024, 700)
         Me.Controls.Add(Me.LoadingPB)
         Me.Controls.Add(Me.MktngInventoryDGV)
-        Me.Controls.Add(Me.ProjectDetailsLBL)
+        Me.Controls.Add(Me.Mktng_InvLBL)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
         Me.Name = "MKTNG_Inventory"
         Me.Padding = New System.Windows.Forms.Padding(21, 60, 21, 20)
@@ -129,7 +129,7 @@ Partial Class MKTNG_Inventory
 
     End Sub
 
-    Friend WithEvents ProjectDetailsLBL As MetroFramework.Controls.MetroLabel
+    Friend WithEvents Mktng_InvLBL As MetroFramework.Controls.MetroLabel
     Friend WithEvents MktngInventoryDGV As ComponentFactory.Krypton.Toolkit.KryptonDataGridView
     Friend WithEvents LoadingPB As PictureBox
     Friend WithEvents MktngInv_Cmenu As MetroFramework.Controls.MetroContextMenu

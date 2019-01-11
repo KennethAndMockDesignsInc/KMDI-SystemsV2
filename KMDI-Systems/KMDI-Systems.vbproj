@@ -259,16 +259,16 @@
     <Compile Include="KMDISystemsMarketing\Form\Inventory\MKTNG_Inventory.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="KMDISystemsMarketing\Form\Inventory\MKTNG_Inventory2.Designer.vb">
-      <DependentUpon>MKTNG_Inventory2.vb</DependentUpon>
-    </Compile>
-    <Compile Include="KMDISystemsMarketing\Form\Inventory\MKTNG_Inventory2.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="KMDISystemsMarketing\Form\Inventory\ViewInventoryImage.Designer.vb">
       <DependentUpon>ViewInventoryImage.vb</DependentUpon>
     </Compile>
     <Compile Include="KMDISystemsMarketing\Form\Inventory\ViewInventoryImage.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="KMDISystemsMarketing\Form\MKTNG_SearchFRM.Designer.vb">
+      <DependentUpon>MKTNG_SearchFRM.vb</DependentUpon>
+    </Compile>
+    <Compile Include="KMDISystemsMarketing\Form\MKTNG_SearchFRM.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="KMDISystemsMarketing\Modules\MarketingModule.vb" />
@@ -435,11 +435,11 @@
     <EmbeddedResource Include="KMDISystemsMarketing\Form\Inventory\MKTNG_Inventory.resx">
       <DependentUpon>MKTNG_Inventory.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="KMDISystemsMarketing\Form\Inventory\MKTNG_Inventory2.resx">
-      <DependentUpon>MKTNG_Inventory2.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="KMDISystemsMarketing\Form\Inventory\ViewInventoryImage.resx">
       <DependentUpon>ViewInventoryImage.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KMDISystemsMarketing\Form\MKTNG_SearchFRM.resx">
+      <DependentUpon>MKTNG_SearchFRM.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="KMDISystemsProjectDetails\Forms\Addendum\PD_Addendum.resx">
       <DependentUpon>PD_Addendum.vb</DependentUpon>

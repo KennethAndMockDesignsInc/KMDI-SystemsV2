@@ -31,6 +31,41 @@ Module KMDISystemsGlobalModule
         sql_Transaction_result = ""
     End Sub
 
+    Public Sub KMDIPrompts(ByVal FormName As Form,
+                           ByVal PromptMode As String,
+                           Optional sql_Err_msg As String = "",
+                           Optional sql_Err_StackTrace As String = "",
+                           Optional sql_Err_no As String = "",
+                           Optional WillPrompt As Boolean = False)
+        Select Case PromptMode
+            Case "DotNetError"
+                Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+                Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                           "Error Message: " & sql_Err_msg & vbCrLf &
+                                           "Trace: " & sql_Err_StackTrace & vbCrLf)
+                Log_File.Close()
+
+            Case "SqlError"
+                Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+                Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "SQL Transaction Error Number: " & sql_Err_no & vbCrLf &
+                                       "SQL Transaction Error Message: " & sql_Err_msg & vbCrLf &
+                                       "Trace: " & sql_Err_StackTrace & vbCrLf)
+                Log_File.Close()
+        End Select
+        Select Case WillPrompt
+            Case True
+                Select Case PromptMode
+                    Case "DotNetError"
+                        MetroFramework.MetroMessageBox.Show(FormName, "Please Refer to Error_Logs.txt", "Error",
+                                                            MessageBoxButtons.OK, MessageBoxIcon.Error)
+                    Case "SqlError"
+                        MetroFramework.MetroMessageBox.Show(FormName, "Transaction failed", "Contact the Developers",
+                                                            MessageBoxButtons.OK, MessageBoxIcon.Error)
+                End Select
+        End Select
+    End Sub
+
     Public Sub rowpostpaint(ByVal sender As Object, ByVal e As DataGridViewRowPostPaintEventArgs)
         Dim grid As DataGridView = DirectCast(sender, DataGridView)
         e.PaintHeader(DataGridViewPaintParts.Background)

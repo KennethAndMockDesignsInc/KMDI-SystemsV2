@@ -1,4 +1,5 @@
 ﻿Imports System.ComponentModel
+Imports System.Data.SqlClient
 Imports System.IO
 Imports System.Net
 Public Class MKTNG_Inventory
@@ -24,13 +25,7 @@ Public Class MKTNG_Inventory
             MktngInv_TODO = "Onload"
             Start_MktngInventoryBGW()
         Catch ex As Exception
-            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
-                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
-            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-                                       "Error Message: " & ex.Message & vbCrLf &
-                                       "Trace: " & ex.StackTrace & vbCrLf)
-            Log_File.Close()
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace)
         End Try
     End Sub
     Private Sub MktngInventory_BGW_DoWork(sender As Object, e As DoWorkEventArgs)
@@ -38,24 +33,35 @@ Public Class MKTNG_Inventory
             Select Case MktngInv_TODO
                 Case "Onload"
                     Mktng_QUERY_INSTANCE = "Loading_using_SearchString"
-                    Mktng_Query_Select_STP("", "MKTNG_stp_Inv_Search")
+                    Mktng_Query_Select_STP(Me, "", "MKTNG_stp_Inv_Search")
+                Case "Search"
+                    Mktng_QUERY_INSTANCE = "Loading_using_SearchString"
+                    Mktng_Query_Select_STP(Me, Mktng_SearchStr, "MKTNG_stp_Inv_Search")
             End Select
-        Catch ex As Exception
-            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
-                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
-            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-                                       "Error Message: " & ex.Message & vbCrLf &
-                                       "Trace: " & ex.StackTrace & vbCrLf)
-            Log_File.Close()
+        Catch ex As SqlException
+            'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
+            'Dito ako naglagay ng SqlException dahil hindi makaCancel ang BGW sa ibang Class
+            sql_err_bool = True
+            MktngInventory_BGW.CancelAsync()
+            KMDIPrompts(Me, "SqlError", ex.Message, ex.StackTrace, ex.Number, True)
+            Try
+                transaction.Rollback()
+                sql_Transaction_result = "Rollback"
+            Catch ex2 As Exception
+                KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace)
+            End Try
         End Try
+
+        If MktngInventory_BGW.CancellationPending Then
+            e.Cancel = True
+        End If
     End Sub
+    Public ColumnVisibility_Opened As Boolean = False
     Private Sub MktngInventory_BGW_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs)
         Try
             If e.Error IsNot Nothing Or e.Cancelled = True Then
-                '' if BackgroundWorker terminated due to error
-                MetroFramework.MetroMessageBox.Show(Me, "Error Occured", "Closing", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Me.Close()
+                ' if BackgroundWorker terminated due to error
+                LoadingPB.Visible = False
             Else
                 '' otherwise it completed normally
                 If sql_Err_no = -2 Then
@@ -82,27 +88,47 @@ Public Class MKTNG_Inventory
                         MktngInventoryDGV.DataSource = sqlBindingSource
 
                         With MktngInventoryDGV
-                            .Columns("MI_ID").Visible = False
-                            .Columns("ITEM CODE").Visible = False
                             .Columns("ITEM_PICTURE").Visible = False
                             .Columns("MI_STATUS").Visible = False
-                            .Columns("PURCHASED PRICE").Visible = False
-                            .Columns("DISCOUNT").Visible = False
-                            .Columns("GENDER").Visible = False
-                            .Columns("DATE PURCHASED").DefaultCellStyle.Format = "MMM. dd, yyyy"
-                            .DefaultCellStyle.BackColor = Color.White
-                            .AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke
-
                         End With
+                        Select Case MktngInv_TODO
+                            Case "Onload"
+                                With MktngInventoryDGV
+                                    .Columns("MI_ID").Visible = False
+                                    .Columns("ITEM CODE").Visible = False
+                                    .Columns("PURCHASED PRICE").Visible = False
+                                    .Columns("DISCOUNT").Visible = False
+                                    .Columns("GENDER").Visible = False
+                                    .Columns("DATE PURCHASED").DefaultCellStyle.Format = "MMM. dd, yyyy"
+                                    .DefaultCellStyle.BackColor = Color.White
+                                    .AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke
+                                End With
+                            Case "Search"
+                                If ColumnVisibility_Opened = True Then
+
+                                    With ColumnVisibility
+                                        For Each ctrl In .FLP_ColumnInvi.Controls
+                                            For Each dgvCol In MktngInventoryDGV.Columns
+                                                If ctrl.name = dgvCol.HeaderText Then
+                                                    dgvCol.Visible = ctrl.Checked
+                                                End If
+                                            Next
+                                        Next
+                                    End With
+                                Else
+                                    With MktngInventoryDGV
+                                        .Columns("MI_ID").Visible = False
+                                        .Columns("ITEM CODE").Visible = False
+                                        .Columns("PURCHASED PRICE").Visible = False
+                                        .Columns("DISCOUNT").Visible = False
+                                        .Columns("GENDER").Visible = False
+                                        .Columns("DATE PURCHASED").DefaultCellStyle.Format = "MMM. dd, yyyy"
+                                        .DefaultCellStyle.BackColor = Color.White
+                                        .AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke
+                                    End With
+                                End If
+                        End Select
                     End If
-                Else
-                    Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
-                    Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-                                           "SQL Transaction Error Number: " & sql_Err_no & vbCrLf &
-                                           "SQL Transaction Error Message: " & sql_Err_msg & vbCrLf &
-                                           "Trace: " & sql_Err_StackTrace & vbCrLf)
-                    Log_File.Close()
-                    MetroFramework.MetroMessageBox.Show(Me, "Transaction failed", "Contact the Developers", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 End If
             End If
 
@@ -113,13 +139,7 @@ Public Class MKTNG_Inventory
             MktngInventoryDGV.Select()
 
         Catch ex As Exception
-            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
-                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
-            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-                                       "Error Message: " & ex.Message & vbCrLf &
-                                       "Trace: " & ex.StackTrace & vbCrLf)
-            Log_File.Close()
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, True)
         End Try
     End Sub
 
@@ -146,19 +166,33 @@ Public Class MKTNG_Inventory
                     frm.Show()
                     frm.BringToFront()
             End Select
+            ColumnVisibility_Opened = True
             Enabled = False
         Catch ex As Exception
-            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
-                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
-            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-                                       "Error Message: " & ex.Message & vbCrLf &
-                                       "Trace: " & ex.StackTrace & vbCrLf)
-            Log_File.Close()
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace)
         End Try
     End Sub
 
-    Private Sub ProjectDetailsLBL_Click(sender As Object, e As EventArgs) Handles ProjectDetailsLBL.Click
-        MKTNG_Inventory2.Show()
+    Private Sub SearchFn(sender As Object, e As KeyEventArgs) Handles MktngInventoryDGV.KeyDown, Me.KeyDown, Mktng_InvLBL.KeyDown
+        Try
+            If e.KeyCode = Keys.F2 Or (e.Control And e.KeyCode = Keys.F) Then
+                MKTNG_SearchFRM.Show()
+                MKTNG_SearchFRM.TopMost = True
+            ElseIf e.KeyCode = Keys.F5 Or e.KeyCode = Keys.Back Then
+                MktngInv_TODO = "Search"
+                Mktng_SearchStr = ""
+                Start_MktngInventoryBGW()
+            ElseIf e.KeyCode = Keys.Escape Then
+                Close()
+            End If
+        Catch ex As Exception
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace)
+        End Try
     End Sub
+
+    'Private Sub MktngInventoryDGV_ColumnStateChanged(sender As Object, e As DataGridViewColumnStateChangedEventArgs) Handles MktngInventoryDGV.ColumnStateChanged
+    '    If e.StateChanged = DataGridViewElementStates.Visible Then
+    '        MsgBox("Visible Property of " & e.Column.Name & " changed")
+    '    End If
+    'End Sub
 End Class
