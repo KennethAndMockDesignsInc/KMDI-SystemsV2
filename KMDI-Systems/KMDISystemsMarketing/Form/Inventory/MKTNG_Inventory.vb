@@ -105,11 +105,10 @@ Public Class MKTNG_Inventory
                                 End With
                             Case "Search"
                                 If ColumnVisibility_Opened = True Then
-
                                     With ColumnVisibility
                                         For Each ctrl In .FLP_ColumnInvi.Controls
                                             For Each dgvCol In MktngInventoryDGV.Columns
-                                                If ctrl.name = dgvCol.HeaderText Then
+                                                If ctrl.Name = dgvCol.HeaderText Then
                                                     dgvCol.Visible = ctrl.Checked
                                                 End If
                                             Next
@@ -131,9 +130,7 @@ Public Class MKTNG_Inventory
                     End If
                 End If
             End If
-
             RESET()
-
             LoadingPB.Visible = False
             MktngInventoryDGV.Focus()
             MktngInventoryDGV.Select()
@@ -149,6 +146,9 @@ Public Class MKTNG_Inventory
 
     Private Sub MktngInventoryDGV_ColumnHeaderMouseClick(sender As Object, e As DataGridViewCellMouseEventArgs) Handles MktngInventoryDGV.ColumnHeaderMouseClick
         If e.Button = MouseButtons.Right Then
+            ColumnToolStripMenuItem.Visible = True
+            ItemToolStripMenuItem.Visible = False
+            AddQuantityToolStripMenuItem.Visible = False
             MktngInv_Cmenu.Show()
             MktngInv_Cmenu.Location = New Point(MousePosition.X, MousePosition.Y)
         End If
@@ -190,9 +190,57 @@ Public Class MKTNG_Inventory
         End Try
     End Sub
 
-    'Private Sub MktngInventoryDGV_ColumnStateChanged(sender As Object, e As DataGridViewColumnStateChangedEventArgs) Handles MktngInventoryDGV.ColumnStateChanged
-    '    If e.StateChanged = DataGridViewElementStates.Visible Then
-    '        MsgBox("Visible Property of " & e.Column.Name & " changed")
-    '    End If
-    'End Sub
+    Private Sub MktngInventoryDGV_CellMouseClick(sender As Object, e As DataGridViewCellMouseEventArgs) Handles MktngInventoryDGV.CellMouseClick
+        Try
+            If e.Button = MouseButtons.Right Then
+                MktngInventoryDGV.Rows(e.RowIndex).Selected = True
+                ColumnToolStripMenuItem.Visible = False
+                ItemToolStripMenuItem.Visible = True
+                AddQuantityToolStripMenuItem.Visible = True
+                MktngInv_Cmenu.Show()
+                MktngInv_Cmenu.Location = New Point(MousePosition.X, MousePosition.Y)
+            End If
+        Catch ex As Exception
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace)
+        End Try
+    End Sub
+
+    Sub MKTNG_Item_Open()
+        Dim frm As Form = MKTNG_Item
+        Select Case frm.Visible
+            Case True
+                frm.BringToFront()
+            Case False
+                frm.Show()
+                frm.BringToFront()
+        End Select
+    End Sub
+
+    Private Sub AddItemToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles AddItemToolStripMenuItem1.Click
+        Try
+            MKTNG_Item.OpenedByToolStripMenu = "Add"
+            MKTNG_Item_Open()
+        Catch ex As Exception
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace)
+        End Try
+    End Sub
+
+    Private Sub UpdateItemToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles UpdateItemToolStripMenuItem1.Click
+        Try
+            MKTNG_Item.OpenedByToolStripMenu = "Update"
+            MKTNG_Item_Open()
+        Catch ex As Exception
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace)
+        End Try
+    End Sub
+
+    Private Sub DeleteItemToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles DeleteItemToolStripMenuItem1.Click
+        Try
+            MKTNG_Item.OpenedByToolStripMenu = "Delete"
+            MKTNG_Item_Open()
+        Catch ex As Exception
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace)
+        End Try
+    End Sub
+
 End Class

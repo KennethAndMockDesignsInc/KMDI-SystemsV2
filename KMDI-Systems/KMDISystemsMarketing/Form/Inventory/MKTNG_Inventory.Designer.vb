@@ -28,6 +28,11 @@ Partial Class MKTNG_Inventory
         Me.MktngInventoryDGV = New ComponentFactory.Krypton.Toolkit.KryptonDataGridView()
         Me.MktngInv_Cmenu = New MetroFramework.Controls.MetroContextMenu(Me.components)
         Me.ColumnToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ItemToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AddItemToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.UpdateItemToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.DeleteItemToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AddQuantityToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.LoadingPB = New System.Windows.Forms.PictureBox()
         CType(Me.MktngInventoryDGV, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.MktngInv_Cmenu.SuspendLayout()
@@ -86,15 +91,46 @@ Partial Class MKTNG_Inventory
         'MktngInv_Cmenu
         '
         Me.MktngInv_Cmenu.Font = New System.Drawing.Font("Segoe UI", 9.0!)
-        Me.MktngInv_Cmenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ColumnToolStripMenuItem})
+        Me.MktngInv_Cmenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ColumnToolStripMenuItem, Me.ItemToolStripMenuItem, Me.AddQuantityToolStripMenuItem})
         Me.MktngInv_Cmenu.Name = "MktngInv_Cmenu"
-        Me.MktngInv_Cmenu.Size = New System.Drawing.Size(123, 26)
+        Me.MktngInv_Cmenu.Size = New System.Drawing.Size(153, 92)
         '
         'ColumnToolStripMenuItem
         '
         Me.ColumnToolStripMenuItem.Name = "ColumnToolStripMenuItem"
-        Me.ColumnToolStripMenuItem.Size = New System.Drawing.Size(122, 22)
+        Me.ColumnToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.ColumnToolStripMenuItem.Text = "Columns"
+        '
+        'ItemToolStripMenuItem
+        '
+        Me.ItemToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AddItemToolStripMenuItem1, Me.UpdateItemToolStripMenuItem1, Me.DeleteItemToolStripMenuItem1})
+        Me.ItemToolStripMenuItem.Name = "ItemToolStripMenuItem"
+        Me.ItemToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.ItemToolStripMenuItem.Text = "Item"
+        '
+        'AddItemToolStripMenuItem1
+        '
+        Me.AddItemToolStripMenuItem1.Name = "AddItemToolStripMenuItem1"
+        Me.AddItemToolStripMenuItem1.Size = New System.Drawing.Size(152, 22)
+        Me.AddItemToolStripMenuItem1.Text = "Add"
+        '
+        'UpdateItemToolStripMenuItem1
+        '
+        Me.UpdateItemToolStripMenuItem1.Name = "UpdateItemToolStripMenuItem1"
+        Me.UpdateItemToolStripMenuItem1.Size = New System.Drawing.Size(152, 22)
+        Me.UpdateItemToolStripMenuItem1.Text = "Update"
+        '
+        'DeleteItemToolStripMenuItem1
+        '
+        Me.DeleteItemToolStripMenuItem1.Name = "DeleteItemToolStripMenuItem1"
+        Me.DeleteItemToolStripMenuItem1.Size = New System.Drawing.Size(152, 22)
+        Me.DeleteItemToolStripMenuItem1.Text = "Delete"
+        '
+        'AddQuantityToolStripMenuItem
+        '
+        Me.AddQuantityToolStripMenuItem.Name = "AddQuantityToolStripMenuItem"
+        Me.AddQuantityToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.AddQuantityToolStripMenuItem.Text = "Add Quantity"
         '
         'LoadingPB
         '
@@ -134,4 +170,9 @@ Partial Class MKTNG_Inventory
     Friend WithEvents LoadingPB As PictureBox
     Friend WithEvents MktngInv_Cmenu As MetroFramework.Controls.MetroContextMenu
     Friend WithEvents ColumnToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ItemToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents AddItemToolStripMenuItem1 As ToolStripMenuItem
+    Friend WithEvents UpdateItemToolStripMenuItem1 As ToolStripMenuItem
+    Friend WithEvents DeleteItemToolStripMenuItem1 As ToolStripMenuItem
+    Friend WithEvents AddQuantityToolStripMenuItem As ToolStripMenuItem
 End Class
