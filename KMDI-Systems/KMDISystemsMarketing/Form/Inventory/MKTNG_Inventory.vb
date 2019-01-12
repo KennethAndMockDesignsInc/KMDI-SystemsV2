@@ -243,4 +243,28 @@ Public Class MKTNG_Inventory
         End Try
     End Sub
 
+    Private Sub MKTNG_Inventory_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        If MetroFramework.MetroMessageBox.Show(Me, "Are you sure you want to Exit?", " ", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then
+            e.Cancel = True
+        Else
+            KMDI_MainFRM.BringToFront()
+
+            'PD_UpdateHeader.Dispose()
+            'PD_SearchFRM.Dispose()
+            'NewProject_Register.Dispose()
+
+            'PD_Addendum.Dispose()
+            'PD_TechPartners.Dispose()
+            'PD_UpdateCOMP.Dispose()
+            'PD_UpdateEMP.Dispose()
+
+            'PD_SalesJobOrder.Dispose()
+            'PD_PertDetails.Dispose()
+            'PD_JoAttach.Dispose()
+
+            Dispose()
+
+            e.Cancel = False
+        End If
+    End Sub
 End Class

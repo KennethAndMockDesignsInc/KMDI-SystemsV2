@@ -35,7 +35,7 @@ Module KMDISystemsGlobalModule
                            ByVal PromptMode As String,
                            Optional sql_Err_msg As String = "",
                            Optional sql_Err_StackTrace As String = "",
-                           Optional sql_Err_no As String = "",
+                           Optional sql_Err_no As Integer = Nothing,
                            Optional WillPrompt As Boolean = False)
         Select Case PromptMode
             Case "DotNetError"
@@ -60,8 +60,17 @@ Module KMDISystemsGlobalModule
                         MetroFramework.MetroMessageBox.Show(FormName, "Please Refer to Error_Logs.txt", "Error",
                                                             MessageBoxButtons.OK, MessageBoxIcon.Error)
                     Case "SqlError"
-                        MetroFramework.MetroMessageBox.Show(FormName, "Transaction failed", "Contact the Developers",
-                                                            MessageBoxButtons.OK, MessageBoxIcon.Error)
+                        Select Case sql_Err_no
+                            Case -2
+                                MetroFramework.MetroMessageBox.Show(FormName, " ", "Request Timeout", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                            Case 1232 Or 121
+                                MetroFramework.MetroMessageBox.Show(FormName, "Please check internet connection", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                            Case 19
+                                MetroFramework.MetroMessageBox.Show(FormName, "Server is under maintenance." & vbCrLf & "Please be patient, will come back A.S.A.P", "Server is down", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                            Case Else
+                                MetroFramework.MetroMessageBox.Show(FormName, "Transaction failed", "Contact the Developers",
+                                                                    MessageBoxButtons.OK, MessageBoxIcon.Error)
+                        End Select
                 End Select
         End Select
     End Sub

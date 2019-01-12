@@ -22,12 +22,26 @@ Partial Class MKTNG_Item
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MKTNG_Item))
         Me.Mktng_InvLBL = New MetroFramework.Controls.MetroLabel()
         Me.FRM_Pnl = New MetroFramework.Controls.MetroPanel()
+        Me.SubClass_Tbox = New MetroFramework.Controls.MetroTextBox()
+        Me.MainClass_Tbox = New MetroFramework.Controls.MetroTextBox()
+        Me.MetroButton1 = New MetroFramework.Controls.MetroButton()
+        Me.SubClass_FLP = New System.Windows.Forms.FlowLayoutPanel()
+        Me.MainClass_FLP = New System.Windows.Forms.FlowLayoutPanel()
+        Me.MetroCheckBox9 = New MetroFramework.Controls.MetroCheckBox()
+        Me.MetroCheckBox8 = New MetroFramework.Controls.MetroCheckBox()
+        Me.MetroLabel2 = New MetroFramework.Controls.MetroLabel()
+        Me.Tier7_Chk = New MetroFramework.Controls.MetroCheckBox()
+        Me.Tier6_Chk = New MetroFramework.Controls.MetroCheckBox()
+        Me.Tier5_Chk = New MetroFramework.Controls.MetroCheckBox()
+        Me.Tier4_Chk = New MetroFramework.Controls.MetroCheckBox()
+        Me.Tier3_Chk = New MetroFramework.Controls.MetroCheckBox()
+        Me.Tier2_Chk = New MetroFramework.Controls.MetroCheckBox()
         Me.Tier1_Chk = New MetroFramework.Controls.MetroCheckBox()
         Me.MetroLabel15 = New MetroFramework.Controls.MetroLabel()
         Me.PurchasedDate_dtp = New MetroFramework.Controls.MetroDateTime()
-        Me.GenerateQR_btn = New MetroFramework.Controls.MetroTextBox.MetroTextButton()
         Me.RemarksTbox = New MetroFramework.Controls.MetroTextBox()
         Me.MetroLabel14 = New MetroFramework.Controls.MetroLabel()
         Me.PurchasedDateTbox = New MetroFramework.Controls.MetroTextBox()
@@ -48,23 +62,9 @@ Partial Class MKTNG_Item
         Me.ItemDesTbox = New MetroFramework.Controls.MetroTextBox()
         Me.ColorTbox = New MetroFramework.Controls.MetroTextBox()
         Me.SizeTbox = New MetroFramework.Controls.MetroTextBox()
-        Me.Tier2_Chk = New MetroFramework.Controls.MetroCheckBox()
-        Me.Tier3_Chk = New MetroFramework.Controls.MetroCheckBox()
-        Me.Tier4_Chk = New MetroFramework.Controls.MetroCheckBox()
-        Me.Tier5_Chk = New MetroFramework.Controls.MetroCheckBox()
-        Me.Tier6_Chk = New MetroFramework.Controls.MetroCheckBox()
-        Me.Tier7_Chk = New MetroFramework.Controls.MetroCheckBox()
-        Me.MetroLabel2 = New MetroFramework.Controls.MetroLabel()
-        Me.MetroCheckBox8 = New MetroFramework.Controls.MetroCheckBox()
-        Me.MetroCheckBox9 = New MetroFramework.Controls.MetroCheckBox()
-        Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
-        Me.FlowLayoutPanel2 = New System.Windows.Forms.FlowLayoutPanel()
-        Me.MetroRadioButton1 = New MetroFramework.Controls.MetroRadioButton()
-        Me.MetroCheckBox10 = New MetroFramework.Controls.MetroCheckBox()
-        Me.MetroButton1 = New MetroFramework.Controls.MetroButton()
+        Me.LoadingPB = New System.Windows.Forms.PictureBox()
         Me.FRM_Pnl.SuspendLayout()
-        Me.FlowLayoutPanel1.SuspendLayout()
-        Me.FlowLayoutPanel2.SuspendLayout()
+        CType(Me.LoadingPB, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Mktng_InvLBL
@@ -81,9 +81,12 @@ Partial Class MKTNG_Item
         'FRM_Pnl
         '
         Me.FRM_Pnl.AutoScroll = True
+        Me.FRM_Pnl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.FRM_Pnl.Controls.Add(Me.SubClass_Tbox)
+        Me.FRM_Pnl.Controls.Add(Me.MainClass_Tbox)
         Me.FRM_Pnl.Controls.Add(Me.MetroButton1)
-        Me.FRM_Pnl.Controls.Add(Me.FlowLayoutPanel2)
-        Me.FRM_Pnl.Controls.Add(Me.FlowLayoutPanel1)
+        Me.FRM_Pnl.Controls.Add(Me.SubClass_FLP)
+        Me.FRM_Pnl.Controls.Add(Me.MainClass_FLP)
         Me.FRM_Pnl.Controls.Add(Me.MetroCheckBox9)
         Me.FRM_Pnl.Controls.Add(Me.MetroCheckBox8)
         Me.FRM_Pnl.Controls.Add(Me.MetroLabel2)
@@ -96,7 +99,6 @@ Partial Class MKTNG_Item
         Me.FRM_Pnl.Controls.Add(Me.Tier1_Chk)
         Me.FRM_Pnl.Controls.Add(Me.MetroLabel15)
         Me.FRM_Pnl.Controls.Add(Me.PurchasedDate_dtp)
-        Me.FRM_Pnl.Controls.Add(Me.GenerateQR_btn)
         Me.FRM_Pnl.Controls.Add(Me.RemarksTbox)
         Me.FRM_Pnl.Controls.Add(Me.MetroLabel14)
         Me.FRM_Pnl.Controls.Add(Me.PurchasedDateTbox)
@@ -131,6 +133,197 @@ Partial Class MKTNG_Item
         Me.FRM_Pnl.VerticalScrollbarHighlightOnWheel = False
         Me.FRM_Pnl.VerticalScrollbarSize = 10
         '
+        'SubClass_Tbox
+        '
+        '
+        '
+        '
+        Me.SubClass_Tbox.CustomButton.Image = Nothing
+        Me.SubClass_Tbox.CustomButton.Location = New System.Drawing.Point(309, 1)
+        Me.SubClass_Tbox.CustomButton.Name = ""
+        Me.SubClass_Tbox.CustomButton.Size = New System.Drawing.Size(27, 27)
+        Me.SubClass_Tbox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
+        Me.SubClass_Tbox.CustomButton.TabIndex = 1
+        Me.SubClass_Tbox.CustomButton.Text = "Sav"
+        Me.SubClass_Tbox.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
+        Me.SubClass_Tbox.CustomButton.UseSelectable = True
+        Me.SubClass_Tbox.FontSize = MetroFramework.MetroTextBoxSize.Tall
+        Me.SubClass_Tbox.ForeColor = System.Drawing.Color.Black
+        Me.SubClass_Tbox.Lines = New String(-1) {}
+        Me.SubClass_Tbox.Location = New System.Drawing.Point(350, 225)
+        Me.SubClass_Tbox.MaxLength = 32767
+        Me.SubClass_Tbox.Name = "SubClass_Tbox"
+        Me.SubClass_Tbox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
+        Me.SubClass_Tbox.ScrollBars = System.Windows.Forms.ScrollBars.None
+        Me.SubClass_Tbox.SelectedText = ""
+        Me.SubClass_Tbox.SelectionLength = 0
+        Me.SubClass_Tbox.SelectionStart = 0
+        Me.SubClass_Tbox.ShowButton = True
+        Me.SubClass_Tbox.Size = New System.Drawing.Size(337, 29)
+        Me.SubClass_Tbox.Style = MetroFramework.MetroColorStyle.Teal
+        Me.SubClass_Tbox.TabIndex = 628
+        Me.SubClass_Tbox.Theme = MetroFramework.MetroThemeStyle.Dark
+        Me.SubClass_Tbox.UseCustomBackColor = True
+        Me.SubClass_Tbox.UseCustomForeColor = True
+        Me.SubClass_Tbox.UseSelectable = True
+        Me.SubClass_Tbox.UseStyleColors = True
+        Me.SubClass_Tbox.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
+        Me.SubClass_Tbox.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
+        '
+        'MainClass_Tbox
+        '
+        '
+        '
+        '
+        Me.MainClass_Tbox.CustomButton.Image = Nothing
+        Me.MainClass_Tbox.CustomButton.Location = New System.Drawing.Point(309, 1)
+        Me.MainClass_Tbox.CustomButton.Name = ""
+        Me.MainClass_Tbox.CustomButton.Size = New System.Drawing.Size(27, 27)
+        Me.MainClass_Tbox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
+        Me.MainClass_Tbox.CustomButton.TabIndex = 1
+        Me.MainClass_Tbox.CustomButton.Text = "Sav"
+        Me.MainClass_Tbox.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
+        Me.MainClass_Tbox.CustomButton.UseSelectable = True
+        Me.MainClass_Tbox.FontSize = MetroFramework.MetroTextBoxSize.Tall
+        Me.MainClass_Tbox.ForeColor = System.Drawing.Color.Black
+        Me.MainClass_Tbox.Lines = New String(-1) {}
+        Me.MainClass_Tbox.Location = New System.Drawing.Point(7, 225)
+        Me.MainClass_Tbox.MaxLength = 32767
+        Me.MainClass_Tbox.Name = "MainClass_Tbox"
+        Me.MainClass_Tbox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
+        Me.MainClass_Tbox.ScrollBars = System.Windows.Forms.ScrollBars.None
+        Me.MainClass_Tbox.SelectedText = ""
+        Me.MainClass_Tbox.SelectionLength = 0
+        Me.MainClass_Tbox.SelectionStart = 0
+        Me.MainClass_Tbox.ShowButton = True
+        Me.MainClass_Tbox.Size = New System.Drawing.Size(337, 29)
+        Me.MainClass_Tbox.Style = MetroFramework.MetroColorStyle.Teal
+        Me.MainClass_Tbox.TabIndex = 627
+        Me.MainClass_Tbox.Theme = MetroFramework.MetroThemeStyle.Dark
+        Me.MainClass_Tbox.UseCustomBackColor = True
+        Me.MainClass_Tbox.UseCustomForeColor = True
+        Me.MainClass_Tbox.UseSelectable = True
+        Me.MainClass_Tbox.UseStyleColors = True
+        Me.MainClass_Tbox.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
+        Me.MainClass_Tbox.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
+        '
+        'MetroButton1
+        '
+        Me.MetroButton1.Location = New System.Drawing.Point(565, 188)
+        Me.MetroButton1.Name = "MetroButton1"
+        Me.MetroButton1.Size = New System.Drawing.Size(122, 32)
+        Me.MetroButton1.TabIndex = 626
+        Me.MetroButton1.Text = "Operator"
+        Me.MetroButton1.UseSelectable = True
+        Me.MetroButton1.Visible = False
+        '
+        'SubClass_FLP
+        '
+        Me.SubClass_FLP.AutoScroll = True
+        Me.SubClass_FLP.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.SubClass_FLP.Location = New System.Drawing.Point(350, 261)
+        Me.SubClass_FLP.Name = "SubClass_FLP"
+        Me.SubClass_FLP.Size = New System.Drawing.Size(337, 85)
+        Me.SubClass_FLP.TabIndex = 625
+        '
+        'MainClass_FLP
+        '
+        Me.MainClass_FLP.AutoScroll = True
+        Me.MainClass_FLP.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.MainClass_FLP.Location = New System.Drawing.Point(7, 261)
+        Me.MainClass_FLP.Name = "MainClass_FLP"
+        Me.MainClass_FLP.Size = New System.Drawing.Size(337, 85)
+        Me.MainClass_FLP.TabIndex = 624
+        '
+        'MetroCheckBox9
+        '
+        Me.MetroCheckBox9.AutoSize = True
+        Me.MetroCheckBox9.Location = New System.Drawing.Point(507, 200)
+        Me.MetroCheckBox9.Name = "MetroCheckBox9"
+        Me.MetroCheckBox9.Size = New System.Drawing.Size(52, 15)
+        Me.MetroCheckBox9.TabIndex = 623
+        Me.MetroCheckBox9.Text = "Raflle"
+        Me.MetroCheckBox9.UseSelectable = True
+        '
+        'MetroCheckBox8
+        '
+        Me.MetroCheckBox8.AutoSize = True
+        Me.MetroCheckBox8.Location = New System.Drawing.Point(459, 200)
+        Me.MetroCheckBox8.Name = "MetroCheckBox8"
+        Me.MetroCheckBox8.Size = New System.Drawing.Size(42, 15)
+        Me.MetroCheckBox8.TabIndex = 622
+        Me.MetroCheckBox8.Text = "Gift"
+        Me.MetroCheckBox8.UseSelectable = True
+        '
+        'MetroLabel2
+        '
+        Me.MetroLabel2.AutoSize = True
+        Me.MetroLabel2.Location = New System.Drawing.Point(393, 196)
+        Me.MetroLabel2.Name = "MetroLabel2"
+        Me.MetroLabel2.Size = New System.Drawing.Size(60, 19)
+        Me.MetroLabel2.TabIndex = 621
+        Me.MetroLabel2.Text = "Purpose:"
+        '
+        'Tier7_Chk
+        '
+        Me.Tier7_Chk.AutoSize = True
+        Me.Tier7_Chk.Location = New System.Drawing.Point(663, 165)
+        Me.Tier7_Chk.Name = "Tier7_Chk"
+        Me.Tier7_Chk.Size = New System.Drawing.Size(29, 15)
+        Me.Tier7_Chk.TabIndex = 620
+        Me.Tier7_Chk.Text = "7"
+        Me.Tier7_Chk.UseSelectable = True
+        '
+        'Tier6_Chk
+        '
+        Me.Tier6_Chk.AutoSize = True
+        Me.Tier6_Chk.Location = New System.Drawing.Point(634, 165)
+        Me.Tier6_Chk.Name = "Tier6_Chk"
+        Me.Tier6_Chk.Size = New System.Drawing.Size(29, 15)
+        Me.Tier6_Chk.TabIndex = 619
+        Me.Tier6_Chk.Text = "6"
+        Me.Tier6_Chk.UseSelectable = True
+        '
+        'Tier5_Chk
+        '
+        Me.Tier5_Chk.AutoSize = True
+        Me.Tier5_Chk.Location = New System.Drawing.Point(599, 165)
+        Me.Tier5_Chk.Name = "Tier5_Chk"
+        Me.Tier5_Chk.Size = New System.Drawing.Size(29, 15)
+        Me.Tier5_Chk.TabIndex = 618
+        Me.Tier5_Chk.Text = "5"
+        Me.Tier5_Chk.UseSelectable = True
+        '
+        'Tier4_Chk
+        '
+        Me.Tier4_Chk.AutoSize = True
+        Me.Tier4_Chk.Location = New System.Drawing.Point(564, 165)
+        Me.Tier4_Chk.Name = "Tier4_Chk"
+        Me.Tier4_Chk.Size = New System.Drawing.Size(29, 15)
+        Me.Tier4_Chk.TabIndex = 617
+        Me.Tier4_Chk.Text = "4"
+        Me.Tier4_Chk.UseSelectable = True
+        '
+        'Tier3_Chk
+        '
+        Me.Tier3_Chk.AutoSize = True
+        Me.Tier3_Chk.Location = New System.Drawing.Point(529, 165)
+        Me.Tier3_Chk.Name = "Tier3_Chk"
+        Me.Tier3_Chk.Size = New System.Drawing.Size(29, 15)
+        Me.Tier3_Chk.TabIndex = 616
+        Me.Tier3_Chk.Text = "3"
+        Me.Tier3_Chk.UseSelectable = True
+        '
+        'Tier2_Chk
+        '
+        Me.Tier2_Chk.AutoSize = True
+        Me.Tier2_Chk.Location = New System.Drawing.Point(494, 165)
+        Me.Tier2_Chk.Name = "Tier2_Chk"
+        Me.Tier2_Chk.Size = New System.Drawing.Size(29, 15)
+        Me.Tier2_Chk.TabIndex = 615
+        Me.Tier2_Chk.Text = "2"
+        Me.Tier2_Chk.UseSelectable = True
+        '
         'Tier1_Chk
         '
         Me.Tier1_Chk.AutoSize = True
@@ -158,18 +351,6 @@ Partial Class MKTNG_Item
         Me.PurchasedDate_dtp.Size = New System.Drawing.Size(24, 29)
         Me.PurchasedDate_dtp.Style = MetroFramework.MetroColorStyle.Teal
         Me.PurchasedDate_dtp.TabIndex = 51
-        '
-        'GenerateQR_btn
-        '
-        Me.GenerateQR_btn.Image = Nothing
-        Me.GenerateQR_btn.Location = New System.Drawing.Point(309, 20)
-        Me.GenerateQR_btn.Name = "GenerateQR_btn"
-        Me.GenerateQR_btn.Size = New System.Drawing.Size(34, 23)
-        Me.GenerateQR_btn.Style = MetroFramework.MetroColorStyle.Teal
-        Me.GenerateQR_btn.TabIndex = 33
-        Me.GenerateQR_btn.Text = "&G"
-        Me.GenerateQR_btn.UseSelectable = True
-        Me.GenerateQR_btn.UseVisualStyleBackColor = True
         '
         'RemarksTbox
         '
@@ -416,14 +597,15 @@ Partial Class MKTNG_Item
         '
         '
         Me.ItemCodeTbox.CustomButton.Image = Nothing
-        Me.ItemCodeTbox.CustomButton.Location = New System.Drawing.Point(168, 1)
+        Me.ItemCodeTbox.CustomButton.Location = New System.Drawing.Point(205, 1)
         Me.ItemCodeTbox.CustomButton.Name = ""
         Me.ItemCodeTbox.CustomButton.Size = New System.Drawing.Size(27, 27)
-        Me.ItemCodeTbox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
+        Me.ItemCodeTbox.CustomButton.Style = MetroFramework.MetroColorStyle.Teal
         Me.ItemCodeTbox.CustomButton.TabIndex = 1
+        Me.ItemCodeTbox.CustomButton.Text = "&G"
         Me.ItemCodeTbox.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
         Me.ItemCodeTbox.CustomButton.UseSelectable = True
-        Me.ItemCodeTbox.CustomButton.Visible = False
+        Me.ItemCodeTbox.CustomButton.UseStyleColors = True
         Me.ItemCodeTbox.FontSize = MetroFramework.MetroTextBoxSize.Tall
         Me.ItemCodeTbox.ForeColor = System.Drawing.Color.Black
         Me.ItemCodeTbox.Lines = New String(-1) {}
@@ -435,7 +617,8 @@ Partial Class MKTNG_Item
         Me.ItemCodeTbox.SelectedText = ""
         Me.ItemCodeTbox.SelectionLength = 0
         Me.ItemCodeTbox.SelectionStart = 0
-        Me.ItemCodeTbox.Size = New System.Drawing.Size(196, 29)
+        Me.ItemCodeTbox.ShowButton = True
+        Me.ItemCodeTbox.Size = New System.Drawing.Size(233, 29)
         Me.ItemCodeTbox.Style = MetroFramework.MetroColorStyle.Teal
         Me.ItemCodeTbox.TabIndex = 32
         Me.ItemCodeTbox.Theme = MetroFramework.MetroThemeStyle.Dark
@@ -599,158 +782,33 @@ Partial Class MKTNG_Item
         Me.SizeTbox.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
         Me.SizeTbox.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
         '
-        'Tier2_Chk
+        'LoadingPB
         '
-        Me.Tier2_Chk.AutoSize = True
-        Me.Tier2_Chk.Location = New System.Drawing.Point(494, 165)
-        Me.Tier2_Chk.Name = "Tier2_Chk"
-        Me.Tier2_Chk.Size = New System.Drawing.Size(29, 15)
-        Me.Tier2_Chk.TabIndex = 615
-        Me.Tier2_Chk.Text = "2"
-        Me.Tier2_Chk.UseSelectable = True
-        '
-        'Tier3_Chk
-        '
-        Me.Tier3_Chk.AutoSize = True
-        Me.Tier3_Chk.Location = New System.Drawing.Point(529, 165)
-        Me.Tier3_Chk.Name = "Tier3_Chk"
-        Me.Tier3_Chk.Size = New System.Drawing.Size(29, 15)
-        Me.Tier3_Chk.TabIndex = 616
-        Me.Tier3_Chk.Text = "3"
-        Me.Tier3_Chk.UseSelectable = True
-        '
-        'Tier4_Chk
-        '
-        Me.Tier4_Chk.AutoSize = True
-        Me.Tier4_Chk.Location = New System.Drawing.Point(564, 165)
-        Me.Tier4_Chk.Name = "Tier4_Chk"
-        Me.Tier4_Chk.Size = New System.Drawing.Size(29, 15)
-        Me.Tier4_Chk.TabIndex = 617
-        Me.Tier4_Chk.Text = "4"
-        Me.Tier4_Chk.UseSelectable = True
-        '
-        'Tier5_Chk
-        '
-        Me.Tier5_Chk.AutoSize = True
-        Me.Tier5_Chk.Location = New System.Drawing.Point(599, 165)
-        Me.Tier5_Chk.Name = "Tier5_Chk"
-        Me.Tier5_Chk.Size = New System.Drawing.Size(29, 15)
-        Me.Tier5_Chk.TabIndex = 618
-        Me.Tier5_Chk.Text = "5"
-        Me.Tier5_Chk.UseSelectable = True
-        '
-        'Tier6_Chk
-        '
-        Me.Tier6_Chk.AutoSize = True
-        Me.Tier6_Chk.Location = New System.Drawing.Point(634, 165)
-        Me.Tier6_Chk.Name = "Tier6_Chk"
-        Me.Tier6_Chk.Size = New System.Drawing.Size(29, 15)
-        Me.Tier6_Chk.TabIndex = 619
-        Me.Tier6_Chk.Text = "6"
-        Me.Tier6_Chk.UseSelectable = True
-        '
-        'Tier7_Chk
-        '
-        Me.Tier7_Chk.AutoSize = True
-        Me.Tier7_Chk.Location = New System.Drawing.Point(663, 165)
-        Me.Tier7_Chk.Name = "Tier7_Chk"
-        Me.Tier7_Chk.Size = New System.Drawing.Size(29, 15)
-        Me.Tier7_Chk.TabIndex = 620
-        Me.Tier7_Chk.Text = "7"
-        Me.Tier7_Chk.UseSelectable = True
-        '
-        'MetroLabel2
-        '
-        Me.MetroLabel2.AutoSize = True
-        Me.MetroLabel2.Location = New System.Drawing.Point(393, 196)
-        Me.MetroLabel2.Name = "MetroLabel2"
-        Me.MetroLabel2.Size = New System.Drawing.Size(60, 19)
-        Me.MetroLabel2.TabIndex = 621
-        Me.MetroLabel2.Text = "Purpose:"
-        '
-        'MetroCheckBox8
-        '
-        Me.MetroCheckBox8.AutoSize = True
-        Me.MetroCheckBox8.Location = New System.Drawing.Point(459, 200)
-        Me.MetroCheckBox8.Name = "MetroCheckBox8"
-        Me.MetroCheckBox8.Size = New System.Drawing.Size(42, 15)
-        Me.MetroCheckBox8.TabIndex = 622
-        Me.MetroCheckBox8.Text = "Gift"
-        Me.MetroCheckBox8.UseSelectable = True
-        '
-        'MetroCheckBox9
-        '
-        Me.MetroCheckBox9.AutoSize = True
-        Me.MetroCheckBox9.Location = New System.Drawing.Point(507, 200)
-        Me.MetroCheckBox9.Name = "MetroCheckBox9"
-        Me.MetroCheckBox9.Size = New System.Drawing.Size(52, 15)
-        Me.MetroCheckBox9.TabIndex = 623
-        Me.MetroCheckBox9.Text = "Raflle"
-        Me.MetroCheckBox9.UseSelectable = True
-        '
-        'FlowLayoutPanel1
-        '
-        Me.FlowLayoutPanel1.AutoScroll = True
-        Me.FlowLayoutPanel1.Controls.Add(Me.MetroRadioButton1)
-        Me.FlowLayoutPanel1.Location = New System.Drawing.Point(7, 226)
-        Me.FlowLayoutPanel1.Name = "FlowLayoutPanel1"
-        Me.FlowLayoutPanel1.Size = New System.Drawing.Size(337, 120)
-        Me.FlowLayoutPanel1.TabIndex = 624
-        '
-        'FlowLayoutPanel2
-        '
-        Me.FlowLayoutPanel2.Controls.Add(Me.MetroCheckBox10)
-        Me.FlowLayoutPanel2.Location = New System.Drawing.Point(350, 226)
-        Me.FlowLayoutPanel2.Name = "FlowLayoutPanel2"
-        Me.FlowLayoutPanel2.Size = New System.Drawing.Size(337, 120)
-        Me.FlowLayoutPanel2.TabIndex = 625
-        '
-        'MetroRadioButton1
-        '
-        Me.MetroRadioButton1.AutoSize = True
-        Me.MetroRadioButton1.Location = New System.Drawing.Point(3, 3)
-        Me.MetroRadioButton1.Name = "MetroRadioButton1"
-        Me.MetroRadioButton1.Size = New System.Drawing.Size(127, 15)
-        Me.MetroRadioButton1.TabIndex = 1
-        Me.MetroRadioButton1.Text = "MetroRadioButton1"
-        Me.MetroRadioButton1.UseSelectable = True
-        '
-        'MetroCheckBox10
-        '
-        Me.MetroCheckBox10.AutoSize = True
-        Me.MetroCheckBox10.Location = New System.Drawing.Point(3, 3)
-        Me.MetroCheckBox10.Name = "MetroCheckBox10"
-        Me.MetroCheckBox10.Size = New System.Drawing.Size(119, 15)
-        Me.MetroCheckBox10.TabIndex = 0
-        Me.MetroCheckBox10.Text = "MetroCheckBox10"
-        Me.MetroCheckBox10.UseSelectable = True
-        '
-        'MetroButton1
-        '
-        Me.MetroButton1.Location = New System.Drawing.Point(565, 188)
-        Me.MetroButton1.Name = "MetroButton1"
-        Me.MetroButton1.Size = New System.Drawing.Size(122, 32)
-        Me.MetroButton1.TabIndex = 626
-        Me.MetroButton1.Text = "MetroButton1"
-        Me.MetroButton1.UseSelectable = True
+        Me.LoadingPB.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.LoadingPB.Image = CType(resources.GetObject("LoadingPB.Image"), System.Drawing.Image)
+        Me.LoadingPB.Location = New System.Drawing.Point(632, 31)
+        Me.LoadingPB.Name = "LoadingPB"
+        Me.LoadingPB.Size = New System.Drawing.Size(85, 28)
+        Me.LoadingPB.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.LoadingPB.TabIndex = 612
+        Me.LoadingPB.TabStop = False
         '
         'MKTNG_Item
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(737, 436)
+        Me.Controls.Add(Me.LoadingPB)
         Me.Controls.Add(Me.FRM_Pnl)
         Me.Controls.Add(Me.Mktng_InvLBL)
+        Me.KeyPreview = True
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "MKTNG_Item"
         Me.Resizable = False
         Me.FRM_Pnl.ResumeLayout(False)
         Me.FRM_Pnl.PerformLayout()
-        Me.FlowLayoutPanel1.ResumeLayout(False)
-        Me.FlowLayoutPanel1.PerformLayout()
-        Me.FlowLayoutPanel2.ResumeLayout(False)
-        Me.FlowLayoutPanel2.PerformLayout()
+        CType(Me.LoadingPB, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -778,7 +836,6 @@ Partial Class MKTNG_Item
     Friend WithEvents ItemDesTbox As MetroFramework.Controls.MetroTextBox
     Friend WithEvents ColorTbox As MetroFramework.Controls.MetroTextBox
     Friend WithEvents SizeTbox As MetroFramework.Controls.MetroTextBox
-    Friend GenerateQR_btn As MetroFramework.Controls.MetroTextBox.MetroTextButton
     Friend WithEvents Tier1_Chk As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents MetroLabel15 As MetroFramework.Controls.MetroLabel
     Friend WithEvents PurchasedDate_dtp As MetroFramework.Controls.MetroDateTime
@@ -791,9 +848,10 @@ Partial Class MKTNG_Item
     Friend WithEvents MetroCheckBox9 As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents MetroCheckBox8 As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents MetroLabel2 As MetroFramework.Controls.MetroLabel
-    Friend WithEvents FlowLayoutPanel2 As FlowLayoutPanel
-    Friend WithEvents FlowLayoutPanel1 As FlowLayoutPanel
+    Friend WithEvents SubClass_FLP As FlowLayoutPanel
+    Friend WithEvents MainClass_FLP As FlowLayoutPanel
     Friend WithEvents MetroButton1 As MetroFramework.Controls.MetroButton
-    Friend WithEvents MetroCheckBox10 As MetroFramework.Controls.MetroCheckBox
-    Friend WithEvents MetroRadioButton1 As MetroFramework.Controls.MetroRadioButton
+    Friend WithEvents MainClass_Tbox As MetroFramework.Controls.MetroTextBox
+    Friend WithEvents SubClass_Tbox As MetroFramework.Controls.MetroTextBox
+    Friend WithEvents LoadingPB As PictureBox
 End Class

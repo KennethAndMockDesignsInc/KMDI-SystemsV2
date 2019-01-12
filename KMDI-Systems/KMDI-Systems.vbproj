@@ -253,12 +253,6 @@
     <Compile Include="KMDISystemsMarketing\Form\Inventory\ColumnVisibility.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="KMDISystemsMarketing\Form\Inventory\Inventory.Designer.vb">
-      <DependentUpon>Inventory.vb</DependentUpon>
-    </Compile>
-    <Compile Include="KMDISystemsMarketing\Form\Inventory\Inventory.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="KMDISystemsMarketing\Form\Inventory\MKTNG_Inventory.Designer.vb">
       <DependentUpon>MKTNG_Inventory.vb</DependentUpon>
     </Compile>
@@ -449,9 +443,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="KMDISystemsMarketing\Form\Inventory\ColumnVisibility.resx">
       <DependentUpon>ColumnVisibility.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="KMDISystemsMarketing\Form\Inventory\Inventory.resx">
-      <DependentUpon>Inventory.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="KMDISystemsMarketing\Form\Inventory\MKTNG_Inventory.resx">
       <DependentUpon>MKTNG_Inventory.vb</DependentUpon>
