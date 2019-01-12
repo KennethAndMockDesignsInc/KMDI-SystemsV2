@@ -33,10 +33,10 @@ Public Class MKTNG_Inventory
             Select Case MktngInv_TODO
                 Case "Onload"
                     Mktng_QUERY_INSTANCE = "Loading_using_SearchString"
-                    Mktng_Query_Select_STP(Me, "", "MKTNG_stp_Inv_Search")
+                    Mktng_Query_Select_STP("", "MKTNG_stp_Inv_Search")
                 Case "Search"
                     Mktng_QUERY_INSTANCE = "Loading_using_SearchString"
-                    Mktng_Query_Select_STP(Me, Mktng_SearchStr, "MKTNG_stp_Inv_Search")
+                    Mktng_Query_Select_STP(Mktng_SearchStr, "MKTNG_stp_Inv_Search")
             End Select
         Catch ex As SqlException
             'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
@@ -173,7 +173,7 @@ Public Class MKTNG_Inventory
         End Try
     End Sub
 
-    Private Sub SearchFn(sender As Object, e As KeyEventArgs) Handles MktngInventoryDGV.KeyDown, Me.KeyDown, Mktng_InvLBL.KeyDown
+    Private Sub SearchFn(sender As Object, e As KeyEventArgs) Handles Me.KeyDown ',MktngInventoryDGV.KeyDown,  Mktng_InvLBL.KeyDown
         Try
             If e.KeyCode = Keys.F2 Or (e.Control And e.KeyCode = Keys.F) Then
                 MKTNG_SearchFRM.Show()
@@ -218,7 +218,7 @@ Public Class MKTNG_Inventory
 
     Private Sub AddItemToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles AddItemToolStripMenuItem1.Click
         Try
-            MKTNG_Item.OpenedByToolStripMenu = "Add"
+            MKTNG_Item.OpenedByToolStripMenu = "ADD"
             MKTNG_Item_Open()
         Catch ex As Exception
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace)
@@ -227,7 +227,7 @@ Public Class MKTNG_Inventory
 
     Private Sub UpdateItemToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles UpdateItemToolStripMenuItem1.Click
         Try
-            MKTNG_Item.OpenedByToolStripMenu = "Update"
+            MKTNG_Item.OpenedByToolStripMenu = "UPDATE"
             MKTNG_Item_Open()
         Catch ex As Exception
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace)
@@ -236,8 +236,7 @@ Public Class MKTNG_Inventory
 
     Private Sub DeleteItemToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles DeleteItemToolStripMenuItem1.Click
         Try
-            MKTNG_Item.OpenedByToolStripMenu = "Delete"
-            MKTNG_Item_Open()
+
         Catch ex As Exception
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace)
         End Try
@@ -266,5 +265,26 @@ Public Class MKTNG_Inventory
 
             e.Cancel = False
         End If
+    End Sub
+
+    Private Sub MktngInventoryDGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs) Handles MktngInventoryDGV.RowEnter
+        Try
+            If (e.RowIndex >= 0 And e.ColumnIndex >= 0) Then
+                MI_ID = MktngInventoryDGV.Item("MI_ID", e.RowIndex).Value.ToString
+                ITEM_CODE = MktngInventoryDGV.Item("ITEM CODE", e.RowIndex).Value.ToString
+                BRAND = MktngInventoryDGV.Item("BRAND", e.RowIndex).Value.ToString
+                ITEM_DESC = MktngInventoryDGV.Item("DESCRIPTION", e.RowIndex).Value.ToString
+                M_COLOR = MktngInventoryDGV.Item("COLOR", e.RowIndex).Value.ToString
+                M_SIZE = MktngInventoryDGV.Item("SIZE", e.RowIndex).Value.ToString
+                GENDER = MktngInventoryDGV.Item("GENDER", e.RowIndex).Value.ToString
+                MARKET_PRICE = MktngInventoryDGV.Item("MARKET PRICE", e.RowIndex).Value.ToString
+                PURCHASED_PRICE = MktngInventoryDGV.Item("PURCHASED PRICE", e.RowIndex).Value.ToString
+                QUANTITY = MktngInventoryDGV.Item("QUANTITY", e.RowIndex).Value.ToString
+                PURCHASED_DATE = MktngInventoryDGV.Item("DATE PURCHASED", e.RowIndex).Value.ToString
+                REMARKS = MktngInventoryDGV.Item("REMARKS", e.RowIndex).Value.ToString
+            End If
+        Catch ex As Exception
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace)
+        End Try
     End Sub
 End Class

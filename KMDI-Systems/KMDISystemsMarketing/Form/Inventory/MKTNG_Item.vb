@@ -3,7 +3,9 @@ Imports System.ComponentModel
 Public Class MKTNG_Item
     Public OpenedByToolStripMenu As String
     Public MktngItem_BGW As BackgroundWorker = New BackgroundWorker
+    Dim SubClassChkToolTip As New MetroFramework.Components.MetroToolTip
     Public MktngItem_TODO As String
+    Dim MainClassSTR, SubClassSTR As String
     Public Sub Start_MktngItemBGW()
         If MktngItem_BGW.IsBusy <> True Then
             LoadingPB.Visible = True
@@ -14,23 +16,49 @@ Public Class MKTNG_Item
     End Sub
 
     Private Sub MKTNG_Item_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        MktngItem_BGW.WorkerSupportsCancellation = True
-        MktngItem_BGW.WorkerReportsProgress = True
-        AddHandler MktngItem_BGW.DoWork, AddressOf MktngItem_BGW_DoWork
-        AddHandler MktngItem_BGW.RunWorkerCompleted, AddressOf MktngItem_BGW_RunWorkerCompleted
-        MktngItem_TODO = "MainClass"
-        Start_MktngItemBGW()
+        Try
+            MktngItem_BGW.WorkerSupportsCancellation = True
+            MktngItem_BGW.WorkerReportsProgress = True
+            AddHandler MktngItem_BGW.DoWork, AddressOf MktngItem_BGW_DoWork
+            AddHandler MktngItem_BGW.RunWorkerCompleted, AddressOf MktngItem_BGW_RunWorkerCompleted
+            Select Case OpenedByToolStripMenu
+                Case "ADD"
+                    MktngItem_TODO = "MainClass"
+                Case "UPDATE"
+                    MktngItem_TODO = "MainClass"
+                    ItemCodeTbox.Text = ITEM_CODE
+                    BrandTbox.Text = BRAND
+                    ItemDesTbox.Text = ITEM_DESC
+                    ColorTbox.Text = M_COLOR
+                    SizeTbox.Text = M_SIZE
+                    GenPrefCbox.Text = GENDER
+                    MarketPriceTbox.Text = MARKET_PRICE
+                    PurchasedPriceTbox.Text = PURCHASED_PRICE
+                    PurchasedDateTbox.Text = PURCHASED_DATE.ToString("MMM. dd, yyyy")
+                    RemarksTbox.Text = REMARKS
+            End Select
+            Start_MktngItemBGW()
+        Catch ex As Exception
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
+        End Try
     End Sub
 
     Private Sub MktngItem_BGW_DoWork(sender As Object, e As DoWorkEventArgs)
         Try
             Select Case MktngItem_TODO
+                Case "Update_Item"
+                    Mktng_QUERY_INSTANCE = "Loading_using_EqualSearch"
+                    Mktng_Query_Select_STP(MI_ID, "MKTNG_stp_Inv_FetchItem")
                 Case "MainClass"
                     Mktng_QUERY_INSTANCE = "Loading_using_EqualSearch"
-                    Mktng_Query_Select_STP(Me, "1", "MKTNG_stp_Item_MainClass")
+                    Mktng_Query_Select_STP("1", "MKTNG_stp_Item_MainClass")
                 Case "SubClass"
                     Mktng_QUERY_INSTANCE = "Loading_using_EqualSearch"
-                    Mktng_Query_Select_STP(Me, Mktng_SearchStr, "MKTNG_stp_Item_SubClass")
+                    Mktng_Query_Select_STP(MainClassID, "MKTNG_stp_Item_SubClass")
+                Case "MainClass_Insert"
+                    Mktng_MainClass_Insert(MainClassSTR, "MKTNG_stp_Item_MainClass_Insert")
+                Case "SubClass_Insert"
+                    Mktng_SubClass_Insert(SubClassSTR, MainClassID, "MKTNG_stp_Item_SubClass_Insert")
             End Select
         Catch ex As SqlException
             'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
@@ -59,7 +87,37 @@ Public Class MKTNG_Item
                 '' otherwise it completed normally
                 If sql_Transaction_result = "Committed" Then
                     Select Case MktngItem_TODO
+                        Case "Update_Item"
+                            For Each row In sqlBindingSource
+                                Tier1_Chk.Checked = row("TIER 1")
+                                Tier2_Chk.Checked = row("TIER 2")
+                                Tier3_Chk.Checked = row("TIER 3")
+                                Tier4_Chk.Checked = row("TIER 4")
+                                Tier5_Chk.Checked = row("TIER 5")
+                                Tier6_Chk.Checked = row("TIER 6")
+                                Tier7_Chk.Checked = row("TIER 7")
+
+                                Gift_Chk.Checked = row("GIFT")
+                                Raffle_Chk.Checked = row("RAFFLE")
+
+                                Dim main_class As String = row("MAIN_CLASS")
+
+                                For Each rbtn In MainClass_FLP.Controls
+                                    If rbtn.Name = main_class Then
+                                        rbtn.PerformClick
+                                    End If
+                                Next
+
+                                Dim sub_class As String = row("SUB_CLASS")
+                                MsgBox(sub_class)
+                                For Each chkbtn In SubClass_FLP.Controls
+                                    If chkbtn.Name = sub_class Then
+                                        chkbtn.Checked = True
+                                    End If
+                                Next
+                            Next
                         Case "MainClass"
+                            MainClass_FLP.Controls.Clear()
                             For Each row In sqlBindingSource
                                 Dim ClassRbtn As New MetroFramework.Controls.MetroRadioButton
                                 With ClassRbtn
@@ -67,35 +125,56 @@ Public Class MKTNG_Item
                                     .Text = row("MAIN_CLASS")
                                     .Tag = row("MIC_ID")
                                     .FontSize = MetroFramework.MetroCheckBoxSize.Tall
-                                    AddHandler .CheckedChanged, AddressOf ClassRbtn_CheckedChanged
+                                    SubClassChkToolTip.SetToolTip(ClassRbtn, .Text)
+                                    AddHandler .Click, AddressOf ClassRbtn_Clicked
                                     MainClass_FLP.Controls.Add(ClassRbtn)
                                 End With
                             Next
+                            Select Case OpenedByToolStripMenu
+                                Case "UPDATE"
+                                    MktngItem_TODO = "Update_Item"
+                                    Start_MktngItemBGW()
+                            End Select
                         Case "SubClass"
+                            SubClass_FLP.Controls.Clear()
                             For Each row In sqlBindingSource
                                 Dim SubClassChk As New MetroFramework.Controls.MetroCheckBox
                                 With SubClassChk
                                     .Name = row("SUB_CLASS")
                                     .Text = row("SUB_CLASS")
-                                    .Tag = row("MICS_ID")
-                                    .FontSize = MetroFramework.MetroCheckBoxSize.Tall
-                                    'AddHandler .CheckedChanged, AddressOf ClassRbtn_CheckedChanged
+                                    .Tag = row("MISC_ID")
+                                    .FontSize = MetroFramework.MetroCheckBoxSize.Medium
+                                    SubClassChkToolTip.SetToolTip(SubClassChk, .Text)
                                     SubClass_FLP.Controls.Add(SubClassChk)
                                 End With
                             Next
+                        Case "MainClass_Insert"
+                            MainClass_Tbox.Clear()
+                            MktngItem_TODO = "MainClass"
+                            Start_MktngItemBGW()
+                        Case "SubClass_Insert"
+                            SubClass_Tbox.Clear()
+                            MktngItem_TODO = "SubClass"
+                            Start_MktngItemBGW()
                     End Select
                 End If
             End If
-            RESET()
-            LoadingPB.Visible = False
         Catch ex As Exception
-            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, True)
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
         End Try
+        Mktng_SearchStr = Nothing
+        RESET()
+        LoadingPB.Visible = False
     End Sub
-    Private Sub ClassRbtn_CheckedChanged(sender As Object, e As EventArgs)
-        Mktng_SearchStr = sender.Tag
-        MktngItem_TODO = "SubClass"
-        Start_MktngItemBGW()
+    Dim MainClassID As Integer
+    Private Sub ClassRbtn_Clicked(sender As Object, e As EventArgs)
+        Try
+            MainClassID = sender.Tag
+            MktngItem_TODO = "SubClass"
+            Start_MktngItemBGW()
+        Catch ex As Exception
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
+        End Try
     End Sub
 
     Private Sub MKTNG_Item_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
@@ -106,7 +185,7 @@ Public Class MKTNG_Item
                 Close()
             End If
         Catch ex As Exception
-            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace)
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
         End Try
     End Sub
 
@@ -133,5 +212,61 @@ Public Class MKTNG_Item
 
             e.Cancel = False
         End If
+    End Sub
+    Sub classification_insert(ByVal MODE As String)
+        Select Case MODE
+            Case "MAIN"
+                If MainClassSTR = Nothing Or MainClassSTR = "" Then
+                    KMDIPrompts(Me, "DotNetError", Nothing, Nothing, Nothing, True, True, "Field cannot be empty")
+                Else
+                    MktngItem_TODO = "MainClass_Insert"
+                End If
+            Case "SUB"
+                If SubClassSTR = Nothing Or SubClassSTR = "" Then
+                    KMDIPrompts(Me, "DotNetError", Nothing, Nothing, Nothing, True, True, "Field cannot be empty")
+                Else
+                    MktngItem_TODO = "SubClass_Insert"
+                End If
+        End Select
+        Start_MktngItemBGW()
+    End Sub
+    Private Sub MainClass_Tbox_ButtonClick(sender As Object, e As EventArgs) Handles MainClass_Tbox.ButtonClick
+        Try
+            MainClassSTR = Trim(MainClass_Tbox.Text)
+            classification_insert("MAIN")
+        Catch ex As Exception
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
+        End Try
+    End Sub
+
+    Private Sub SubClass_Tbox_ButtonClick(sender As Object, e As EventArgs) Handles SubClass_Tbox.ButtonClick
+        Try
+            SubClassSTR = Trim(SubClass_Tbox.Text)
+            classification_insert("SUB")
+        Catch ex As Exception
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
+        End Try
+    End Sub
+
+    Private Sub MainClass_Tbox_KeyDown(sender As Object, e As KeyEventArgs) Handles MainClass_Tbox.KeyDown
+        Try
+            If e.KeyCode = Keys.Enter Then
+                MainClassSTR = Trim(MainClass_Tbox.Text)
+                classification_insert("MAIN")
+            End If
+        Catch ex As Exception
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
+        End Try
+    End Sub
+
+    Private Sub SubClass_Tbox_KeyDown(sender As Object, e As KeyEventArgs) Handles SubClass_Tbox.KeyDown
+        Try
+            If e.KeyCode = Keys.Enter Then
+                SubClassSTR = Trim(SubClass_Tbox.Text)
+                classification_insert("SUB")
+            End If
+        Catch ex As Exception
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
+        End Try
     End Sub
 End Class

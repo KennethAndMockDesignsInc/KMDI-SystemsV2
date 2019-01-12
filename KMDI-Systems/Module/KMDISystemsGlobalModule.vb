@@ -36,7 +36,9 @@ Module KMDISystemsGlobalModule
                            Optional sql_Err_msg As String = "",
                            Optional sql_Err_StackTrace As String = "",
                            Optional sql_Err_no As Integer = Nothing,
-                           Optional WillPrompt As Boolean = False)
+                           Optional WillPrompt As Boolean = False,
+                           Optional CustomPrompt As Boolean = False,
+                           Optional PromptContent As String = Nothing)
         Select Case PromptMode
             Case "DotNetError"
                 Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
@@ -57,8 +59,15 @@ Module KMDISystemsGlobalModule
             Case True
                 Select Case PromptMode
                     Case "DotNetError"
-                        MetroFramework.MetroMessageBox.Show(FormName, "Please Refer to Error_Logs.txt", "Error",
+                        Select Case CustomPrompt
+                            Case True
+                                MetroFramework.MetroMessageBox.Show(FormName, PromptContent, "Error",
                                                             MessageBoxButtons.OK, MessageBoxIcon.Error)
+                            Case False
+                                MetroFramework.MetroMessageBox.Show(FormName, "Please Refer to Error_Logs.txt", "Error",
+                                                            MessageBoxButtons.OK, MessageBoxIcon.Error)
+                        End Select
+
                     Case "SqlError"
                         Select Case sql_Err_no
                             Case -2
@@ -71,6 +80,8 @@ Module KMDISystemsGlobalModule
                                 MetroFramework.MetroMessageBox.Show(FormName, "Transaction failed", "Contact the Developers",
                                                                     MessageBoxButtons.OK, MessageBoxIcon.Error)
                         End Select
+                    Case "Success"
+                        MetroFramework.MetroMessageBox.Show(FormName, " ", PromptMode, MessageBoxButtons.OK, MessageBoxIcon.Information)
                 End Select
         End Select
     End Sub
