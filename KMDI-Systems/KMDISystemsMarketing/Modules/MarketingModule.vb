@@ -39,7 +39,6 @@ Module MarketingModule
                 sqlCommand.Transaction = transaction
                 sqlCommand.CommandText = StoredProcedureName
                 sqlCommand.CommandType = CommandType.StoredProcedure
-
                 Select Case Mktng_QUERY_INSTANCE
                     Case "Loading_using_SearchString"
                         sqlCommand.Parameters.AddWithValue("@SearchString", "%" & SearchString & "%")

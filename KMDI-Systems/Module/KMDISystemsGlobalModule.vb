@@ -64,7 +64,7 @@ Module KMDISystemsGlobalModule
                                 MetroFramework.MetroMessageBox.Show(FormName, PromptContent, "Error",
                                                             MessageBoxButtons.OK, MessageBoxIcon.Error)
                             Case False
-                                MetroFramework.MetroMessageBox.Show(FormName, "Please Refer to Error_Logs.txt", "Error",
+                                MetroFramework.MetroMessageBox.Show(FormName, "Please Refer to Error_Logs.txt", "Contact the Developers",
                                                             MessageBoxButtons.OK, MessageBoxIcon.Error)
                         End Select
 

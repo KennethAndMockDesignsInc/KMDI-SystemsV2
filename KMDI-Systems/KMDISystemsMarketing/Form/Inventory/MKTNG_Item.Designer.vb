@@ -25,6 +25,13 @@ Partial Class MKTNG_Item
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MKTNG_Item))
         Me.Mktng_InvLBL = New MetroFramework.Controls.MetroLabel()
         Me.FRM_Pnl = New MetroFramework.Controls.MetroPanel()
+        Me.MetroLabel14 = New MetroFramework.Controls.MetroLabel()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.RemarksTbox = New MetroFramework.Controls.MetroTextBox()
+        Me.MetroLabel13 = New MetroFramework.Controls.MetroLabel()
+        Me.Events_FLP = New System.Windows.Forms.FlowLayoutPanel()
+        Me.MetroLabel12 = New MetroFramework.Controls.MetroLabel()
+        Me.MetroLabel11 = New MetroFramework.Controls.MetroLabel()
         Me.SubClass_Tbox = New MetroFramework.Controls.MetroTextBox()
         Me.MainClass_Tbox = New MetroFramework.Controls.MetroTextBox()
         Me.MetroButton1 = New MetroFramework.Controls.MetroButton()
@@ -42,8 +49,6 @@ Partial Class MKTNG_Item
         Me.Tier1_Chk = New MetroFramework.Controls.MetroCheckBox()
         Me.MetroLabel15 = New MetroFramework.Controls.MetroLabel()
         Me.PurchasedDate_dtp = New MetroFramework.Controls.MetroDateTime()
-        Me.RemarksTbox = New MetroFramework.Controls.MetroTextBox()
-        Me.MetroLabel14 = New MetroFramework.Controls.MetroLabel()
         Me.PurchasedDateTbox = New MetroFramework.Controls.MetroTextBox()
         Me.MetroLabel10 = New MetroFramework.Controls.MetroLabel()
         Me.PurchasedPriceTbox = New MetroFramework.Controls.MetroTextBox()
@@ -64,6 +69,7 @@ Partial Class MKTNG_Item
         Me.SizeTbox = New MetroFramework.Controls.MetroTextBox()
         Me.LoadingPB = New System.Windows.Forms.PictureBox()
         Me.FRM_Pnl.SuspendLayout()
+        Me.Panel1.SuspendLayout()
         CType(Me.LoadingPB, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -82,6 +88,12 @@ Partial Class MKTNG_Item
         '
         Me.FRM_Pnl.AutoScroll = True
         Me.FRM_Pnl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.FRM_Pnl.Controls.Add(Me.MetroLabel14)
+        Me.FRM_Pnl.Controls.Add(Me.Panel1)
+        Me.FRM_Pnl.Controls.Add(Me.MetroLabel13)
+        Me.FRM_Pnl.Controls.Add(Me.Events_FLP)
+        Me.FRM_Pnl.Controls.Add(Me.MetroLabel12)
+        Me.FRM_Pnl.Controls.Add(Me.MetroLabel11)
         Me.FRM_Pnl.Controls.Add(Me.SubClass_Tbox)
         Me.FRM_Pnl.Controls.Add(Me.MainClass_Tbox)
         Me.FRM_Pnl.Controls.Add(Me.MetroButton1)
@@ -99,8 +111,6 @@ Partial Class MKTNG_Item
         Me.FRM_Pnl.Controls.Add(Me.Tier1_Chk)
         Me.FRM_Pnl.Controls.Add(Me.MetroLabel15)
         Me.FRM_Pnl.Controls.Add(Me.PurchasedDate_dtp)
-        Me.FRM_Pnl.Controls.Add(Me.RemarksTbox)
-        Me.FRM_Pnl.Controls.Add(Me.MetroLabel14)
         Me.FRM_Pnl.Controls.Add(Me.PurchasedDateTbox)
         Me.FRM_Pnl.Controls.Add(Me.MetroLabel10)
         Me.FRM_Pnl.Controls.Add(Me.PurchasedPriceTbox)
@@ -126,12 +136,106 @@ Partial Class MKTNG_Item
         Me.FRM_Pnl.HorizontalScrollbarSize = 10
         Me.FRM_Pnl.Location = New System.Drawing.Point(20, 60)
         Me.FRM_Pnl.Name = "FRM_Pnl"
-        Me.FRM_Pnl.Size = New System.Drawing.Size(697, 356)
+        Me.FRM_Pnl.Size = New System.Drawing.Size(697, 542)
         Me.FRM_Pnl.TabIndex = 610
         Me.FRM_Pnl.VerticalScrollbar = True
         Me.FRM_Pnl.VerticalScrollbarBarColor = True
         Me.FRM_Pnl.VerticalScrollbarHighlightOnWheel = False
         Me.FRM_Pnl.VerticalScrollbarSize = 10
+        '
+        'MetroLabel14
+        '
+        Me.MetroLabel14.AutoSize = True
+        Me.MetroLabel14.Location = New System.Drawing.Point(19, 448)
+        Me.MetroLabel14.Name = "MetroLabel14"
+        Me.MetroLabel14.Size = New System.Drawing.Size(59, 19)
+        Me.MetroLabel14.TabIndex = 57
+        Me.MetroLabel14.Text = "Remarks"
+        '
+        'Panel1
+        '
+        Me.Panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Panel1.Controls.Add(Me.RemarksTbox)
+        Me.Panel1.Location = New System.Drawing.Point(7, 451)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Padding = New System.Windows.Forms.Padding(5, 15, 5, 5)
+        Me.Panel1.Size = New System.Drawing.Size(680, 82)
+        Me.Panel1.TabIndex = 25
+        '
+        'RemarksTbox
+        '
+        '
+        '
+        '
+        Me.RemarksTbox.CustomButton.Image = Nothing
+        Me.RemarksTbox.CustomButton.Location = New System.Drawing.Point(610, 2)
+        Me.RemarksTbox.CustomButton.Name = ""
+        Me.RemarksTbox.CustomButton.Size = New System.Drawing.Size(55, 55)
+        Me.RemarksTbox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
+        Me.RemarksTbox.CustomButton.TabIndex = 1
+        Me.RemarksTbox.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
+        Me.RemarksTbox.CustomButton.UseSelectable = True
+        Me.RemarksTbox.CustomButton.Visible = False
+        Me.RemarksTbox.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.RemarksTbox.FontSize = MetroFramework.MetroTextBoxSize.Tall
+        Me.RemarksTbox.ForeColor = System.Drawing.Color.Black
+        Me.RemarksTbox.Lines = New String(-1) {}
+        Me.RemarksTbox.Location = New System.Drawing.Point(5, 15)
+        Me.RemarksTbox.MaxLength = 32767
+        Me.RemarksTbox.Multiline = True
+        Me.RemarksTbox.Name = "RemarksTbox"
+        Me.RemarksTbox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
+        Me.RemarksTbox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.RemarksTbox.SelectedText = ""
+        Me.RemarksTbox.SelectionLength = 0
+        Me.RemarksTbox.SelectionStart = 0
+        Me.RemarksTbox.Size = New System.Drawing.Size(668, 60)
+        Me.RemarksTbox.Style = MetroFramework.MetroColorStyle.Teal
+        Me.RemarksTbox.TabIndex = 26
+        Me.RemarksTbox.Theme = MetroFramework.MetroThemeStyle.Dark
+        Me.RemarksTbox.UseCustomBackColor = True
+        Me.RemarksTbox.UseCustomForeColor = True
+        Me.RemarksTbox.UseSelectable = True
+        Me.RemarksTbox.UseStyleColors = True
+        Me.RemarksTbox.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
+        Me.RemarksTbox.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
+        '
+        'MetroLabel13
+        '
+        Me.MetroLabel13.AutoSize = True
+        Me.MetroLabel13.Location = New System.Drawing.Point(19, 361)
+        Me.MetroLabel13.Name = "MetroLabel13"
+        Me.MetroLabel13.Size = New System.Drawing.Size(90, 19)
+        Me.MetroLabel13.TabIndex = 614
+        Me.MetroLabel13.Text = "Event Tagging"
+        '
+        'Events_FLP
+        '
+        Me.Events_FLP.AutoScroll = True
+        Me.Events_FLP.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Events_FLP.Location = New System.Drawing.Point(7, 365)
+        Me.Events_FLP.Name = "Events_FLP"
+        Me.Events_FLP.Padding = New System.Windows.Forms.Padding(0, 10, 0, 0)
+        Me.Events_FLP.Size = New System.Drawing.Size(680, 80)
+        Me.Events_FLP.TabIndex = 24
+        '
+        'MetroLabel12
+        '
+        Me.MetroLabel12.AutoSize = True
+        Me.MetroLabel12.Location = New System.Drawing.Point(362, 257)
+        Me.MetroLabel12.Name = "MetroLabel12"
+        Me.MetroLabel12.Size = New System.Drawing.Size(109, 19)
+        Me.MetroLabel12.TabIndex = 614
+        Me.MetroLabel12.Text = "Sub Classification"
+        '
+        'MetroLabel11
+        '
+        Me.MetroLabel11.AutoSize = True
+        Me.MetroLabel11.Location = New System.Drawing.Point(19, 257)
+        Me.MetroLabel11.Name = "MetroLabel11"
+        Me.MetroLabel11.Size = New System.Drawing.Size(116, 19)
+        Me.MetroLabel11.TabIndex = 613
+        Me.MetroLabel11.Text = "Main Classification"
         '
         'SubClass_Tbox
         '
@@ -162,7 +266,7 @@ Partial Class MKTNG_Item
         Me.SubClass_Tbox.ShowClearButton = True
         Me.SubClass_Tbox.Size = New System.Drawing.Size(337, 29)
         Me.SubClass_Tbox.Style = MetroFramework.MetroColorStyle.Teal
-        Me.SubClass_Tbox.TabIndex = 628
+        Me.SubClass_Tbox.TabIndex = 21
         Me.SubClass_Tbox.Theme = MetroFramework.MetroThemeStyle.Dark
         Me.SubClass_Tbox.UseCustomBackColor = True
         Me.SubClass_Tbox.UseCustomForeColor = True
@@ -200,7 +304,7 @@ Partial Class MKTNG_Item
         Me.MainClass_Tbox.ShowClearButton = True
         Me.MainClass_Tbox.Size = New System.Drawing.Size(337, 29)
         Me.MainClass_Tbox.Style = MetroFramework.MetroColorStyle.Teal
-        Me.MainClass_Tbox.TabIndex = 627
+        Me.MainClass_Tbox.TabIndex = 20
         Me.MainClass_Tbox.Theme = MetroFramework.MetroThemeStyle.Dark
         Me.MainClass_Tbox.UseCustomBackColor = True
         Me.MainClass_Tbox.UseCustomForeColor = True
@@ -219,6 +323,7 @@ Partial Class MKTNG_Item
         Me.MetroButton1.TabIndex = 626
         Me.MetroButton1.Text = "Image"
         Me.MetroButton1.UseSelectable = True
+        Me.MetroButton1.Visible = False
         '
         'SubClass_FLP
         '
@@ -226,8 +331,9 @@ Partial Class MKTNG_Item
         Me.SubClass_FLP.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.SubClass_FLP.Location = New System.Drawing.Point(350, 261)
         Me.SubClass_FLP.Name = "SubClass_FLP"
-        Me.SubClass_FLP.Size = New System.Drawing.Size(337, 85)
-        Me.SubClass_FLP.TabIndex = 625
+        Me.SubClass_FLP.Padding = New System.Windows.Forms.Padding(0, 10, 0, 0)
+        Me.SubClass_FLP.Size = New System.Drawing.Size(337, 98)
+        Me.SubClass_FLP.TabIndex = 23
         '
         'MainClass_FLP
         '
@@ -235,33 +341,34 @@ Partial Class MKTNG_Item
         Me.MainClass_FLP.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.MainClass_FLP.Location = New System.Drawing.Point(7, 261)
         Me.MainClass_FLP.Name = "MainClass_FLP"
-        Me.MainClass_FLP.Size = New System.Drawing.Size(337, 85)
-        Me.MainClass_FLP.TabIndex = 624
+        Me.MainClass_FLP.Padding = New System.Windows.Forms.Padding(0, 10, 0, 0)
+        Me.MainClass_FLP.Size = New System.Drawing.Size(337, 98)
+        Me.MainClass_FLP.TabIndex = 22
         '
         'Raffle_Chk
         '
         Me.Raffle_Chk.AutoSize = True
-        Me.Raffle_Chk.Location = New System.Drawing.Point(507, 200)
+        Me.Raffle_Chk.Location = New System.Drawing.Point(507, 164)
         Me.Raffle_Chk.Name = "Raffle_Chk"
         Me.Raffle_Chk.Size = New System.Drawing.Size(52, 15)
-        Me.Raffle_Chk.TabIndex = 623
+        Me.Raffle_Chk.TabIndex = 19
         Me.Raffle_Chk.Text = "Raflle"
         Me.Raffle_Chk.UseSelectable = True
         '
         'Gift_Chk
         '
         Me.Gift_Chk.AutoSize = True
-        Me.Gift_Chk.Location = New System.Drawing.Point(459, 200)
+        Me.Gift_Chk.Location = New System.Drawing.Point(459, 164)
         Me.Gift_Chk.Name = "Gift_Chk"
         Me.Gift_Chk.Size = New System.Drawing.Size(42, 15)
-        Me.Gift_Chk.TabIndex = 622
+        Me.Gift_Chk.TabIndex = 18
         Me.Gift_Chk.Text = "Gift"
         Me.Gift_Chk.UseSelectable = True
         '
         'MetroLabel2
         '
         Me.MetroLabel2.AutoSize = True
-        Me.MetroLabel2.Location = New System.Drawing.Point(393, 196)
+        Me.MetroLabel2.Location = New System.Drawing.Point(393, 160)
         Me.MetroLabel2.Name = "MetroLabel2"
         Me.MetroLabel2.Size = New System.Drawing.Size(60, 19)
         Me.MetroLabel2.TabIndex = 621
@@ -270,77 +377,77 @@ Partial Class MKTNG_Item
         'Tier7_Chk
         '
         Me.Tier7_Chk.AutoSize = True
-        Me.Tier7_Chk.Location = New System.Drawing.Point(663, 165)
+        Me.Tier7_Chk.Location = New System.Drawing.Point(663, 125)
         Me.Tier7_Chk.Name = "Tier7_Chk"
         Me.Tier7_Chk.Size = New System.Drawing.Size(29, 15)
-        Me.Tier7_Chk.TabIndex = 620
+        Me.Tier7_Chk.TabIndex = 17
         Me.Tier7_Chk.Text = "7"
         Me.Tier7_Chk.UseSelectable = True
         '
         'Tier6_Chk
         '
         Me.Tier6_Chk.AutoSize = True
-        Me.Tier6_Chk.Location = New System.Drawing.Point(634, 165)
+        Me.Tier6_Chk.Location = New System.Drawing.Point(634, 125)
         Me.Tier6_Chk.Name = "Tier6_Chk"
         Me.Tier6_Chk.Size = New System.Drawing.Size(29, 15)
-        Me.Tier6_Chk.TabIndex = 619
+        Me.Tier6_Chk.TabIndex = 16
         Me.Tier6_Chk.Text = "6"
         Me.Tier6_Chk.UseSelectable = True
         '
         'Tier5_Chk
         '
         Me.Tier5_Chk.AutoSize = True
-        Me.Tier5_Chk.Location = New System.Drawing.Point(599, 165)
+        Me.Tier5_Chk.Location = New System.Drawing.Point(599, 125)
         Me.Tier5_Chk.Name = "Tier5_Chk"
         Me.Tier5_Chk.Size = New System.Drawing.Size(29, 15)
-        Me.Tier5_Chk.TabIndex = 618
+        Me.Tier5_Chk.TabIndex = 15
         Me.Tier5_Chk.Text = "5"
         Me.Tier5_Chk.UseSelectable = True
         '
         'Tier4_Chk
         '
         Me.Tier4_Chk.AutoSize = True
-        Me.Tier4_Chk.Location = New System.Drawing.Point(564, 165)
+        Me.Tier4_Chk.Location = New System.Drawing.Point(564, 125)
         Me.Tier4_Chk.Name = "Tier4_Chk"
         Me.Tier4_Chk.Size = New System.Drawing.Size(29, 15)
-        Me.Tier4_Chk.TabIndex = 617
+        Me.Tier4_Chk.TabIndex = 14
         Me.Tier4_Chk.Text = "4"
         Me.Tier4_Chk.UseSelectable = True
         '
         'Tier3_Chk
         '
         Me.Tier3_Chk.AutoSize = True
-        Me.Tier3_Chk.Location = New System.Drawing.Point(529, 165)
+        Me.Tier3_Chk.Location = New System.Drawing.Point(529, 125)
         Me.Tier3_Chk.Name = "Tier3_Chk"
         Me.Tier3_Chk.Size = New System.Drawing.Size(29, 15)
-        Me.Tier3_Chk.TabIndex = 616
+        Me.Tier3_Chk.TabIndex = 13
         Me.Tier3_Chk.Text = "3"
         Me.Tier3_Chk.UseSelectable = True
         '
         'Tier2_Chk
         '
         Me.Tier2_Chk.AutoSize = True
-        Me.Tier2_Chk.Location = New System.Drawing.Point(494, 165)
+        Me.Tier2_Chk.Location = New System.Drawing.Point(494, 125)
         Me.Tier2_Chk.Name = "Tier2_Chk"
         Me.Tier2_Chk.Size = New System.Drawing.Size(29, 15)
-        Me.Tier2_Chk.TabIndex = 615
+        Me.Tier2_Chk.TabIndex = 12
         Me.Tier2_Chk.Text = "2"
         Me.Tier2_Chk.UseSelectable = True
         '
         'Tier1_Chk
         '
         Me.Tier1_Chk.AutoSize = True
-        Me.Tier1_Chk.Location = New System.Drawing.Point(459, 165)
+        Me.Tier1_Chk.Location = New System.Drawing.Point(459, 125)
         Me.Tier1_Chk.Name = "Tier1_Chk"
         Me.Tier1_Chk.Size = New System.Drawing.Size(29, 15)
-        Me.Tier1_Chk.TabIndex = 614
+        Me.Tier1_Chk.TabIndex = 11
         Me.Tier1_Chk.Text = "1"
         Me.Tier1_Chk.UseSelectable = True
         '
         'MetroLabel15
         '
         Me.MetroLabel15.AutoSize = True
-        Me.MetroLabel15.Location = New System.Drawing.Point(418, 161)
+        Me.MetroLabel15.Location = New System.Drawing.Point(418, 125)
         Me.MetroLabel15.Name = "MetroLabel15"
         Me.MetroLabel15.Size = New System.Drawing.Size(35, 19)
         Me.MetroLabel15.TabIndex = 613
@@ -353,52 +460,7 @@ Partial Class MKTNG_Item
         Me.PurchasedDate_dtp.Name = "PurchasedDate_dtp"
         Me.PurchasedDate_dtp.Size = New System.Drawing.Size(24, 29)
         Me.PurchasedDate_dtp.Style = MetroFramework.MetroColorStyle.Teal
-        Me.PurchasedDate_dtp.TabIndex = 51
-        '
-        'RemarksTbox
-        '
-        '
-        '
-        '
-        Me.RemarksTbox.CustomButton.Image = Nothing
-        Me.RemarksTbox.CustomButton.Location = New System.Drawing.Point(205, 1)
-        Me.RemarksTbox.CustomButton.Name = ""
-        Me.RemarksTbox.CustomButton.Size = New System.Drawing.Size(27, 27)
-        Me.RemarksTbox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
-        Me.RemarksTbox.CustomButton.TabIndex = 1
-        Me.RemarksTbox.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
-        Me.RemarksTbox.CustomButton.UseSelectable = True
-        Me.RemarksTbox.CustomButton.Visible = False
-        Me.RemarksTbox.FontSize = MetroFramework.MetroTextBoxSize.Tall
-        Me.RemarksTbox.ForeColor = System.Drawing.Color.Black
-        Me.RemarksTbox.Lines = New String(-1) {}
-        Me.RemarksTbox.Location = New System.Drawing.Point(454, 119)
-        Me.RemarksTbox.MaxLength = 32767
-        Me.RemarksTbox.Name = "RemarksTbox"
-        Me.RemarksTbox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
-        Me.RemarksTbox.ScrollBars = System.Windows.Forms.ScrollBars.None
-        Me.RemarksTbox.SelectedText = ""
-        Me.RemarksTbox.SelectionLength = 0
-        Me.RemarksTbox.SelectionStart = 0
-        Me.RemarksTbox.Size = New System.Drawing.Size(233, 29)
-        Me.RemarksTbox.Style = MetroFramework.MetroColorStyle.Teal
-        Me.RemarksTbox.TabIndex = 58
-        Me.RemarksTbox.Theme = MetroFramework.MetroThemeStyle.Dark
-        Me.RemarksTbox.UseCustomBackColor = True
-        Me.RemarksTbox.UseCustomForeColor = True
-        Me.RemarksTbox.UseSelectable = True
-        Me.RemarksTbox.UseStyleColors = True
-        Me.RemarksTbox.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
-        Me.RemarksTbox.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
-        '
-        'MetroLabel14
-        '
-        Me.MetroLabel14.AutoSize = True
-        Me.MetroLabel14.Location = New System.Drawing.Point(391, 125)
-        Me.MetroLabel14.Name = "MetroLabel14"
-        Me.MetroLabel14.Size = New System.Drawing.Size(62, 19)
-        Me.MetroLabel14.TabIndex = 57
-        Me.MetroLabel14.Text = "Remarks:"
+        Me.PurchasedDate_dtp.TabIndex = 10
         '
         'PurchasedDateTbox
         '
@@ -428,7 +490,7 @@ Partial Class MKTNG_Item
         Me.PurchasedDateTbox.SelectionStart = 0
         Me.PurchasedDateTbox.Size = New System.Drawing.Size(233, 29)
         Me.PurchasedDateTbox.Style = MetroFramework.MetroColorStyle.Teal
-        Me.PurchasedDateTbox.TabIndex = 50
+        Me.PurchasedDateTbox.TabIndex = 9
         Me.PurchasedDateTbox.Theme = MetroFramework.MetroThemeStyle.Dark
         Me.PurchasedDateTbox.UseCustomBackColor = True
         Me.PurchasedDateTbox.UseCustomForeColor = True
@@ -473,7 +535,7 @@ Partial Class MKTNG_Item
         Me.PurchasedPriceTbox.SelectionStart = 0
         Me.PurchasedPriceTbox.Size = New System.Drawing.Size(233, 29)
         Me.PurchasedPriceTbox.Style = MetroFramework.MetroColorStyle.Teal
-        Me.PurchasedPriceTbox.TabIndex = 48
+        Me.PurchasedPriceTbox.TabIndex = 8
         Me.PurchasedPriceTbox.Theme = MetroFramework.MetroThemeStyle.Dark
         Me.PurchasedPriceTbox.UseCustomBackColor = True
         Me.PurchasedPriceTbox.UseCustomForeColor = True
@@ -518,7 +580,7 @@ Partial Class MKTNG_Item
         Me.MarketPriceTbox.SelectionStart = 0
         Me.MarketPriceTbox.Size = New System.Drawing.Size(233, 29)
         Me.MarketPriceTbox.Style = MetroFramework.MetroColorStyle.Teal
-        Me.MarketPriceTbox.TabIndex = 46
+        Me.MarketPriceTbox.TabIndex = 7
         Me.MarketPriceTbox.Theme = MetroFramework.MetroThemeStyle.Dark
         Me.MarketPriceTbox.UseCustomBackColor = True
         Me.MarketPriceTbox.UseCustomForeColor = True
@@ -545,7 +607,7 @@ Partial Class MKTNG_Item
         Me.GenPrefCbox.Name = "GenPrefCbox"
         Me.GenPrefCbox.Size = New System.Drawing.Size(233, 29)
         Me.GenPrefCbox.Style = MetroFramework.MetroColorStyle.Teal
-        Me.GenPrefCbox.TabIndex = 44
+        Me.GenPrefCbox.TabIndex = 6
         Me.GenPrefCbox.UseSelectable = True
         Me.GenPrefCbox.UseStyleColors = True
         '
@@ -623,7 +685,7 @@ Partial Class MKTNG_Item
         Me.ItemCodeTbox.ShowButton = True
         Me.ItemCodeTbox.Size = New System.Drawing.Size(233, 29)
         Me.ItemCodeTbox.Style = MetroFramework.MetroColorStyle.Teal
-        Me.ItemCodeTbox.TabIndex = 32
+        Me.ItemCodeTbox.TabIndex = 1
         Me.ItemCodeTbox.Theme = MetroFramework.MetroThemeStyle.Dark
         Me.ItemCodeTbox.UseCustomBackColor = True
         Me.ItemCodeTbox.UseCustomForeColor = True
@@ -668,7 +730,7 @@ Partial Class MKTNG_Item
         Me.BrandTbox.SelectionStart = 0
         Me.BrandTbox.Size = New System.Drawing.Size(233, 29)
         Me.BrandTbox.Style = MetroFramework.MetroColorStyle.Teal
-        Me.BrandTbox.TabIndex = 36
+        Me.BrandTbox.TabIndex = 2
         Me.BrandTbox.Theme = MetroFramework.MetroThemeStyle.Dark
         Me.BrandTbox.UseCustomBackColor = True
         Me.BrandTbox.UseCustomForeColor = True
@@ -704,7 +766,7 @@ Partial Class MKTNG_Item
         Me.ItemDesTbox.SelectionStart = 0
         Me.ItemDesTbox.Size = New System.Drawing.Size(233, 29)
         Me.ItemDesTbox.Style = MetroFramework.MetroColorStyle.Teal
-        Me.ItemDesTbox.TabIndex = 38
+        Me.ItemDesTbox.TabIndex = 3
         Me.ItemDesTbox.Theme = MetroFramework.MetroThemeStyle.Dark
         Me.ItemDesTbox.UseCustomBackColor = True
         Me.ItemDesTbox.UseCustomForeColor = True
@@ -740,7 +802,7 @@ Partial Class MKTNG_Item
         Me.ColorTbox.SelectionStart = 0
         Me.ColorTbox.Size = New System.Drawing.Size(233, 29)
         Me.ColorTbox.Style = MetroFramework.MetroColorStyle.Teal
-        Me.ColorTbox.TabIndex = 40
+        Me.ColorTbox.TabIndex = 4
         Me.ColorTbox.Theme = MetroFramework.MetroThemeStyle.Dark
         Me.ColorTbox.UseCustomBackColor = True
         Me.ColorTbox.UseCustomForeColor = True
@@ -776,7 +838,7 @@ Partial Class MKTNG_Item
         Me.SizeTbox.SelectionStart = 0
         Me.SizeTbox.Size = New System.Drawing.Size(233, 29)
         Me.SizeTbox.Style = MetroFramework.MetroColorStyle.Teal
-        Me.SizeTbox.TabIndex = 42
+        Me.SizeTbox.TabIndex = 5
         Me.SizeTbox.Theme = MetroFramework.MetroThemeStyle.Dark
         Me.SizeTbox.UseCustomBackColor = True
         Me.SizeTbox.UseCustomForeColor = True
@@ -800,7 +862,7 @@ Partial Class MKTNG_Item
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(737, 436)
+        Me.ClientSize = New System.Drawing.Size(737, 622)
         Me.Controls.Add(Me.LoadingPB)
         Me.Controls.Add(Me.FRM_Pnl)
         Me.Controls.Add(Me.Mktng_InvLBL)
@@ -811,6 +873,7 @@ Partial Class MKTNG_Item
         Me.Resizable = False
         Me.FRM_Pnl.ResumeLayout(False)
         Me.FRM_Pnl.PerformLayout()
+        Me.Panel1.ResumeLayout(False)
         CType(Me.LoadingPB, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -857,4 +920,9 @@ Partial Class MKTNG_Item
     Friend WithEvents MainClass_Tbox As MetroFramework.Controls.MetroTextBox
     Friend WithEvents SubClass_Tbox As MetroFramework.Controls.MetroTextBox
     Friend WithEvents LoadingPB As PictureBox
+    Friend WithEvents MetroLabel12 As MetroFramework.Controls.MetroLabel
+    Friend WithEvents MetroLabel11 As MetroFramework.Controls.MetroLabel
+    Friend WithEvents Events_FLP As FlowLayoutPanel
+    Friend WithEvents MetroLabel13 As MetroFramework.Controls.MetroLabel
+    Friend WithEvents Panel1 As Panel
 End Class
