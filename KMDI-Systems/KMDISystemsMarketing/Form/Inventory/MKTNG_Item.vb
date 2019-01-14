@@ -6,6 +6,10 @@ Public Class MKTNG_Item
     Dim SubClassChkToolTip As New MetroFramework.Components.MetroToolTip
     Public MktngItem_TODO As String
     Dim MainClassSTR, SubClassSTR As String
+    Dim MainClassID As Integer
+    Dim arr_SubClassID As New List(Of Integer) '//MISC_ID
+    Dim Load_Update_bool As Boolean = False
+
     Public Sub Start_MktngItemBGW()
         If MktngItem_BGW.IsBusy <> True Then
             LoadingPB.Visible = True
@@ -25,6 +29,7 @@ Public Class MKTNG_Item
                 Case "ADD"
                     MktngItem_TODO = "MainClass"
                 Case "UPDATE"
+                    Load_Update_bool = True
                     MktngItem_TODO = "MainClass"
                     ItemCodeTbox.Text = ITEM_CODE
                     BrandTbox.Text = BRAND
@@ -46,7 +51,7 @@ Public Class MKTNG_Item
     Private Sub MktngItem_BGW_DoWork(sender As Object, e As DoWorkEventArgs)
         Try
             Select Case MktngItem_TODO
-                Case "Update_Item"
+                Case "Load_Update_Item"
                     Mktng_QUERY_INSTANCE = "Loading_using_EqualSearch"
                     Mktng_Query_Select_STP(MI_ID, "MKTNG_stp_Inv_FetchItem")
                 Case "MainClass"
@@ -59,6 +64,8 @@ Public Class MKTNG_Item
                     Mktng_MainClass_Insert(MainClassSTR, "MKTNG_stp_Item_MainClass_Insert")
                 Case "SubClass_Insert"
                     Mktng_SubClass_Insert(SubClassSTR, MainClassID, "MKTNG_stp_Item_SubClass_Insert")
+                Case "Load_Update_Item2"
+
             End Select
         Catch ex As SqlException
             'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
@@ -87,7 +94,7 @@ Public Class MKTNG_Item
                 '' otherwise it completed normally
                 If sql_Transaction_result = "Committed" Then
                     Select Case MktngItem_TODO
-                        Case "Update_Item"
+                        Case "Load_Update_Item"
                             For Each row In sqlBindingSource
                                 Tier1_Chk.Checked = row("TIER 1")
                                 Tier2_Chk.Checked = row("TIER 2")
@@ -100,22 +107,26 @@ Public Class MKTNG_Item
                                 Gift_Chk.Checked = row("GIFT")
                                 Raffle_Chk.Checked = row("RAFFLE")
 
-                                Dim main_class As String = row("MAIN_CLASS")
-
-                                For Each rbtn In MainClass_FLP.Controls
-                                    If rbtn.Name = main_class Then
-                                        rbtn.PerformClick
-                                    End If
-                                Next
-
-                                Dim sub_class As String = row("SUB_CLASS")
-                                MsgBox(sub_class)
-                                For Each chkbtn In SubClass_FLP.Controls
-                                    If chkbtn.Name = sub_class Then
-                                        chkbtn.Checked = True
-                                    End If
-                                Next
+                                'Dim main_class As String = row("MAIN_CLASS")
+                                MainClassID = row("MIC_ID")
+                                'For Each rbtn In MainClass_FLP.Controls
+                                '    If rbtn.Name = main_class Then
+                                '        rbtn.PerformClick
+                                '    End If
+                                'Next
+                                arr_SubClassID.Add(row("MISC_ID"))
+                                'Dim sub_class As String = row("SUB_CLASS")
+                                'MsgBox(sub_class)
+                                'For Each chkbtn In SubClass_FLP.Controls
+                                '    For Each id As Integer In arr_SubClassID
+                                '        If chkbtn.Tag = id Then
+                                '            chkbtn.Checked = True
+                                '        End If
+                                '    Next
+                                'Next
                             Next
+                            MktngItem_TODO = "SubClass"
+                            Start_MktngItemBGW()
                         Case "MainClass"
                             MainClass_FLP.Controls.Clear()
                             For Each row In sqlBindingSource
@@ -132,7 +143,7 @@ Public Class MKTNG_Item
                             Next
                             Select Case OpenedByToolStripMenu
                                 Case "UPDATE"
-                                    MktngItem_TODO = "Update_Item"
+                                    MktngItem_TODO = "Load_Update_Item"
                                     Start_MktngItemBGW()
                             End Select
                         Case "SubClass"
@@ -148,6 +159,22 @@ Public Class MKTNG_Item
                                     SubClass_FLP.Controls.Add(SubClassChk)
                                 End With
                             Next
+                            Select Case Load_Update_bool
+                                Case True
+                                    For Each rbtn In MainClass_FLP.Controls
+                                        If rbtn.Tag = MainClassID Then
+                                            rbtn.Checked = True
+                                        End If
+                                    Next
+                                    For Each chkbox In SubClass_FLP.Controls
+                                        For Each id As Integer In arr_SubClassID
+                                            If chkbox.Tag = id Then
+                                                chkbox.Checked = True
+                                            End If
+                                        Next
+                                    Next
+                                    Load_Update_bool = False
+                            End Select
                         Case "MainClass_Insert"
                             MainClass_Tbox.Clear()
                             MktngItem_TODO = "MainClass"
@@ -166,7 +193,6 @@ Public Class MKTNG_Item
         RESET()
         LoadingPB.Visible = False
     End Sub
-    Dim MainClassID As Integer
     Private Sub ClassRbtn_Clicked(sender As Object, e As EventArgs)
         Try
             MainClassID = sender.Tag
