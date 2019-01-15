@@ -1,5 +1,6 @@
 ﻿Imports System.Data.SqlClient
 Imports System.IO
+Imports ComponentFactory.Krypton.Toolkit
 Module KMDISystemsGlobalModule
     Public TileAccessOfLoggedAccount As String
     Public AccountAutonum As String
@@ -29,6 +30,62 @@ Module KMDISystemsGlobalModule
         sql_Err_no = Nothing
         sql_Err_StackTrace = Nothing
         sql_Transaction_result = ""
+    End Sub
+
+    Public Sub DGV_Properties(ByVal DGV As KryptonDataGridView)
+        With DGV
+            .Dock = DockStyle.Fill
+            .Select()
+            .DefaultCellStyle.BackColor = Color.White
+            .RowsDefaultCellStyle.Font = New Font("Segoe UI", 12.0!, FontStyle.Regular)
+            .AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke
+            .AllowUserToOrderColumns = True
+            .AllowUserToResizeColumns = True
+            .AllowUserToResizeRows = True
+            .AllowUserToAddRows = False
+            .AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells
+            .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells
+            '.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells)
+            .CausesValidation = True
+            .ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableWithAutoHeaderText
+            .PaletteMode = PaletteMode.Office2010Silver
+            .ColumnHeadersHeight = 30
+            .ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing
+            .ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None
+            .RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.None
+            With .GridStyles
+                .Style = DataGridViewStyle.List
+                .StyleColumn = DataGridViewStyle.List
+                .StyleDataCells = DataGridViewStyle.List
+                .StyleRow = DataGridViewStyle.List
+            End With
+            .HideOuterBorders = True
+            .ReadOnly = True
+            .ScrollBars = ScrollBars.Both
+            .SelectionMode = DataGridViewSelectionMode.FullRowSelect
+            .ShowCellErrors = True
+            .ShowCellToolTips = True
+            .ShowRowErrors = True
+            .StandardTab = False
+            .MultiSelect = True
+            With .StateCommon
+                .Background.Color1 = Color.White
+                .Background.Color2 = Color.Transparent
+                .DataCell.Content.Color1 = Color.Black
+                .DataCell.Content.Color2 = Color.Transparent
+                .DataCell.Content.ColorAngle = -1
+                .DataCell.Content.Font = New Font("Segoe UI", 9.0!, FontStyle.Regular, GraphicsUnit.Point, CType(0, Byte))
+                .HeaderColumn.Back.Color1 = Color.FromArgb(11, 19, 36)
+                .HeaderColumn.Back.Color2 = Color.FromArgb(11, 19, 36)
+                .HeaderColumn.Back.ColorAngle = -1
+                .HeaderColumn.Back.ColorStyle = PaletteColorStyle.Dashed
+                .HeaderColumn.Border.Width = 0
+                .HeaderColumn.Content.Color1 = Color.White
+                .HeaderColumn.Content.Color2 = Color.Transparent
+                .HeaderColumn.Content.Font = New Font("Segoe UI", 11.25!, FontStyle.Bold, GraphicsUnit.Point, CType(0, Byte))
+                .HeaderColumn.Content.Hint = PaletteTextHint.AntiAlias
+            End With
+        End With
     End Sub
 
     Public Sub KMDIPrompts(ByVal FormName As Form,

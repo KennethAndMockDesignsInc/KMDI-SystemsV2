@@ -25,7 +25,6 @@ Partial Class MKTNG_Inventory
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MKTNG_Inventory))
         Me.Mktng_InvLBL = New MetroFramework.Controls.MetroLabel()
-        Me.MktngInventoryDGV = New ComponentFactory.Krypton.Toolkit.KryptonDataGridView()
         Me.MktngInv_Cmenu = New MetroFramework.Controls.MetroContextMenu(Me.components)
         Me.ColumnToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ItemToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -34,7 +33,9 @@ Partial Class MKTNG_Inventory
         Me.DeleteItemToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.AddQuantityToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.LoadingPB = New System.Windows.Forms.PictureBox()
-        CType(Me.MktngInventoryDGV, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Inv_Pnl = New System.Windows.Forms.Panel()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.MktngInv_Cmenu.SuspendLayout()
         CType(Me.LoadingPB, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -49,44 +50,6 @@ Partial Class MKTNG_Inventory
         Me.Mktng_InvLBL.Size = New System.Drawing.Size(156, 25)
         Me.Mktng_InvLBL.TabIndex = 608
         Me.Mktng_InvLBL.Text = "I N V E N T O R Y"
-        '
-        'MktngInventoryDGV
-        '
-        Me.MktngInventoryDGV.AllowUserToAddRows = False
-        Me.MktngInventoryDGV.AllowUserToDeleteRows = False
-        Me.MktngInventoryDGV.AllowUserToOrderColumns = True
-        Me.MktngInventoryDGV.AllowUserToResizeRows = False
-        Me.MktngInventoryDGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
-        Me.MktngInventoryDGV.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells
-        Me.MktngInventoryDGV.ColumnHeadersHeight = 30
-        Me.MktngInventoryDGV.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.MktngInventoryDGV.Location = New System.Drawing.Point(21, 60)
-        Me.MktngInventoryDGV.MultiSelect = False
-        Me.MktngInventoryDGV.Name = "MktngInventoryDGV"
-        Me.MktngInventoryDGV.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Silver
-        Me.MktngInventoryDGV.ReadOnly = True
-        Me.MktngInventoryDGV.RowHeadersWidth = 30
-        Me.MktngInventoryDGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.MktngInventoryDGV.Size = New System.Drawing.Size(982, 620)
-        Me.MktngInventoryDGV.StateCommon.Background.Color1 = System.Drawing.Color.White
-        Me.MktngInventoryDGV.StateCommon.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.GridBackgroundList
-        Me.MktngInventoryDGV.StateCommon.DataCell.Border.DrawBorders = CType((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) _
-            Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) _
-            Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right), ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)
-        Me.MktngInventoryDGV.StateCommon.DataCell.Border.Width = 0
-        Me.MktngInventoryDGV.StateCommon.DataCell.Content.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.MktngInventoryDGV.StateCommon.HeaderColumn.Back.Color1 = System.Drawing.Color.FromArgb(CType(CType(11, Byte), Integer), CType(CType(19, Byte), Integer), CType(CType(36, Byte), Integer))
-        Me.MktngInventoryDGV.StateCommon.HeaderColumn.Back.Color2 = System.Drawing.Color.FromArgb(CType(CType(11, Byte), Integer), CType(CType(19, Byte), Integer), CType(CType(36, Byte), Integer))
-        Me.MktngInventoryDGV.StateCommon.HeaderColumn.Back.ColorStyle = ComponentFactory.Krypton.Toolkit.PaletteColorStyle.Dashed
-        Me.MktngInventoryDGV.StateCommon.HeaderColumn.Border.DrawBorders = CType((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) _
-            Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) _
-            Or ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right), ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)
-        Me.MktngInventoryDGV.StateCommon.HeaderColumn.Border.Width = 0
-        Me.MktngInventoryDGV.StateCommon.HeaderColumn.Content.Color1 = System.Drawing.Color.White
-        Me.MktngInventoryDGV.StateCommon.HeaderColumn.Content.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.MktngInventoryDGV.StateCommon.HeaderColumn.Content.Hint = ComponentFactory.Krypton.Toolkit.PaletteTextHint.AntiAlias
-        Me.MktngInventoryDGV.TabIndex = 610
-        Me.MktngInventoryDGV.VirtualMode = True
         '
         'MktngInv_Cmenu
         '
@@ -111,19 +74,19 @@ Partial Class MKTNG_Inventory
         'AddItemToolStripMenuItem1
         '
         Me.AddItemToolStripMenuItem1.Name = "AddItemToolStripMenuItem1"
-        Me.AddItemToolStripMenuItem1.Size = New System.Drawing.Size(152, 22)
+        Me.AddItemToolStripMenuItem1.Size = New System.Drawing.Size(112, 22)
         Me.AddItemToolStripMenuItem1.Text = "Add"
         '
         'UpdateItemToolStripMenuItem1
         '
         Me.UpdateItemToolStripMenuItem1.Name = "UpdateItemToolStripMenuItem1"
-        Me.UpdateItemToolStripMenuItem1.Size = New System.Drawing.Size(152, 22)
+        Me.UpdateItemToolStripMenuItem1.Size = New System.Drawing.Size(112, 22)
         Me.UpdateItemToolStripMenuItem1.Text = "Update"
         '
         'DeleteItemToolStripMenuItem1
         '
         Me.DeleteItemToolStripMenuItem1.Name = "DeleteItemToolStripMenuItem1"
-        Me.DeleteItemToolStripMenuItem1.Size = New System.Drawing.Size(152, 22)
+        Me.DeleteItemToolStripMenuItem1.Size = New System.Drawing.Size(112, 22)
         Me.DeleteItemToolStripMenuItem1.Text = "Delete"
         '
         'AddQuantityToolStripMenuItem
@@ -143,13 +106,39 @@ Partial Class MKTNG_Inventory
         Me.LoadingPB.TabIndex = 611
         Me.LoadingPB.TabStop = False
         '
+        'Inv_Pnl
+        '
+        Me.Inv_Pnl.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Inv_Pnl.Location = New System.Drawing.Point(21, 60)
+        Me.Inv_Pnl.Name = "Inv_Pnl"
+        Me.Inv_Pnl.Size = New System.Drawing.Size(982, 620)
+        Me.Inv_Pnl.TabIndex = 612
+        '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(192, 29)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(75, 23)
+        Me.Button1.TabIndex = 613
+        Me.Button1.Text = "Button1"
+        Me.Button1.UseVisualStyleBackColor = True
+        '
+        'TextBox1
+        '
+        Me.TextBox1.Location = New System.Drawing.Point(273, 29)
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.Size = New System.Drawing.Size(100, 20)
+        Me.TextBox1.TabIndex = 614
+        '
         'MKTNG_Inventory
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1024, 700)
+        Me.Controls.Add(Me.TextBox1)
+        Me.Controls.Add(Me.Button1)
+        Me.Controls.Add(Me.Inv_Pnl)
         Me.Controls.Add(Me.LoadingPB)
-        Me.Controls.Add(Me.MktngInventoryDGV)
         Me.Controls.Add(Me.Mktng_InvLBL)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
         Me.KeyPreview = True
@@ -158,7 +147,6 @@ Partial Class MKTNG_Inventory
         Me.Resizable = False
         Me.Style = MetroFramework.MetroColorStyle.Teal
         Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
-        CType(Me.MktngInventoryDGV, System.ComponentModel.ISupportInitialize).EndInit()
         Me.MktngInv_Cmenu.ResumeLayout(False)
         CType(Me.LoadingPB, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
@@ -167,7 +155,6 @@ Partial Class MKTNG_Inventory
     End Sub
 
     Friend WithEvents Mktng_InvLBL As MetroFramework.Controls.MetroLabel
-    Friend WithEvents MktngInventoryDGV As ComponentFactory.Krypton.Toolkit.KryptonDataGridView
     Friend WithEvents LoadingPB As PictureBox
     Friend WithEvents MktngInv_Cmenu As MetroFramework.Controls.MetroContextMenu
     Friend WithEvents ColumnToolStripMenuItem As ToolStripMenuItem
@@ -176,4 +163,7 @@ Partial Class MKTNG_Inventory
     Friend WithEvents UpdateItemToolStripMenuItem1 As ToolStripMenuItem
     Friend WithEvents DeleteItemToolStripMenuItem1 As ToolStripMenuItem
     Friend WithEvents AddQuantityToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents Inv_Pnl As Panel
+    Friend WithEvents Button1 As Button
+    Friend WithEvents TextBox1 As TextBox
 End Class
