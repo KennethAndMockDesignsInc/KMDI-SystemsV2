@@ -7,11 +7,10 @@ Imports System.Net
 Public Class MKTNG_Inventory
     Public MktngInventory_BGW As BackgroundWorker = New BackgroundWorker
     Public MktngInv_TODO As String
-    Dim Generate_DGV, Generate_DGVCols, Generate_DGVRows As Boolean
+    Dim Generate_DGVCols, Generate_DGVRows As Boolean
     Dim arr_DGVrow As New List(Of String)
     Public Sub Start_MktngInventoryBGW()
         If MktngInventory_BGW.IsBusy <> True Then
-            'MktngInventoryDGV.Enabled = False
             LoadingPB.Visible = True
             MktngInventory_BGW.RunWorkerAsync()
         Else
@@ -26,7 +25,6 @@ Public Class MKTNG_Inventory
             AddHandler MktngInventory_BGW.DoWork, AddressOf MktngInventory_BGW_DoWork
             AddHandler MktngInventory_BGW.ProgressChanged, AddressOf MktngInventory_BGW_ProgressChanged
             AddHandler MktngInventory_BGW.RunWorkerCompleted, AddressOf MktngInventory_BGW_RunWorkerCompleted
-            Generate_DGVCols = True
             MktngInv_TODO = "Onload"
             Start_MktngInventoryBGW()
         Catch ex As Exception
@@ -37,39 +35,33 @@ Public Class MKTNG_Inventory
         Try
             Select Case MktngInv_TODO
                 Case "Onload"
+                    Generate_DGVCols = True
                     Mktng_QUERY_INSTANCE = "Loading_using_SearchString"
                     Mktng_Query_Select_STP("", "MKTNG_stp_Inv_Search")
-                    MsgBox(sqlDataSet.Tables("QUERY_DETAILS").Rows.Count)
-                    Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
-                    Log_File.WriteLine("Umpisa ng DoWork")
-                    Log_File.Close()
-                    Select Case Generate_DGVCols
-                        Case True
-                            For i = 0 To sqlDataSet.Tables("QUERY_DETAILS").Columns.Count
-                                Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
-                                Log_File.WriteLine(i & "Umpisa ng COLS")
-                                Log_File.Close()
-                                Sleep(100)
-                                MktngInventory_BGW.ReportProgress(i)
-                                If i = sqlDataSet.Tables("QUERY_DETAILS").Columns.Count Then
-                                    Generate_DGVRows = True
-                                End If
-                            Next
-                    End Select
-                    Sleep(100)
-                    Select Case Generate_DGVRows
-                        Case True
-                            For i = 0 To sqlDataSet.Tables("QUERY_DETAILS").Rows.Count - 1
-                                Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
-                                Log_File.WriteLine(i & " Umpisa ng rows")
-                                Log_File.Close()
-                                Sleep(100)
-                                MktngInventory_BGW.ReportProgress(i)
-                            Next
-                    End Select
+
                 Case "Search"
+                    Generate_DGVCols = True
                     Mktng_QUERY_INSTANCE = "Loading_using_SearchString"
                     Mktng_Query_Select_STP(Mktng_SearchStr, "MKTNG_stp_Inv_Search")
+            End Select
+
+            Select Case Generate_DGVCols
+                Case True
+                    For i = 0 To sqlDataSet.Tables("QUERY_DETAILS").Columns.Count
+                        Sleep(100)
+                        MktngInventory_BGW.ReportProgress(i)
+                        If i = sqlDataSet.Tables("QUERY_DETAILS").Columns.Count Then
+                            Generate_DGVRows = True
+                        End If
+                    Next
+            End Select
+            Sleep(100)
+            Select Case Generate_DGVRows
+                Case True
+                    For i = 0 To sqlDataSet.Tables("QUERY_DETAILS").Rows.Count - 1
+                        Sleep(100)
+                        MktngInventory_BGW.ReportProgress(i)
+                    Next
             End Select
         Catch ex As SqlException
             'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
@@ -101,16 +93,33 @@ Public Class MKTNG_Inventory
                         DGV_Properties(Inv_DGV)
                         Inv_Pnl.Controls.Add(Inv_DGV)
                         AddHandler Inv_DGV.RowPostPaint, AddressOf MktngInventoryDGV_RowPostPaint
+                        AddHandler Inv_DGV.RowEnter, AddressOf MktngInventoryDGV_RowEnter
+                        AddHandler Inv_DGV.CellMouseClick, AddressOf MktngInventoryDGV_CellMouseClick
+                        AddHandler Inv_DGV.ColumnHeaderMouseClick, AddressOf MktngInventoryDGV_ColumnHeaderMouseClick
                     End If
-                    Dim a As New DataGridViewColumn
+                    Dim inv_dgvCol As New DataGridViewColumn
                     Dim cell As DataGridViewCell = New DataGridViewTextBoxCell()
-                    If e.ProgressPercentage < 15 Then
-                        a.Name = sqlDataSet.Tables("QUERY_DETAILS").Columns(e.ProgressPercentage).ToString
-                        a.HeaderText = sqlDataSet.Tables("QUERY_DETAILS").Columns(e.ProgressPercentage).ToString
-                        a.CellTemplate = cell
-                        Inv_DGV.Columns.Add(a)
+                    If e.ProgressPercentage < sqlDataSet.Tables("QUERY_DETAILS").Columns.Count Then
+                        With inv_dgvCol
+                            .Name = sqlDataSet.Tables("QUERY_DETAILS").Columns(e.ProgressPercentage).ToString
+                            .HeaderText = inv_dgvCol.Name
+                            .CellTemplate = cell
+                            .SortMode = DataGridViewColumnSortMode.Automatic
+                            If .Name.Contains("PRICE") Or .Name = "DISCOUNT" Or .Name = "QUANTITY" Then
+                                .DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+                            End If
+                            If .Name = "ITEM_PICTURE" Or .Name = "MI_STATUS" Or .Name = "MI_ID" Or .Name = "ITEM CODE" Or
+                               .Name = "PURCHASED PRICE" Or .Name = "DISCOUNT" Or .Name = "GENDER" Then
+                                .Visible = False
+                            End If
+                            'If .Name = "DATE PURCHASED" Then
+                            '    .ValueType = GetType(Date)
+                            'End If
+                        End With
+                        Inv_DGV.Columns.Add(inv_dgvCol)
                     End If
             End Select
+
 
             Select Case Generate_DGVRows
                 Case True
@@ -120,7 +129,13 @@ Public Class MKTNG_Inventory
                         Case False
                             arr_DGVrow.Clear()
                             For i = 0 To sqlDataSet.Tables("QUERY_DETAILS").Columns.Count - 1
-                                arr_DGVrow.Add(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i).ToString)
+                                If i = 11 Then
+                                    arr_DGVrow.Add(CDate(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i)).ToString("yyyy-MM-dd"))
+                                ElseIf i = 8 Then
+                                    arr_DGVrow.Add(CDec(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i)).ToString("N2"))
+                                Else
+                                    arr_DGVrow.Add(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i).ToString)
+                                End If
                             Next
                             Dim arr_str As String() = arr_DGVrow.ToArray
                             Inv_DGV.Rows.Add(arr_str)
@@ -128,7 +143,8 @@ Public Class MKTNG_Inventory
             End Select
 
         Catch ex As Exception
-            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, True)
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
+            LoadingPB.Visible = False
         End Try
     End Sub
 
@@ -154,27 +170,36 @@ Public Class MKTNG_Inventory
                 ElseIf sql_Err_no = 1232 Or sql_Err_no = 121 Then
                     MetroFramework.MetroMessageBox.Show(Me, "Please check internet connection", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 ElseIf sql_Err_no = 19 Then
-                    MetroFramework.MetroMessageBox.Show(Me, "Sorry our server is under maintenance." & vbCrLf & "Please be patient, will come back A.S.A.P", "Server is down", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                    MetroFramework.MetroMessageBox.Show(Me, "Sorry our server is under maintenance." & vbCrLf & "Please be patient, will come back inv_dgvCol.S.inv_dgvCol.P", "Server is down", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 ElseIf (sql_Err_no = "" Or sql_Err_no = Nothing) AndAlso
                        (sql_Err_msg = "" Or sql_Err_msg = Nothing) Then
                     If sql_Transaction_result = "Committed" Then
-                        'MktngInventoryDGV.DataSource = Nothing
-                        'MktngInventoryDGV.Enabled = True
-                        'MktngInventoryDGV.DataSource = sqlBindingSource
+                        Generate_DGVCols = False
+                        Generate_DGVRows = False
+                        sqlDataSet.Clear()
+                        arr_DGVrow.Clear()
 
-                        'With MktngInventoryDGV
+                        'Inv_Pnl.Controls.Clear()
+                        'DGV_Properties(Inv_DGV)
+                        'Inv_Pnl.Controls.Add(Inv_DGV)
+
+                        'Inv_DGV.DataSource = Nothing
+                        'Inv_DGV.Enabled = True
+                        'Inv_DGV.DataSource = sqlBindingSource
+
+                        'With Inv_DGV
                         '    .Columns("ITEM_PICTURE").Visible = False
                         '    .Columns("MI_STATUS").Visible = False
                         'End With
                         'Select Case MktngInv_TODO
                         '    Case "Onload"
-                        '        With MktngInventoryDGV
+                        '        With Inv_DGV
                         '            .Columns("MI_ID").Visible = False
                         '            .Columns("ITEM CODE").Visible = False
                         '            .Columns("PURCHASED PRICE").Visible = False
                         '            .Columns("DISCOUNT").Visible = False
                         '            .Columns("GENDER").Visible = False
-                        '            .Columns("DATE PURCHASED").DefaultCellStyle.Format = "MMM. dd, yyyy"
+                        'Inv_DGV.Columns("DATE PURCHASED").DefaultCellStyle.Format = "MMM. dd, yyyy"
                         '            .DefaultCellStyle.BackColor = Color.White
                         '            .AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke
                         '        End With
@@ -182,7 +207,7 @@ Public Class MKTNG_Inventory
                         '        If ColumnVisibility_Opened = True Then
                         '            With ColumnVisibility
                         '                For Each ctrl In .FLP_ColumnInvi.Controls
-                        '                    For Each dgvCol In MktngInventoryDGV.Columns
+                        '                    For Each dgvCol In Inv_DGV.Columns
                         '                        If ctrl.Name = dgvCol.HeaderText Then
                         '                            dgvCol.Visible = ctrl.Checked
                         '                        End If
@@ -190,7 +215,7 @@ Public Class MKTNG_Inventory
                         '                Next
                         '            End With
                         '        Else
-                        '            With MktngInventoryDGV
+                        '            With Inv_DGV
                         '                .Columns("MI_ID").Visible = False
                         '                .Columns("ITEM CODE").Visible = False
                         '                .Columns("PURCHASED PRICE").Visible = False
@@ -207,11 +232,9 @@ Public Class MKTNG_Inventory
             End If
             RESET()
             LoadingPB.Visible = False
-            'MktngInventoryDGV.Focus()
-            'MktngInventoryDGV.Select()
 
         Catch ex As Exception
-            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, True)
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
         End Try
     End Sub
 
@@ -268,7 +291,7 @@ Public Class MKTNG_Inventory
     Private Sub MktngInventoryDGV_CellMouseClick(sender As Object, e As DataGridViewCellMouseEventArgs)
         Try
             If e.Button = MouseButtons.Right Then
-                'MktngInventoryDGV.Rows(e.RowIndex).Selected = True
+                Inv_DGV.Rows(e.RowIndex).Selected = True
                 ColumnToolStripMenuItem.Visible = False
                 ItemToolStripMenuItem.Visible = True
                 AddQuantityToolStripMenuItem.Visible = True
@@ -317,29 +340,6 @@ Public Class MKTNG_Inventory
         End Try
     End Sub
 
-    Public Sub Add(Of T)(ByRef arr As T(), item As T)
-        Array.Resize(arr, arr.Length + 1)
-        arr(arr.Length - 1) = item
-    End Sub
-
-
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        ''Dim arr_str As List(Of String) = (From myRow In sqlDataSet.Tables("QUERY_DETAILS").AsEnumerable
-        ''                                  Select myRow.Field(Of String)(0)).ToList
-        'Dim a As Integer = TextBox1.Text
-        ''Inv_DGV.Rows.Insert(a, "index " & a)
-        'For i = 0 To sqlDataSet.Tables("QUERY_DETAILS").Columns.Count - 1
-        '    arr_DGVrow.Add(sqlDataSet.Tables("QUERY_DETAILS").Rows(a).Item(i).ToString)
-        '    'MsgBox(sqlDataSet.Tables("QUERY_DETAILS").Rows(a).Item(i).ToString)
-        'Next
-        'Dim arr_str As String() = arr_DGVrow.ToArray
-        'Inv_DGV.Rows.Add(arr_str)
-        Inv_Pnl.Controls.Clear()
-        DGV_Properties(Inv_DGV)
-        Inv_Pnl.Controls.Add(Inv_DGV)
-        Inv_DGV.DataSource = sqlDataSet.Tables("QUERY_DETAILS")
-    End Sub
-
     Private Sub MKTNG_Inventory_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         If MetroFramework.MetroMessageBox.Show(Me, "Are you sure you want to Exit?", " ", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then
             e.Cancel = True
@@ -368,18 +368,18 @@ Public Class MKTNG_Inventory
     Private Sub MktngInventoryDGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs)
         Try
             If (e.RowIndex >= 0 And e.ColumnIndex >= 0) Then
-                'MI_ID = MktngInventoryDGV.Item("MI_ID", e.RowIndex).Value.ToString
-                'ITEM_CODE = MktngInventoryDGV.Item("ITEM CODE", e.RowIndex).Value.ToString
-                'BRAND = MktngInventoryDGV.Item("BRAND", e.RowIndex).Value.ToString
-                'ITEM_DESC = MktngInventoryDGV.Item("DESCRIPTION", e.RowIndex).Value.ToString
-                'M_COLOR = MktngInventoryDGV.Item("COLOR", e.RowIndex).Value.ToString
-                'M_SIZE = MktngInventoryDGV.Item("SIZE", e.RowIndex).Value.ToString
-                'GENDER = MktngInventoryDGV.Item("GENDER", e.RowIndex).Value.ToString
-                'MARKET_PRICE = MktngInventoryDGV.Item("MARKET PRICE", e.RowIndex).Value.ToString
-                'PURCHASED_PRICE = MktngInventoryDGV.Item("PURCHASED PRICE", e.RowIndex).Value.ToString
-                'QUANTITY = MktngInventoryDGV.Item("QUANTITY", e.RowIndex).Value.ToString
-                'PURCHASED_DATE = MktngInventoryDGV.Item("DATE PURCHASED", e.RowIndex).Value.ToString
-                'REMARKS = MktngInventoryDGV.Item("REMARKS", e.RowIndex).Value.ToString
+                MI_ID = Inv_DGV.Item("MI_ID", e.RowIndex).Value.ToString
+                ITEM_CODE = Inv_DGV.Item("ITEM CODE", e.RowIndex).Value.ToString
+                BRAND = Inv_DGV.Item("BRAND", e.RowIndex).Value.ToString
+                ITEM_DESC = Inv_DGV.Item("DESCRIPTION", e.RowIndex).Value.ToString
+                M_COLOR = Inv_DGV.Item("COLOR", e.RowIndex).Value.ToString
+                M_SIZE = Inv_DGV.Item("SIZE", e.RowIndex).Value.ToString
+                GENDER = Inv_DGV.Item("GENDER", e.RowIndex).Value.ToString
+                MARKET_PRICE = Inv_DGV.Item("MARKET PRICE", e.RowIndex).Value.ToString
+                PURCHASED_PRICE = Inv_DGV.Item("PURCHASED PRICE", e.RowIndex).Value.ToString
+                QUANTITY = Inv_DGV.Item("QUANTITY", e.RowIndex).Value.ToString
+                PURCHASED_DATE = Inv_DGV.Item("DATE PURCHASED", e.RowIndex).Value.ToString
+                REMARKS = Inv_DGV.Item("REMARKS", e.RowIndex).Value.ToString
             End If
         Catch ex As Exception
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace)

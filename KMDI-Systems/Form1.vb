@@ -1,4 +1,5 @@
 ﻿Imports System.Data.SqlClient
+Imports ComponentFactory.Krypton.Toolkit
 Public Class Form1
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Query = "
@@ -236,10 +237,6 @@ Begin Transaction
         Project_Details.Show()
     End Sub
 
-    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
-    End Sub
-
     Private Sub MetroTextButton1_Click(sender As Object, e As EventArgs) Handles MetroTextButton1.Click
         MetroFramework.MetroMessageBox.Show(Me, "Asterisk", "AbortRetryIgnore", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Asterisk)
     End Sub
@@ -286,5 +283,32 @@ Begin Transaction
             MsgBox(ex.Message)
             MsgBox(ex.StackTrace)
         End Try
+    End Sub
+    Dim Inv_DGV As New KryptonDataGridView
+
+    Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
+        Panel1.Controls.Clear()
+        DGV_Properties(Inv_DGV)
+        Panel1.Controls.Add(Inv_DGV)
+    End Sub
+
+    Private Sub Button9_Click(sender As Object, e As EventArgs) Handles Button9.Click
+        Dim inv_dgvCol As New DataGridViewColumn
+        Dim cell As DataGridViewCell = New DataGridViewTextBoxCell()
+        With inv_dgvCol
+            .Name = "Date Column"
+            .HeaderText = inv_dgvCol.Name
+            .CellTemplate = cell
+            .SortMode = DataGridViewColumnSortMode.Automatic
+            If .Name = "DATE PURCHASED" Then
+                .ValueType = GetType(Date)
+            End If
+        End With
+        Inv_DGV.Columns.Add(inv_dgvCol)
+    End Sub
+
+    Private Sub Button10_Click(sender As Object, e As EventArgs) Handles Button10.Click
+        Dim deyt As Date = TextBox1.Text
+        Inv_DGV.Rows.Add(deyt.ToString("MMM. dd, yyyy"))
     End Sub
 End Class

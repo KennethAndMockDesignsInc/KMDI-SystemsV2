@@ -42,7 +42,16 @@ Partial Class Form1
         Me.MetroTextButton8 = New MetroFramework.Controls.MetroTextBox.MetroTextButton()
         Me.MetroTextButton9 = New MetroFramework.Controls.MetroTextBox.MetroTextButton()
         Me.Button7 = New System.Windows.Forms.Button()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.Button8 = New System.Windows.Forms.Button()
+        Me.Button9 = New System.Windows.Forms.Button()
+        Me.Button10 = New System.Windows.Forms.Button()
+        Me.KryptonDataGridView1 = New ComponentFactory.Krypton.Toolkit.KryptonDataGridView()
+        Me.Column1 = New ComponentFactory.Krypton.Toolkit.KryptonDataGridViewDateTimePickerColumn()
+        Me.Button11 = New System.Windows.Forms.Button()
         CType(Me.LoadingPboxRNP, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Panel1.SuspendLayout()
+        CType(Me.KryptonDataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Button1
@@ -122,7 +131,6 @@ Partial Class Form1
         '
         'LoadingPboxRNP
         '
-        Me.LoadingPboxRNP.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.LoadingPboxRNP.BackColor = System.Drawing.Color.Transparent
         Me.LoadingPboxRNP.Image = Global.KMDI_Systems.My.Resources.Resources.loading_page
         Me.LoadingPboxRNP.Location = New System.Drawing.Point(12, 12)
@@ -241,11 +249,80 @@ Partial Class Form1
         Me.Button7.Text = "ex.StackTrace"
         Me.Button7.UseVisualStyleBackColor = True
         '
+        'Panel1
+        '
+        Me.Panel1.Controls.Add(Me.KryptonDataGridView1)
+        Me.Panel1.Location = New System.Drawing.Point(479, 12)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(453, 244)
+        Me.Panel1.TabIndex = 25
+        '
+        'Button8
+        '
+        Me.Button8.Location = New System.Drawing.Point(479, 262)
+        Me.Button8.Name = "Button8"
+        Me.Button8.Size = New System.Drawing.Size(62, 23)
+        Me.Button8.TabIndex = 26
+        Me.Button8.Text = "Add DGV"
+        Me.Button8.UseVisualStyleBackColor = True
+        '
+        'Button9
+        '
+        Me.Button9.Location = New System.Drawing.Point(547, 262)
+        Me.Button9.Name = "Button9"
+        Me.Button9.Size = New System.Drawing.Size(108, 23)
+        Me.Button9.TabIndex = 27
+        Me.Button9.Text = "Add DateColumn"
+        Me.Button9.UseVisualStyleBackColor = True
+        '
+        'Button10
+        '
+        Me.Button10.Location = New System.Drawing.Point(661, 262)
+        Me.Button10.Name = "Button10"
+        Me.Button10.Size = New System.Drawing.Size(63, 23)
+        Me.Button10.TabIndex = 28
+        Me.Button10.Text = "Add Row"
+        Me.Button10.UseVisualStyleBackColor = True
+        '
+        'KryptonDataGridView1
+        '
+        Me.KryptonDataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.KryptonDataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Column1})
+        Me.KryptonDataGridView1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.KryptonDataGridView1.Location = New System.Drawing.Point(0, 0)
+        Me.KryptonDataGridView1.Name = "KryptonDataGridView1"
+        Me.KryptonDataGridView1.Size = New System.Drawing.Size(453, 244)
+        Me.KryptonDataGridView1.TabIndex = 0
+        '
+        'Column1
+        '
+        Me.Column1.CalendarTodayDate = New Date(2019, 1, 15, 0, 0, 0, 0)
+        Me.Column1.Checked = False
+        Me.Column1.HeaderText = "Deyt"
+        Me.Column1.Name = "Column1"
+        Me.Column1.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.Column1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
+        Me.Column1.Width = 100
+        '
+        'Button11
+        '
+        Me.Button11.Location = New System.Drawing.Point(730, 262)
+        Me.Button11.Name = "Button11"
+        Me.Button11.Size = New System.Drawing.Size(202, 23)
+        Me.Button11.TabIndex = 29
+        Me.Button11.Text = "Check Deyt Column"
+        Me.Button11.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(485, 294)
+        Me.ClientSize = New System.Drawing.Size(944, 294)
+        Me.Controls.Add(Me.Button11)
+        Me.Controls.Add(Me.Button10)
+        Me.Controls.Add(Me.Button9)
+        Me.Controls.Add(Me.Button8)
+        Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.Button7)
         Me.Controls.Add(Me.MetroTextButton9)
         Me.Controls.Add(Me.MetroTextButton8)
@@ -268,6 +345,8 @@ Partial Class Form1
         Me.Name = "Form1"
         Me.Text = "Form1"
         CType(Me.LoadingPboxRNP, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Panel1.ResumeLayout(False)
+        CType(Me.KryptonDataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -293,4 +372,11 @@ Partial Class Form1
     Friend WithEvents MetroTextButton8 As MetroFramework.Controls.MetroTextBox.MetroTextButton
     Friend WithEvents MetroTextButton9 As MetroFramework.Controls.MetroTextBox.MetroTextButton
     Friend WithEvents Button7 As Button
+    Friend WithEvents Panel1 As Panel
+    Friend WithEvents Button8 As Button
+    Friend WithEvents Button9 As Button
+    Friend WithEvents Button10 As Button
+    Friend WithEvents KryptonDataGridView1 As ComponentFactory.Krypton.Toolkit.KryptonDataGridView
+    Friend WithEvents Column1 As ComponentFactory.Krypton.Toolkit.KryptonDataGridViewDateTimePickerColumn
+    Friend WithEvents Button11 As Button
 End Class

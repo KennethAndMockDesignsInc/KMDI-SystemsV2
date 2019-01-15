@@ -44,7 +44,7 @@ Module KMDISystemsGlobalModule
             .AllowUserToResizeRows = True
             .AllowUserToAddRows = False
             .AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells
-            .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells
+            .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells
             '.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells)
             .CausesValidation = True
             .ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableWithAutoHeaderText
