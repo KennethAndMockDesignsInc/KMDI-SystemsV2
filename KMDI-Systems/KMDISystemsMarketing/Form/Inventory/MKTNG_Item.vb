@@ -10,6 +10,8 @@ Public Class MKTNG_Item
     Dim MainClassID As Integer
     Dim arr_SubClassID As New List(Of Integer) '//MISC_ID
     Dim arr_EventID As New List(Of Integer) '//MIE_ID
+    Dim Sub_Class_list As New List(Of Integer)
+    Dim Events_list As New List(Of Integer)
     Dim Load_Update_bool,if_Generated_QR_Status As Boolean
 
     Public Sub Start_MktngItemBGW()
@@ -46,6 +48,16 @@ Public Class MKTNG_Item
         MARKET_PRICE = Trim(MarketPriceTbox.Text)
         PURCHASED_PRICE = Trim(PurchasedPriceTbox.Text)
         PURCHASED_DATE = PurchasedDate_dtp.Value
+        Gift_bool = GiftPurpose_Chk.Checked
+        Raffle_bool = RafflePurpose_Chk.Checked
+        Tier1_bool = Tier1_Chk.Checked
+        Tier2_bool = Tier2_Chk.Checked
+        Tier3_bool = Tier3_Chk.Checked
+        Tier4_bool = Tier4_Chk.Checked
+        Tier5_bool = Tier5_Chk.Checked
+        Tier6_bool = Tier6_Chk.Checked
+        Tier7_bool = Tier7_Chk.Checked
+
         Dim tier_checked As Integer = 0
         Dim purpose_checked As Integer = 0
         Dim MainClass_Checked As Integer = 0
@@ -67,11 +79,13 @@ Public Class MKTNG_Item
         For Each SubClass_chkBox In SubClass_FLP.Controls
             If SubClass_chkBox.Checked = True Then
                 SubClass_Checked += 1
+                Sub_Class_list.Add(SubClass_chkBox.Tag)
             End If
         Next
         For Each Event_chkBox In Events_FLP.Controls
             If Event_chkBox.Checked = True Then
                 Event_Checked += 1
+                Events_list.Add(Event_chkBox.Tag)
             End If
         Next
 
@@ -193,6 +207,13 @@ Public Class MKTNG_Item
                 Case "SubClass_Insert"
                     Mktng_SubClass_Insert(SubClassSTR, MainClassID, "MKTNG_stp_Item_SubClass_Insert")
                 Case "Add_Item"
+
+                    Dim EffectiveDiscount As Decimal = 0
+                    EffectiveDiscount = (1 - (PURCHASED_PRICE / MARKET_PRICE)) * 100
+
+                    Mktng_Inv_ItemInsert("MKTNG_stp_Inv_Item_Insert", ITEM_CODE, ITEM_DESC, GENDER, MARKET_PRICE, PURCHASED_PRICE,
+                                         EffectiveDiscount, QUANTITY, PURCHASED_DATE, if_Generated_QR_Status, Gift_bool, Raffle_bool,
+                                         Tier1_bool, Tier2_bool, Tier3_bool, Tier4_bool, Tier5_bool, Tier6_bool, Tier7_bool,)
                 Case "Update_Item"
             End Select
 

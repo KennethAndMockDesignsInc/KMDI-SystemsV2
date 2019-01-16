@@ -19,6 +19,9 @@ Module MarketingModule
     Public PURCHASED_DATE As Date
     Public REMARKS As String
     Public ITEM_PICTURE As String
+    Public MIC_ID_REF As Integer
+    Public Gift_bool, Raffle_bool,
+           Tier1_bool, Tier2_bool, Tier3_bool, Tier4_bool, Tier5_bool, Tier6_bool, Tier7_bool As Boolean
 
     Public Sub Mktng_Query_Select_STP(ByVal SearchString As String,
                                       ByVal StoredProcedureName As String,
@@ -142,8 +145,8 @@ Module MarketingModule
                                     ByVal TIER_6 As Boolean,
                                     ByVal TIER_7 As Boolean,
                                     ByVal MIC_ID_REF As Integer,
-                                    ByVal MISC_ID_REF As Integer,
                                     ByVal SubClass_list As List(Of Integer),
+                                    ByVal Events_list As List(Of Integer),
                                     Optional Color As String = "",
                                     Optional BRAND As String = "",
                                     Optional Size As String = "",
