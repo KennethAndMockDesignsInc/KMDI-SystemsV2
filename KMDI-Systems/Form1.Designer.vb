@@ -46,12 +46,8 @@ Partial Class Form1
         Me.Button8 = New System.Windows.Forms.Button()
         Me.Button9 = New System.Windows.Forms.Button()
         Me.Button10 = New System.Windows.Forms.Button()
-        Me.KryptonDataGridView1 = New ComponentFactory.Krypton.Toolkit.KryptonDataGridView()
-        Me.Column1 = New ComponentFactory.Krypton.Toolkit.KryptonDataGridViewDateTimePickerColumn()
         Me.Button11 = New System.Windows.Forms.Button()
         CType(Me.LoadingPboxRNP, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.Panel1.SuspendLayout()
-        CType(Me.KryptonDataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Button1
@@ -251,7 +247,6 @@ Partial Class Form1
         '
         'Panel1
         '
-        Me.Panel1.Controls.Add(Me.KryptonDataGridView1)
         Me.Panel1.Location = New System.Drawing.Point(479, 12)
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(453, 244)
@@ -283,26 +278,6 @@ Partial Class Form1
         Me.Button10.TabIndex = 28
         Me.Button10.Text = "Add Row"
         Me.Button10.UseVisualStyleBackColor = True
-        '
-        'KryptonDataGridView1
-        '
-        Me.KryptonDataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.KryptonDataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Column1})
-        Me.KryptonDataGridView1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.KryptonDataGridView1.Location = New System.Drawing.Point(0, 0)
-        Me.KryptonDataGridView1.Name = "KryptonDataGridView1"
-        Me.KryptonDataGridView1.Size = New System.Drawing.Size(453, 244)
-        Me.KryptonDataGridView1.TabIndex = 0
-        '
-        'Column1
-        '
-        Me.Column1.CalendarTodayDate = New Date(2019, 1, 15, 0, 0, 0, 0)
-        Me.Column1.Checked = False
-        Me.Column1.HeaderText = "Deyt"
-        Me.Column1.Name = "Column1"
-        Me.Column1.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.Column1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
-        Me.Column1.Width = 100
         '
         'Button11
         '
@@ -345,8 +320,6 @@ Partial Class Form1
         Me.Name = "Form1"
         Me.Text = "Form1"
         CType(Me.LoadingPboxRNP, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.Panel1.ResumeLayout(False)
-        CType(Me.KryptonDataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -376,7 +349,5 @@ Partial Class Form1
     Friend WithEvents Button8 As Button
     Friend WithEvents Button9 As Button
     Friend WithEvents Button10 As Button
-    Friend WithEvents KryptonDataGridView1 As ComponentFactory.Krypton.Toolkit.KryptonDataGridView
-    Friend WithEvents Column1 As ComponentFactory.Krypton.Toolkit.KryptonDataGridViewDateTimePickerColumn
     Friend WithEvents Button11 As Button
 End Class

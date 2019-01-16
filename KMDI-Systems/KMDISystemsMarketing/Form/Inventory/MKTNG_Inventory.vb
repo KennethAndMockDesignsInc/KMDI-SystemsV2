@@ -130,6 +130,8 @@ Public Class MKTNG_Inventory
                             arr_DGVrow.Clear()
                             For i = 0 To sqlDataSet.Tables("QUERY_DETAILS").Columns.Count - 1
                                 If i = 11 Then
+                                    '//Lagay ka dito ng Date Datatype para iConvert ang sqlDS.tables.row.item.toString sa DATE
+                                    '// At i add sa List(Of Objects)
                                     arr_DGVrow.Add(CDate(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i)).ToString("yyyy-MM-dd"))
                                 ElseIf i = 8 Then
                                     arr_DGVrow.Add(CDec(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i)).ToString("N2"))
@@ -137,7 +139,7 @@ Public Class MKTNG_Inventory
                                     arr_DGVrow.Add(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i).ToString)
                                 End If
                             Next
-                            Dim arr_str As String() = arr_DGVrow.ToArray
+                            Dim arr_str As Object() = arr_DGVrow.ToArray
                             Inv_DGV.Rows.Add(arr_str)
                     End Select
             End Select

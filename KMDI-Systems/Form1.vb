@@ -293,22 +293,65 @@ Begin Transaction
     End Sub
 
     Private Sub Button9_Click(sender As Object, e As EventArgs) Handles Button9.Click
-        Dim inv_dgvCol As New DataGridViewColumn
-        Dim cell As DataGridViewCell = New DataGridViewTextBoxCell()
-        With inv_dgvCol
-            .Name = "Date Column"
-            .HeaderText = inv_dgvCol.Name
-            .CellTemplate = cell
-            .SortMode = DataGridViewColumnSortMode.Automatic
-            If .Name = "DATE PURCHASED" Then
+        Try
+            Dim inv_dgvCol As DataGridViewColumn
+            Dim cell As DataGridViewCell = New DataGridViewTextBoxCell()
+            inv_dgvCol = New DataGridViewColumn
+            With inv_dgvCol
+                .Name = "Text Column"
+                .HeaderText = inv_dgvCol.Name
+                .CellTemplate = cell
+                .SortMode = DataGridViewColumnSortMode.Automatic
+                .ValueType = GetType(String)
+            End With
+            Inv_DGV.Columns.Add(inv_dgvCol)
+            inv_dgvCol = New DataGridViewColumn
+            With inv_dgvCol
+                .Name = "Date Column"
+                .HeaderText = inv_dgvCol.Name
+                .CellTemplate = cell
+                .SortMode = DataGridViewColumnSortMode.Automatic
                 .ValueType = GetType(Date)
-            End If
-        End With
-        Inv_DGV.Columns.Add(inv_dgvCol)
+            End With
+            Inv_DGV.Columns.Add(inv_dgvCol)
+            inv_dgvCol = New DataGridViewColumn
+            With inv_dgvCol
+                .Name = "Decimal Column"
+                .HeaderText = inv_dgvCol.Name
+                .CellTemplate = cell
+                .SortMode = DataGridViewColumnSortMode.Automatic
+                .ValueType = GetType(Decimal)
+                .DefaultCellStyle.Format = "N2"
+            End With
+            Inv_DGV.Columns.Add(inv_dgvCol)
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
     End Sub
 
     Private Sub Button10_Click(sender As Object, e As EventArgs) Handles Button10.Click
-        Dim deyt As Date = TextBox1.Text
-        Inv_DGV.Rows.Add(deyt.ToString("MMM. dd, yyyy"))
+        Try
+            Dim deyt As Date = #12/24/1997#
+            Dim deyt2 As Date = Convert.ToDateTime(TextBox1.Text)
+            Dim deci As Decimal = CDec(TextBox2.Text)
+            Dim list_obj As New List(Of Object) '({"Sample", deyt2})
+            list_obj.Add("Sample")
+            list_obj.Add(deyt2)
+            list_obj.Add(deci)
+            'Dim list_str As New List(Of String)({"Sample", deyt2})
+            'Dim arr_str As String() = list_str.ToArray
+            Dim arr_obj As Object() = list_obj.ToArray
+            Inv_DGV.Rows.Add(arr_obj)
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
+    End Sub
+
+    Public Class DGVRows
+
+    End Class
+
+    Private Sub Button11_Click(sender As Object, e As EventArgs) Handles Button11.Click
+        MsgBox(Inv_DGV.Columns("Date Column").GetType.ToString)
     End Sub
 End Class
