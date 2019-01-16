@@ -185,6 +185,9 @@ Public Class MKTNG_Inventory
                 ElseIf (sql_Err_no = "" Or sql_Err_no = Nothing) AndAlso
                        (sql_Err_msg = "" Or sql_Err_msg = Nothing) Then
                     If sql_Transaction_result = "Committed" Then
+                        'Wala ng halaga to, Hanap ka ng use nito Future EJ
+                        '-Past EJ
+
                         'Generate_DGVCols = False
                         'Generate_DGVRows = False
                         'sqlDataSet.Clear()

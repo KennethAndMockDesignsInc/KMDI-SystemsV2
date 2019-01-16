@@ -35,7 +35,7 @@ Public Class MKTNG_Item
         ITEM_PICTURE = Nothing
     End Sub
 
-    Sub Save_Item()
+    Sub Add_Item()
         ITEM_CODE = Trim(ItemCodeTbox.Text)
         BRAND = Trim(BrandTbox.Text)
         ITEM_DESC = Trim(ItemDesTbox.Text)
@@ -45,6 +45,9 @@ Public Class MKTNG_Item
         MARKET_PRICE = Trim(MarketPriceTbox.Text)
         PURCHASED_PRICE = Trim(PurchasedPriceTbox.Text)
         PURCHASED_DATE = Trim(PurchasedDateTbox.Text)
+
+        MktngItem_TODO = "Add_Item"
+        Start_MktngItemBGW()
     End Sub
 
     Private Sub MKTNG_Item_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -52,13 +55,13 @@ Public Class MKTNG_Item
             MktngItem_BGW.WorkerSupportsCancellation = True
             MktngItem_BGW.WorkerReportsProgress = True
             AddHandler MktngItem_BGW.DoWork, AddressOf MktngItem_BGW_DoWork
-            AddHandler MktngItem_BGW.ProgressChanged, AddressOf MktngItem_BGW_ProgressChanged
+            'AddHandler MktngItem_BGW.ProgressChanged, AddressOf MktngItem_BGW_ProgressChanged
             AddHandler MktngItem_BGW.RunWorkerCompleted, AddressOf MktngItem_BGW_RunWorkerCompleted
             Select Case OpenedByToolStripMenu
                 Case "ADD"
                     MktngItem_TODO = "MainClass"
                 Case "UPDATE"
-                    reset_here()
+                    'reset_here()
                     Load_Update_bool = True
                     MktngItem_TODO = "MainClass"
                     ItemCodeTbox.Text = ITEM_CODE
@@ -93,16 +96,17 @@ Public Class MKTNG_Item
                 Case "SubClass"
                     Mktng_QUERY_INSTANCE = "Loading_using_EqualSearch"
                     Mktng_Query_Select_STP(MainClassID, "MKTNG_stp_Item_SubClass")
-                Case "MainClass_Insert"
-                    Mktng_MainClass_Insert(MainClassSTR, "MKTNG_stp_Item_MainClass_Insert")
-                Case "SubClass_Insert"
-                    Mktng_SubClass_Insert(SubClassSTR, MainClassID, "MKTNG_stp_Item_SubClass_Insert")
                 Case "Load_Events"
                     Mktng_QUERY_INSTANCE = "Loading_using_EqualSearch"
                     Mktng_Query_Select_STP("1", "MKTNG_stp_Inv_Events")
                 Case "QR"
                     Mktng_QUERY_INSTANCE = "Loading_using_EqualSearch"
                     Mktng_Query_Select_STP("1", "MKTNG_stp_Inv_MAXID")
+                Case "MainClass_Insert"
+                    Mktng_MainClass_Insert(MainClassSTR, "MKTNG_stp_Item_MainClass_Insert")
+                Case "SubClass_Insert"
+                    Mktng_SubClass_Insert(SubClassSTR, MainClassID, "MKTNG_stp_Item_SubClass_Insert")
+                Case "Add_Item"
             End Select
         Catch ex As SqlException
             'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
@@ -121,10 +125,6 @@ Public Class MKTNG_Item
         If MktngItem_BGW.CancellationPending Then
             e.Cancel = True
         End If
-    End Sub
-
-    Private Sub MktngItem_BGW_ProgressChanged(sender As Object, e As ProgressChangedEventArgs)
-
     End Sub
 
     Private Sub MktngItem_BGW_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs)
@@ -283,9 +283,11 @@ Public Class MKTNG_Item
     Private Sub MKTNG_Item_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
         Try
             If (e.Control And e.KeyCode = Keys.S) Then
-                Save_Item()
+                If OpenedByToolStripMenu = "ADD" Then
+                    Add_Item()
+                End If
             ElseIf e.KeyCode = Keys.Escape Then
-                Close()
+                    Close()
             End If
         Catch ex As Exception
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)

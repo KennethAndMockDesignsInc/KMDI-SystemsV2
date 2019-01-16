@@ -122,4 +122,70 @@ Module MarketingModule
             End Using
         End Using
     End Sub
+    Public Sub Mktng_Inv_ItemInsert(ByVal StoredProcedureName As String,
+                                    ByVal ITEM_CODE As String,
+                                    ByVal ITEM_DESC As String,
+                                    ByVal GENDER As String,
+                                    ByVal MARKET_PRICE As Decimal,
+                                    ByVal PURCHASED_PRICE As Decimal,
+                                    ByVal DISCOUNT As Decimal,
+                                    ByVal QUANTITY As Integer,
+                                    ByVal PURCHASED_DATE As Date,
+                                    ByVal QR_STATUS As Boolean,
+                                    ByVal GIFT As Boolean,
+                                    ByVal RAFFLE As Boolean,
+                                    ByVal TIER_1 As Boolean,
+                                    ByVal TIER_2 As Boolean,
+                                    ByVal TIER_3 As Boolean,
+                                    ByVal TIER_4 As Boolean,
+                                    ByVal TIER_5 As Boolean,
+                                    ByVal TIER_6 As Boolean,
+                                    ByVal TIER_7 As Boolean,
+                                    ByVal MIC_ID_REF As Integer,
+                                    ByVal MISC_ID_REF As Integer,
+                                    Optional Color As String = "",
+                                    Optional BRAND As String = "",
+                                    Optional Size As String = "",
+                                    Optional REMARKS As String = "")
+        Using sqlcon As New SqlConnection(sqlconnString)
+            sqlcon.Open()
+            Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
+                transaction = sqlcon.BeginTransaction(IsolationLevel.RepeatableRead, StoredProcedureName)
+                sqlCommand.Connection = sqlcon
+                sqlCommand.Transaction = transaction
+                sqlCommand.CommandText = StoredProcedureName
+                sqlCommand.CommandType = CommandType.StoredProcedure
+
+                sqlCommand.Parameters.AddWithValue("@MIC_ID_REF", MIC_ID_REF)
+                sqlCommand.Parameters.AddWithValue("@ITEM_CODE", ITEM_CODE)
+                sqlCommand.Parameters.AddWithValue("@ITEM_DESC", ITEM_DESC)
+                sqlCommand.Parameters.AddWithValue("@GENDER", GENDER)
+                sqlCommand.Parameters.AddWithValue("@MARKET_PRICE",MARKET_PRICE)
+                sqlCommand.Parameters.AddWithValue("@PURCHASED_PRICE",PURCHASED_PRICE)
+                sqlCommand.Parameters.AddWithValue("@DISCOUNT", DISCOUNT)
+                sqlCommand.Parameters.AddWithValue("@QUANTITY", QUANTITY)
+                sqlCommand.Parameters.AddWithValue("@PURCHASED_DATE", PURCHASED_DATE)
+                sqlCommand.Parameters.AddWithValue("@QR_STATUS",QR_STATUS)
+                sqlCommand.Parameters.AddWithValue("@GIFT", GIFT)
+                sqlCommand.Parameters.AddWithValue("@RAFFLE",RAFFLE)
+                sqlCommand.Parameters.AddWithValue("@TIER_1", TIER_1)
+                sqlCommand.Parameters.AddWithValue("@TIER_2",TIER_2)
+                sqlCommand.Parameters.AddWithValue("@TIER_3", TIER_3)
+                sqlCommand.Parameters.AddWithValue("@TIER_4",TIER_4)
+                sqlCommand.Parameters.AddWithValue("@TIER_5", TIER_5)
+                sqlCommand.Parameters.AddWithValue("@TIER_6",TIER_6)
+                sqlCommand.Parameters.AddWithValue("@TIER_7", TIER_7)
+                sqlCommand.Parameters.AddWithValue("@MIC_ID_REF",MIC_ID_REF)
+                sqlCommand.Parameters.AddWithValue("@MISC_ID_REF", MISC_ID_REF)
+                sqlCommand.Parameters.AddWithValue("@Color", Color)
+                sqlCommand.Parameters.AddWithValue("@BRAND", BRAND)
+                sqlCommand.Parameters.AddWithValue("@Size", Size)
+                sqlCommand.Parameters.AddWithValue("@REMARKS", REMARKS)
+
+                sqlCommand.ExecuteNonQuery()
+                transaction.Commit()
+                sql_Transaction_result = "Committed"
+            End Using
+        End Using
+    End Sub
 End Module
