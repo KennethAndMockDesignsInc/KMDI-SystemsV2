@@ -33,7 +33,6 @@ Partial Class MKTNG_Inventory
         Me.DeleteItemToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.AddQuantityToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.LoadingPB = New System.Windows.Forms.PictureBox()
-        Me.Inv_Pnl = New System.Windows.Forms.Panel()
         Me.MktngInv_Cmenu.SuspendLayout()
         CType(Me.LoadingPB, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -104,20 +103,11 @@ Partial Class MKTNG_Inventory
         Me.LoadingPB.TabIndex = 611
         Me.LoadingPB.TabStop = False
         '
-        'Inv_Pnl
-        '
-        Me.Inv_Pnl.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Inv_Pnl.Location = New System.Drawing.Point(21, 60)
-        Me.Inv_Pnl.Name = "Inv_Pnl"
-        Me.Inv_Pnl.Size = New System.Drawing.Size(982, 620)
-        Me.Inv_Pnl.TabIndex = 612
-        '
         'MKTNG_Inventory
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1024, 700)
-        Me.Controls.Add(Me.Inv_Pnl)
         Me.Controls.Add(Me.LoadingPB)
         Me.Controls.Add(Me.Mktng_InvLBL)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
@@ -143,5 +133,4 @@ Partial Class MKTNG_Inventory
     Friend WithEvents UpdateItemToolStripMenuItem1 As ToolStripMenuItem
     Friend WithEvents DeleteItemToolStripMenuItem1 As ToolStripMenuItem
     Friend WithEvents AddQuantityToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents Inv_Pnl As Panel
 End Class

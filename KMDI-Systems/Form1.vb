@@ -288,7 +288,7 @@ Begin Transaction
 
     Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
         Panel1.Controls.Clear()
-        DGV_Properties(Inv_DGV)
+        DGV_Properties(Inv_DGV, "Inv_DGV")
         Panel1.Controls.Add(Inv_DGV)
     End Sub
 

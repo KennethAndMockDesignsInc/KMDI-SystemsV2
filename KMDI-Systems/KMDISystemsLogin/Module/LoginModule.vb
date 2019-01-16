@@ -12,7 +12,7 @@ Module LoginModule
     Public Read As SqlDataReader
 
     Public sqlDataAdapter As New SqlDataAdapter
-    Public sqlDataSet As DataSet
+    Public sqlDataSet As New DataSet
     Public sqlBindingSource As BindingSource
 
     Public sqlconnString As String

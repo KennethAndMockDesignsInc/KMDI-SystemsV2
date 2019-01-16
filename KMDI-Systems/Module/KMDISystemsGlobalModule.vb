@@ -32,8 +32,10 @@ Module KMDISystemsGlobalModule
         sql_Transaction_result = ""
     End Sub
 
-    Public Sub DGV_Properties(ByVal DGV As KryptonDataGridView)
+    Public Sub DGV_Properties(ByVal DGV As KryptonDataGridView,
+                              ByVal dgvName As String)
         With DGV
+            .Name = dgvName
             .Dock = DockStyle.Fill
             .Select()
             .DefaultCellStyle.BackColor = Color.White

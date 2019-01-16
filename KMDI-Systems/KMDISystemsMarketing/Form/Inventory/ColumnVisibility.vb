@@ -1,8 +1,9 @@
 ﻿Imports System.ComponentModel
+Imports ComponentFactory.Krypton.Toolkit
 Public Class ColumnVisibility
     Public ColumnVisibility_BGW As BackgroundWorker = New BackgroundWorker
     Dim columnChkToolTip As New MetroFramework.Components.MetroToolTip
-    Dim DGVName As DataGridView
+    Dim DGVName As New KryptonDataGridView
     Public Sub Start_MktngInventoryBGW()
         If ColumnVisibility_BGW.IsBusy <> True Then
             FLP_ColumnInvi.Controls.Clear()
@@ -47,13 +48,7 @@ Public Class ColumnVisibility
             AddHandler ColumnVisibility_BGW.RunWorkerCompleted, AddressOf ColumnVisibility_RunWorkerCompleted
             Start_MktngInventoryBGW()
         Catch ex As Exception
-            MetroFramework.MetroMessageBox.Show(Me, "Please Refer to Error_Logs.txt", "Error",
-                                                MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
-            Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-                                       "Error Message: " & ex.Message & vbCrLf &
-                                       "Trace: " & ex.StackTrace & vbCrLf)
-            Log_File.Close()
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
         End Try
     End Sub
 

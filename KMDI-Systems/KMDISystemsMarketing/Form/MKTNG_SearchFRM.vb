@@ -14,6 +14,7 @@
     Private Sub SearchBTN_Click(sender As Object, e As EventArgs) Handles SearchBTN.Click
         Mktng_SearchStr = SearchTbox.Text
         MKTNG_Inventory.MktngInv_TODO = "Search"
+        MKTNG_Inventory.Inv_DGV.Rows.Clear()
         MKTNG_Inventory.Start_MktngInventoryBGW()
     End Sub
 End Class

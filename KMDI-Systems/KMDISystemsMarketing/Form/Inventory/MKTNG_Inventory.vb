@@ -38,19 +38,18 @@ Public Class MKTNG_Inventory
                     Generate_DGVCols = True
                     Mktng_QUERY_INSTANCE = "Loading_using_SearchString"
                     Mktng_Query_Select_STP("", "MKTNG_stp_Inv_Search")
-
                 Case "Search"
-                    Generate_DGVCols = True
+                    Generate_DGVCols = False
                     Mktng_QUERY_INSTANCE = "Loading_using_SearchString"
                     Mktng_Query_Select_STP(Mktng_SearchStr, "MKTNG_stp_Inv_Search")
             End Select
 
             Select Case Generate_DGVCols
                 Case True
-                    For i = 0 To sqlDataSet.Tables("QUERY_DETAILS").Columns.Count
+                    For i = 0 To sqlDataSet.Tables("QUERY_DETAILS").Columns.Count - 1
                         Sleep(100)
                         MktngInventory_BGW.ReportProgress(i)
-                        If i = sqlDataSet.Tables("QUERY_DETAILS").Columns.Count Then
+                        If i = sqlDataSet.Tables("QUERY_DETAILS").Columns.Count - 1 Then
                             Generate_DGVRows = True
                         End If
                     Next
@@ -59,7 +58,7 @@ Public Class MKTNG_Inventory
             Select Case Generate_DGVRows
                 Case True
                     For i = 0 To sqlDataSet.Tables("QUERY_DETAILS").Rows.Count - 1
-                        Sleep(100)
+                        Sleep(10)
                         MktngInventory_BGW.ReportProgress(i)
                     Next
             End Select
@@ -82,20 +81,23 @@ Public Class MKTNG_Inventory
         End If
     End Sub
     Public ColumnVisibility_Opened As Boolean = False
-    Dim Inv_DGV As New KryptonDataGridView
+    Public Inv_DGV As New KryptonDataGridView
 
     Private Sub MktngInventory_BGW_ProgressChanged(sender As Object, e As ProgressChangedEventArgs)
         Try
             Select Case Generate_DGVCols
                 Case True
                     If e.ProgressPercentage = 0 Then
-                        Inv_Pnl.Controls.Clear()
-                        DGV_Properties(Inv_DGV)
-                        Inv_Pnl.Controls.Add(Inv_DGV)
-                        AddHandler Inv_DGV.RowPostPaint, AddressOf MktngInventoryDGV_RowPostPaint
-                        AddHandler Inv_DGV.RowEnter, AddressOf MktngInventoryDGV_RowEnter
-                        AddHandler Inv_DGV.CellMouseClick, AddressOf MktngInventoryDGV_CellMouseClick
-                        AddHandler Inv_DGV.ColumnHeaderMouseClick, AddressOf MktngInventoryDGV_ColumnHeaderMouseClick
+                        If Not Controls.Contains(Inv_DGV) Then
+                            'Controls.Clear()
+                            DGV_Properties(Inv_DGV, "Inv_DGV")
+                            Controls.Add(Inv_DGV)
+
+                            AddHandler Inv_DGV.RowPostPaint, AddressOf MktngInventoryDGV_RowPostPaint
+                            AddHandler Inv_DGV.RowEnter, AddressOf MktngInventoryDGV_RowEnter
+                            AddHandler Inv_DGV.CellMouseClick, AddressOf MktngInventoryDGV_CellMouseClick
+                            AddHandler Inv_DGV.ColumnHeaderMouseClick, AddressOf MktngInventoryDGV_ColumnHeaderMouseClick
+                        End If
                     End If
                     Dim inv_dgvCol As New DataGridViewColumn
                     Dim cell As DataGridViewCell = New DataGridViewTextBoxCell()
@@ -109,6 +111,10 @@ Public Class MKTNG_Inventory
                                 .ValueType = GetType(Decimal)
                                 .DefaultCellStyle.Format = "N2"
                                 .DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+                            End If
+                            If .Name = "QUANTITY" Then
+                                .ValueType = GetType(Integer)
+                                .DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
                             End If
                             If .Name = "ITEM_PICTURE" Or .Name = "MI_STATUS" Or .Name = "MI_ID" Or .Name = "ITEM CODE" Or
                                .Name = "PURCHASED PRICE" Or .Name = "DISCOUNT" Or .Name = "GENDER" Then
@@ -134,19 +140,15 @@ Public Class MKTNG_Inventory
                             DGVrow_list.Clear()
                             For i = 0 To sqlDataSet.Tables("QUERY_DETAILS").Columns.Count - 1
                                 If i = 11 Then
-                                    '//Lagay ka dito ng Date Datatype para iConvert ang sqlDS.tables.row.item.toString sa DATE
-                                    '// At i add sa List(Of Objects)
-                                    'Dim date_col As Date
                                     DGVrow_list.Add(Convert.ToDateTime(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i)))
-                                    'DGVrow_list.Add(Convert.ToDateTime(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i)).ToString())
-                                ElseIf i = 8 Then
+                                ElseIf i = 7 Then
+                                    DGVrow_list.Add(Convert.ToInt32(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i)))
+                                ElseIf i = 8 Or i = 9 Or i = 10 Then
                                     DGVrow_list.Add(Convert.ToDecimal(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i)))
-                                    'DGVrow_list.Add(Convert.ToDecimal(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i)).ToString())
                                 Else
                                     DGVrow_list.Add(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i).ToString)
                                 End If
                             Next
-                            'Dim arr_obj As Object() = DGVrow_list.ToArray
                             Inv_DGV.Rows.Add(DGVrow_list.ToArray)
                     End Select
             End Select
@@ -183,10 +185,10 @@ Public Class MKTNG_Inventory
                 ElseIf (sql_Err_no = "" Or sql_Err_no = Nothing) AndAlso
                        (sql_Err_msg = "" Or sql_Err_msg = Nothing) Then
                     If sql_Transaction_result = "Committed" Then
-                        Generate_DGVCols = False
-                        Generate_DGVRows = False
-                        sqlDataSet.Clear()
-                        DGVrow_list.Clear()
+                        'Generate_DGVCols = False
+                        'Generate_DGVRows = False
+                        'sqlDataSet.Clear()
+                        'DGVrow_list.Clear()
 
                         'Inv_Pnl.Controls.Clear()
                         'DGV_Properties(Inv_DGV)
@@ -264,7 +266,7 @@ Public Class MKTNG_Inventory
     Private Sub ColumnToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ColumnToolStripMenuItem.Click
         Try
             OpenedByFormName = Me
-            DGVStrGlobal = "MktngInventoryDGV"
+            DGVStrGlobal = "Inv_DGV"
             Dim frm As Form = ColumnVisibility
             Select Case frm.Visible
                 Case True
@@ -288,6 +290,7 @@ Public Class MKTNG_Inventory
             ElseIf e.KeyCode = Keys.F5 Or e.KeyCode = Keys.Back Then
                 MktngInv_TODO = "Search"
                 Mktng_SearchStr = ""
+                Inv_DGV.Rows.Clear()
                 Start_MktngInventoryBGW()
             ElseIf e.KeyCode = Keys.Escape Then
                 Close()
@@ -300,7 +303,7 @@ Public Class MKTNG_Inventory
     Private Sub MktngInventoryDGV_CellMouseClick(sender As Object, e As DataGridViewCellMouseEventArgs)
         Try
             If e.Button = MouseButtons.Right Then
-                Inv_DGV.Rows(e.RowIndex).Selected = True
+                'Inv_DGV.Rows(e.RowIndex).Selected = True
                 ColumnToolStripMenuItem.Visible = False
                 ItemToolStripMenuItem.Visible = True
                 AddQuantityToolStripMenuItem.Visible = True
@@ -373,10 +376,10 @@ Public Class MKTNG_Inventory
             e.Cancel = False
         End If
     End Sub
-
     Private Sub MktngInventoryDGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs)
         Try
             If (e.RowIndex >= 0 And e.ColumnIndex >= 0) Then
+                Inv_DGV.Rows(e.RowIndex).Selected = True
                 MI_ID = Inv_DGV.Item("MI_ID", e.RowIndex).Value.ToString
                 ITEM_CODE = Inv_DGV.Item("ITEM CODE", e.RowIndex).Value.ToString
                 BRAND = Inv_DGV.Item("BRAND", e.RowIndex).Value.ToString
