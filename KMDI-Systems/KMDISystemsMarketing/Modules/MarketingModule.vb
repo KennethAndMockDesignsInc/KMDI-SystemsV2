@@ -143,6 +143,7 @@ Module MarketingModule
                                     ByVal TIER_7 As Boolean,
                                     ByVal MIC_ID_REF As Integer,
                                     ByVal MISC_ID_REF As Integer,
+                                    ByVal SubClass_list As List(Of Integer),
                                     Optional Color As String = "",
                                     Optional BRAND As String = "",
                                     Optional Size As String = "",
@@ -160,22 +161,22 @@ Module MarketingModule
                 sqlCommand.Parameters.AddWithValue("@ITEM_CODE", ITEM_CODE)
                 sqlCommand.Parameters.AddWithValue("@ITEM_DESC", ITEM_DESC)
                 sqlCommand.Parameters.AddWithValue("@GENDER", GENDER)
-                sqlCommand.Parameters.AddWithValue("@MARKET_PRICE",MARKET_PRICE)
-                sqlCommand.Parameters.AddWithValue("@PURCHASED_PRICE",PURCHASED_PRICE)
+                sqlCommand.Parameters.AddWithValue("@MARKET_PRICE", MARKET_PRICE)
+                sqlCommand.Parameters.AddWithValue("@PURCHASED_PRICE", PURCHASED_PRICE)
                 sqlCommand.Parameters.AddWithValue("@DISCOUNT", DISCOUNT)
                 sqlCommand.Parameters.AddWithValue("@QUANTITY", QUANTITY)
                 sqlCommand.Parameters.AddWithValue("@PURCHASED_DATE", PURCHASED_DATE)
-                sqlCommand.Parameters.AddWithValue("@QR_STATUS",QR_STATUS)
+                sqlCommand.Parameters.AddWithValue("@QR_STATUS", QR_STATUS)
                 sqlCommand.Parameters.AddWithValue("@GIFT", GIFT)
-                sqlCommand.Parameters.AddWithValue("@RAFFLE",RAFFLE)
+                sqlCommand.Parameters.AddWithValue("@RAFFLE", RAFFLE)
                 sqlCommand.Parameters.AddWithValue("@TIER_1", TIER_1)
-                sqlCommand.Parameters.AddWithValue("@TIER_2",TIER_2)
+                sqlCommand.Parameters.AddWithValue("@TIER_2", TIER_2)
                 sqlCommand.Parameters.AddWithValue("@TIER_3", TIER_3)
-                sqlCommand.Parameters.AddWithValue("@TIER_4",TIER_4)
+                sqlCommand.Parameters.AddWithValue("@TIER_4", TIER_4)
                 sqlCommand.Parameters.AddWithValue("@TIER_5", TIER_5)
-                sqlCommand.Parameters.AddWithValue("@TIER_6",TIER_6)
+                sqlCommand.Parameters.AddWithValue("@TIER_6", TIER_6)
                 sqlCommand.Parameters.AddWithValue("@TIER_7", TIER_7)
-                sqlCommand.Parameters.AddWithValue("@MIC_ID_REF",MIC_ID_REF)
+                sqlCommand.Parameters.AddWithValue("@MIC_ID_REF", MIC_ID_REF)
                 sqlCommand.Parameters.AddWithValue("@MISC_ID_REF", MISC_ID_REF)
                 sqlCommand.Parameters.AddWithValue("@Color", Color)
                 sqlCommand.Parameters.AddWithValue("@BRAND", BRAND)

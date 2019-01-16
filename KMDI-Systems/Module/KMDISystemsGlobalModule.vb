@@ -113,6 +113,12 @@ Module KMDISystemsGlobalModule
                                        "SQL Transaction Error Message: " & sql_Err_msg & vbCrLf &
                                        "Trace: " & sql_Err_StackTrace & vbCrLf)
                 Log_File.Close()
+            Case "UserWarning"
+                Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+                Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                       "Warning message: " & sql_Err_msg & vbCrLf &
+                                       "Trace: " & sql_Err_StackTrace & vbCrLf)
+                Log_File.Close()
         End Select
         Select Case WillPrompt
             Case True
@@ -138,6 +144,15 @@ Module KMDISystemsGlobalModule
                             Case Else
                                 MetroFramework.MetroMessageBox.Show(FormName, "Transaction failed", "Contact the Developers",
                                                                     MessageBoxButtons.OK, MessageBoxIcon.Error)
+                        End Select
+                    Case "UserWarning"
+                        Select Case CustomPrompt
+                            Case True
+                                MetroFramework.MetroMessageBox.Show(FormName, PromptContent, "Warning",
+                                                                    MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                            Case False
+                                MetroFramework.MetroMessageBox.Show(FormName, "Please Refer to Error_Logs.txt", "Contact the Developers",
+                                                                    MessageBoxButtons.OK, MessageBoxIcon.Warning)
                         End Select
                     Case "Success"
                         MetroFramework.MetroMessageBox.Show(FormName, " ", PromptMode, MessageBoxButtons.OK, MessageBoxIcon.Information)

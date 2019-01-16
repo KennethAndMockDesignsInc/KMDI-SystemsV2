@@ -379,6 +379,7 @@ Public Class MKTNG_Inventory
             e.Cancel = False
         End If
     End Sub
+
     Private Sub MktngInventoryDGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs)
         Try
             If (e.RowIndex >= 0 And e.ColumnIndex >= 0) Then

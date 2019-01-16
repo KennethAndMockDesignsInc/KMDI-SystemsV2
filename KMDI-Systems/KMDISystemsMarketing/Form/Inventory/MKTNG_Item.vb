@@ -1,5 +1,6 @@
 ﻿Imports System.Data.SqlClient
 Imports System.ComponentModel
+Imports System.Threading.Thread
 Public Class MKTNG_Item
     Public OpenedByToolStripMenu As String
     Public MktngItem_BGW As BackgroundWorker = New BackgroundWorker
@@ -44,10 +45,87 @@ Public Class MKTNG_Item
         GENDER = Trim(GenPrefCbox.Text)
         MARKET_PRICE = Trim(MarketPriceTbox.Text)
         PURCHASED_PRICE = Trim(PurchasedPriceTbox.Text)
-        PURCHASED_DATE = Trim(PurchasedDateTbox.Text)
+        PURCHASED_DATE = PurchasedDate_dtp.Value
+        Dim tier_checked As Integer = 0
+        Dim purpose_checked As Integer = 0
+        Dim MainClass_Checked As Integer = 0
+        Dim SubClass_Checked As Integer = 0
+        Dim Event_Checked As Integer = 0
 
-        MktngItem_TODO = "Add_Item"
-        Start_MktngItemBGW()
+        For Each tier_chk In FRM_Pnl.Controls
+            If tier_chk.Name.Contains("Tier") And tier_chk.Name.Contains("Chk") Then
+                tier_checked += 1
+            ElseIf tier_chk.Name.Contains("Purpose_Chk") Then
+                purpose_checked += 1
+            End If
+        Next
+        For Each MainClass_rbtn In MainClass_FLP.Controls
+            If MainClass_rbtn.Checked = True Then
+                MainClass_Checked += 1
+            End If
+        Next
+        For Each SubClass_chkBox In SubClass_FLP.Controls
+            If SubClass_chkBox.Checked = True Then
+                SubClass_Checked += 1
+            End If
+        Next
+        For Each Event_chkBox In Events_FLP.Controls
+            If Event_chkBox.Checked = True Then
+                Event_Checked += 1
+            End If
+        Next
+
+        If ITEM_CODE <> Nothing Or ITEM_CODE <> "" Then
+            If BRAND <> Nothing Or BRAND <> "" Then
+                If ITEM_DESC <> Nothing Or ITEM_DESC <> "" Then
+                    If MARKET_PRICE <> Nothing Or MARKET_PRICE <> "" Then
+                        If PURCHASED_PRICE <> Nothing Or PURCHASED_PRICE <> "" Then
+                            If PURCHASED_DATE <> Nothing Or PURCHASED_DATE <> "" Then
+                                If tier_checked > 0 Then
+                                    If purpose_checked > 0 Then
+                                        If MainClass_Checked > 0 Then
+                                            If SubClass_Checked > 0 Then
+                                                If Event_Checked > 0 Then
+                                                    If OpenedByToolStripMenu = "ADD" Then
+                                                        MktngItem_TODO = "Add_Item"
+                                                    ElseIf OpenedByToolStripMenu = "UPDATE" Then
+                                                        MktngItem_TODO = "Update_Item"
+                                                    End If
+                                                    Start_MktngItemBGW()
+                                                ElseIf Event_Checked = 0 Then
+                                                    KMDIPrompts(Me, "UserWarning", "Event_Checked is Empty", Environment.StackTrace, Nothing, True, True, "Event Tags cannot be empty")
+                                                End If
+                                            ElseIf SubClass_Checked = 0 Then
+                                                    KMDIPrompts(Me, "UserWarning", "SubClass_Checked is Empty", Environment.StackTrace, Nothing, True, True, "Sub Classification cannot be empty")
+                                            End If
+                                        ElseIf MainClass_Checked = 0 Then
+                                                KMDIPrompts(Me, "UserWarning", "MainClass_Checked is Empty", Environment.StackTrace, Nothing, True, True, "Main Classification cannot be empty")
+                                        End If
+                                    ElseIf purpose_checked = 0 Then
+                                        KMDIPrompts(Me, "UserWarning", "purpose_checked is Empty", Environment.StackTrace, Nothing, True, True, "Purpose cannot be empty")
+                                    End If
+                                ElseIf tier_checked = 0 Then
+                                    KMDIPrompts(Me, "UserWarning", "tier_checked is Empty", Environment.StackTrace, Nothing, True, True, "Tier cannot be empty")
+                                End If
+                            Else
+                                KMDIPrompts(Me, "UserWarning", "PURCHASED_DATE is Empty", Environment.StackTrace, Nothing, True, True, "Purchased Date cannot be empty")
+                            End If
+                        Else
+                            KMDIPrompts(Me, "UserWarning", "PURCHASED_PRICE is Empty", Environment.StackTrace, Nothing, True, True, "Purchased Price cannot be empty")
+                        End If
+                    Else
+                        KMDIPrompts(Me, "UserWarning", "MARKET_PRICE is Empty", Environment.StackTrace, Nothing, True, True, "Market Price cannot be empty")
+                    End If
+                Else
+                    KMDIPrompts(Me, "UserWarning", "ITEM_DESC is Empty", Environment.StackTrace, Nothing, True, True, "Item Description cannot be empty")
+                End If
+            Else
+                KMDIPrompts(Me, "UserWarning", "BRAND is Empty", Environment.StackTrace, Nothing, True, True, "Brand cannot be empty")
+            End If
+        Else
+            KMDIPrompts(Me, "UserWarning", "ItemCode is Empty", Environment.StackTrace, Nothing, True, True, "Item Code cannot be empty")
+        End If
+
     End Sub
 
     Private Sub MKTNG_Item_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -55,8 +133,9 @@ Public Class MKTNG_Item
             MktngItem_BGW.WorkerSupportsCancellation = True
             MktngItem_BGW.WorkerReportsProgress = True
             AddHandler MktngItem_BGW.DoWork, AddressOf MktngItem_BGW_DoWork
-            'AddHandler MktngItem_BGW.ProgressChanged, AddressOf MktngItem_BGW_ProgressChanged
+            AddHandler MktngItem_BGW.ProgressChanged, AddressOf MktngItem_BGW_ProgressChanged
             AddHandler MktngItem_BGW.RunWorkerCompleted, AddressOf MktngItem_BGW_RunWorkerCompleted
+            GenPrefCbox.SelectedIndex = 0
             Select Case OpenedByToolStripMenu
                 Case "ADD"
                     MktngItem_TODO = "MainClass"
@@ -84,6 +163,7 @@ Public Class MKTNG_Item
         End Try
     End Sub
 
+    Dim Report_BGW_bool As Boolean = False
     Private Sub MktngItem_BGW_DoWork(sender As Object, e As DoWorkEventArgs)
         Try
             Select Case MktngItem_TODO
@@ -91,12 +171,18 @@ Public Class MKTNG_Item
                     Mktng_QUERY_INSTANCE = "Loading_using_EqualSearch"
                     Mktng_Query_Select_STP(MI_ID, "MKTNG_stp_Inv_FetchItem")
                 Case "MainClass"
+                    MainClass_FLP.Controls.Clear()
+                    Report_BGW_bool = True
                     Mktng_QUERY_INSTANCE = "Loading_using_EqualSearch"
                     Mktng_Query_Select_STP("1", "MKTNG_stp_Item_MainClass")
                 Case "SubClass"
+                    SubClass_FLP.Controls.Clear()
+                    Report_BGW_bool = True
                     Mktng_QUERY_INSTANCE = "Loading_using_EqualSearch"
                     Mktng_Query_Select_STP(MainClassID, "MKTNG_stp_Item_SubClass")
                 Case "Load_Events"
+                    Events_FLP.Controls.Clear()
+                    Report_BGW_bool = True
                     Mktng_QUERY_INSTANCE = "Loading_using_EqualSearch"
                     Mktng_Query_Select_STP("1", "MKTNG_stp_Inv_Events")
                 Case "QR"
@@ -107,6 +193,15 @@ Public Class MKTNG_Item
                 Case "SubClass_Insert"
                     Mktng_SubClass_Insert(SubClassSTR, MainClassID, "MKTNG_stp_Item_SubClass_Insert")
                 Case "Add_Item"
+                Case "Update_Item"
+            End Select
+
+            Select Case Report_BGW_bool
+                Case True
+                    For i = 0 To sqlDataSet.Tables("QUERY_DETAILS").Rows.Count - 1
+                        Sleep(100)
+                        MktngItem_BGW.ReportProgress(i)
+                    Next
             End Select
         Catch ex As SqlException
             'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
@@ -125,6 +220,48 @@ Public Class MKTNG_Item
         If MktngItem_BGW.CancellationPending Then
             e.Cancel = True
         End If
+    End Sub
+
+    Public Sub MktngItem_BGW_ProgressChanged(sender As Object, e As ProgressChangedEventArgs)
+        Try
+            Select Case MktngItem_TODO
+                Case "MainClass"
+                    Dim ClassRbtn As New MetroFramework.Controls.MetroRadioButton
+                    With ClassRbtn
+                        .Name = sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item("MAIN_CLASS").ToString
+                        .Text = .Name
+                        .Tag = sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item("MIC_ID").ToString
+                        .FontSize = MetroFramework.MetroCheckBoxSize.Tall
+                        SubClassChkToolTip.SetToolTip(ClassRbtn, .Text)
+                        AddHandler .Click, AddressOf ClassRbtn_Clicked
+                        MainClass_FLP.Controls.Add(ClassRbtn)
+                    End With
+                Case "SubClass"
+                    Dim SubClassChk As New MetroFramework.Controls.MetroCheckBox
+                    With SubClassChk
+                        .Name = sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item("SUB_CLASS").ToString
+                        .Text = .Name
+                        .Tag = sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item("MISC_ID").ToString
+                        .FontSize = MetroFramework.MetroCheckBoxSize.Medium
+                        SubClassChkToolTip.SetToolTip(SubClassChk, .Text)
+                        SubClass_FLP.Controls.Add(SubClassChk)
+                    End With
+                Case "Load_Events"
+                    Dim EventsChk As New MetroFramework.Controls.MetroCheckBox
+                    With EventsChk
+                        .Name = sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item("EVENT").ToString
+                        .Text = .Name
+                        .Tag = sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item("MIE_ID").ToString
+                        .Size = New Size(246, 25)
+                        .FontSize = MetroFramework.MetroCheckBoxSize.Tall
+                        SubClassChkToolTip.SetToolTip(EventsChk, .Text)
+                        Events_FLP.Controls.Add(EventsChk)
+                    End With
+            End Select
+        Catch ex As Exception
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
+            LoadingPB.Visible = False
+        End Try
     End Sub
 
     Private Sub MktngItem_BGW_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs)
@@ -146,8 +283,8 @@ Public Class MKTNG_Item
                                 Tier6_Chk.Checked = row("TIER 6")
                                 Tier7_Chk.Checked = row("TIER 7")
 
-                                Gift_Chk.Checked = row("GIFT")
-                                Raffle_Chk.Checked = row("RAFFLE")
+                                GiftPurpose_Chk.Checked = row("GIFT")
+                                RafflePurpose_Chk.Checked = row("RAFFLE")
 
                                 MainClassID = row("MIC_ID")
                                 arr_SubClassID.Add(row("MISC_ID"))
@@ -156,34 +293,11 @@ Public Class MKTNG_Item
                             MktngItem_TODO = "SubClass"
                             Start_MktngItemBGW()
                         Case "MainClass"
-                            MainClass_FLP.Controls.Clear()
-                            For Each row In sqlBindingSource
-                                Dim ClassRbtn As New MetroFramework.Controls.MetroRadioButton
-                                With ClassRbtn
-                                    .Name = row("MAIN_CLASS")
-                                    .Text = row("MAIN_CLASS")
-                                    .Tag = row("MIC_ID")
-                                    .FontSize = MetroFramework.MetroCheckBoxSize.Tall
-                                    SubClassChkToolTip.SetToolTip(ClassRbtn, .Text)
-                                    AddHandler .Click, AddressOf ClassRbtn_Clicked
-                                    MainClass_FLP.Controls.Add(ClassRbtn)
-                                End With
-                            Next
+                            Report_BGW_bool = False
                             MktngItem_TODO = "Load_Events"
                             Start_MktngItemBGW()
                         Case "SubClass"
-                            SubClass_FLP.Controls.Clear()
-                            For Each row In sqlBindingSource
-                                Dim SubClassChk As New MetroFramework.Controls.MetroCheckBox
-                                With SubClassChk
-                                    .Name = row("SUB_CLASS")
-                                    .Text = row("SUB_CLASS")
-                                    .Tag = row("MISC_ID")
-                                    .FontSize = MetroFramework.MetroCheckBoxSize.Medium
-                                    SubClassChkToolTip.SetToolTip(SubClassChk, .Text)
-                                    SubClass_FLP.Controls.Add(SubClassChk)
-                                End With
-                            Next
+                            Report_BGW_bool = False
                             Select Case Load_Update_bool
                                 Case True
                                     For Each rbtn In MainClass_FLP.Controls
@@ -216,19 +330,7 @@ Public Class MKTNG_Item
                             MktngItem_TODO = "SubClass"
                             Start_MktngItemBGW()
                         Case "Load_Events"
-                            Events_FLP.Controls.Clear()
-                            For Each row In sqlBindingSource
-                                Dim EventsChk As New MetroFramework.Controls.MetroCheckBox
-                                With EventsChk
-                                    .Name = row("EVENT")
-                                    .Text = row("EVENT")
-                                    .Tag = row("MIE_ID")
-                                    .Size = New Size(246, 25)
-                                    .FontSize = MetroFramework.MetroCheckBoxSize.Tall
-                                    SubClassChkToolTip.SetToolTip(EventsChk, .Text)
-                                    Events_FLP.Controls.Add(EventsChk)
-                                End With
-                            Next
+                            Report_BGW_bool = False
                             Select Case OpenedByToolStripMenu
                                 Case "UPDATE"
                                     MktngItem_TODO = "Load_Update_Item"

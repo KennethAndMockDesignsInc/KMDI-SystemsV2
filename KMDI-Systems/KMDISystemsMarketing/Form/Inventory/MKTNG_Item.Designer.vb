@@ -37,8 +37,8 @@ Partial Class MKTNG_Item
         Me.MetroButton1 = New MetroFramework.Controls.MetroButton()
         Me.SubClass_FLP = New System.Windows.Forms.FlowLayoutPanel()
         Me.MainClass_FLP = New System.Windows.Forms.FlowLayoutPanel()
-        Me.Raffle_Chk = New MetroFramework.Controls.MetroCheckBox()
-        Me.Gift_Chk = New MetroFramework.Controls.MetroCheckBox()
+        Me.RafflePurpose_Chk = New MetroFramework.Controls.MetroCheckBox()
+        Me.GiftPurpose_Chk = New MetroFramework.Controls.MetroCheckBox()
         Me.MetroLabel2 = New MetroFramework.Controls.MetroLabel()
         Me.Tier7_Chk = New MetroFramework.Controls.MetroCheckBox()
         Me.Tier6_Chk = New MetroFramework.Controls.MetroCheckBox()
@@ -99,8 +99,8 @@ Partial Class MKTNG_Item
         Me.FRM_Pnl.Controls.Add(Me.MetroButton1)
         Me.FRM_Pnl.Controls.Add(Me.SubClass_FLP)
         Me.FRM_Pnl.Controls.Add(Me.MainClass_FLP)
-        Me.FRM_Pnl.Controls.Add(Me.Raffle_Chk)
-        Me.FRM_Pnl.Controls.Add(Me.Gift_Chk)
+        Me.FRM_Pnl.Controls.Add(Me.RafflePurpose_Chk)
+        Me.FRM_Pnl.Controls.Add(Me.GiftPurpose_Chk)
         Me.FRM_Pnl.Controls.Add(Me.MetroLabel2)
         Me.FRM_Pnl.Controls.Add(Me.Tier7_Chk)
         Me.FRM_Pnl.Controls.Add(Me.Tier6_Chk)
@@ -345,25 +345,25 @@ Partial Class MKTNG_Item
         Me.MainClass_FLP.Size = New System.Drawing.Size(337, 98)
         Me.MainClass_FLP.TabIndex = 22
         '
-        'Raffle_Chk
+        'RafflePurpose_Chk
         '
-        Me.Raffle_Chk.AutoSize = True
-        Me.Raffle_Chk.Location = New System.Drawing.Point(507, 164)
-        Me.Raffle_Chk.Name = "Raffle_Chk"
-        Me.Raffle_Chk.Size = New System.Drawing.Size(52, 15)
-        Me.Raffle_Chk.TabIndex = 19
-        Me.Raffle_Chk.Text = "Raflle"
-        Me.Raffle_Chk.UseSelectable = True
+        Me.RafflePurpose_Chk.AutoSize = True
+        Me.RafflePurpose_Chk.Location = New System.Drawing.Point(507, 164)
+        Me.RafflePurpose_Chk.Name = "RafflePurpose_Chk"
+        Me.RafflePurpose_Chk.Size = New System.Drawing.Size(52, 15)
+        Me.RafflePurpose_Chk.TabIndex = 19
+        Me.RafflePurpose_Chk.Text = "Raflle"
+        Me.RafflePurpose_Chk.UseSelectable = True
         '
-        'Gift_Chk
+        'GiftPurpose_Chk
         '
-        Me.Gift_Chk.AutoSize = True
-        Me.Gift_Chk.Location = New System.Drawing.Point(459, 164)
-        Me.Gift_Chk.Name = "Gift_Chk"
-        Me.Gift_Chk.Size = New System.Drawing.Size(42, 15)
-        Me.Gift_Chk.TabIndex = 18
-        Me.Gift_Chk.Text = "Gift"
-        Me.Gift_Chk.UseSelectable = True
+        Me.GiftPurpose_Chk.AutoSize = True
+        Me.GiftPurpose_Chk.Location = New System.Drawing.Point(459, 164)
+        Me.GiftPurpose_Chk.Name = "GiftPurpose_Chk"
+        Me.GiftPurpose_Chk.Size = New System.Drawing.Size(42, 15)
+        Me.GiftPurpose_Chk.TabIndex = 18
+        Me.GiftPurpose_Chk.Text = "Gift"
+        Me.GiftPurpose_Chk.UseSelectable = True
         '
         'MetroLabel2
         '
@@ -641,11 +641,11 @@ Partial Class MKTNG_Item
         'MetroLabel4
         '
         Me.MetroLabel4.AutoSize = True
-        Me.MetroLabel4.Location = New System.Drawing.Point(7, 91)
+        Me.MetroLabel4.Location = New System.Drawing.Point(3, 91)
         Me.MetroLabel4.Name = "MetroLabel4"
-        Me.MetroLabel4.Size = New System.Drawing.Size(103, 19)
+        Me.MetroLabel4.Size = New System.Drawing.Size(107, 19)
         Me.MetroLabel4.TabIndex = 37
-        Me.MetroLabel4.Text = "ItemDescription:"
+        Me.MetroLabel4.Text = "Item Description:"
         '
         'MetroLabel3
         '
@@ -911,8 +911,8 @@ Partial Class MKTNG_Item
     Friend WithEvents Tier4_Chk As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents Tier3_Chk As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents Tier2_Chk As MetroFramework.Controls.MetroCheckBox
-    Friend WithEvents Raffle_Chk As MetroFramework.Controls.MetroCheckBox
-    Friend WithEvents Gift_Chk As MetroFramework.Controls.MetroCheckBox
+    Friend WithEvents RafflePurpose_Chk As MetroFramework.Controls.MetroCheckBox
+    Friend WithEvents GiftPurpose_Chk As MetroFramework.Controls.MetroCheckBox
     Friend WithEvents MetroLabel2 As MetroFramework.Controls.MetroLabel
     Friend WithEvents SubClass_FLP As FlowLayoutPanel
     Friend WithEvents MainClass_FLP As FlowLayoutPanel
