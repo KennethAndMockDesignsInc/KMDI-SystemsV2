@@ -8,7 +8,7 @@ Public Class MKTNG_Inventory
     Public MktngInventory_BGW As BackgroundWorker = New BackgroundWorker
     Public MktngInv_TODO As String
     Dim Generate_DGVCols, Generate_DGVRows As Boolean
-    Dim arr_DGVrow As New List(Of String)
+    Dim DGVrow_list As New List(Of Object)
     Public Sub Start_MktngInventoryBGW()
         If MktngInventory_BGW.IsBusy <> True Then
             LoadingPB.Visible = True
@@ -105,16 +105,20 @@ Public Class MKTNG_Inventory
                             .HeaderText = inv_dgvCol.Name
                             .CellTemplate = cell
                             .SortMode = DataGridViewColumnSortMode.Automatic
-                            If .Name.Contains("PRICE") Or .Name = "DISCOUNT" Or .Name = "QUANTITY" Then
+                            If .Name.Contains("PRICE") Or .Name = "DISCOUNT" Then
+                                .ValueType = GetType(Decimal)
+                                .DefaultCellStyle.Format = "N2"
                                 .DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
                             End If
                             If .Name = "ITEM_PICTURE" Or .Name = "MI_STATUS" Or .Name = "MI_ID" Or .Name = "ITEM CODE" Or
                                .Name = "PURCHASED PRICE" Or .Name = "DISCOUNT" Or .Name = "GENDER" Then
                                 .Visible = False
                             End If
-                            'If .Name = "DATE PURCHASED" Then
-                            '    .ValueType = GetType(Date)
-                            'End If
+                            If .Name = "DATE PURCHASED" Then
+                                .ValueType = GetType(Date)
+                                .DefaultCellStyle.Format = "MMM. dd, yyyy"
+                                .DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+                            End If
                         End With
                         Inv_DGV.Columns.Add(inv_dgvCol)
                     End If
@@ -127,20 +131,23 @@ Public Class MKTNG_Inventory
                         Case True
                             Generate_DGVCols = False
                         Case False
-                            arr_DGVrow.Clear()
+                            DGVrow_list.Clear()
                             For i = 0 To sqlDataSet.Tables("QUERY_DETAILS").Columns.Count - 1
                                 If i = 11 Then
                                     '//Lagay ka dito ng Date Datatype para iConvert ang sqlDS.tables.row.item.toString sa DATE
                                     '// At i add sa List(Of Objects)
-                                    arr_DGVrow.Add(CDate(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i)).ToString("yyyy-MM-dd"))
+                                    'Dim date_col As Date
+                                    DGVrow_list.Add(Convert.ToDateTime(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i)))
+                                    'DGVrow_list.Add(Convert.ToDateTime(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i)).ToString())
                                 ElseIf i = 8 Then
-                                    arr_DGVrow.Add(CDec(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i)).ToString("N2"))
+                                    DGVrow_list.Add(Convert.ToDecimal(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i)))
+                                    'DGVrow_list.Add(Convert.ToDecimal(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i)).ToString())
                                 Else
-                                    arr_DGVrow.Add(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i).ToString)
+                                    DGVrow_list.Add(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i).ToString)
                                 End If
                             Next
-                            Dim arr_str As Object() = arr_DGVrow.ToArray
-                            Inv_DGV.Rows.Add(arr_str)
+                            'Dim arr_obj As Object() = DGVrow_list.ToArray
+                            Inv_DGV.Rows.Add(DGVrow_list.ToArray)
                     End Select
             End Select
 
@@ -179,7 +186,7 @@ Public Class MKTNG_Inventory
                         Generate_DGVCols = False
                         Generate_DGVRows = False
                         sqlDataSet.Clear()
-                        arr_DGVrow.Clear()
+                        DGVrow_list.Clear()
 
                         'Inv_Pnl.Controls.Clear()
                         'DGV_Properties(Inv_DGV)

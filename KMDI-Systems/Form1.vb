@@ -312,6 +312,7 @@ Begin Transaction
                 .CellTemplate = cell
                 .SortMode = DataGridViewColumnSortMode.Automatic
                 .ValueType = GetType(Date)
+                .DefaultCellStyle.Format = "MMM. dd, yyyy"
             End With
             Inv_DGV.Columns.Add(inv_dgvCol)
             inv_dgvCol = New DataGridViewColumn
@@ -331,17 +332,17 @@ Begin Transaction
 
     Private Sub Button10_Click(sender As Object, e As EventArgs) Handles Button10.Click
         Try
-            Dim deyt As Date = #12/24/1997#
-            Dim deyt2 As Date = Convert.ToDateTime(TextBox1.Text)
-            Dim deci As Decimal = CDec(TextBox2.Text)
+            'Dim deyt As Date = #12/24/1997#
+            'Dim deyt2 As Date = Convert.ToDateTime(TextBox1.Text)
+            'Dim deci As Decimal = CDec(TextBox2.Text)
             Dim list_obj As New List(Of Object) '({"Sample", deyt2})
             list_obj.Add("Sample")
-            list_obj.Add(deyt2)
-            list_obj.Add(deci)
+            list_obj.Add(Convert.ToDateTime(TextBox1.Text))
+            list_obj.Add(Convert.ToDecimal(TextBox2.Text))
             'Dim list_str As New List(Of String)({"Sample", deyt2})
             'Dim arr_str As String() = list_str.ToArray
-            Dim arr_obj As Object() = list_obj.ToArray
-            Inv_DGV.Rows.Add(arr_obj)
+            'Dim arr_obj As Object() = list_obj.ToArray
+            Inv_DGV.Rows.Add(list_obj.ToArray)
         Catch ex As Exception
             MsgBox(ex.Message)
         End Try
