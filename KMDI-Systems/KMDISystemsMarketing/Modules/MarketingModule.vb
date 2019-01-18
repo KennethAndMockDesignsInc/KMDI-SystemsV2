@@ -16,10 +16,12 @@ Module MarketingModule
     Public GENDER As String
     Public MARKET_PRICE As Decimal
     Public PURCHASED_PRICE As Decimal
-    Public QUANTITY As String
+    Public QUANTITY As Integer
     Public PURCHASED_DATE As Date
     Public REMARKS As String
+    Public INV_DGV_ROWINDEX As Integer
 
+    Public NEW_QUANTITY As Integer
     Public Sub Mktng_Query_Select_STP(ByVal SearchString As String,
                                       ByVal StoredProcedureName As String,
                                       Optional WillUseReader As Boolean = False)
@@ -206,6 +208,29 @@ Module MarketingModule
                         sqlCommand.ExecuteNonQuery()
                     Next
                 End If
+                transaction.Commit()
+                sql_Transaction_result = "Committed"
+            End Using
+        End Using
+    End Sub
+    Public Sub Mktng_Inv_ItemUpdateQTY(ByVal StoredProcedureName As String,
+                                       ByVal MI_ID As Integer,
+                                       ByVal QUANTITY As Integer)
+        Using sqlcon As New SqlConnection(sqlconnString)
+            sqlcon.Open()
+            Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
+                transaction = sqlcon.BeginTransaction(IsolationLevel.RepeatableRead, StoredProcedureName)
+                sqlCommand.Connection = sqlcon
+                sqlCommand.Transaction = transaction
+                sqlCommand.CommandText = StoredProcedureName
+                sqlCommand.CommandType = CommandType.StoredProcedure
+
+                sqlCommand.Parameters.AddWithValue("@QUANTITY", QUANTITY)
+                sqlCommand.Parameters.AddWithValue("@QUANTITY", MI_ID)
+                Using read As SqlDataReader = sqlCommand.ExecuteReader
+                    read.Read()
+                    NEW_QUANTITY = read.Item("QUANTITY")
+                End Using
                 transaction.Commit()
                 sql_Transaction_result = "Committed"
             End Using

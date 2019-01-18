@@ -265,10 +265,10 @@
     <Compile Include="KMDISystemsMarketing\Form\Inventory\MKTNG_Item.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="KMDISystemsMarketing\Form\Inventory\MRKTNG_AddQuantity.Designer.vb">
-      <DependentUpon>MRKTNG_AddQuantity.vb</DependentUpon>
+    <Compile Include="KMDISystemsMarketing\Form\Inventory\MKTNG_AddQuantity.Designer.vb">
+      <DependentUpon>MKTNG_AddQuantity.vb</DependentUpon>
     </Compile>
-    <Compile Include="KMDISystemsMarketing\Form\Inventory\MRKTNG_AddQuantity.vb">
+    <Compile Include="KMDISystemsMarketing\Form\Inventory\MKTNG_AddQuantity.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="KMDISystemsMarketing\Form\Inventory\ViewInventoryImage.Designer.vb">
@@ -450,8 +450,8 @@
     <EmbeddedResource Include="KMDISystemsMarketing\Form\Inventory\MKTNG_Item.resx">
       <DependentUpon>MKTNG_Item.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="KMDISystemsMarketing\Form\Inventory\MRKTNG_AddQuantity.resx">
-      <DependentUpon>MRKTNG_AddQuantity.vb</DependentUpon>
+    <EmbeddedResource Include="KMDISystemsMarketing\Form\Inventory\MKTNG_AddQuantity.resx">
+      <DependentUpon>MKTNG_AddQuantity.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="KMDISystemsMarketing\Form\Inventory\ViewInventoryImage.resx">
       <DependentUpon>ViewInventoryImage.vb</DependentUpon>

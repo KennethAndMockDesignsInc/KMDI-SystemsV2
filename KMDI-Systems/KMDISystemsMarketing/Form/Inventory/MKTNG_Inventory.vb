@@ -379,10 +379,27 @@ Public Class MKTNG_Inventory
         End If
     End Sub
 
+    Private Sub AddQuantityToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AddQuantityToolStripMenuItem.Click
+        Try
+            Dim frm As Form = MKTNG_AddQuantity
+            Select Case frm.Visible
+                Case True
+                    frm.BringToFront()
+                Case False
+                    frm.Show()
+                    frm.BringToFront()
+            End Select
+            Enabled = False
+        Catch ex As Exception
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace)
+        End Try
+    End Sub
+
     Private Sub MktngInventoryDGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs)
         Try
             If (e.RowIndex >= 0 And e.ColumnIndex >= 0) Then
                 Inv_DGV.Rows(e.RowIndex).Selected = True
+                INV_DGV_ROWINDEX = e.RowIndex
                 MI_ID = Inv_DGV.Item("MI_ID", e.RowIndex).Value.ToString
                 ITEM_CODE = Inv_DGV.Item("ITEM CODE", e.RowIndex).Value.ToString
                 BRAND = Inv_DGV.Item("BRAND", e.RowIndex).Value.ToString
