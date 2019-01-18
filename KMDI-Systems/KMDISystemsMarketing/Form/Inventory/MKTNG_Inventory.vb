@@ -89,7 +89,6 @@ Public Class MKTNG_Inventory
                 Case True
                     If e.ProgressPercentage = 0 Then
                         If Not Controls.Contains(Inv_DGV) Then
-                            'Controls.Clear()
                             DGV_Properties(Inv_DGV, "Inv_DGV")
                             Controls.Add(Inv_DGV)
 

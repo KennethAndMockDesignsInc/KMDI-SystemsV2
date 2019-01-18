@@ -101,24 +101,31 @@ Module KMDISystemsGlobalModule
         Select Case PromptMode
             Case "DotNetError"
                 Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
-                Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                Log_File.WriteLine("Logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
                                            "Error Message: " & sql_Err_msg & vbCrLf &
                                            "Trace: " & sql_Err_StackTrace & vbCrLf)
                 Log_File.Close()
 
             Case "SqlError"
                 Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
-                Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                Log_File.WriteLine("Logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
                                        "SQL Transaction Error Number: " & sql_Err_no & vbCrLf &
                                        "SQL Transaction Error Message: " & sql_Err_msg & vbCrLf &
                                        "Trace: " & sql_Err_StackTrace & vbCrLf)
                 Log_File.Close()
             Case "UserWarning"
                 Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
-                Log_File.WriteLine("Error logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                Log_File.WriteLine("Logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
                                        "Warning message: " & sql_Err_msg & vbCrLf &
                                        "Trace: " & sql_Err_StackTrace & vbCrLf)
                 Log_File.Close()
+            Case "Failed"
+                Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+                Log_File.WriteLine("Logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                           "Failed Message: " & sql_Err_msg & vbCrLf &
+                                           "Trace: " & sql_Err_StackTrace & vbCrLf)
+                Log_File.Close()
+
         End Select
         Select Case WillPrompt
             Case True
@@ -156,6 +163,8 @@ Module KMDISystemsGlobalModule
                         End Select
                     Case "Success"
                         MetroFramework.MetroMessageBox.Show(FormName, " ", PromptMode, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    Case "Failed"
+                        MetroFramework.MetroMessageBox.Show(FormName, " ", PromptMode, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                 End Select
         End Select
     End Sub

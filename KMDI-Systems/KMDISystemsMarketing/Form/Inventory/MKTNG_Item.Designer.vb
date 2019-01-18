@@ -115,7 +115,6 @@ Partial Class MKTNG_Item
         Me.FRM_Pnl.Controls.Add(Me.MetroLabel10)
         Me.FRM_Pnl.Controls.Add(Me.PurchasedPriceTbox)
         Me.FRM_Pnl.Controls.Add(Me.MetroLabel9)
-        Me.FRM_Pnl.Controls.Add(Me.MarketPriceTbox)
         Me.FRM_Pnl.Controls.Add(Me.MetroLabel8)
         Me.FRM_Pnl.Controls.Add(Me.GenPrefCbox)
         Me.FRM_Pnl.Controls.Add(Me.MetroLabel7)
@@ -129,6 +128,7 @@ Partial Class MKTNG_Item
         Me.FRM_Pnl.Controls.Add(Me.ItemDesTbox)
         Me.FRM_Pnl.Controls.Add(Me.ColorTbox)
         Me.FRM_Pnl.Controls.Add(Me.SizeTbox)
+        Me.FRM_Pnl.Controls.Add(Me.MarketPriceTbox)
         Me.FRM_Pnl.Dock = System.Windows.Forms.DockStyle.Fill
         Me.FRM_Pnl.HorizontalScrollbar = True
         Me.FRM_Pnl.HorizontalScrollbarBarColor = True
@@ -719,7 +719,7 @@ Partial Class MKTNG_Item
         Me.BrandTbox.CustomButton.Visible = False
         Me.BrandTbox.FontSize = MetroFramework.MetroTextBoxSize.Tall
         Me.BrandTbox.ForeColor = System.Drawing.Color.Black
-        Me.BrandTbox.Lines = New String(-1) {}
+        Me.BrandTbox.Lines = New String() {"QWEQWE"}
         Me.BrandTbox.Location = New System.Drawing.Point(111, 50)
         Me.BrandTbox.MaxLength = 32767
         Me.BrandTbox.Name = "BrandTbox"
@@ -731,6 +731,7 @@ Partial Class MKTNG_Item
         Me.BrandTbox.Size = New System.Drawing.Size(233, 29)
         Me.BrandTbox.Style = MetroFramework.MetroColorStyle.Teal
         Me.BrandTbox.TabIndex = 2
+        Me.BrandTbox.Text = "QWEQWE"
         Me.BrandTbox.Theme = MetroFramework.MetroThemeStyle.Dark
         Me.BrandTbox.UseCustomBackColor = True
         Me.BrandTbox.UseCustomForeColor = True

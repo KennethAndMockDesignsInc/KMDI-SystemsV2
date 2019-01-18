@@ -13,6 +13,7 @@ Public Class MKTNG_Item
     Dim Sub_Class_list As New List(Of Integer)
     Dim Events_list As New List(Of Integer)
     Dim Load_Update_bool,if_Generated_QR_Status As Boolean
+    Dim EffectiveDiscount As Decimal = 0
 
     Public Sub Start_MktngItemBGW()
         If MktngItem_BGW.IsBusy <> True Then
@@ -45,8 +46,6 @@ Public Class MKTNG_Item
         M_COLOR = Trim(ColorTbox.Text)
         M_SIZE = Trim(SizeTbox.Text)
         GENDER = Trim(GenPrefCbox.Text)
-        MARKET_PRICE = Trim(MarketPriceTbox.Text)
-        PURCHASED_PRICE = Trim(PurchasedPriceTbox.Text)
         PURCHASED_DATE = PurchasedDate_dtp.Value
         Gift_bool = GiftPurpose_Chk.Checked
         Raffle_bool = RafflePurpose_Chk.Checked
@@ -57,6 +56,21 @@ Public Class MKTNG_Item
         Tier5_bool = Tier5_Chk.Checked
         Tier6_bool = Tier6_Chk.Checked
         Tier7_bool = Tier7_Chk.Checked
+
+        If MarketPriceTbox.Text <> "" Or MarketPriceTbox.Text <> Nothing Then
+            MARKET_PRICE = Convert.ToDecimal(MarketPriceTbox.Text)
+        Else
+            MARKET_PRICE = Nothing
+        End If
+        If PurchasedPriceTbox.Text <> "" Or PurchasedPriceTbox.Text <> Nothing Then
+            PURCHASED_PRICE = Convert.ToDecimal(PurchasedPriceTbox.Text)
+        End If
+        If MARKET_PRICE <> 0.0 Then
+            EffectiveDiscount = (1 - (PURCHASED_PRICE / MARKET_PRICE)) * 100
+        Else
+            EffectiveDiscount = 0.0
+        End If
+
 
         Dim tier_checked As Integer = 0
         Dim purpose_checked As Integer = 0
@@ -74,6 +88,7 @@ Public Class MKTNG_Item
         For Each MainClass_rbtn In MainClass_FLP.Controls
             If MainClass_rbtn.Checked = True Then
                 MainClass_Checked += 1
+                MIC_ID_REF = MainClass_rbtn.Tag
             End If
         Next
         For Each SubClass_chkBox In SubClass_FLP.Controls
@@ -92,8 +107,8 @@ Public Class MKTNG_Item
         If ITEM_CODE <> Nothing Or ITEM_CODE <> "" Then
             If BRAND <> Nothing Or BRAND <> "" Then
                 If ITEM_DESC <> Nothing Or ITEM_DESC <> "" Then
-                    If MARKET_PRICE <> Nothing Or MARKET_PRICE <> "" Then
-                        If PURCHASED_PRICE <> Nothing Or PURCHASED_PRICE <> "" Then
+                    If MARKET_PRICE <> 0.0 Then
+                        If PurchasedPriceTbox.Text <> "" Or PurchasedPriceTbox.Text <> Nothing Then
                             If PURCHASED_DATE <> Nothing Or PURCHASED_DATE <> "" Then
                                 If tier_checked > 0 Then
                                     If purpose_checked > 0 Then
@@ -110,10 +125,10 @@ Public Class MKTNG_Item
                                                     KMDIPrompts(Me, "UserWarning", "Event_Checked is Empty", Environment.StackTrace, Nothing, True, True, "Event Tags cannot be empty")
                                                 End If
                                             ElseIf SubClass_Checked = 0 Then
-                                                    KMDIPrompts(Me, "UserWarning", "SubClass_Checked is Empty", Environment.StackTrace, Nothing, True, True, "Sub Classification cannot be empty")
+                                                KMDIPrompts(Me, "UserWarning", "SubClass_Checked is Empty", Environment.StackTrace, Nothing, True, True, "Sub Classification cannot be empty")
                                             End If
                                         ElseIf MainClass_Checked = 0 Then
-                                                KMDIPrompts(Me, "UserWarning", "MainClass_Checked is Empty", Environment.StackTrace, Nothing, True, True, "Main Classification cannot be empty")
+                                            KMDIPrompts(Me, "UserWarning", "MainClass_Checked is Empty", Environment.StackTrace, Nothing, True, True, "Main Classification cannot be empty")
                                         End If
                                     ElseIf purpose_checked = 0 Then
                                         KMDIPrompts(Me, "UserWarning", "purpose_checked is Empty", Environment.StackTrace, Nothing, True, True, "Purpose cannot be empty")
@@ -128,7 +143,7 @@ Public Class MKTNG_Item
                             KMDIPrompts(Me, "UserWarning", "PURCHASED_PRICE is Empty", Environment.StackTrace, Nothing, True, True, "Purchased Price cannot be empty")
                         End If
                     Else
-                        KMDIPrompts(Me, "UserWarning", "MARKET_PRICE is Empty", Environment.StackTrace, Nothing, True, True, "Market Price cannot be empty")
+                        KMDIPrompts(Me, "UserWarning", "MARKET_PRICE is Empty", Environment.StackTrace, Nothing, True, True, "Market Price cannot be zero")
                     End If
                 Else
                     KMDIPrompts(Me, "UserWarning", "ITEM_DESC is Empty", Environment.StackTrace, Nothing, True, True, "Item Description cannot be empty")
@@ -171,7 +186,7 @@ Public Class MKTNG_Item
                         ItemCodeTbox.Enabled = False
                     End If
             End Select
-            Start_MktngItemBGW()
+            'Start_MktngItemBGW()
         Catch ex As Exception
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
         End Try
@@ -207,13 +222,10 @@ Public Class MKTNG_Item
                 Case "SubClass_Insert"
                     Mktng_SubClass_Insert(SubClassSTR, MainClassID, "MKTNG_stp_Item_SubClass_Insert")
                 Case "Add_Item"
-
-                    Dim EffectiveDiscount As Decimal = 0
-                    EffectiveDiscount = (1 - (PURCHASED_PRICE / MARKET_PRICE)) * 100
-
                     Mktng_Inv_ItemInsert("MKTNG_stp_Inv_Item_Insert", ITEM_CODE, ITEM_DESC, GENDER, MARKET_PRICE, PURCHASED_PRICE,
                                          EffectiveDiscount, QUANTITY, PURCHASED_DATE, if_Generated_QR_Status, Gift_bool, Raffle_bool,
-                                         Tier1_bool, Tier2_bool, Tier3_bool, Tier4_bool, Tier5_bool, Tier6_bool, Tier7_bool,)
+                                         Tier1_bool, Tier2_bool, Tier3_bool, Tier4_bool, Tier5_bool, Tier6_bool, Tier7_bool, MIC_ID_REF,
+                                         Sub_Class_list, Events_list, M_COLOR, BRAND, M_SIZE, REMARKS)
                 Case "Update_Item"
             End Select
 
@@ -383,7 +395,11 @@ Public Class MKTNG_Item
                                 ItemCodeTbox.Text = QRCode
                             End If
                             if_Generated_QR_Status = True
+                        Case "Add_Item"
+                            KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
                     End Select
+                Else
+                    KMDIPrompts(Me, "Failed", "Failed in Inserting Item", Environment.StackTrace, Nothing, True)
                 End If
             End If
             Mktng_SearchStr = Nothing
@@ -488,6 +504,50 @@ Public Class MKTNG_Item
             classification_insert("SUB")
         Catch ex As Exception
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
+        End Try
+    End Sub
+
+    'Private Sub PurchasedPriceTbox_TextChanged(sender As Object, e As EventArgs) Handles PurchasedPriceTbox.TextChanged
+    '    Try
+    '        PURCHASED_PRICE = PurchasedPriceTbox.Text
+    '        If PURCHASED_PRICE > MARKET_PRICE Then
+    '            PurchasedPriceTbox.Text = MARKET_PRICE
+    '        End If
+    '        PurchasedPriceTbox.Text = PURCHASED_PRICE.ToString("N2")
+    '    Catch ex As Exception
+    '        KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
+    '    End Try
+    'End Sub
+
+    'Private Sub MarketPriceTbox_TextChanged(sender As Object, e As EventArgs) Handles MarketPriceTbox.TextChanged
+    '    Try
+    '        MARKET_PRICE = MarketPriceTbox.Text
+    '        MarketPriceTbox.Text = MARKET_PRICE.ToString("N2")
+    '    Catch ex As Exception
+    '        KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
+    '    End Try
+    'End Sub
+
+    Private Sub Prices_KeyPress(sender As Object, e As KeyPressEventArgs) Handles MarketPriceTbox.KeyPress, PurchasedPriceTbox.KeyPress
+        Try
+            If (Not IsNumeric(e.KeyChar) And e.KeyChar <> "." And
+                e.KeyChar <> ControlChars.Back) Then
+                e.Handled = True
+                Throw New Exception()
+            Else
+                If sender.Text.IndexOf(".") >= 0 Then
+                    If (Not IsNumeric(e.KeyChar) And e.KeyChar <> ControlChars.Back) Then
+                        e.Handled = True
+                        Throw New Exception()
+                    Else
+                        e.Handled = False
+                    End If
+                Else
+                    e.Handled = False
+                End If
+            End If
+        Catch ex As Exception
+            KMDIPrompts(Me, "UserWarning", "Invalid value", Environment.StackTrace, Nothing, True, True, "Numbers with one(1) decimal only")
         End Try
     End Sub
 

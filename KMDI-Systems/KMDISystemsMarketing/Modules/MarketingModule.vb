@@ -20,6 +20,7 @@ Module MarketingModule
     Public REMARKS As String
     Public ITEM_PICTURE As String
     Public MIC_ID_REF As Integer
+    Public InsertedMI_ID As Integer
     Public Gift_bool, Raffle_bool,
            Tier1_bool, Tier2_bool, Tier3_bool, Tier4_bool, Tier5_bool, Tier6_bool, Tier7_bool As Boolean
 
@@ -180,13 +181,36 @@ Module MarketingModule
                 sqlCommand.Parameters.AddWithValue("@TIER_6", TIER_6)
                 sqlCommand.Parameters.AddWithValue("@TIER_7", TIER_7)
                 sqlCommand.Parameters.AddWithValue("@MIC_ID_REF", MIC_ID_REF)
-                sqlCommand.Parameters.AddWithValue("@MISC_ID_REF", MISC_ID_REF)
                 sqlCommand.Parameters.AddWithValue("@Color", Color)
                 sqlCommand.Parameters.AddWithValue("@BRAND", BRAND)
                 sqlCommand.Parameters.AddWithValue("@Size", Size)
                 sqlCommand.Parameters.AddWithValue("@REMARKS", REMARKS)
-
-                sqlCommand.ExecuteNonQuery()
+                Using read As SqlDataReader = sqlCommand.ExecuteReader
+                    read.Read()
+                    InsertedMI_ID = read.Item("MI_ID_INSERTED").ToString
+                End Using
+                If InsertedMI_ID <> "" Or InsertedMI_ID <> Nothing Then
+                    For Each SubClass_ID As Integer In SubClass_list
+                        sqlCommand.CommandText = "INSERT INTO [A_NEW_MKTNG_INV_SUBCLASS_LOOKUP]  ([MI_ID_REF_SUB],
+                                                                                              [MISC_ID_REF])
+                                                                 VALUES  (@MI_ID_REF_SUB,
+                                                                          @MISC_ID_REF" & SubClass_ID & ")"
+                        sqlCommand.CommandType = CommandType.Text
+                        sqlCommand.Parameters.AddWithValue("@MI_ID_REF_SUB", InsertedMI_ID)
+                        sqlCommand.Parameters.AddWithValue("@MISC_ID_REF" & SubClass_ID, SubClass_ID)
+                        sqlCommand.ExecuteNonQuery()
+                    Next
+                    For Each Events_ID As Integer In Events_list
+                        sqlCommand.CommandText = "INSERT INTO [A_NEW_MKTNG_INV_EVENT_TAGS]  ([MI_ID_REF_EVENT],
+                                                                                         [MIE_ID_REF]
+                                                                 VALUES  (@MI_ID_REF_EVENT,
+                                                                          @MIE_ID_REF" & Events_ID & ")"
+                        sqlCommand.CommandType = CommandType.Text
+                        sqlCommand.Parameters.AddWithValue("@MI_ID_REF_EVENT", InsertedMI_ID)
+                        sqlCommand.Parameters.AddWithValue("@MIE_ID_REF" & Events_ID, Events_ID)
+                        sqlCommand.ExecuteNonQuery()
+                    Next
+                End If
                 transaction.Commit()
                 sql_Transaction_result = "Committed"
             End Using
