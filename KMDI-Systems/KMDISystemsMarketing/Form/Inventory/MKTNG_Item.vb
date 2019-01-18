@@ -15,6 +15,23 @@ Public Class MKTNG_Item
     Dim Load_Update_bool, if_Generated_QR_Status As Boolean
     Dim EffectiveDiscount As Decimal = 0
 
+    Dim MI_ID_here As String
+    Dim ITEM_CODE_here As String
+    Dim BRAND_here As String
+    Dim ITEM_DESC_here As String
+    Dim M_COLOR_here As String
+    Dim M_SIZE_here As String
+    Dim GENDER_here As String
+    Dim MARKET_PRICE_here As Decimal
+    Dim PURCHASED_PRICE_here As Decimal
+    Dim QUANTITY_here As String
+    Dim PURCHASED_DATE_here As Date
+    Dim REMARKS_here As String
+    Dim ITEM_PICTURE_here As String
+    Dim MIC_ID_REF_here As Integer
+    Public Gift_bool, Raffle_bool,
+           Tier1_bool, Tier2_bool, Tier3_bool, Tier4_bool, Tier5_bool, Tier6_bool, Tier7_bool As Boolean
+
     Public Sub Start_MktngItemBGW()
         If MktngItem_BGW.IsBusy <> True Then
             LoadingPB.Visible = True
@@ -25,28 +42,30 @@ Public Class MKTNG_Item
     End Sub
 
     Sub reset_here()
-        ITEM_CODE = Nothing
-        BRAND = Nothing
-        ITEM_DESC = Nothing
-        M_COLOR = Nothing
-        M_SIZE = Nothing
-        GENDER = Nothing
-        MARKET_PRICE = Nothing
-        PURCHASED_PRICE = Nothing
-        QUANTITY = Nothing
-        PURCHASED_DATE = Nothing
-        REMARKS = Nothing
-        ITEM_PICTURE = Nothing
+        ITEM_CODE_here = Nothing
+        BRAND_here = Nothing
+        ITEM_DESC_here = Nothing
+        M_COLOR_here = Nothing
+        M_SIZE_here = Nothing
+        GENDER_here = Nothing
+        MARKET_PRICE_here = Nothing
+        PURCHASED_PRICE_here = Nothing
+        QUANTITY_here = Nothing
+        PURCHASED_DATE_here = Nothing
+        REMARKS_here = Nothing
+        ITEM_PICTURE_here = Nothing
     End Sub
 
     Sub Add_Item()
-        ITEM_CODE = Trim(ItemCodeTbox.Text)
-        BRAND = Trim(BrandTbox.Text)
-        ITEM_DESC = Trim(ItemDesTbox.Text)
-        M_COLOR = Trim(ColorTbox.Text)
-        M_SIZE = Trim(SizeTbox.Text)
-        GENDER = Trim(GenPrefCbox.Text)
-        PURCHASED_DATE = PurchasedDate_dtp.Value
+        ITEM_CODE_here = Trim(ItemCodeTbox.Text)
+        BRAND_here = Trim(BrandTbox.Text)
+        ITEM_DESC_here = Trim(ItemDesTbox.Text)
+        M_COLOR_here = Trim(ColorTbox.Text)
+        M_SIZE_here = Trim(SizeTbox.Text)
+        GENDER_here = Trim(GenPrefCbox.Text)
+        PURCHASED_DATE_here = PurchasedDate_dtp.Value
+        REMARKS_here = Trim(RemarksTbox.Text)
+
         Gift_bool = GiftPurpose_Chk.Checked
         Raffle_bool = RafflePurpose_Chk.Checked
         Tier1_bool = Tier1_Chk.Checked
@@ -57,16 +76,19 @@ Public Class MKTNG_Item
         Tier6_bool = Tier6_Chk.Checked
         Tier7_bool = Tier7_Chk.Checked
 
+        If QuantityTbox.Text <> Nothing Or QuantityTbox.Text <> "" Then
+            QUANTITY_here = Val(QuantityTbox.Text)
+        End If
         If MarketPriceTbox.Text <> "" Or MarketPriceTbox.Text <> Nothing Then
-            MARKET_PRICE = Convert.ToDecimal(MarketPriceTbox.Text)
+            MARKET_PRICE_here = Convert.ToDecimal(MarketPriceTbox.Text)
         Else
-            MARKET_PRICE = Nothing
+            MARKET_PRICE_here = Nothing
         End If
         If PurchasedPriceTbox.Text <> "" Or PurchasedPriceTbox.Text <> Nothing Then
-            PURCHASED_PRICE = Convert.ToDecimal(PurchasedPriceTbox.Text)
+            PURCHASED_PRICE_here = Convert.ToDecimal(PurchasedPriceTbox.Text)
         End If
-        If MARKET_PRICE <> 0.0 Then
-            EffectiveDiscount = (1 - (PURCHASED_PRICE / MARKET_PRICE)) * 100
+        If MARKET_PRICE_here <> 0.0 Then
+            EffectiveDiscount = (1 - (PURCHASED_PRICE_here / MARKET_PRICE_here)) * 100
         Else
             EffectiveDiscount = 0.0
         End If
@@ -79,16 +101,20 @@ Public Class MKTNG_Item
         Dim Event_Checked As Integer = 0
 
         For Each tier_chk In FRM_Pnl.Controls
-            If tier_chk.Name.Contains("Tier") And tier_chk.Name.Contains("Chk") Then
-                tier_checked += 1
+            If (tier_chk.Name.Contains("Tier") And tier_chk.Name.Contains("Chk")) Then
+                If tier_chk.Checked = True Then
+                    tier_checked += 1
+                End If
             ElseIf tier_chk.Name.Contains("Purpose_Chk") Then
-                purpose_checked += 1
+                If tier_chk.Checked = True Then
+                    purpose_checked += 1
+                End If
             End If
         Next
         For Each MainClass_rbtn In MainClass_FLP.Controls
             If MainClass_rbtn.Checked = True Then
                 MainClass_Checked += 1
-                MIC_ID_REF = MainClass_rbtn.Tag
+                MIC_ID_REF_here = MainClass_rbtn.Tag
             End If
         Next
         For Each SubClass_chkBox In SubClass_FLP.Controls
@@ -104,28 +130,24 @@ Public Class MKTNG_Item
             End If
         Next
 
-        If ITEM_CODE <> Nothing Or ITEM_CODE <> "" Then
-            If BRAND <> Nothing Or BRAND <> "" Then
-                If ITEM_DESC <> Nothing Or ITEM_DESC <> "" Then
-                    If MARKET_PRICE <> 0.0 Then
+        If ITEM_CODE_here <> Nothing Or ITEM_CODE_here <> "" Then
+            If BRAND_here <> Nothing Or BRAND_here <> "" Then
+                If ITEM_DESC_here <> Nothing Or ITEM_DESC_here <> "" Then
+                    If MARKET_PRICE_here <> 0.0 Then
                         If PurchasedPriceTbox.Text <> "" Or PurchasedPriceTbox.Text <> Nothing Then
-                            If PURCHASED_DATE <> Nothing Or PURCHASED_DATE <> "" Then
+                            If PurchasedDateTbox.Text <> Nothing Or PurchasedDateTbox.Text <> "" Then
                                 If tier_checked > 0 Then
                                     If purpose_checked > 0 Then
                                         If MainClass_Checked > 0 Then
-                                            If SubClass_Checked > 0 Then
-                                                If Event_Checked > 0 Then
-                                                    If OpenedByToolStripMenu = "ADD" Then
-                                                        MktngItem_TODO = "Add_Item"
-                                                    ElseIf OpenedByToolStripMenu = "UPDATE" Then
-                                                        MktngItem_TODO = "Update_Item"
-                                                    End If
-                                                    Start_MktngItemBGW()
-                                                ElseIf Event_Checked = 0 Then
-                                                    KMDIPrompts(Me, "UserWarning", "Event_Checked is Empty", Environment.StackTrace, Nothing, True, True, "Event Tags cannot be empty")
+                                            If Event_Checked > 0 Then
+                                                If OpenedByToolStripMenu = "ADD" Then
+                                                    MktngItem_TODO = "Add_Item"
+                                                ElseIf OpenedByToolStripMenu = "UPDATE" Then
+                                                    MktngItem_TODO = "Update_Item"
                                                 End If
-                                            ElseIf SubClass_Checked = 0 Then
-                                                KMDIPrompts(Me, "UserWarning", "SubClass_Checked is Empty", Environment.StackTrace, Nothing, True, True, "Sub Classification cannot be empty")
+                                                Start_MktngItemBGW()
+                                            ElseIf Event_Checked = 0 Then
+                                                KMDIPrompts(Me, "UserWarning", "Event_Checked is Empty", Environment.StackTrace, Nothing, True, True, "Event Tags cannot be empty")
                                             End If
                                         ElseIf MainClass_Checked = 0 Then
                                             KMDIPrompts(Me, "UserWarning", "MainClass_Checked is Empty", Environment.StackTrace, Nothing, True, True, "Main Classification cannot be empty")
@@ -165,6 +187,7 @@ Public Class MKTNG_Item
             AddHandler MktngItem_BGW.ProgressChanged, AddressOf MktngItem_BGW_ProgressChanged
             AddHandler MktngItem_BGW.RunWorkerCompleted, AddressOf MktngItem_BGW_RunWorkerCompleted
             GenPrefCbox.SelectedIndex = 0
+            MainClass_FLP.Controls.Clear()
             Select Case OpenedByToolStripMenu
                 Case "ADD"
                     MktngItem_TODO = "MainClass"
@@ -178,15 +201,17 @@ Public Class MKTNG_Item
                     ColorTbox.Text = M_COLOR
                     SizeTbox.Text = M_SIZE
                     GenPrefCbox.Text = GENDER
-                    MarketPriceTbox.Text = MARKET_PRICE
-                    PurchasedPriceTbox.Text = PURCHASED_PRICE
+                    QuantityTbox.Text = QUANTITY
+                    MarketPriceTbox.Text = MARKET_PRICE.ToString("N2")
+                    PurchasedPriceTbox.Text = PURCHASED_PRICE.ToString("N2")
                     PurchasedDateTbox.Text = PURCHASED_DATE.ToString("MMM. dd, yyyy")
                     RemarksTbox.Text = REMARKS
+                    QuantityTbox.Enabled = False
                     If ItemCodeTbox.Text <> Nothing Or ItemCodeTbox.Text <> "" Then
                         ItemCodeTbox.Enabled = False
                     End If
             End Select
-            'Start_MktngItemBGW()
+            Start_MktngItemBGW()
         Catch ex As Exception
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
         End Try
@@ -200,17 +225,14 @@ Public Class MKTNG_Item
                     Mktng_QUERY_INSTANCE = "Loading_using_EqualSearch"
                     Mktng_Query_Select_STP(MI_ID, "MKTNG_stp_Inv_FetchItem")
                 Case "MainClass"
-                    MainClass_FLP.Controls.Clear()
                     Report_BGW_bool = True
                     Mktng_QUERY_INSTANCE = "Loading_using_EqualSearch"
                     Mktng_Query_Select_STP("1", "MKTNG_stp_Item_MainClass")
                 Case "SubClass"
-                    SubClass_FLP.Controls.Clear()
                     Report_BGW_bool = True
                     Mktng_QUERY_INSTANCE = "Loading_using_EqualSearch"
                     Mktng_Query_Select_STP(MainClassID, "MKTNG_stp_Item_SubClass")
                 Case "Load_Events"
-                    Events_FLP.Controls.Clear()
                     Report_BGW_bool = True
                     Mktng_QUERY_INSTANCE = "Loading_using_EqualSearch"
                     Mktng_Query_Select_STP("1", "MKTNG_stp_Inv_Events")
@@ -222,10 +244,10 @@ Public Class MKTNG_Item
                 Case "SubClass_Insert"
                     Mktng_SubClass_Insert(SubClassSTR, MainClassID, "MKTNG_stp_Item_SubClass_Insert")
                 Case "Add_Item"
-                    Mktng_Inv_ItemInsert("MKTNG_stp_Inv_Item_Insert", ITEM_CODE, ITEM_DESC, GENDER, MARKET_PRICE, PURCHASED_PRICE,
-                                         EffectiveDiscount, QUANTITY, PURCHASED_DATE, if_Generated_QR_Status, Gift_bool, Raffle_bool,
-                                         Tier1_bool, Tier2_bool, Tier3_bool, Tier4_bool, Tier5_bool, Tier6_bool, Tier7_bool, MIC_ID_REF,
-                                         Sub_Class_list, Events_list, M_COLOR, BRAND, M_SIZE, REMARKS)
+                    Mktng_Inv_ItemInsert("MKTNG_stp_Inv_Item_Insert", ITEM_CODE_here, ITEM_DESC_here, GENDER_here, MARKET_PRICE_here, PURCHASED_PRICE_here,
+                                         EffectiveDiscount, QUANTITY_here, PURCHASED_DATE_here, if_Generated_QR_Status, Gift_bool, Raffle_bool,
+                                         Tier1_bool, Tier2_bool, Tier3_bool, Tier4_bool, Tier5_bool, Tier6_bool, Tier7_bool, MIC_ID_REF_here,
+                                         Sub_Class_list, Events_list, M_COLOR_here, BRAND_here, M_SIZE_here, REMARKS_here)
                 Case "Update_Item"
             End Select
 
@@ -320,13 +342,16 @@ Public Class MKTNG_Item
                                 RafflePurpose_Chk.Checked = row("RAFFLE")
 
                                 MainClassID = row("MIC_ID")
-                                arr_SubClassID.Add(row("MISC_ID"))
                                 arr_EventID.Add(row("MIE_ID"))
+                                If Not IsDBNull(row("MISC_ID")) Then
+                                    arr_SubClassID.Add(row("MISC_ID"))
+                                End If
                             Next
                             MktngItem_TODO = "SubClass"
                             Start_MktngItemBGW()
                         Case "MainClass"
                             Report_BGW_bool = False
+                            Events_FLP.Controls.Clear()
                             MktngItem_TODO = "Load_Events"
                             Start_MktngItemBGW()
                         Case "SubClass"
@@ -396,6 +421,9 @@ Public Class MKTNG_Item
                             End If
                             if_Generated_QR_Status = True
                         Case "Add_Item"
+                            MKTNG_Inventory.Inv_DGV.Rows.Add(InsertedMI_ID, ITEM_CODE_here, BRAND_here, ITEM_DESC_here,
+                                                             M_COLOR_here, M_SIZE_here, GENDER_here, QUANTITY_here, MARKET_PRICE_here,
+                                                             PURCHASED_PRICE_here, EffectiveDiscount, PURCHASED_DATE, REMARKS_here)
                             KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
                     End Select
                 Else
@@ -412,6 +440,7 @@ Public Class MKTNG_Item
     Private Sub ClassRbtn_Clicked(sender As Object, e As EventArgs)
         Try
             MainClassID = sender.Tag
+            SubClass_FLP.Controls.Clear()
             MktngItem_TODO = "SubClass"
             Start_MktngItemBGW()
         Catch ex As Exception
@@ -461,12 +490,14 @@ Public Class MKTNG_Item
     Sub classification_insert(ByVal MODE As String)
         Select Case MODE
             Case "MAIN"
+                MainClass_FLP.Controls.Clear()
                 If MainClassSTR = Nothing Or MainClassSTR = "" Then
                     KMDIPrompts(Me, "DotNetError", Nothing, Nothing, Nothing, True, True, "Field cannot be empty")
                 Else
                     MktngItem_TODO = "MainClass_Insert"
                 End If
             Case "SUB"
+                SubClass_FLP.Controls.Clear()
                 If SubClassSTR = Nothing Or SubClassSTR = "" Then
                     KMDIPrompts(Me, "DotNetError", Nothing, Nothing, Nothing, True, True, "Field cannot be empty")
                 Else
@@ -507,31 +538,38 @@ Public Class MKTNG_Item
         End Try
     End Sub
 
-    'Private Sub PurchasedPriceTbox_TextChanged(sender As Object, e As EventArgs) Handles PurchasedPriceTbox.TextChanged
-    '    Try
-    '        PURCHASED_PRICE = PurchasedPriceTbox.Text
-    '        If PURCHASED_PRICE > MARKET_PRICE Then
-    '            PurchasedPriceTbox.Text = MARKET_PRICE
-    '        End If
-    '        PurchasedPriceTbox.Text = PURCHASED_PRICE.ToString("N2")
-    '    Catch ex As Exception
-    '        KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
-    '    End Try
-    'End Sub
+    Private Sub PurchasedPriceTbox_TextChanged(sender As Object, e As EventArgs) Handles PurchasedPriceTbox.TextChanged
+        Try
+            If PurchasedPriceTbox.Text = Nothing Or PurchasedPriceTbox.Text = "" Then
+                PURCHASED_PRICE_here = 0.0
+            Else
+                PURCHASED_PRICE_here = PurchasedPriceTbox.Text
+                If PURCHASED_PRICE_here > MARKET_PRICE_here Then
+                    PurchasedPriceTbox.Text = MARKET_PRICE_here
+                End If
+            End If
+            'PurchasedPriceTbox.Text = PURCHASED_PRICE.ToString("N2")
+        Catch ex As Exception
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
+        End Try
+    End Sub
 
-    'Private Sub MarketPriceTbox_TextChanged(sender As Object, e As EventArgs) Handles MarketPriceTbox.TextChanged
-    '    Try
-    '        MARKET_PRICE = MarketPriceTbox.Text
-    '        MarketPriceTbox.Text = MARKET_PRICE.ToString("N2")
-    '    Catch ex As Exception
-    '        KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
-    '    End Try
-    'End Sub
+    Private Sub MarketPriceTbox_TextChanged(sender As Object, e As EventArgs) Handles MarketPriceTbox.TextChanged
+        Try
+            If MarketPriceTbox.Text = Nothing Or MarketPriceTbox.Text = "" Then
+                MARKET_PRICE_here = 0.0
+            Else
+                MARKET_PRICE_here = MarketPriceTbox.Text
+            End If
+        Catch ex As Exception
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
+        End Try
+    End Sub
 
     Private Sub Prices_KeyPress(sender As Object, e As KeyPressEventArgs) Handles MarketPriceTbox.KeyPress, PurchasedPriceTbox.KeyPress
         Try
             If (Not IsNumeric(e.KeyChar) And e.KeyChar <> "." And
-                e.KeyChar <> ControlChars.Back) Then
+                e.KeyChar <> ControlChars.Back And e.KeyChar <> ",") Then
                 e.Handled = True
                 Throw New Exception()
             Else
@@ -545,6 +583,35 @@ Public Class MKTNG_Item
                 Else
                     e.Handled = False
                 End If
+            End If
+        Catch ex As Exception
+            KMDIPrompts(Me, "UserWarning", "Invalid value", Environment.StackTrace, Nothing, True, True, "Numbers with one(1) decimal only")
+        End Try
+    End Sub
+
+    Private Sub MarketPriceTbox_Leave(sender As Object, e As EventArgs) Handles MarketPriceTbox.Leave
+        Try
+            MarketPriceTbox.Text = MARKET_PRICE_here.ToString("N2")
+        Catch ex As Exception
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
+        End Try
+    End Sub
+
+    Private Sub PurchasedPriceTbox_Leave(sender As Object, e As EventArgs) Handles PurchasedPriceTbox.Leave
+        Try
+            PurchasedPriceTbox.Text = PURCHASED_PRICE_here.ToString("N2")
+        Catch ex As Exception
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
+        End Try
+    End Sub
+
+    Private Sub QuantityTbox_KeyPress(sender As Object, e As KeyPressEventArgs) Handles QuantityTbox.KeyPress
+        Try
+            If (Not IsNumeric(e.KeyChar)) And (e.KeyChar <> ControlChars.Back) Then
+                e.Handled = True
+                Throw New Exception()
+            Else
+                e.Handled = False
             End If
         Catch ex As Exception
             KMDIPrompts(Me, "UserWarning", "Invalid value", Environment.StackTrace, Nothing, True, True, "Numbers with one(1) decimal only")
