@@ -42,17 +42,19 @@ Public Class MKTNG_AddQuantity
         Try
             If e.Error IsNot Nothing Or e.Cancelled = True Then
                 ' if BackgroundWorker terminated due to error
+                LoadingPB.Visible = False
             Else
                 If sql_Transaction_result = "Committed" Then
                     Dim newDataRow As DataGridViewRow
                     newDataRow = MKTNG_Inventory.Inv_DGV.Rows(INV_DGV_ROWINDEX)
-                    newDataRow.Cells(10).Value = NEW_QUANTITY
+                    newDataRow.Cells(7).Value = NEW_QUANTITY
                     KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
                 End If
             End If
         Catch ex As Exception
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
         End Try
+        LoadingPB.Visible = False
     End Sub
 
     Private Sub AddBTN_Click(sender As Object, e As EventArgs) Handles AddBTN.Click
@@ -62,14 +64,30 @@ Public Class MKTNG_AddQuantity
 
     Private Sub QTYTbox_KeyPress(sender As Object, e As KeyPressEventArgs) Handles QTYTbox.KeyPress
         Try
-            If (Not IsNumeric(e.KeyChar)) And (e.KeyChar <> ControlChars.Back) Then
+            If (Not IsNumeric(e.KeyChar) And e.KeyChar <> "-" And
+                e.KeyChar <> ControlChars.Back) Then
                 e.Handled = True
                 Throw New Exception()
             Else
-                e.Handled = False
+                If sender.Text.IndexOf("-") >= 0 Then
+                    If (Not IsNumeric(e.KeyChar) And e.KeyChar <> ControlChars.Back) Then
+                        e.Handled = True
+                        Throw New Exception()
+                    Else
+                        e.Handled = False
+                    End If
+                Else
+                    e.Handled = False
+                End If
             End If
         Catch ex As Exception
-            KMDIPrompts(Me, "UserWarning", "Invalid value", Environment.StackTrace, Nothing, True, True, "Numbers with one(1) decimal only")
+            KMDIPrompts(Me, "UserWarning", "Invalid value", Environment.StackTrace, Nothing, True, True, "Numbers only")
         End Try
+    End Sub
+
+    Private Sub MKTNG_AddQuantity_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        MKTNG_Inventory.Enabled = True
+        MKTNG_Inventory.BringToFront()
+        Dispose()
     End Sub
 End Class

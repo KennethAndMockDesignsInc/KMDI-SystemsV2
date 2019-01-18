@@ -54,6 +54,7 @@ Partial Class MKTNG_AddQuantity
         Me.QTYTbox.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
         Me.QTYTbox.CustomButton.UseSelectable = True
         Me.QTYTbox.CustomButton.Visible = False
+        Me.QTYTbox.FontSize = MetroFramework.MetroTextBoxSize.Tall
         Me.QTYTbox.Lines = New String(-1) {}
         Me.QTYTbox.Location = New System.Drawing.Point(23, 75)
         Me.QTYTbox.MaxLength = 32767
@@ -81,9 +82,11 @@ Partial Class MKTNG_AddQuantity
         Me.LoadingPB.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.LoadingPB.TabIndex = 613
         Me.LoadingPB.TabStop = False
+        Me.LoadingPB.Visible = False
         '
         'MKTNG_AddQuantity
         '
+        Me.AcceptButton = Me.AddBTN
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(323, 135)

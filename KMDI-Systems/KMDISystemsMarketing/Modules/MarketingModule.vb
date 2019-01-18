@@ -225,8 +225,8 @@ Module MarketingModule
                 sqlCommand.CommandText = StoredProcedureName
                 sqlCommand.CommandType = CommandType.StoredProcedure
 
-                sqlCommand.Parameters.AddWithValue("@QUANTITY", QUANTITY)
-                sqlCommand.Parameters.AddWithValue("@QUANTITY", MI_ID)
+                sqlCommand.Parameters.AddWithValue("@ADDEDQUANTITY", QUANTITY)
+                sqlCommand.Parameters.AddWithValue("@MI_ID", MI_ID)
                 Using read As SqlDataReader = sqlCommand.ExecuteReader
                     read.Read()
                     NEW_QUANTITY = read.Item("QUANTITY")
