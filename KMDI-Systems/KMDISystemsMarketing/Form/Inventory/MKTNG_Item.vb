@@ -12,7 +12,7 @@ Public Class MKTNG_Item
     Dim arr_EventID As New List(Of Integer) '//MIE_ID
     Dim Sub_Class_list As New List(Of Integer)
     Dim Events_list As New List(Of Integer)
-    Dim Load_Update_bool,if_Generated_QR_Status As Boolean
+    Dim Load_Update_bool, if_Generated_QR_Status As Boolean
     Dim EffectiveDiscount As Decimal = 0
 
     Public Sub Start_MktngItemBGW()
@@ -426,7 +426,7 @@ Public Class MKTNG_Item
                     Add_Item()
                 End If
             ElseIf e.KeyCode = Keys.Escape Then
-                    Close()
+                Close()
             End If
         Catch ex As Exception
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
