@@ -45,9 +45,7 @@ Public Class MKTNG_AddQuantity
                 LoadingPB.Visible = False
             Else
                 If sql_Transaction_result = "Committed" Then
-                    Dim newDataRow As DataGridViewRow
-                    newDataRow = MKTNG_Inventory.Inv_DGV.Rows(INV_DGV_ROWINDEX)
-                    newDataRow.Cells(7).Value = NEW_QUANTITY
+                    MKTNG_Inventory.Inv_DGV.Rows(INV_DGV_ROWINDEX).Cells(7).Value = NEW_QUANTITY
                     KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
                 End If
             End If
