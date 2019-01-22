@@ -9,6 +9,8 @@ Public Class ManHourComputation
     Dim STF_ID As Integer
     Dim SYSTEM_TYPE As String
     Dim FACTOR As TimeSpan
+    Dim Generate_DGVCols, Generate_DGVRows As Boolean
+    Dim DGVrow_list As New List(Of Object)
     Public Sub Start_MHCBGW()
         If MHC_BGW.IsBusy <> True Then
             LoadingPB.Visible = True
@@ -20,10 +22,11 @@ Public Class ManHourComputation
 
     Private Sub ManHourComputation_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
+            DGV_Pnl.Dock = DockStyle.Fill
             MHC_BGW.WorkerSupportsCancellation = True
             MHC_BGW.WorkerReportsProgress = True
             AddHandler MHC_BGW.DoWork, AddressOf MHC_BGW_DoWork
-            'AddHandler MHC_BGW.ProgressChanged, AddressOf MHC_BGW_ProgressChanged
+            AddHandler MHC_BGW.ProgressChanged, AddressOf MHC_BGW_ProgressChanged
             AddHandler MHC_BGW.RunWorkerCompleted, AddressOf MHC_BGW_RunWorkerCompleted
             MHC_TODO = "Onload"
             Start_MHCBGW()
@@ -35,8 +38,31 @@ Public Class ManHourComputation
         Try
             Select Case MHC_TODO
                 Case "Onload"
+                    Generate_DGVCols = True
                     ENGR_QUERY_INSTANCE = "Loading_using_SearchString"
-                    Engr_Query_Select_STP("", "ENGR_stp_ManHourComputation")
+                    Engr_Query_Select_STP("", "ENGR_stp_ManHourCompute")
+                Case "ADD"
+                    Generate_DGVCols = False
+                    Engr_SystemNfactor_INSERT("ENGR_stp_ManHourCompute_INSERT", SYSTEM_TYPE, FACTOR)
+            End Select
+
+            Select Case Generate_DGVCols
+                Case True
+                    For i = 0 To sqlDataSet.Tables("QUERY_DETAILS").Columns.Count - 1
+                        Sleep(100)
+                        MHC_BGW.ReportProgress(i)
+                        If i = sqlDataSet.Tables("QUERY_DETAILS").Columns.Count - 1 Then
+                            Generate_DGVRows = True
+                        End If
+                    Next
+            End Select
+            Sleep(100)
+            Select Case Generate_DGVRows
+                Case True
+                    For i = 0 To sqlDataSet.Tables("QUERY_DETAILS").Rows.Count - 1
+                        Sleep(10)
+                        MHC_BGW.ReportProgress(i)
+                    Next
             End Select
         Catch ex As SqlException
             'DisplaySqlErrors(ex) 'Galing to sa KMDI_V1 -->Marketing_Analysis.vb (line 28)
@@ -56,6 +82,64 @@ Public Class ManHourComputation
             e.Cancel = True
         End If
     End Sub
+    Dim AASDASD As Integer = 0
+    Private Sub MHC_BGW_ProgressChanged(sender As Object, e As ProgressChangedEventArgs)
+        Try
+            Select Case Generate_DGVCols
+                Case True
+                    If e.ProgressPercentage = 0 Then
+                        If Not DGV_Pnl.Contains(MHC_DGV) Then
+                            DGV_Properties(MHC_DGV, "MHC_DGV")
+                            DGV_Pnl.Controls.Add(MHC_DGV)
+
+                            AddHandler MHC_DGV.RowPostPaint, AddressOf MHCDGV_RowPostPaint
+                            AddHandler MHC_DGV.RowEnter, AddressOf MHCDGV_RowEnter
+                            AddHandler MHC_DGV.CellMouseClick, AddressOf MHCDGV_CellMouseClick
+                            AddHandler MHC_DGV.MouseClick, AddressOf MHC_DGV_MouseClick
+                        End If
+                    End If
+                    Dim MHC_dgvCol As New DataGridViewColumn
+                    Dim cell As DataGridViewCell = New DataGridViewTextBoxCell()
+                    If e.ProgressPercentage < sqlDataSet.Tables("QUERY_DETAILS").Columns.Count Then
+                        With MHC_dgvCol
+                            .Name = sqlDataSet.Tables("QUERY_DETAILS").Columns(e.ProgressPercentage).ToString
+                            .HeaderText = MHC_dgvCol.Name
+                            .CellTemplate = cell
+                            .SortMode = DataGridViewColumnSortMode.Automatic
+                            If .Name.Contains("FACTOR") Then
+                                .ValueType = GetType(TimeSpan)
+                                .DefaultCellStyle.Format = "c"
+                            End If
+                            If .Name = "STF_ID" Then
+                                .Visible = False
+                            End If
+                        End With
+                        MHC_DGV.Columns.Add(MHC_dgvCol)
+                    End If
+            End Select
+
+            Select Case Generate_DGVRows
+                Case True
+                    Select Case Generate_DGVCols
+                        Case True
+                            Generate_DGVCols = False
+                        Case False
+                            DGVrow_list.Clear()
+                            For I = 0 To sqlDataSet.Tables("QUERY_DETAILS").Columns.Count - 1
+                                DGVrow_list.Add(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(I))
+                            Next
+                            MHC_DGV.Rows.Add(DGVrow_list.ToArray)
+                            If e.ProgressPercentage = sqlDataSet.Tables("QUERY_DETAILS").Rows.Count - 1 Then
+                                Generate_DGVRows = False
+                            End If
+                    End Select
+            End Select
+        Catch ex As Exception
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
+            LoadingPB.Visible = False
+        End Try
+    End Sub
+
     Private Sub MHC_BGW_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs)
         Try
             If e.Error IsNot Nothing Or e.Cancelled = True Then
@@ -84,24 +168,11 @@ Public Class ManHourComputation
                     If sql_Transaction_result = "Committed" Then
                         Select Case MHC_TODO
                             Case "Onload"
-                                If Not DGV_Pnl.Contains(MHC_DGV) Then
-                                    DGV_Properties(MHC_DGV, "MHC_DGV")
-                                    DGV_Pnl.Controls.Add(MHC_DGV)
-
-                                    AddHandler MHC_DGV.RowPostPaint, AddressOf MHCDGV_RowPostPaint
-                                    AddHandler MHC_DGV.RowEnter, AddressOf MHCDGV_RowEnter
-                                    AddHandler MHC_DGV.CellMouseClick, AddressOf MHCDGV_CellMouseClick
-                                    AddHandler MHC_DGV.MouseClick, AddressOf MHC_DGV_MouseClick
-                                End If
-                                MHC_DGV.DataSource = Nothing
-                                MHC_DGV.Enabled = True
-                                MHC_DGV.DataSource = sqlBindingSource
-
-                                With MHC_DGV
-                                    .Columns(0).Visible = False
-                                    .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
-                                End With
+                                MHC_DGV.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
                                 DGV_Pnl.Dock = DockStyle.Fill
+                            Case "ADD"
+                                MHC_DGV.Rows.Add(InsertedSTF_ID, SYSTEM_TYPE, FACTOR)
+                                KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
                         End Select
                     End If
                 End If
@@ -165,8 +236,12 @@ Public Class ManHourComputation
         Try
             If (e.Control And e.KeyCode = Keys.S) Then
                 If DGV_Pnl.Dock = DockStyle.Top Then
+                    SYSTEM_TYPE = SysType_Tbox.Text
+                    FACTOR = TimeSpan.Parse(Factor_Tbox.Text)
+                    If MHC_TODO = "ADD" Then
+                        Start_MHCBGW()
+                    End If
                     DGV_Pnl.Dock = DockStyle.Fill
-                    MsgBox("Saved")
                 End If
             End If
         Catch ex As Exception
@@ -175,12 +250,21 @@ Public Class ManHourComputation
     End Sub
 
     Private Sub AddToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AddToolStripMenuItem.Click
-        DGV_Pnl.Dock = DockStyle.Top
-        SysType_Tbox.Text = Nothing
-        Factor_Tbox.Text = Nothing
+        Try
+            DGV_Pnl.Dock = DockStyle.Top
+            SysType_Tbox.Text = Nothing
+            Factor_Tbox.Text = Nothing
+            MHC_TODO = "ADD"
+        Catch ex As Exception
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
+        End Try
     End Sub
 
     Private Sub UpdateToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UpdateToolStripMenuItem.Click
-        DGV_Pnl.Dock = DockStyle.Top
+        Try
+            DGV_Pnl.Dock = DockStyle.Top
+        Catch ex As Exception
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
+        End Try
     End Sub
 End Class

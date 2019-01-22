@@ -150,6 +150,9 @@ Public Class MKTNG_Inventory
                                 End If
                             Next
                             Inv_DGV.Rows.Add(DGVrow_list.ToArray)
+                            If e.ProgressPercentage = sqlDataSet.Tables("QUERY_DETAILS").Rows.Count - 1 Then
+                                Generate_DGVRows = False
+                            End If
                     End Select
             End Select
 
