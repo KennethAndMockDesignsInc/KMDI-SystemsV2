@@ -9,6 +9,8 @@ Public Class MKTNG_Inventory
     Public MktngInv_TODO As String
     Dim Generate_DGVCols, Generate_DGVRows As Boolean
     Dim DGVrow_list As New List(Of Object)
+    Public ColumnVisibility_Opened As Boolean = False
+    Public Inv_DGV As New KryptonDataGridView
     Public Sub Start_MktngInventoryBGW()
         If MktngInventory_BGW.IsBusy <> True Then
             LoadingPB.Visible = True
@@ -80,8 +82,7 @@ Public Class MKTNG_Inventory
             e.Cancel = True
         End If
     End Sub
-    Public ColumnVisibility_Opened As Boolean = False
-    Public Inv_DGV As New KryptonDataGridView
+
 
     Private Sub MktngInventory_BGW_ProgressChanged(sender As Object, e As ProgressChangedEventArgs)
         Try
@@ -178,9 +179,9 @@ Public Class MKTNG_Inventory
                         Exit Sub
                     End If
                 ElseIf sql_Err_no = 1232 Or sql_Err_no = 121 Then
-                    MetroFramework.MetroMessageBox.Show(Me, "Please check internet connection", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                    'MetroFramework.MetroMessageBox.Show(Me, "Please check internet connection", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 ElseIf sql_Err_no = 19 Then
-                    MetroFramework.MetroMessageBox.Show(Me, "Sorry our server is under maintenance." & vbCrLf & "Please be patient, will come back inv_dgvCol.S.inv_dgvCol.P", "Server is down", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                    'MetroFramework.MetroMessageBox.Show(Me, "Sorry our server is under maintenance." & vbCrLf & "Please be patient, will come back inv_dgvCol.S.inv_dgvCol.P", "Server is down", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 ElseIf (sql_Err_no = "" Or sql_Err_no = Nothing) AndAlso
                        (sql_Err_msg = "" Or sql_Err_msg = Nothing) Then
                     If sql_Transaction_result = "Committed" Then
