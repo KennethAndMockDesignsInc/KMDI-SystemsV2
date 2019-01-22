@@ -18,6 +18,7 @@ Module KMDISystemsGlobalModule
     Public Log_File As StreamWriter
 
     Public transaction As SqlTransaction
+    Public QuestionPromptAnswer As Integer
 
     Public EngrSDreq = "|01", DelReciepts = "|02", DR = "|03", DrReports = "|04", EngrsItinerary = "|05", EngrSDsubm = "|06", 'Engineering
      addendum = "|07", SalesItinerary = "|08", SalesMoni = "|09", SUS = "|10", CallerInfo = "|11", Collection = "|12", ExtDMGs = "|13", CheckBalance = "|14", 'Sales and OP
@@ -45,6 +46,7 @@ Module KMDISystemsGlobalModule
             .AllowUserToResizeColumns = True
             .AllowUserToResizeRows = True
             .AllowUserToAddRows = False
+            .AllowUserToDeleteRows = False
             .AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells
             .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells
             '.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells)
@@ -165,6 +167,8 @@ Module KMDISystemsGlobalModule
                         MetroFramework.MetroMessageBox.Show(FormName, " ", PromptMode, MessageBoxButtons.OK, MessageBoxIcon.Information)
                     Case "Failed"
                         MetroFramework.MetroMessageBox.Show(FormName, " ", PromptMode, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                    Case "Question"
+                        QuestionPromptAnswer = MetroFramework.MetroMessageBox.Show(FormName, sql_Err_msg, " ", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
                 End Select
         End Select
     End Sub

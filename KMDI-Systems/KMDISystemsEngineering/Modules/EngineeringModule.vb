@@ -64,5 +64,46 @@ Module EngineeringModule
             End Using
         End Using
     End Sub
+    Public Sub Engr_SystemNfactor_UPDATE(ByVal StoredProcedureName As String,
+                                         ByVal SYSTEM_TYPE As String,
+                                         ByVal FACTOR As TimeSpan,
+                                         ByVal STF_ID As Integer)
+        Using sqlcon As New SqlConnection(sqlconnString)
+            sqlcon.Open()
+            Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
+                transaction = sqlcon.BeginTransaction(IsolationLevel.RepeatableRead, StoredProcedureName)
+                sqlCommand.Connection = sqlcon
+                sqlCommand.Transaction = transaction
+                sqlCommand.CommandText = StoredProcedureName
+                sqlCommand.CommandType = CommandType.StoredProcedure
 
+                sqlCommand.Parameters.AddWithValue("@SYSTEM_TYPE", SYSTEM_TYPE)
+                sqlCommand.Parameters.AddWithValue("@TIME_FACTOR", FACTOR)
+                sqlCommand.Parameters.AddWithValue("@STF_ID", STF_ID)
+                sqlCommand.ExecuteNonQuery()
+
+                transaction.Commit()
+                sql_Transaction_result = "Committed"
+            End Using
+        End Using
+    End Sub
+    Public Sub Engr_SystemNfactor_DELETE(ByVal StoredProcedureName As String,
+                                         ByVal STF_ID As Integer)
+        Using sqlcon As New SqlConnection(sqlconnString)
+            sqlcon.Open()
+            Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
+                transaction = sqlcon.BeginTransaction(IsolationLevel.RepeatableRead, StoredProcedureName)
+                sqlCommand.Connection = sqlcon
+                sqlCommand.Transaction = transaction
+                sqlCommand.CommandText = StoredProcedureName
+                sqlCommand.CommandType = CommandType.StoredProcedure
+
+                sqlCommand.Parameters.AddWithValue("@STF_ID", STF_ID)
+                sqlCommand.ExecuteNonQuery()
+
+                transaction.Commit()
+                sql_Transaction_result = "Committed"
+            End Using
+        End Using
+    End Sub
 End Module

@@ -4,14 +4,13 @@ Imports System.Threading.Thread
 Imports ComponentFactory.Krypton.Toolkit
 Public Class ManHourComputation
     Public MHC_BGW As BackgroundWorker = New BackgroundWorker
-    Public MHC_TODO As String
     Public MHC_DGV As New KryptonDataGridView
-    Dim STF_ID As Integer
-    Dim SYSTEM_TYPE As String
+    Dim STF_ID, MHC_ROWINDEX As Integer
+    Dim SYSTEM_TYPE, Cmenu_Clicked, MHC_TODO As String
     Dim FACTOR As TimeSpan
     Dim Generate_DGVCols, Generate_DGVRows As Boolean
     Dim DGVrow_list As New List(Of Object)
-    Public Sub Start_MHCBGW()
+    Sub Start_MHCBGW()
         If MHC_BGW.IsBusy <> True Then
             LoadingPB.Visible = True
             MHC_BGW.RunWorkerAsync()
@@ -19,7 +18,19 @@ Public Class ManHourComputation
             MetroFramework.MetroMessageBox.Show(Me, "Please Wait!", "Loading", MessageBoxButtons.OK, MessageBoxIcon.Warning)
         End If
     End Sub
-
+    Sub save()
+        SYSTEM_TYPE = Trim(SysType_Tbox.Text)
+        If SYSTEM_TYPE <> Nothing Or SYSTEM_TYPE <> "" Then
+            If Factor_Tbox.Text <> Nothing Or Factor_Tbox.Text = "" Then
+                FACTOR = TimeSpan.Parse(Factor_Tbox.Text)
+                Start_MHCBGW()
+            Else
+                KMDIPrompts(Me, "UserWarning", "Factor_Tbox is Empty", Environment.StackTrace, Nothing, True, True, "Factor cannot be empty")
+            End If
+        Else
+            KMDIPrompts(Me, "UserWarning", "System Type is Empty", Environment.StackTrace, Nothing, True, True, "System Type cannot be empty")
+        End If
+    End Sub
     Private Sub ManHourComputation_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
             DGV_Pnl.Dock = DockStyle.Fill
@@ -42,8 +53,11 @@ Public Class ManHourComputation
                     ENGR_QUERY_INSTANCE = "Loading_using_SearchString"
                     Engr_Query_Select_STP("", "ENGR_stp_ManHourCompute")
                 Case "ADD"
-                    Generate_DGVCols = False
                     Engr_SystemNfactor_INSERT("ENGR_stp_ManHourCompute_INSERT", SYSTEM_TYPE, FACTOR)
+                Case "UPDATE"
+                    Engr_SystemNfactor_UPDATE("ENGR_stp_ManHourCompute_UPDATE", SYSTEM_TYPE, FACTOR, STF_ID)
+                Case "DELETE"
+                    Engr_SystemNfactor_DELETE("ENGR_stp_ManHourCompute_DELETE", STF_ID)
             End Select
 
             Select Case Generate_DGVCols
@@ -173,7 +187,16 @@ Public Class ManHourComputation
                             Case "ADD"
                                 MHC_DGV.Rows.Add(InsertedSTF_ID, SYSTEM_TYPE, FACTOR)
                                 KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
+                            Case "UPDATE"
+                                MHC_DGV.Rows(MHC_ROWINDEX).Cells(1).Value = SYSTEM_TYPE
+                                MHC_DGV.Rows(MHC_ROWINDEX).Cells(2).Value = FACTOR
+                                Cmenu_Clicked = Nothing
+                                KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
+                            Case "DELETE"
+                                MHC_DGV.Rows.RemoveAt(MHC_ROWINDEX)
+                                KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
                         End Select
+                        DGV_Pnl.Dock = DockStyle.Fill
                     End If
                 End If
             End If
@@ -189,10 +212,9 @@ Public Class ManHourComputation
     End Sub
     Private Sub MHCDGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs)
         Try
-            If (e.RowIndex >= 0 And e.ColumnIndex >= 0) Then
+            If (e.RowIndex >= 0 And e.ColumnIndex >= 0) And Cmenu_Clicked = "UPDATE" Then
                 With MHC_DGV
                     .Rows(e.RowIndex).Selected = True
-                    STF_ID = .Item("STF_ID", e.RowIndex).Value
                     SYSTEM_TYPE = .Item("SYSTEM TYPE", e.RowIndex).Value
                     FACTOR = .Item("FACTOR", e.RowIndex).Value
 
@@ -200,6 +222,8 @@ Public Class ManHourComputation
                     Factor_Tbox.Text = FACTOR.ToString("c")
                 End With
             End If
+            MHC_ROWINDEX = e.RowIndex
+            STF_ID = MHC_DGV.Item("STF_ID", e.RowIndex).Value
         Catch ex As Exception
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
         End Try
@@ -216,10 +240,9 @@ Public Class ManHourComputation
     End Sub
     Private Sub MHCDGV_CellMouseClick(SENDER As Object, e As DataGridViewCellMouseEventArgs)
         Try
-            If (e.RowIndex >= 0 And e.ColumnIndex >= 0) Then
+            If (e.RowIndex >= 0 And e.ColumnIndex >= 0) And Cmenu_Clicked = "UPDATE" Then
                 With MHC_DGV
                     .Rows(e.RowIndex).Selected = True
-                    STF_ID = .Item("STF_ID", e.RowIndex).Value
                     SYSTEM_TYPE = .Item("SYSTEM TYPE", e.RowIndex).Value
                     FACTOR = .Item("FACTOR", e.RowIndex).Value
 
@@ -227,33 +250,37 @@ Public Class ManHourComputation
                     Factor_Tbox.Text = FACTOR.ToString("c")
                 End With
             End If
+            MHC_ROWINDEX = e.RowIndex
+            STF_ID = MHC_DGV.Item("STF_ID", e.RowIndex).Value
         Catch ex As Exception
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
         End Try
     End Sub
-
     Private Sub ManHourComputation_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
         Try
             If (e.Control And e.KeyCode = Keys.S) Then
                 If DGV_Pnl.Dock = DockStyle.Top Then
-                    SYSTEM_TYPE = SysType_Tbox.Text
-                    FACTOR = TimeSpan.Parse(Factor_Tbox.Text)
-                    If MHC_TODO = "ADD" Then
-                        Start_MHCBGW()
-                    End If
+                    save()
+                End If
+            ElseIf e.KeyCode = Keys.Escape Then
+                If DGV_Pnl.Dock = DockStyle.Top Then
                     DGV_Pnl.Dock = DockStyle.Fill
+                    SysType_Tbox.Clear()
+                    Factor_Tbox.Clear()
+                    FACTOR = Nothing
+                    SYSTEM_TYPE = Nothing
+                    STF_ID = Nothing
+                    Cmenu_Clicked = Nothing
                 End If
             End If
         Catch ex As Exception
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
         End Try
     End Sub
-
     Private Sub AddToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AddToolStripMenuItem.Click
         Try
+            Cmenu_Clicked = "ADD"
             DGV_Pnl.Dock = DockStyle.Top
-            SysType_Tbox.Text = Nothing
-            Factor_Tbox.Text = Nothing
             MHC_TODO = "ADD"
         Catch ex As Exception
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
@@ -262,7 +289,21 @@ Public Class ManHourComputation
 
     Private Sub UpdateToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UpdateToolStripMenuItem.Click
         Try
+            Cmenu_Clicked = "UPDATE"
             DGV_Pnl.Dock = DockStyle.Top
+            MHC_TODO = "UPDATE"
+        Catch ex As Exception
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
+        End Try
+    End Sub
+    Private Sub DeleteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DeleteToolStripMenuItem.Click
+        Try
+            KMDIPrompts(Me, "Question", "Are you sure you want to Delete?", Nothing, Nothing, True)
+            If QuestionPromptAnswer = 6 Then
+                Cmenu_Clicked = "DELETE"
+                MHC_TODO = "DELETE"
+                Start_MHCBGW()
+            End If
         Catch ex As Exception
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
         End Try
