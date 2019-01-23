@@ -32,7 +32,7 @@ Namespace My
         
         <Global.System.Diagnostics.DebuggerStepThroughAttribute()>  _
         Protected Overrides Sub OnCreateMainForm()
-            Me.MainForm = Global.KMDI_Systems.ManHourComputation
+            Me.MainForm = Global.KMDI_Systems.Engr_STWDT_Maintenance
         End Sub
     End Class
 End Namespace

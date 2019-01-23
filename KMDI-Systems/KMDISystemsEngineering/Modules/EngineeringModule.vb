@@ -3,6 +3,7 @@ Module EngineeringModule
     Dim sqlconnString As String = "Data Source = 121.58.229.248,49107; Network Library=DBMSSOCN;Initial Catalog='HERETOSAVE';User ID=kmdiadmin;Password=kmdiadmin;"
     Public ENGR_QUERY_INSTANCE As String = Nothing
     Public InsertedSTF_ID As Integer
+    Public EngrToolTip As New MetroFramework.Components.MetroToolTip
     Public Sub Engr_Query_Select_STP(ByVal SearchString As String,
                                      ByVal StoredProcedureName As String,
                                      Optional WillUseReader As Boolean = False)
