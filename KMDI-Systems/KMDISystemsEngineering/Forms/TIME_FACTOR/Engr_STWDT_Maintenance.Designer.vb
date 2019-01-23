@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class Engr_STWDT_Maintenance
     Inherits MetroFramework.Forms.MetroForm
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,18 +20,18 @@ Partial Class Engr_STWDT_Maintenance
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Engr_STWDT_Maintenance))
         Me.Mktng_InvLBL = New MetroFramework.Controls.MetroLabel()
         Me.LoadingPB = New System.Windows.Forms.PictureBox()
         Me.Frm_PNL = New System.Windows.Forms.Panel()
+        Me.STRdBtn_FLP = New System.Windows.Forms.FlowLayoutPanel()
         Me.WindowType_Tbox = New MetroFramework.Controls.MetroTextBox()
         Me.WDT_Pnl = New System.Windows.Forms.Panel()
-        Me.SystemType_Tbox = New MetroFramework.Controls.MetroTextBox()
-        Me.STRdBtn_Pnl = New System.Windows.Forms.Panel()
-        Me.WDTRdBtn_Pnl = New System.Windows.Forms.Panel()
+        Me.WDTRdBtn_FLP = New System.Windows.Forms.FlowLayoutPanel()
         Me.TFactor_Tbox = New System.Windows.Forms.MaskedTextBox()
+        Me.SystemType_Tbox = New MetroFramework.Controls.MetroTextBox()
         CType(Me.LoadingPB, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Frm_PNL.SuspendLayout()
         Me.WDT_Pnl.SuspendLayout()
@@ -62,16 +62,27 @@ Partial Class Engr_STWDT_Maintenance
         'Frm_PNL
         '
         Me.Frm_PNL.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Frm_PNL.Controls.Add(Me.STRdBtn_FLP)
         Me.Frm_PNL.Controls.Add(Me.WindowType_Tbox)
         Me.Frm_PNL.Controls.Add(Me.WDT_Pnl)
         Me.Frm_PNL.Controls.Add(Me.SystemType_Tbox)
-        Me.Frm_PNL.Controls.Add(Me.STRdBtn_Pnl)
         Me.Frm_PNL.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Frm_PNL.Location = New System.Drawing.Point(20, 60)
         Me.Frm_PNL.Name = "Frm_PNL"
         Me.Frm_PNL.Padding = New System.Windows.Forms.Padding(5, 40, 5, 5)
         Me.Frm_PNL.Size = New System.Drawing.Size(610, 307)
         Me.Frm_PNL.TabIndex = 614
+        '
+        'STRdBtn_FLP
+        '
+        Me.STRdBtn_FLP.AutoScroll = True
+        Me.STRdBtn_FLP.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.STRdBtn_FLP.Dock = System.Windows.Forms.DockStyle.Left
+        Me.STRdBtn_FLP.Location = New System.Drawing.Point(5, 40)
+        Me.STRdBtn_FLP.Name = "STRdBtn_FLP"
+        Me.STRdBtn_FLP.Padding = New System.Windows.Forms.Padding(10)
+        Me.STRdBtn_FLP.Size = New System.Drawing.Size(298, 260)
+        Me.STRdBtn_FLP.TabIndex = 0
         '
         'WindowType_Tbox
         '
@@ -85,6 +96,7 @@ Partial Class Engr_STWDT_Maintenance
         Me.WindowType_Tbox.CustomButton.Size = New System.Drawing.Size(23, 23)
         Me.WindowType_Tbox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
         Me.WindowType_Tbox.CustomButton.TabIndex = 1
+        Me.WindowType_Tbox.CustomButton.Text = "+"
         Me.WindowType_Tbox.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
         Me.WindowType_Tbox.CustomButton.UseSelectable = True
         Me.WindowType_Tbox.CustomButton.UseStyleColors = True
@@ -111,14 +123,35 @@ Partial Class Engr_STWDT_Maintenance
         '
         Me.WDT_Pnl.AutoScroll = True
         Me.WDT_Pnl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.WDT_Pnl.Controls.Add(Me.WDTRdBtn_FLP)
         Me.WDT_Pnl.Controls.Add(Me.TFactor_Tbox)
-        Me.WDT_Pnl.Controls.Add(Me.WDTRdBtn_Pnl)
         Me.WDT_Pnl.Dock = System.Windows.Forms.DockStyle.Right
         Me.WDT_Pnl.Location = New System.Drawing.Point(306, 40)
         Me.WDT_Pnl.Name = "WDT_Pnl"
         Me.WDT_Pnl.Padding = New System.Windows.Forms.Padding(10)
         Me.WDT_Pnl.Size = New System.Drawing.Size(297, 260)
         Me.WDT_Pnl.TabIndex = 616
+        '
+        'WDTRdBtn_FLP
+        '
+        Me.WDTRdBtn_FLP.AutoScroll = True
+        Me.WDTRdBtn_FLP.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.WDTRdBtn_FLP.Dock = System.Windows.Forms.DockStyle.Top
+        Me.WDTRdBtn_FLP.Location = New System.Drawing.Point(10, 10)
+        Me.WDTRdBtn_FLP.Name = "WDTRdBtn_FLP"
+        Me.WDTRdBtn_FLP.Padding = New System.Windows.Forms.Padding(10)
+        Me.WDTRdBtn_FLP.Size = New System.Drawing.Size(275, 201)
+        Me.WDTRdBtn_FLP.TabIndex = 621
+        '
+        'TFactor_Tbox
+        '
+        Me.TFactor_Tbox.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.TFactor_Tbox.Font = New System.Drawing.Font("Segoe UI", 11.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TFactor_Tbox.Location = New System.Drawing.Point(10, 217)
+        Me.TFactor_Tbox.Mask = "00:00:00"
+        Me.TFactor_Tbox.Name = "TFactor_Tbox"
+        Me.TFactor_Tbox.Size = New System.Drawing.Size(275, 28)
+        Me.TFactor_Tbox.TabIndex = 620
         '
         'SystemType_Tbox
         '
@@ -132,6 +165,7 @@ Partial Class Engr_STWDT_Maintenance
         Me.SystemType_Tbox.CustomButton.Size = New System.Drawing.Size(23, 23)
         Me.SystemType_Tbox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
         Me.SystemType_Tbox.CustomButton.TabIndex = 1
+        Me.SystemType_Tbox.CustomButton.Text = "+"
         Me.SystemType_Tbox.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
         Me.SystemType_Tbox.CustomButton.UseSelectable = True
         Me.SystemType_Tbox.CustomButton.UseStyleColors = True
@@ -153,36 +187,6 @@ Partial Class Engr_STWDT_Maintenance
         Me.SystemType_Tbox.WaterMark = "System Type"
         Me.SystemType_Tbox.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
         Me.SystemType_Tbox.WaterMarkFont = New System.Drawing.Font("Segoe UI", 15.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
-        '
-        'STRdBtn_Pnl
-        '
-        Me.STRdBtn_Pnl.AutoScroll = True
-        Me.STRdBtn_Pnl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.STRdBtn_Pnl.Dock = System.Windows.Forms.DockStyle.Left
-        Me.STRdBtn_Pnl.Location = New System.Drawing.Point(5, 40)
-        Me.STRdBtn_Pnl.Name = "STRdBtn_Pnl"
-        Me.STRdBtn_Pnl.Padding = New System.Windows.Forms.Padding(10)
-        Me.STRdBtn_Pnl.Size = New System.Drawing.Size(298, 260)
-        Me.STRdBtn_Pnl.TabIndex = 0
-        '
-        'WDTRdBtn_Pnl
-        '
-        Me.WDTRdBtn_Pnl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.WDTRdBtn_Pnl.Dock = System.Windows.Forms.DockStyle.Top
-        Me.WDTRdBtn_Pnl.Location = New System.Drawing.Point(10, 10)
-        Me.WDTRdBtn_Pnl.Name = "WDTRdBtn_Pnl"
-        Me.WDTRdBtn_Pnl.Size = New System.Drawing.Size(275, 201)
-        Me.WDTRdBtn_Pnl.TabIndex = 1
-        '
-        'TFactor_Tbox
-        '
-        Me.TFactor_Tbox.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.TFactor_Tbox.Font = New System.Drawing.Font("Segoe UI", 11.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TFactor_Tbox.Location = New System.Drawing.Point(10, 217)
-        Me.TFactor_Tbox.Mask = "00:00:00"
-        Me.TFactor_Tbox.Name = "TFactor_Tbox"
-        Me.TFactor_Tbox.Size = New System.Drawing.Size(275, 28)
-        Me.TFactor_Tbox.TabIndex = 620
         '
         'Engr_STWDT_Maintenance
         '
@@ -209,10 +213,10 @@ Partial Class Engr_STWDT_Maintenance
     Friend WithEvents Mktng_InvLBL As MetroFramework.Controls.MetroLabel
     Friend WithEvents LoadingPB As PictureBox
     Friend WithEvents Frm_PNL As Panel
-    Friend WithEvents STRdBtn_Pnl As Panel
     Friend WithEvents WindowType_Tbox As MetroFramework.Controls.MetroTextBox
     Friend WithEvents WDT_Pnl As Panel
     Friend WithEvents SystemType_Tbox As MetroFramework.Controls.MetroTextBox
-    Friend WithEvents WDTRdBtn_Pnl As Panel
     Friend WithEvents TFactor_Tbox As MaskedTextBox
+    Friend WithEvents STRdBtn_FLP As FlowLayoutPanel
+    Friend WithEvents WDTRdBtn_FLP As FlowLayoutPanel
 End Class

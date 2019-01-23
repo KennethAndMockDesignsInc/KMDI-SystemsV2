@@ -3,7 +3,8 @@ Module EngineeringModule
     Dim sqlconnString As String = "Data Source = 121.58.229.248,49107; Network Library=DBMSSOCN;Initial Catalog='HERETOSAVE';User ID=kmdiadmin;Password=kmdiadmin;"
     Public ENGR_QUERY_INSTANCE As String = Nothing
     Public InsertedSTF_ID As Integer
-    Public EngrToolTip As New MetroFramework.Components.MetroToolTip
+    Public InsertedST_ID As Integer
+    Public InsertedWDT_ID As Integer
     Public Sub Engr_Query_Select_STP(ByVal SearchString As String,
                                      ByVal StoredProcedureName As String,
                                      Optional WillUseReader As Boolean = False)
@@ -24,9 +25,11 @@ Module EngineeringModule
                 sqlCommand.CommandType = CommandType.StoredProcedure
                 Select Case ENGR_QUERY_INSTANCE
                     Case "Loading_using_SearchString"
-                        sqlCommand.Parameters.AddWithValue("@SearchString", "%" & SearchString & "%")
+                        sqlCommand.Parameters.Add("@SearchString", SqlDbType.VarChar).Value = "%" & SearchString & "%"
+                        'sqlCommand.Parameters.AddWithValue("@SearchString", "%" & SearchString & "%")
                     Case "Loading_using_EqualSearch"
-                        sqlCommand.Parameters.AddWithValue("@EqualSearch", SearchString)
+                        sqlCommand.Parameters.Add("@EqualSearch", SqlDbType.VarChar).Value = SearchString
+                        'sqlCommand.Parameters.AddWithValue("@EqualSearch", SearchString)
                 End Select
 
                 transaction.Commit()
@@ -107,4 +110,47 @@ Module EngineeringModule
             End Using
         End Using
     End Sub
+    Public Sub Engr_SystemType_INSERT(ByVal StoredProcedureName As String,
+                                      ByVal SYSTEM_TYPE As String)
+        Using sqlcon As New SqlConnection(sqlconnString)
+            sqlcon.Open()
+            Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
+                transaction = sqlcon.BeginTransaction(IsolationLevel.RepeatableRead, StoredProcedureName)
+                sqlCommand.Connection = sqlcon
+                sqlCommand.Transaction = transaction
+                sqlCommand.CommandText = StoredProcedureName
+                sqlCommand.CommandType = CommandType.StoredProcedure
+
+                sqlCommand.Parameters.Add("@SYSTEM_TYPE", SqlDbType.VarChar).Value = SYSTEM_TYPE
+                Using read As SqlDataReader = sqlCommand.ExecuteReader
+                    read.Read()
+                    InsertedST_ID = read.Item("TAG_ID")
+                End Using
+                transaction.Commit()
+                sql_Transaction_result = "Committed"
+            End Using
+        End Using
+    End Sub
+    Public Sub Engr_WindowType_INSERT(ByVal StoredProcedureName As String,
+                                      ByVal WINDOW_TYPE As String)
+        Using sqlcon As New SqlConnection(sqlconnString)
+            sqlcon.Open()
+            Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
+                transaction = sqlcon.BeginTransaction(IsolationLevel.RepeatableRead, StoredProcedureName)
+                sqlCommand.Connection = sqlcon
+                sqlCommand.Transaction = transaction
+                sqlCommand.CommandText = StoredProcedureName
+                sqlCommand.CommandType = CommandType.StoredProcedure
+
+                sqlCommand.Parameters.Add("@WINDOW_TYPE", SqlDbType.VarChar).Value = WINDOW_TYPE
+                Using read As SqlDataReader = sqlCommand.ExecuteReader
+                    read.Read()
+                    InsertedWDT_ID = read.Item("TAG_ID")
+                End Using
+                transaction.Commit()
+                sql_Transaction_result = "Committed"
+            End Using
+        End Using
+    End Sub
+
 End Module

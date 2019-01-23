@@ -1,6 +1,8 @@
 ﻿Imports System.Data.SqlClient
 Imports System.IO
 Imports ComponentFactory.Krypton.Toolkit
+Imports MetroFramework.Controls
+Imports MetroFramework.Components
 Module KMDISystemsGlobalModule
     Public TileAccessOfLoggedAccount As String
     Public AccountAutonum As String
@@ -12,6 +14,8 @@ Module KMDISystemsGlobalModule
 
     Public dt As New DataTable
 
+    Public EngrToolTip As New MetroToolTip
+
     Public sql_Err_no, sql_Err_msg, sql_Err_StackTrace, sql_Transaction_result As String
     Public sql_err_bool As Boolean = False
 
@@ -19,6 +23,17 @@ Module KMDISystemsGlobalModule
 
     Public transaction As SqlTransaction
     Public QuestionPromptAnswer As Integer
+
+    Public UnitNo As String
+    Public Establishment As String
+    Public HouseNo As String
+    Public Street As String
+    Public Village As String
+    Public Brgy As String
+    Public CityMunicipality As String
+    Public Province As String
+    Public Area As String
+    Public FullAddress As String
 
     Public EngrSDreq = "|01", DelReciepts = "|02", DR = "|03", DrReports = "|04", EngrsItinerary = "|05", EngrSDsubm = "|06", 'Engineering
      addendum = "|07", SalesItinerary = "|08", SalesMoni = "|09", SUS = "|10", CallerInfo = "|11", Collection = "|12", ExtDMGs = "|13", CheckBalance = "|14", 'Sales and OP
@@ -89,6 +104,28 @@ Module KMDISystemsGlobalModule
                 .HeaderColumn.Content.Font = New Font("Segoe UI", 11.25!, FontStyle.Bold, GraphicsUnit.Point, CType(0, Byte))
                 .HeaderColumn.Content.Hint = PaletteTextHint.AntiAlias
             End With
+        End With
+    End Sub
+
+    Public Sub RdBtn_Properties(CreationMode As String,
+                                RdBtn As MetroRadioButton,
+                                ItemName As String,
+                                TagName As String,
+                                Optional RowIndex As Integer = Nothing)
+        With RdBtn
+            If CreationMode = "Dynamic" Then
+                Dim SQL_STR As String = sqlDataSet.Tables("QUERY_DETAILS").Rows(RowIndex).Item(ItemName).ToString
+                .Tag = sqlDataSet.Tables("QUERY_DETAILS").Rows(RowIndex).Item(TagName).ToString
+                .Name = SQL_STR & .Tag
+                .Text = SQL_STR
+            ElseIf CreationMode = "Static" Then
+                .Name = ItemName & TagName
+                .Tag = TagName
+                .Text = ItemName
+            End If
+            .FontSize = MetroFramework.MetroCheckBoxSize.Tall
+            .Size = New Size(185, 25)
+            EngrToolTip.SetToolTip(RdBtn, .Text)
         End With
     End Sub
 
@@ -189,17 +226,6 @@ Module KMDISystemsGlobalModule
 
         e.Graphics.DrawString(rowIdx, rowFont, SystemBrushes.ControlText, headerBounds, centerFormat)
     End Sub
-
-    Public UnitNo As String
-    Public Establishment As String
-    Public HouseNo As String
-    Public Street As String
-    Public Village As String
-    Public Brgy As String
-    Public CityMunicipality As String
-    Public Province As String
-    Public Area As String
-    Public FullAddress As String
 
     Public Sub AddressFormat(ByVal unitnoAF As String,
                              ByVal establishmentAF As String,
@@ -559,7 +585,6 @@ Module KMDISystemsGlobalModule
                              provinceAF)
         MsgBox("FullAddress: " & FullAddress)
     End Sub
-
 
     Public Sub KMDI_ACCT_ACCESS_TB_READ_FOR_KMDI_MainFRM(ByVal UserAcctAutonum As String)
         Try
