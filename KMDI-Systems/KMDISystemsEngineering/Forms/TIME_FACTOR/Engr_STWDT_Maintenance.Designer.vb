@@ -22,6 +22,7 @@ Partial Class Engr_STWDT_Maintenance
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Engr_STWDT_Maintenance))
         Me.Mktng_InvLBL = New MetroFramework.Controls.MetroLabel()
         Me.LoadingPB = New System.Windows.Forms.PictureBox()
@@ -32,9 +33,13 @@ Partial Class Engr_STWDT_Maintenance
         Me.WDTRdBtn_FLP = New System.Windows.Forms.FlowLayoutPanel()
         Me.TFactor_Tbox = New System.Windows.Forms.MaskedTextBox()
         Me.SystemType_Tbox = New MetroFramework.Controls.MetroTextBox()
+        Me.STWDT_Cmenu = New MetroFramework.Controls.MetroContextMenu(Me.components)
+        Me.EditToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         CType(Me.LoadingPB, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Frm_PNL.SuspendLayout()
         Me.WDT_Pnl.SuspendLayout()
+        Me.STWDT_Cmenu.SuspendLayout()
         Me.SuspendLayout()
         '
         'Mktng_InvLBL
@@ -188,6 +193,24 @@ Partial Class Engr_STWDT_Maintenance
         Me.SystemType_Tbox.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
         Me.SystemType_Tbox.WaterMarkFont = New System.Drawing.Font("Segoe UI", 15.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
         '
+        'STWDT_Cmenu
+        '
+        Me.STWDT_Cmenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.EditToolStripMenuItem, Me.DeleteToolStripMenuItem})
+        Me.STWDT_Cmenu.Name = "MetroContextMenu1"
+        Me.STWDT_Cmenu.Size = New System.Drawing.Size(108, 48)
+        '
+        'EditToolStripMenuItem
+        '
+        Me.EditToolStripMenuItem.Name = "EditToolStripMenuItem"
+        Me.EditToolStripMenuItem.Size = New System.Drawing.Size(107, 22)
+        Me.EditToolStripMenuItem.Text = "Edit"
+        '
+        'DeleteToolStripMenuItem
+        '
+        Me.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem"
+        Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(107, 22)
+        Me.DeleteToolStripMenuItem.Text = "Delete"
+        '
         'Engr_STWDT_Maintenance
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -206,6 +229,7 @@ Partial Class Engr_STWDT_Maintenance
         Me.Frm_PNL.ResumeLayout(False)
         Me.WDT_Pnl.ResumeLayout(False)
         Me.WDT_Pnl.PerformLayout()
+        Me.STWDT_Cmenu.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -220,4 +244,7 @@ Partial Class Engr_STWDT_Maintenance
     Friend WithEvents TFactor_Tbox As MaskedTextBox
     Friend WithEvents STRdBtn_FLP As FlowLayoutPanel
     Friend WithEvents WDTRdBtn_FLP As FlowLayoutPanel
+    Friend WithEvents STWDT_Cmenu As MetroFramework.Controls.MetroContextMenu
+    Friend WithEvents EditToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents DeleteToolStripMenuItem As ToolStripMenuItem
 End Class

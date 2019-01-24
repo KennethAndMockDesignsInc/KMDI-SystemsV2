@@ -111,7 +111,8 @@ Module KMDISystemsGlobalModule
                                 RdBtn As MetroRadioButton,
                                 ItemName As String,
                                 TagName As String,
-                                Optional RowIndex As Integer = Nothing)
+                                Optional RowIndex As Integer = Nothing,
+                                Optional ContextMenu As MetroContextMenu = Nothing)
         With RdBtn
             If CreationMode = "Dynamic" Then
                 Dim SQL_STR As String = sqlDataSet.Tables("QUERY_DETAILS").Rows(RowIndex).Item(ItemName).ToString
@@ -125,6 +126,8 @@ Module KMDISystemsGlobalModule
                 ItemName = Replace(ItemName, "&", "&&")
                 .Text = ItemName
             End If
+            .DisplayFocus = True
+            .ContextMenuStrip = ContextMenu
             .FontSize = MetroFramework.MetroCheckBoxSize.Tall
             .Size = New Size(185, 25)
             EngrToolTip.SetToolTip(RdBtn, .Text)

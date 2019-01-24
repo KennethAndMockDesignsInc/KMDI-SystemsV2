@@ -166,6 +166,26 @@ Module EngineeringModule
             End Using
         End Using
     End Sub
+    Public Sub Engr_SystemType_UPDATE(ByVal StoredProcedureName As String,
+                                      ByVal SYSTEM_TYPE As String,
+                                      ByVal ST_ID As Integer)
+        Using sqlcon As New SqlConnection(sqlconnString)
+            sqlcon.Open()
+            Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
+                transaction = sqlcon.BeginTransaction(IsolationLevel.RepeatableRead, StoredProcedureName)
+                sqlCommand.Connection = sqlcon
+                sqlCommand.Transaction = transaction
+                sqlCommand.CommandText = StoredProcedureName
+                sqlCommand.CommandType = CommandType.StoredProcedure
+
+                sqlCommand.Parameters.Add("@SYSTEM_TYPE", SqlDbType.VarChar).Value = SYSTEM_TYPE
+                sqlCommand.Parameters.Add("@ST_ID", SqlDbType.Int).Value = ST_ID
+                sqlCommand.ExecuteNonQuery()
+                transaction.Commit()
+                sql_Transaction_result = "Committed"
+            End Using
+        End Using
+    End Sub
     Public Sub Engr_WindowType_INSERT(ByVal StoredProcedureName As String,
                                       ByVal WINDOW_TYPE As String)
         Using sqlcon As New SqlConnection(sqlconnString)
@@ -182,6 +202,27 @@ Module EngineeringModule
                     read.Read()
                     InsertedWDT_ID = read.Item("TAG_ID")
                 End Using
+                transaction.Commit()
+                sql_Transaction_result = "Committed"
+            End Using
+        End Using
+    End Sub
+    Public Sub Engr_WindowType_UPDATE(ByVal StoredProcedureName As String,
+                                      ByVal WINDOW_TYPE As String,
+                                      ByVal WDT_ID As Integer)
+        Using sqlcon As New SqlConnection(sqlconnString)
+            sqlcon.Open()
+            Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
+                transaction = sqlcon.BeginTransaction(IsolationLevel.RepeatableRead, StoredProcedureName)
+                sqlCommand.Connection = sqlcon
+                sqlCommand.Transaction = transaction
+                sqlCommand.CommandText = StoredProcedureName
+                sqlCommand.CommandType = CommandType.StoredProcedure
+
+                sqlCommand.Parameters.Add("@WINDOW_TYPE", SqlDbType.VarChar).Value = WINDOW_TYPE
+                sqlCommand.Parameters.Add("@WDT_ID", SqlDbType.Int).Value = WDT_ID
+                sqlCommand.ExecuteNonQuery()
+
                 transaction.Commit()
                 sql_Transaction_result = "Committed"
             End Using
