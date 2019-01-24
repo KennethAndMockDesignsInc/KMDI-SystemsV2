@@ -117,10 +117,12 @@ Module KMDISystemsGlobalModule
                 Dim SQL_STR As String = sqlDataSet.Tables("QUERY_DETAILS").Rows(RowIndex).Item(ItemName).ToString
                 .Tag = sqlDataSet.Tables("QUERY_DETAILS").Rows(RowIndex).Item(TagName).ToString
                 .Name = SQL_STR & .Tag
+                SQL_STR = Replace(SQL_STR, "&", "&&")
                 .Text = SQL_STR
             ElseIf CreationMode = "Static" Then
                 .Name = ItemName & TagName
                 .Tag = TagName
+                ItemName = Replace(ItemName, "&", "&&")
                 .Text = ItemName
             End If
             .FontSize = MetroFramework.MetroCheckBoxSize.Tall

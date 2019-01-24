@@ -80,7 +80,7 @@ Partial Class Engr_STWDT_Maintenance
         Me.STRdBtn_FLP.Dock = System.Windows.Forms.DockStyle.Left
         Me.STRdBtn_FLP.Location = New System.Drawing.Point(5, 40)
         Me.STRdBtn_FLP.Name = "STRdBtn_FLP"
-        Me.STRdBtn_FLP.Padding = New System.Windows.Forms.Padding(10)
+        Me.STRdBtn_FLP.Padding = New System.Windows.Forms.Padding(10, 0, 0, 0)
         Me.STRdBtn_FLP.Size = New System.Drawing.Size(298, 260)
         Me.STRdBtn_FLP.TabIndex = 0
         '
@@ -139,7 +139,7 @@ Partial Class Engr_STWDT_Maintenance
         Me.WDTRdBtn_FLP.Dock = System.Windows.Forms.DockStyle.Top
         Me.WDTRdBtn_FLP.Location = New System.Drawing.Point(10, 10)
         Me.WDTRdBtn_FLP.Name = "WDTRdBtn_FLP"
-        Me.WDTRdBtn_FLP.Padding = New System.Windows.Forms.Padding(10)
+        Me.WDTRdBtn_FLP.Padding = New System.Windows.Forms.Padding(10, 0, 0, 0)
         Me.WDTRdBtn_FLP.Size = New System.Drawing.Size(275, 201)
         Me.WDTRdBtn_FLP.TabIndex = 621
         '
@@ -196,6 +196,7 @@ Partial Class Engr_STWDT_Maintenance
         Me.Controls.Add(Me.Frm_PNL)
         Me.Controls.Add(Me.LoadingPB)
         Me.Controls.Add(Me.Mktng_InvLBL)
+        Me.KeyPreview = True
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "Engr_STWDT_Maintenance"

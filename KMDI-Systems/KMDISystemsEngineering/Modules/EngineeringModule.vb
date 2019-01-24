@@ -26,11 +26,46 @@ Module EngineeringModule
                 Select Case ENGR_QUERY_INSTANCE
                     Case "Loading_using_SearchString"
                         sqlCommand.Parameters.Add("@SearchString", SqlDbType.VarChar).Value = "%" & SearchString & "%"
-                        'sqlCommand.Parameters.AddWithValue("@SearchString", "%" & SearchString & "%")
                     Case "Loading_using_EqualSearch"
                         sqlCommand.Parameters.Add("@EqualSearch", SqlDbType.VarChar).Value = SearchString
-                        'sqlCommand.Parameters.AddWithValue("@EqualSearch", SearchString)
                 End Select
+
+                transaction.Commit()
+                sql_Transaction_result = "Committed"
+
+                Select Case WillUseReader
+                    Case False
+                        sqlDataAdapter.SelectCommand = sqlCommand
+                        sqlDataAdapter.Fill(sqlDataSet, "QUERY_DETAILS")
+                        sqlBindingSource.DataSource = sqlDataSet
+                        sqlBindingSource.DataMember = "QUERY_DETAILS"
+                End Select
+            End Using
+        End Using
+    End Sub
+    Public Sub Engr_Query_Select_T_FACTOR(ByVal ST_ID As Integer,
+                                          ByVal WDT_ID As Integer,
+                                          ByVal StoredProcedureName As String,
+                                          Optional WillUseReader As Boolean = False)
+        sqlDataSet = New DataSet
+        sqlDataAdapter = New SqlDataAdapter
+        sqlBindingSource = New BindingSource
+
+        sqlDataSet.Clear()
+        sqlBindingSource.Clear()
+
+        Using sqlcon As New SqlConnection(sqlconnString)
+            sqlcon.Open()
+            Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
+                transaction = sqlcon.BeginTransaction(StoredProcedureName)
+                sqlCommand.Connection = sqlcon
+                sqlCommand.Transaction = transaction
+                sqlCommand.CommandText = StoredProcedureName
+                sqlCommand.CommandType = CommandType.StoredProcedure
+
+                sqlCommand.Parameters.Add("@ST_ID", SqlDbType.Int).Value = ST_ID
+                sqlCommand.Parameters.Add("@WDT_ID", SqlDbType.Int).Value = WDT_ID
+                sqlCommand.ExecuteNonQuery()
 
                 transaction.Commit()
                 sql_Transaction_result = "Committed"
@@ -147,6 +182,29 @@ Module EngineeringModule
                     read.Read()
                     InsertedWDT_ID = read.Item("TAG_ID")
                 End Using
+                transaction.Commit()
+                sql_Transaction_result = "Committed"
+            End Using
+        End Using
+    End Sub
+    Public Sub Engr_TFactor_Transact(ByVal StoredProcedureName As String,
+                                     ByVal ST_ID As Integer,
+                                     ByVal WDT_ID As Integer,
+                                     ByVal T_FACTOR As TimeSpan)
+        Using sqlcon As New SqlConnection(sqlconnString)
+            sqlcon.Open()
+            Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
+                transaction = sqlcon.BeginTransaction(IsolationLevel.RepeatableRead, StoredProcedureName)
+                sqlCommand.Connection = sqlcon
+                sqlCommand.Transaction = transaction
+                sqlCommand.CommandText = StoredProcedureName
+                sqlCommand.CommandType = CommandType.StoredProcedure
+
+                sqlCommand.Parameters.Add("@ST_ID_REF", SqlDbType.Int).Value = ST_ID
+                sqlCommand.Parameters.Add("@WDT_ID_REF", SqlDbType.Int).Value = WDT_ID
+                sqlCommand.Parameters.Add("@T_FACTOR", SqlDbType.Time).Value = T_FACTOR
+                sqlCommand.ExecuteNonQuery()
+
                 transaction.Commit()
                 sql_Transaction_result = "Committed"
             End Using
