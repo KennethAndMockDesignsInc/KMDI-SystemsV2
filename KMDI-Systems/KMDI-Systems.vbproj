@@ -227,10 +227,10 @@
     <Compile Include="KMDISystemsEngineering\Forms\ManHourComputation.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="KMDISystemsEngineering\Forms\TIME_FACTOR\Engr_STWDT_Maintenance.Designer.vb">
-      <DependentUpon>Engr_STWDT_Maintenance.vb</DependentUpon>
+    <Compile Include="KMDISystemsEngineering\Forms\TIME_FACTOR\Engr_Time_Factor_Maintenance.Designer.vb">
+      <DependentUpon>Engr_Time_Factor_Maintenance.vb</DependentUpon>
     </Compile>
-    <Compile Include="KMDISystemsEngineering\Forms\TIME_FACTOR\Engr_STWDT_Maintenance.vb">
+    <Compile Include="KMDISystemsEngineering\Forms\TIME_FACTOR\Engr_Time_Factor_Maintenance.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="KMDISystemsEngineering\Modules\EngineeringModule.vb" />
@@ -445,8 +445,8 @@
     <EmbeddedResource Include="KMDISystemsEngineering\Forms\ManHourComputation.resx">
       <DependentUpon>ManHourComputation.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="KMDISystemsEngineering\Forms\TIME_FACTOR\Engr_STWDT_Maintenance.resx">
-      <DependentUpon>Engr_STWDT_Maintenance.vb</DependentUpon>
+    <EmbeddedResource Include="KMDISystemsEngineering\Forms\TIME_FACTOR\Engr_Time_Factor_Maintenance.resx">
+      <DependentUpon>Engr_Time_Factor_Maintenance.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="KMDISystemsLogin\Forms\KMDISystemsLogin.resx">
       <DependentUpon>KMDISystemsLogin.vb</DependentUpon>

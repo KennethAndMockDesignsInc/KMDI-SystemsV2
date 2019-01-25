@@ -1,6 +1,6 @@
 ﻿Imports System.Data.SqlClient
 Module EngineeringModule
-    Dim sqlconnString As String = "Data Source = 121.58.229.248,49107; Network Library=DBMSSOCN;Initial Catalog='HERETOSAVE';User ID=kmdiadmin;Password=kmdiadmin;"
+    Dim sqlconnString As String = "Data Source = 121.58.229.248,49107; Network Library=DBMSSOCN;Initial Catalog='heretosave';User ID=kmdiadmin;Password=kmdiadmin;"
     Public ENGR_QUERY_INSTANCE As String = Nothing
     Public InsertedSTF_ID As Integer
     Public InsertedST_ID As Integer
@@ -145,9 +145,9 @@ Module EngineeringModule
             End Using
         End Using
     End Sub
-    Public Sub Engr_SystemType_INSERT(ByVal StoredProcedureName As String,
-                                      ByVal SYSTEM_TYPE As String,
-                                      ByVal FRAME_SCREEN As String)
+    Public Sub Engr_ProfileType_INSERT(ByVal StoredProcedureName As String,
+                                       ByVal SYSTEM_TYPE As String,
+                                       ByVal FRAME_SCREEN As String)
         Using sqlcon As New SqlConnection(sqlconnString)
             sqlcon.Open()
             Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
@@ -168,7 +168,7 @@ Module EngineeringModule
             End Using
         End Using
     End Sub
-    Public Sub Engr_SystemType_UPDATE(ByVal StoredProcedureName As String,
+    Public Sub Engr_ProfileType_UPDATE(ByVal StoredProcedureName As String,
                                       ByVal SYSTEM_TYPE As String,
                                       ByVal FRAME_SCREEN As String,
                                       ByVal ST_ID As Integer)
@@ -190,7 +190,7 @@ Module EngineeringModule
             End Using
         End Using
     End Sub
-    Public Sub Engr_SystemType_DELETE(ByVal StoredProcedureName As String,
+    Public Sub Engr_ProfileType_DELETE(ByVal StoredProcedureName As String,
                                       ByVal ST_ID As Integer)
         Using sqlcon As New SqlConnection(sqlconnString)
             sqlcon.Open()
