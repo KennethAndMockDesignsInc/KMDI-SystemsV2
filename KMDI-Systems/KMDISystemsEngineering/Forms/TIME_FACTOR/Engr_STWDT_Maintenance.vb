@@ -201,7 +201,7 @@ Public Class Engr_STWDT_Maintenance
                             Dim RdBtn As New MetroFramework.Controls.MetroRadioButton
                             RdBtn_Properties("Static", RdBtn, WindowType_Str, InsertedWDT_ID, Nothing, STWDT_Cmenu)
                             WDTRdBtn_FLP.Controls.Add(RdBtn)
-                            AddHandler RdBtn.Click, AddressOf SysRbtn_Clicked
+                            AddHandler RdBtn.Click, AddressOf WDTRbtn_Clicked
                             AddHandler RdBtn.MouseDown, AddressOf Rbtn_MouseDown
                             reset_here()
 
