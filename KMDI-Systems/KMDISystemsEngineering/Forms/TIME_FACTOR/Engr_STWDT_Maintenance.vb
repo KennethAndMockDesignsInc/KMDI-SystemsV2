@@ -4,7 +4,7 @@ Imports System.Threading.Thread
 Imports ComponentFactory.Krypton.Toolkit
 Public Class Engr_STWDT_Maintenance
     Public STWDT_BGW As BackgroundWorker = New BackgroundWorker
-    Dim ST_ID, WDT_ID As Integer
+    Dim ST_ID, WDT_ID, TFactor_Hrs, TFactor_Mins, TFactor_Secs As Integer
     Dim STWDT_TODO, SystemType_Str, WindowType_Str As String
     Dim T_FACTOR As TimeSpan
     Dim ReportBGW_bool, TrueIFSystemType_bool As Boolean
@@ -71,11 +71,17 @@ Public Class Engr_STWDT_Maintenance
             ElseIf STWDT_TODO = "SystemType_Update" Then
                 Engr_SystemType_UPDATE("ENGR_stp_STWDT_SystemType_Update", SystemType_Str, ST_ID)
 
+            ElseIf STWDT_TODO = "SystemType_Delete" Then
+                Engr_SystemType_DELETE("ENGR_stp_STWDT_SystemType_Delete", ST_ID)
+
             ElseIf STWDT_TODO = "WindowType_Insert" Then
                 Engr_WindowType_INSERT("ENGR_stp_STWDT_WindowType_Insert", WindowType_Str)
 
             ElseIf STWDT_TODO = "WindowType_Update" Then
                 Engr_WindowType_UPDATE("ENGR_stp_STWDT_WindowType_Update", WindowType_Str, WDT_ID)
+
+            ElseIf STWDT_TODO = "WindowType_Delete" Then
+                Engr_WindowType_DELETE("ENGR_stp_STWDT_WindowType_Delete", WDT_ID)
 
             ElseIf STWDT_TODO = "Fetch_TFactor" Then
                 Engr_Query_Select_T_FACTOR(ST_ID, WDT_ID, "ENGR_stp_STWDT_TFactor_Fetch")
@@ -161,6 +167,14 @@ Public Class Engr_STWDT_Maintenance
                             Next
                             KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
 
+                        Case "SystemType_Delete"
+                            For Each ctrl In STRdBtn_FLP.Controls
+                                If ctrl.Tag = ST_ID Then
+                                    STRdBtn_FLP.Controls.Remove(ctrl)
+                                End If
+                            Next
+                            KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
+
                         Case "WindowType_Insert"
                             Dim RdBtn As New MetroFramework.Controls.MetroRadioButton
                             RdBtn_Properties("Static", RdBtn, WindowType_Str, InsertedWDT_ID, Nothing, STWDT_Cmenu)
@@ -176,14 +190,29 @@ Public Class Engr_STWDT_Maintenance
                             Next
                             KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
 
+                        Case "WindowType_Delete"
+                            For Each ctrl In WDTRdBtn_FLP.Controls
+                                If ctrl.Tag = WDT_ID Then
+                                    WDTRdBtn_FLP.Controls.Remove(ctrl)
+                                End If
+                            Next
+                            KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
+
                         Case "Fetch_TFactor"
                             If sqlDataSet.Tables("QUERY_DETAILS").Rows.Count <> 0 Then
-                                T_FACTOR = TimeSpan.Parse(sqlDataSet.Tables("QUERY_DETAILS").Rows(0).Item("T_FACTOR").ToString)
-                                TFactor_Tbox.Text = T_FACTOR.ToString("c")
-                            ElseIf sqlDataSet.Tables("QUERY_DETAILS").Rows.Count = 0 Then
-                                TFactor_Tbox.Clear()
-                            End If
+                                Dim TFactor_str As String = Replace(sqlDataSet.Tables("QUERY_DETAILS").Rows(0).Item("T_FACTOR").ToString, ":", "")
+                                TFactor_Hrs = Convert.ToInt32(TFactor_str.Substring(0, 2))
+                                TFactor_Mins = Convert.ToInt32(TFactor_str.Substring(2, 2))
+                                TFactor_Secs = Convert.ToInt32(TFactor_str.Substring(4, 2))
 
+                                TFactorHrs_Num.Value = TFactor_Hrs
+                                TFactorMins_Num.Value = TFactor_Mins
+                                TFactorSecs_Num.Value = TFactor_Secs
+                            ElseIf sqlDataSet.Tables("QUERY_DETAILS").Rows.Count = 0 Then
+                                TFactorHrs_Num.Value = 0
+                                TFactorMins_Num.Value = 0
+                                TFactorSecs_Num.Value = 0
+                            End If
                         Case "Transact_TFactor"
                             KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
 
@@ -217,6 +246,25 @@ Public Class Engr_STWDT_Maintenance
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
         End Try
     End Sub
+
+    Private Sub DeleteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DeleteToolStripMenuItem.Click
+        Try
+            KMDIPrompts(Me, "Question", "Are you sure you want to Delete?", Nothing, Nothing, True)
+            If QuestionPromptAnswer = 6 Then
+                If TrueIFSystemType_bool = True Then
+                    STWDT_TODO = "SystemType_Delete"
+
+                Else TrueIFSystemType_bool = False
+                    STWDT_TODO = "WindowType_Delete"
+
+                End If
+                Start_STWDTBGW()
+            End If
+        Catch ex As Exception
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
+        End Try
+    End Sub
+
     Private Sub Rbtn_MouseDown(sender As Object, e As MouseEventArgs)
         If e.Button = MouseButtons.Right Then
             sender.Select
@@ -263,20 +311,25 @@ Public Class Engr_STWDT_Maintenance
     Private Sub Engr_STWDT_Maintenance_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
         Try
             If (e.Control And e.KeyCode = Keys.S) Then
-                If TFactor_Tbox.MaskCompleted <> False Then
-                    T_FACTOR = TimeSpan.Parse(TFactor_Tbox.Text)
-                    If ST_ID <> Nothing Then
-                        If WDT_ID <> Nothing Then
-                            STWDT_TODO = "Transact_TFactor"
-                            Start_STWDTBGW()
-                        Else
-                            KMDIPrompts(Me, "UserWarning", "WDT_ID is Empty", Environment.StackTrace, Nothing, True, True, "Please select Window Type")
-                        End If
+                If TFactorHrs_Num.Value > 23 Then
+                    TFactor_Hrs = 23
+                End If
+                If TFactorMins_Num.Value > 59 Then
+                    TFactor_Mins = 59
+                End If
+                If TFactorSecs_Num.Value > 59 Then
+                    TFactor_Secs = 59
+                End If
+                T_FACTOR = TimeSpan.Parse(TFactorHrs_Num.Value & ":" & TFactorMins_Num.Value & ":" & TFactorSecs_Num.Value)
+                If ST_ID <> Nothing Then
+                    If WDT_ID <> Nothing Then
+                        STWDT_TODO = "Transact_TFactor"
+                        Start_STWDTBGW()
                     Else
-                        KMDIPrompts(Me, "UserWarning", "ST_ID is Empty", Environment.StackTrace, Nothing, True, True, "Please select System Type")
+                        KMDIPrompts(Me, "UserWarning", "WDT_ID is Empty", Environment.StackTrace, Nothing, True, True, "Please select Window Type")
                     End If
                 Else
-                    KMDIPrompts(Me, "UserWarning", "TFactor_Tbox is Empty", Environment.StackTrace, Nothing, True, True, "Complete the field")
+                    KMDIPrompts(Me, "UserWarning", "ST_ID is Empty", Environment.StackTrace, Nothing, True, True, "Please select System Type")
                 End If
             ElseIf e.KeyCode = Keys.Escape Then
                 reset_here()
