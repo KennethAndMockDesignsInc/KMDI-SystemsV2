@@ -5,7 +5,7 @@ Imports ComponentFactory.Krypton.Toolkit
 Public Class Engr_STWDT_Maintenance
     Public STWDT_BGW As BackgroundWorker = New BackgroundWorker
     Dim ST_ID, WDT_ID, TFactor_Hrs, TFactor_Mins, TFactor_Secs As Integer
-    Dim STWDT_TODO, SystemType_Str, WindowType_Str As String
+    Dim STWDT_TODO, SystemType_Str, WindowType_Str, FRAME_OR_SCREEN As String
     Dim T_FACTOR As TimeSpan
     Dim ReportBGW_bool, TrueIFSystemType_bool As Boolean
     Dim DGVrow_list As New List(Of Object)
@@ -47,6 +47,8 @@ Public Class Engr_STWDT_Maintenance
             AddHandler STWDT_BGW.DoWork, AddressOf STWDT_BGW_DoWork
             AddHandler STWDT_BGW.ProgressChanged, AddressOf STWDT_BGW_ProgressChanged
             AddHandler STWDT_BGW.RunWorkerCompleted, AddressOf STWDT_BGW_RunWorkerCompleted
+            FrameScreen_Cbox.SelectedIndex = 0
+            FRAME_OR_SCREEN = "Frame"
             STWDT_TODO = "Onload"
             Start_STWDTBGW()
         Catch ex As Exception
@@ -57,8 +59,8 @@ Public Class Engr_STWDT_Maintenance
         Try
             If STWDT_TODO = "SystemType" Or STWDT_TODO = "Onload" Then
                 ReportBGW_bool = True
-                ENGR_QUERY_INSTANCE = "Loading_using_SearchString"
-                Engr_Query_Select_STP("", "ENGR_stp_STWDT_SystemType")
+                ENGR_QUERY_INSTANCE = "Loading_using_EqualSearch"
+                Engr_Query_Select_STP(FRAME_OR_SCREEN, "ENGR_stp_STWDT_SystemType")
 
             ElseIf STWDT_TODO = "WindowType" Then
                 ReportBGW_bool = True
@@ -66,10 +68,10 @@ Public Class Engr_STWDT_Maintenance
                 Engr_Query_Select_STP("", "ENGR_stp_STWDT_WindowType")
 
             ElseIf STWDT_TODO = "SystemType_Insert" Then
-                Engr_SystemType_INSERT("ENGR_stp_STWDT_SystemType_Insert", SystemType_Str)
+                Engr_SystemType_INSERT("ENGR_stp_STWDT_SystemType_Insert", SystemType_Str, FRAME_OR_SCREEN)
 
             ElseIf STWDT_TODO = "SystemType_Update" Then
-                Engr_SystemType_UPDATE("ENGR_stp_STWDT_SystemType_Update", SystemType_Str, ST_ID)
+                Engr_SystemType_UPDATE("ENGR_stp_STWDT_SystemType_Update", SystemType_Str, FRAME_OR_SCREEN, ST_ID)
 
             ElseIf STWDT_TODO = "SystemType_Delete" Then
                 Engr_SystemType_DELETE("ENGR_stp_STWDT_SystemType_Delete", ST_ID)
@@ -84,8 +86,12 @@ Public Class Engr_STWDT_Maintenance
                 Engr_WindowType_DELETE("ENGR_stp_STWDT_WindowType_Delete", WDT_ID)
 
             ElseIf STWDT_TODO = "Fetch_TFactor" Then
-                Engr_Query_Select_T_FACTOR(ST_ID, WDT_ID, "ENGR_stp_STWDT_TFactor_Fetch")
-
+                Select Case FRAME_OR_SCREEN
+                    Case "Frame"
+                        Engr_Query_Select_T_FACTOR("ENGR_stp_STWDT_TFactor_Fetch", ST_ID, WDT_ID)
+                    Case "Screen"
+                        Engr_Query_Select_T_FACTOR("ENGR_stp_STWDT_TFactor_Fetch", ST_ID)
+                End Select
             ElseIf STWDT_TODO = "Transact_TFactor" Then
                 Engr_TFactor_Transact("ENGR_stp_STWDT_TFactor_Transact", ST_ID, WDT_ID, T_FACTOR)
 
@@ -122,10 +128,17 @@ Public Class Engr_STWDT_Maintenance
         Try
             Dim RdBtn As New MetroFramework.Controls.MetroRadioButton
             If STWDT_TODO = "SystemType" Or STWDT_TODO = "Onload" Then
+                If STRdBtn_FLP.Controls.Count <> 0 And e.ProgressPercentage = 0 Then
+                    STRdBtn_FLP.Controls.Clear()
+                End If
                 RdBtn_Properties("Dynamic", RdBtn, "SYSTEM_TYPE", "ST_ID", e.ProgressPercentage, STWDT_Cmenu)
                 AddHandler RdBtn.Click, AddressOf SysRbtn_Clicked
                 STRdBtn_FLP.Controls.Add(RdBtn)
+
             ElseIf STWDT_TODO = "WindowType" Then
+                If WDTRdBtn_FLP.Controls.Count <> 0 And e.ProgressPercentage = 0 Then
+                    WDTRdBtn_FLP.Controls.Clear()
+                End If
                 RdBtn_Properties("Dynamic", RdBtn, "WINDOW_TYPE", "WDT_ID", e.ProgressPercentage, STWDT_Cmenu)
                 AddHandler RdBtn.Click, AddressOf WDTRbtn_Clicked
                 WDTRdBtn_FLP.Controls.Add(RdBtn)
@@ -148,16 +161,22 @@ Public Class Engr_STWDT_Maintenance
                         Case "Onload"
                             STWDT_TODO = "WindowType"
                             Start_STWDTBGW()
+
                         Case "SystemType"
                             ReportBGW_bool = False
+                            reset_here()
+
                         Case "WindowType"
                             ReportBGW_bool = False
+                            reset_here()
+
                         Case "SystemType_Insert"
                             Dim RdBtn As New MetroFramework.Controls.MetroRadioButton
                             RdBtn_Properties("Static", RdBtn, SystemType_Str, InsertedST_ID, Nothing, STWDT_Cmenu)
                             STRdBtn_FLP.Controls.Add(RdBtn)
                             AddHandler RdBtn.Click, AddressOf SysRbtn_Clicked
                             AddHandler RdBtn.MouseDown, AddressOf Rbtn_MouseDown
+                            reset_here()
 
                         Case "SystemType_Update"
                             For Each ctrl In STRdBtn_FLP.Controls
@@ -166,6 +185,8 @@ Public Class Engr_STWDT_Maintenance
                                 End If
                             Next
                             KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
+                            STWDT_TODO = "SystemType"
+                            Start_STWDTBGW()
 
                         Case "SystemType_Delete"
                             For Each ctrl In STRdBtn_FLP.Controls
@@ -174,6 +195,7 @@ Public Class Engr_STWDT_Maintenance
                                 End If
                             Next
                             KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
+                            reset_here()
 
                         Case "WindowType_Insert"
                             Dim RdBtn As New MetroFramework.Controls.MetroRadioButton
@@ -181,6 +203,7 @@ Public Class Engr_STWDT_Maintenance
                             WDTRdBtn_FLP.Controls.Add(RdBtn)
                             AddHandler RdBtn.Click, AddressOf SysRbtn_Clicked
                             AddHandler RdBtn.MouseDown, AddressOf Rbtn_MouseDown
+                            reset_here()
 
                         Case "WindowType_Update"
                             For Each ctrl In WDTRdBtn_FLP.Controls
@@ -189,6 +212,7 @@ Public Class Engr_STWDT_Maintenance
                                 End If
                             Next
                             KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
+                            reset_here()
 
                         Case "WindowType_Delete"
                             For Each ctrl In WDTRdBtn_FLP.Controls
@@ -197,6 +221,7 @@ Public Class Engr_STWDT_Maintenance
                                 End If
                             Next
                             KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
+                            reset_here()
 
                         Case "Fetch_TFactor"
                             If sqlDataSet.Tables("QUERY_DETAILS").Rows.Count <> 0 Then
@@ -213,24 +238,25 @@ Public Class Engr_STWDT_Maintenance
                                 TFactorMins_Num.Value = 0
                                 TFactorSecs_Num.Value = 0
                             End If
+                            reset_here()
+
                         Case "Transact_TFactor"
                             KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
+                            reset_here()
 
                     End Select
                 End If
             End If
         Catch ex As Exception
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
+            reset_here()
         End Try
-        reset_here()
     End Sub
     Private Sub SysRbtn_Clicked(sender As Object, e As EventArgs)
         Try
             ST_ID = sender.Tag
-            If WDT_ID <> Nothing Then
-                STWDT_TODO = "Fetch_TFactor"
-                Start_STWDTBGW()
-            End If
+            STWDT_TODO = "Fetch_TFactor"
+            Start_STWDTBGW()
         Catch ex As Exception
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
         End Try
@@ -240,6 +266,25 @@ Public Class Engr_STWDT_Maintenance
             WDT_ID = sender.Tag
             If ST_ID <> Nothing Then
                 STWDT_TODO = "Fetch_TFactor"
+                Start_STWDTBGW()
+            End If
+        Catch ex As Exception
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
+        End Try
+    End Sub
+
+    Private Sub FrameScreen_Cbox_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles FrameScreen_Cbox.SelectionChangeCommitted
+        Try
+            FRAME_OR_SCREEN = FrameScreen_Cbox.Text
+            If SystemType_Tbox.CustomButton.Text = "+" And SystemType_Tbox.Style = MetroFramework.MetroColorStyle.Silver Then
+                If FrameScreen_Cbox.SelectedIndex = 0 Then
+                    WDTRdBtn_FLP.Enabled = True
+                    WindowType_Tbox.Enabled = True
+                ElseIf FrameScreen_Cbox.SelectedIndex = 1 Then
+                    WDTRdBtn_FLP.Enabled = False
+                    WindowType_Tbox.Enabled = False
+                End If
+                STWDT_TODO = "SystemType"
                 Start_STWDTBGW()
             End If
         Catch ex As Exception
@@ -321,18 +366,32 @@ Public Class Engr_STWDT_Maintenance
                     TFactor_Secs = 59
                 End If
                 T_FACTOR = TimeSpan.Parse(TFactorHrs_Num.Value & ":" & TFactorMins_Num.Value & ":" & TFactorSecs_Num.Value)
-                If ST_ID <> Nothing Then
-                    If WDT_ID <> Nothing Then
-                        STWDT_TODO = "Transact_TFactor"
-                        Start_STWDTBGW()
-                    Else
-                        KMDIPrompts(Me, "UserWarning", "WDT_ID is Empty", Environment.StackTrace, Nothing, True, True, "Please select Window Type")
-                    End If
-                Else
-                    KMDIPrompts(Me, "UserWarning", "ST_ID is Empty", Environment.StackTrace, Nothing, True, True, "Please select System Type")
-                End If
+                Select Case FRAME_OR_SCREEN
+                    Case "Frame"
+                        If ST_ID <> Nothing Then
+                            If WDT_ID <> Nothing Then
+                                STWDT_TODO = "Transact_TFactor"
+                                Start_STWDTBGW()
+                            Else
+                                KMDIPrompts(Me, "UserWarning", "WDT_ID is Empty", Environment.StackTrace, Nothing, True, True, "Please select Window Type")
+                            End If
+                        Else
+                            KMDIPrompts(Me, "UserWarning", "ST_ID is Empty", Environment.StackTrace, Nothing, True, True, "Please select System Type")
+                        End If
+                    Case "Screen"
+                        If ST_ID <> Nothing Then
+                            STWDT_TODO = "Transact_TFactor"
+                            Start_STWDTBGW()
+                        Else
+                            KMDIPrompts(Me, "UserWarning", "ST_ID is Empty", Environment.StackTrace, Nothing, True, True, "Please select System Type")
+                        End If
+                End Select
+
             ElseIf e.KeyCode = Keys.Escape Then
                 reset_here()
+            ElseIf e.KeyCode = Keys.F5 Then
+                STWDT_TODO = "Onload"
+                Start_STWDTBGW()
             End If
         Catch ex As Exception
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)

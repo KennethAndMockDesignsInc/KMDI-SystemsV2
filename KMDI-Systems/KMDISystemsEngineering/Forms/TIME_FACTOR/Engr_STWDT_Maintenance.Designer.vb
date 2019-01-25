@@ -41,6 +41,7 @@ Partial Class Engr_STWDT_Maintenance
         Me.STWDT_Cmenu = New MetroFramework.Controls.MetroContextMenu(Me.components)
         Me.EditToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.FrameScreen_Cbox = New MetroFramework.Controls.MetroComboBox()
         CType(Me.LoadingPB, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Frm_PNL.SuspendLayout()
         Me.WDT_Pnl.SuspendLayout()
@@ -72,6 +73,7 @@ Partial Class Engr_STWDT_Maintenance
         'Frm_PNL
         '
         Me.Frm_PNL.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Frm_PNL.Controls.Add(Me.FrameScreen_Cbox)
         Me.Frm_PNL.Controls.Add(Me.STRdBtn_FLP)
         Me.Frm_PNL.Controls.Add(Me.WindowType_Tbox)
         Me.Frm_PNL.Controls.Add(Me.WDT_Pnl)
@@ -222,7 +224,7 @@ Partial Class Engr_STWDT_Maintenance
         '
         '
         Me.SystemType_Tbox.CustomButton.Image = Nothing
-        Me.SystemType_Tbox.CustomButton.Location = New System.Drawing.Point(272, 2)
+        Me.SystemType_Tbox.CustomButton.Location = New System.Drawing.Point(169, 2)
         Me.SystemType_Tbox.CustomButton.Name = ""
         Me.SystemType_Tbox.CustomButton.Size = New System.Drawing.Size(23, 23)
         Me.SystemType_Tbox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
@@ -233,7 +235,7 @@ Partial Class Engr_STWDT_Maintenance
         Me.SystemType_Tbox.CustomButton.UseStyleColors = True
         Me.SystemType_Tbox.FontSize = MetroFramework.MetroTextBoxSize.Tall
         Me.SystemType_Tbox.Lines = New String(-1) {}
-        Me.SystemType_Tbox.Location = New System.Drawing.Point(5, 7)
+        Me.SystemType_Tbox.Location = New System.Drawing.Point(105, 7)
         Me.SystemType_Tbox.MaxLength = 32767
         Me.SystemType_Tbox.Name = "SystemType_Tbox"
         Me.SystemType_Tbox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
@@ -242,7 +244,7 @@ Partial Class Engr_STWDT_Maintenance
         Me.SystemType_Tbox.SelectionLength = 0
         Me.SystemType_Tbox.SelectionStart = 0
         Me.SystemType_Tbox.ShowButton = True
-        Me.SystemType_Tbox.Size = New System.Drawing.Size(298, 28)
+        Me.SystemType_Tbox.Size = New System.Drawing.Size(195, 28)
         Me.SystemType_Tbox.Style = MetroFramework.MetroColorStyle.Silver
         Me.SystemType_Tbox.TabIndex = 615
         Me.SystemType_Tbox.UseSelectable = True
@@ -266,8 +268,21 @@ Partial Class Engr_STWDT_Maintenance
         'DeleteToolStripMenuItem
         '
         Me.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem"
-        Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(107, 22)
         Me.DeleteToolStripMenuItem.Text = "Delete"
+        '
+        'FrameScreen_Cbox
+        '
+        Me.FrameScreen_Cbox.FormattingEnabled = True
+        Me.FrameScreen_Cbox.ItemHeight = 23
+        Me.FrameScreen_Cbox.Items.AddRange(New Object() {"Frame", "Screen"})
+        Me.FrameScreen_Cbox.Location = New System.Drawing.Point(5, 7)
+        Me.FrameScreen_Cbox.Name = "FrameScreen_Cbox"
+        Me.FrameScreen_Cbox.Size = New System.Drawing.Size(94, 29)
+        Me.FrameScreen_Cbox.Style = MetroFramework.MetroColorStyle.Silver
+        Me.FrameScreen_Cbox.TabIndex = 615
+        Me.FrameScreen_Cbox.UseSelectable = True
+        Me.FrameScreen_Cbox.UseStyleColors = True
         '
         'Engr_STWDT_Maintenance
         '
@@ -310,4 +325,5 @@ Partial Class Engr_STWDT_Maintenance
     Friend WithEvents MetroLabel2 As MetroFramework.Controls.MetroLabel
     Friend WithEvents TFactorMins_Num As ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown
     Friend WithEvents MetroLabel1 As MetroFramework.Controls.MetroLabel
+    Friend WithEvents FrameScreen_Cbox As MetroFramework.Controls.MetroComboBox
 End Class

@@ -43,9 +43,9 @@ Module EngineeringModule
             End Using
         End Using
     End Sub
-    Public Sub Engr_Query_Select_T_FACTOR(ByVal ST_ID As Integer,
-                                          ByVal WDT_ID As Integer,
-                                          ByVal StoredProcedureName As String,
+    Public Sub Engr_Query_Select_T_FACTOR(ByVal StoredProcedureName As String,
+                                          ByVal ST_ID As Integer,
+                                          Optional WDT_ID As Integer = Nothing,
                                           Optional WillUseReader As Boolean = False)
         sqlDataSet = New DataSet
         sqlDataAdapter = New SqlDataAdapter
@@ -146,7 +146,8 @@ Module EngineeringModule
         End Using
     End Sub
     Public Sub Engr_SystemType_INSERT(ByVal StoredProcedureName As String,
-                                      ByVal SYSTEM_TYPE As String)
+                                      ByVal SYSTEM_TYPE As String,
+                                      ByVal FRAME_SCREEN As String)
         Using sqlcon As New SqlConnection(sqlconnString)
             sqlcon.Open()
             Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
@@ -157,6 +158,7 @@ Module EngineeringModule
                 sqlCommand.CommandType = CommandType.StoredProcedure
 
                 sqlCommand.Parameters.Add("@SYSTEM_TYPE", SqlDbType.VarChar).Value = SYSTEM_TYPE
+                sqlCommand.Parameters.Add("@FRAME_OR_SCREEN", SqlDbType.VarChar).Value = FRAME_SCREEN
                 Using read As SqlDataReader = sqlCommand.ExecuteReader
                     read.Read()
                     InsertedST_ID = read.Item("TAG_ID")
@@ -168,6 +170,7 @@ Module EngineeringModule
     End Sub
     Public Sub Engr_SystemType_UPDATE(ByVal StoredProcedureName As String,
                                       ByVal SYSTEM_TYPE As String,
+                                      ByVal FRAME_SCREEN As String,
                                       ByVal ST_ID As Integer)
         Using sqlcon As New SqlConnection(sqlconnString)
             sqlcon.Open()
@@ -179,6 +182,7 @@ Module EngineeringModule
                 sqlCommand.CommandType = CommandType.StoredProcedure
 
                 sqlCommand.Parameters.Add("@SYSTEM_TYPE", SqlDbType.VarChar).Value = SYSTEM_TYPE
+                sqlCommand.Parameters.Add("@FRAME_OR_SCREEN", SqlDbType.VarChar).Value = FRAME_SCREEN
                 sqlCommand.Parameters.Add("@ST_ID", SqlDbType.Int).Value = ST_ID
                 sqlCommand.ExecuteNonQuery()
                 transaction.Commit()
