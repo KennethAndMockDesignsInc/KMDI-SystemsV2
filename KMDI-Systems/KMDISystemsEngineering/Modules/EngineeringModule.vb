@@ -167,6 +167,29 @@ Module EngineeringModule
             End Using
         End Using
     End Sub
+    Public Sub Engr_TFM_UPDATE(ByVal StoredProcedureName As String,
+                               ByVal WindoorPart As String,
+                               ByVal UpdateValue As String,
+                               ByVal ID As Integer)
+        Using sqlcon As New SqlConnection(sqlconnString)
+            sqlcon.Open()
+            Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
+                transaction = sqlcon.BeginTransaction(IsolationLevel.RepeatableRead, StoredProcedureName)
+                sqlCommand.Connection = sqlcon
+                sqlCommand.Transaction = transaction
+                sqlCommand.CommandText = StoredProcedureName
+                sqlCommand.CommandType = CommandType.StoredProcedure
+
+                sqlCommand.Parameters.Add("@WindoorPart", SqlDbType.VarChar).Value = WindoorPart
+                sqlCommand.Parameters.Add("@UpdateValue", SqlDbType.VarChar).Value = UpdateValue
+                sqlCommand.Parameters.Add("@ID", SqlDbType.Int).Value = ID
+                sqlCommand.ExecuteNonQuery()
+
+                transaction.Commit()
+                sql_Transaction_result = "Committed"
+            End Using
+        End Using
+    End Sub
     Public Sub Engr_ProfileType_UPDATE(ByVal StoredProcedureName As String,
                                       ByVal SYSTEM_TYPE As String,
                                       ByVal FRAME_SCREEN As String,

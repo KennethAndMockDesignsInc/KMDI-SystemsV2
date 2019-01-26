@@ -3,6 +3,7 @@ Imports System.IO
 Imports ComponentFactory.Krypton.Toolkit
 Imports MetroFramework.Controls
 Imports MetroFramework.Components
+Imports System.Reflection
 Module KMDISystemsGlobalModule
     Public TileAccessOfLoggedAccount As String
     Public AccountAutonum As String
@@ -111,6 +112,7 @@ Module KMDISystemsGlobalModule
                                 RdBtn As MetroRadioButton,
                                 ItemName As String,
                                 TagName As String,
+                                Width As Integer,
                                 Optional RowIndex As Integer = Nothing,
                                 Optional ContextMenu As MetroContextMenu = Nothing)
         With RdBtn
@@ -126,10 +128,10 @@ Module KMDISystemsGlobalModule
                 ItemName = Replace(ItemName, "&", "&&")
                 .Text = ItemName
             End If
+            .Width = Width
             .DisplayFocus = True
             .ContextMenuStrip = ContextMenu
             .FontSize = MetroFramework.MetroCheckBoxSize.Tall
-            .Size = New Size(185, 25)
             EngrToolTip.SetToolTip(RdBtn, .Text)
         End With
     End Sub

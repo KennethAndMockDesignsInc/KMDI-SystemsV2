@@ -136,6 +136,7 @@ Partial Class Engr_Time_Factor_Maintenance
         Me.Right_Tbox.SelectionLength = 0
         Me.Right_Tbox.SelectionStart = 0
         Me.Right_Tbox.ShowButton = True
+        Me.Right_Tbox.ShowClearButton = True
         Me.Right_Tbox.Size = New System.Drawing.Size(297, 28)
         Me.Right_Tbox.Style = MetroFramework.MetroColorStyle.Silver
         Me.Right_Tbox.TabIndex = 2
@@ -257,11 +258,12 @@ Partial Class Engr_Time_Factor_Maintenance
         Me.Left_Tbox.SelectionLength = 0
         Me.Left_Tbox.SelectionStart = 0
         Me.Left_Tbox.ShowButton = True
+        Me.Left_Tbox.ShowClearButton = True
         Me.Left_Tbox.Size = New System.Drawing.Size(195, 28)
         Me.Left_Tbox.Style = MetroFramework.MetroColorStyle.Silver
         Me.Left_Tbox.TabIndex = 1
         Me.Left_Tbox.UseSelectable = True
-        Me.Left_Tbox.WaterMark = "System Type"
+        Me.Left_Tbox.WaterMark = "Profile Type"
         Me.Left_Tbox.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
         Me.Left_Tbox.WaterMarkFont = New System.Drawing.Font("Segoe UI", 15.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
         '

@@ -63,25 +63,34 @@ Public Class Engr_Time_Factor_Maintenance
     End Sub
     Private Sub TFM_BGW_DoWork(sender As Object, e As DoWorkEventArgs)
         Try
-            If TFM_TODO = "ProfileType" Or TFM_TODO = "MeshType" Then
-                ReportBGW_bool = True
-                CreateRadioBtn = True
-                ENGR_QUERY_INSTANCE = "Loading_using_EqualSearch"
-                Engr_Query_Select_STP(WINDOOR_PART, "ENGR_stp_TFM_RightPanel_Load")
-
-            ElseIf TFM_TODO = "WindoorType" Or TFM_TODO = "ScreenType" Then
+            If TFM_TODO = "ProfileType" Or TFM_TODO = "ScreenType" Then
                 ReportBGW_bool = True
                 CreateRadioBtn = True
                 ENGR_QUERY_INSTANCE = "Loading_using_EqualSearch"
                 Engr_Query_Select_STP(WINDOOR_PART, "ENGR_stp_TFM_LeftPanel_Load")
 
-            Else TFM_TODO = "TFM_Insert"
+            ElseIf TFM_TODO = "WindoorType" Then
+                ReportBGW_bool = True
+                CreateRadioBtn = True
+                ENGR_QUERY_INSTANCE = "Loading_using_EqualSearch"
+                Engr_Query_Select_STP(WINDOOR_PART, "ENGR_stp_TFM_RightPanel_Load")
+
+            ElseIf TFM_TODO = "TFM_Insert" Then
                 CreateRadioBtn = True
                 Select Case TrueIfLeft_bool
                     Case True
                         Engr_TFM_INSERT("ENGR_stp_TFM_LeftPanel_Insert", WINDOOR_PART, LeftTbox_Str)
                     Case False
                         Engr_TFM_INSERT("ENGR_stp_TFM_RightPanel_Insert", WINDOOR_PART, RightTbox_Str)
+                End Select
+
+            ElseIf TFM_TODO = "TFM_Update" Then
+                CreateRadioBtn = True
+                Select Case TrueIfLeft_bool
+                    Case True
+                        Engr_TFM_UPDATE("ENGR_stp_TFM_LeftPanel_Update", WINDOOR_PART, LeftTbox_Str, Left_ID)
+                    Case False
+                        Engr_TFM_UPDATE("ENGR_stp_TFM_RightPanel_Update", WINDOOR_PART, RightTbox_Str, Right_ID)
                 End Select
             End If
 
@@ -156,26 +165,29 @@ Public Class Engr_Time_Factor_Maintenance
         Try
             Dim RdBtn As New MetroFramework.Controls.MetroRadioButton
             Dim ItemName As String = Nothing, TagName As String = Nothing
-
+            Dim Size As Integer
             Select Case CreateRadioBtn
                 Case True
                     If TFM_TODO = "ProfileType" Then
                         ItemName = "PROFILE_TYPE"
                         TagName = "PT_ID"
-                    ElseIf TFM_TODO = "MeshType" Then
-                        ItemName = "MESH_TYPE"
-                        TagName = "MESH_ID"
+                        Size = 270
+                        'ElseIf TFM_TODO = "MeshType" Then
+                        '    ItemName = "MESH_TYPE"
+                        '    TagName = "MESH_ID"
                     ElseIf TFM_TODO = "WindoorType" Then
                         ItemName = "WINDOOR_TYPE"
                         TagName = "WDRT_ID"
+                        Size = 250
                     ElseIf TFM_TODO = "ScreenType" Then
                         ItemName = "SCREEN_TYPE"
                         TagName = "SCR_ID"
+                        Size = 270
                     End If
 
-                    RdBtn_Properties("Dynamic", RdBtn, ItemName, TagName, e.ProgressPercentage, TFM_Cmenu)
+                    RdBtn_Properties("Dynamic", RdBtn, ItemName, TagName, Size, e.ProgressPercentage, TFM_Cmenu)
 
-                    If TFM_TODO = "ProfileType" Or TFM_TODO = "MeshType" Then
+                    If TFM_TODO = "ProfileType" Or TFM_TODO = "ScreenType" Then
                         If LeftRdBtn_FLP.Controls.Count <> 0 And e.ProgressPercentage = 0 Then
                             LeftRdBtn_FLP.Controls.Clear()
                         End If
@@ -183,7 +195,7 @@ Public Class Engr_Time_Factor_Maintenance
                         AddHandler RdBtn.Click, AddressOf LeftRbtn_Clicked
                         LeftRdBtn_FLP.Controls.Add(RdBtn)
 
-                    ElseIf TFM_TODO = "WindoorType" Or TFM_TODO = "ScreenType" Then
+                    ElseIf TFM_TODO = "WindoorType" Then
                         If RightRdBtn_FLP.Controls.Count <> 0 And e.ProgressPercentage = 0 Then
                             RightRdBtn_FLP.Controls.Clear()
                         End If
@@ -221,11 +233,11 @@ Public Class Engr_Time_Factor_Maintenance
                             CreateRadioBtn = False
                             reset_here()
 
-                        Case "MeshType"
-                            ReportBGW_bool = False
-                            CreateRadioBtn = False
-                            TFM_TODO = "ScreenType"
-                            Start_TFMBGW()
+                        'Case "MeshType"
+                        '    ReportBGW_bool = False
+                        '    CreateRadioBtn = False
+                        '    TFM_TODO = "ScreenType"
+                        '    Start_TFMBGW()
 
                         Case "ScreenType"
                             CreateRadioBtn = False
@@ -238,11 +250,11 @@ Public Class Engr_Time_Factor_Maintenance
                                 Case True
                                     Select Case TrueIfLeft_bool
                                         Case True
-                                            RdBtn_Properties("Static", RdBtn, LeftTbox_Str, InsertedTFM_ID, Nothing, TFM_Cmenu)
+                                            RdBtn_Properties("Static", RdBtn, LeftTbox_Str, InsertedTFM_ID, 250, Nothing, TFM_Cmenu)
                                             LeftRdBtn_FLP.Controls.Add(RdBtn)
                                             AddHandler RdBtn.Click, AddressOf LeftRbtn_Clicked
                                         Case False
-                                            RdBtn_Properties("Static", RdBtn, RightTbox_Str, InsertedTFM_ID, Nothing, TFM_Cmenu)
+                                            RdBtn_Properties("Static", RdBtn, RightTbox_Str, InsertedTFM_ID, 250, Nothing, TFM_Cmenu)
                                             RightRdBtn_FLP.Controls.Add(RdBtn)
                                             AddHandler RdBtn.Click, AddressOf RightRbtn_Clicked
                                     End Select
@@ -253,7 +265,23 @@ Public Class Engr_Time_Factor_Maintenance
                             reset_here()
                             CreateRadioBtn = False
 
-
+                        Case "TFM_Update"
+                            Select Case TrueIfLeft_bool
+                                Case True
+                                    For Each ctrl In LeftRdBtn_FLP.Controls
+                                        If ctrl.Tag = Left_ID Then
+                                            ctrl.Text = Replace(LeftTbox_Str, "&", "&&")
+                                        End If
+                                    Next
+                                Case False
+                                    For Each ctrl In RightRdBtn_FLP.Controls
+                                        If ctrl.Tag = Right_ID Then
+                                            ctrl.Text = Replace(RightTbox_Str, "&", "&&")
+                                        End If
+                                    Next
+                            End Select
+                            KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
+                            reset_here()
                             'Case "ProfileType_Update"
                             '    For Each ctrl In LeftRdBtn_FLP.Controls
                             '        If ctrl.Tag = Left_ID Then
@@ -361,14 +389,18 @@ Public Class Engr_Time_Factor_Maintenance
             If Left_Tbox.CustomButton.Text = "+" And Left_Tbox.Style = MetroFramework.MetroColorStyle.Silver Then
                 Select Case WINDOOR_PART
                     Case "Frame"
-                        Left_Tbox.WaterMark = "System Type"
+                        Left_Tbox.WaterMark = "Profile Type"
                         Right_Tbox.WaterMark = "Window Type"
+                        Right_Tbox.Enabled = True
+                        RightRdBtn_FLP.Enabled = True
                         TFM_TODO = "ProfileType"
                         Start_TFMBGW()
                     Case "Screen"
-                        Left_Tbox.WaterMark = "Mesh Type"
-                        Right_Tbox.WaterMark = "Screen Type"
-                        TFM_TODO = "MeshType"
+                        Left_Tbox.WaterMark = "Screen Type"
+                        Right_Tbox.Enabled = False
+                        RightRdBtn_FLP.Enabled = False
+                        'Right_Tbox.WaterMark = "Screen Type"
+                        TFM_TODO = "ScreenType"
                         Start_TFMBGW()
                 End Select
             End If
@@ -398,14 +430,14 @@ Public Class Engr_Time_Factor_Maintenance
     Private Sub Rbtn_MouseDown(sender As Object, e As MouseEventArgs)
         If e.Button = MouseButtons.Right Then
             sender.Select
-            If sender.Parent.Name = "STRdBtn_FLP" Then
-                RightTbox_Str = sender.Text
-                Left_ID = sender.Tag
-                TrueIFProfileType_bool = True
-            ElseIf sender.Parent.Name = "WDTRdBtn_FLP" Then
+            If sender.Parent.Name = "LeftRdBtn_FLP" Then
                 LeftTbox_Str = sender.Text
+                Left_ID = sender.Tag
+                TrueIfLeft_bool = True
+            ElseIf sender.Parent.Name = "RightRdBtn_FLP" Then
+                RightTbox_Str = sender.Text
                 Right_ID = sender.Tag
-                TrueIFProfileType_bool = False
+                TrueIfLeft_bool = False
             End If
         End If
     End Sub
@@ -420,17 +452,17 @@ Public Class Engr_Time_Factor_Maintenance
                 Else
                     KMDIPrompts(Me, "UserWarning", "RightTbox_Str is Empty", Environment.StackTrace, Nothing, True, True, "Field cannot be empty")
                 End If
-                'ElseIf Right_Tbox.CustomButton.Text = "U" And Right_Tbox.Style = MetroFramework.MetroColorStyle.Red Then
-                '    If RightTbox_Str <> Nothing Or RightTbox_Str <> "" Then
-                '        If Left_ID <> Nothing Then
-                '            TFM_TODO = "ProfileType_Update"
-                '            Start_TFMBGW()
-                '        Else
-                '            KMDIPrompts(Me, "UserWarning", "Left_ID is Empty", Environment.StackTrace, Nothing, True, True, "Please select System Type")
-                '        End If
-                '    Else
-                '        KMDIPrompts(Me, "UserWarning", "LeftTbox_Str is Empty", Environment.StackTrace, Nothing, True, True, "Field cannot be empty")
-                '    End If
+            ElseIf Left_Tbox.CustomButton.Text = "U" And Left_Tbox.Style = MetroFramework.MetroColorStyle.Red Then
+                If LeftTbox_Str <> Nothing Or LeftTbox_Str <> "" Then
+                    If Left_ID <> Nothing Then
+                        TFM_TODO = "TFM_Update"
+                        Start_TFMBGW()
+                    Else
+                        KMDIPrompts(Me, "UserWarning", "Left_ID is Empty", Environment.StackTrace, Nothing, True, True, "Please select System Type")
+                    End If
+                Else
+                    KMDIPrompts(Me, "UserWarning", "LeftTbox_Str is Empty", Environment.StackTrace, Nothing, True, True, "Field cannot be empty")
+                End If
             End If
 
         Catch ex As Exception
@@ -475,7 +507,12 @@ Public Class Engr_Time_Factor_Maintenance
             ElseIf e.KeyCode = Keys.Escape Then
                 reset_here()
             ElseIf e.KeyCode = Keys.F5 Then
-                TFM_TODO = "ProfileType"
+                Select Case WINDOOR_PART
+                    Case "Frame"
+                        TFM_TODO = "ProfileType"
+                    Case "Screen"
+                        TFM_TODO = "ScreenType"
+                End Select
                 Start_TFMBGW()
             End If
         Catch ex As Exception
@@ -484,20 +521,20 @@ Public Class Engr_Time_Factor_Maintenance
     End Sub
     Private Sub EditToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EditToolStripMenuItem.Click
         Try
-            If TrueIFProfileType_bool = True Then
+            If TrueIfLeft_bool = True Then
                 With Left_Tbox
                     .UseStyleColors = True
                     .Style = MetroFramework.MetroColorStyle.Red
                     .CustomButton.Text = "U"
-                    .Text = Replace(RightTbox_Str, "&&", "&")
+                    .Text = Replace(LeftTbox_Str, "&&", "&")
                 End With
 
-            Else TrueIFProfileType_bool = False
+            Else TrueIfLeft_bool = False
                 With Right_Tbox
                     .UseStyleColors = True
                     .Style = MetroFramework.MetroColorStyle.Red
                     .CustomButton.Text = "U"
-                    .Text = Replace(LeftTbox_Str, "&&", "&")
+                    .Text = Replace(RightTbox_Str, "&&", "&")
                 End With
             End If
         Catch ex As Exception
@@ -516,17 +553,17 @@ Public Class Engr_Time_Factor_Maintenance
                 Else
                     KMDIPrompts(Me, "UserWarning", "LeftTbox_Str is Empty", Environment.StackTrace, Nothing, True, True, "Field cannot be empty")
                 End If
-                'ElseIf Right_Tbox.CustomButton.Text = "U" And Right_Tbox.Style = MetroFramework.MetroColorStyle.Red Then
-                '    If LeftTbox_Str <> Nothing Or LeftTbox_Str <> "" Then
-                '        If Right_ID <> Nothing Then
-                '            TFM_TODO = "WindoorType_Update"
-                '            Start_TFMBGW()
-                '        Else
-                '            KMDIPrompts(Me, "UserWarning", "Right_ID is Empty", Environment.StackTrace, Nothing, True, True, "Please select Window Type")
-                '        End If
-                '    Else
-                '        KMDIPrompts(Me, "UserWarning", "LeftTbox_Str is Empty", Environment.StackTrace, Nothing, True, True, "Field cannot be empty")
-                '    End If
+            ElseIf Right_Tbox.CustomButton.Text = "U" And Right_Tbox.Style = MetroFramework.MetroColorStyle.Red Then
+                If RightTbox_Str <> Nothing Or RightTbox_Str <> "" Then
+                    If Right_ID <> Nothing Then
+                        TFM_TODO = "TFM_Update"
+                        Start_TFMBGW()
+                    Else
+                        KMDIPrompts(Me, "UserWarning", "Right_ID is Empty", Environment.StackTrace, Nothing, True, True, "Please select Window Type")
+                    End If
+                Else
+                    KMDIPrompts(Me, "UserWarning", "RightTbox_Str is Empty", Environment.StackTrace, Nothing, True, True, "Field cannot be empty")
+                End If
             End If
         Catch ex As Exception
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
