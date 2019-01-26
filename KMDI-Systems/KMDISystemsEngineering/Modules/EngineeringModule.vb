@@ -3,8 +3,7 @@ Module EngineeringModule
     Dim sqlconnString As String = "Data Source = 121.58.229.248,49107; Network Library=DBMSSOCN;Initial Catalog='heretosave';User ID=kmdiadmin;Password=kmdiadmin;"
     Public ENGR_QUERY_INSTANCE As String = Nothing
     Public InsertedSTF_ID As Integer
-    Public InsertedST_ID As Integer
-    Public InsertedWDT_ID As Integer
+    Public InsertedTFM_ID As Integer
     Public Sub Engr_Query_Select_STP(ByVal SearchString As String,
                                      ByVal StoredProcedureName As String,
                                      Optional WillUseReader As Boolean = False)
@@ -145,9 +144,9 @@ Module EngineeringModule
             End Using
         End Using
     End Sub
-    Public Sub Engr_ProfileType_INSERT(ByVal StoredProcedureName As String,
-                                       ByVal SYSTEM_TYPE As String,
-                                       ByVal FRAME_SCREEN As String)
+    Public Sub Engr_TFM_INSERT(ByVal StoredProcedureName As String,
+                                     ByVal WindoorPart As String,
+                                     ByVal InsertValue As String)
         Using sqlcon As New SqlConnection(sqlconnString)
             sqlcon.Open()
             Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
@@ -157,11 +156,11 @@ Module EngineeringModule
                 sqlCommand.CommandText = StoredProcedureName
                 sqlCommand.CommandType = CommandType.StoredProcedure
 
-                sqlCommand.Parameters.Add("@SYSTEM_TYPE", SqlDbType.VarChar).Value = SYSTEM_TYPE
-                sqlCommand.Parameters.Add("@FRAME_OR_SCREEN", SqlDbType.VarChar).Value = FRAME_SCREEN
+                sqlCommand.Parameters.Add("@WindoorPart", SqlDbType.VarChar).Value = WindoorPart
+                sqlCommand.Parameters.Add("@InsertValue", SqlDbType.VarChar).Value = InsertValue
                 Using read As SqlDataReader = sqlCommand.ExecuteReader
                     read.Read()
-                    InsertedST_ID = read.Item("TAG_ID")
+                    InsertedTFM_ID = read.Item("TAG_ID")
                 End Using
                 transaction.Commit()
                 sql_Transaction_result = "Committed"
@@ -208,30 +207,30 @@ Module EngineeringModule
             End Using
         End Using
     End Sub
-    Public Sub Engr_WindowType_INSERT(ByVal StoredProcedureName As String,
-                                      ByVal WINDOW_TYPE As String)
-        Using sqlcon As New SqlConnection(sqlconnString)
-            sqlcon.Open()
-            Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
-                transaction = sqlcon.BeginTransaction(IsolationLevel.RepeatableRead, StoredProcedureName)
-                sqlCommand.Connection = sqlcon
-                sqlCommand.Transaction = transaction
-                sqlCommand.CommandText = StoredProcedureName
-                sqlCommand.CommandType = CommandType.StoredProcedure
+    'Public Sub Engr_WindoorType_INSERT(ByVal StoredProcedureName As String,
+    '                                   ByVal WINDOW_TYPE As String)
+    '    Using sqlcon As New SqlConnection(sqlconnString)
+    '        sqlcon.Open()
+    '        Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
+    '            transaction = sqlcon.BeginTransaction(IsolationLevel.RepeatableRead, StoredProcedureName)
+    '            sqlCommand.Connection = sqlcon
+    '            sqlCommand.Transaction = transaction
+    '            sqlCommand.CommandText = StoredProcedureName
+    '            sqlCommand.CommandType = CommandType.StoredProcedure
 
-                sqlCommand.Parameters.Add("@WINDOW_TYPE", SqlDbType.VarChar).Value = WINDOW_TYPE
-                Using read As SqlDataReader = sqlCommand.ExecuteReader
-                    read.Read()
-                    InsertedWDT_ID = read.Item("TAG_ID")
-                End Using
-                transaction.Commit()
-                sql_Transaction_result = "Committed"
-            End Using
-        End Using
-    End Sub
-    Public Sub Engr_WindowType_UPDATE(ByVal StoredProcedureName As String,
-                                      ByVal WINDOW_TYPE As String,
-                                      ByVal WDT_ID As Integer)
+    '            sqlCommand.Parameters.Add("@WINDOW_TYPE", SqlDbType.VarChar).Value = WINDOW_TYPE
+    '            Using read As SqlDataReader = sqlCommand.ExecuteReader
+    '                read.Read()
+    '                InsertedRight_ID = read.Item("TAG_ID")
+    '            End Using
+    '            transaction.Commit()
+    '            sql_Transaction_result = "Committed"
+    '        End Using
+    '    End Using
+    'End Sub
+    Public Sub Engr_WindoorType_UPDATE(ByVal StoredProcedureName As String,
+                                       ByVal WINDOW_TYPE As String,
+                                       ByVal WDT_ID As Integer)
         Using sqlcon As New SqlConnection(sqlconnString)
             sqlcon.Open()
             Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
@@ -250,8 +249,8 @@ Module EngineeringModule
             End Using
         End Using
     End Sub
-    Public Sub Engr_WindowType_DELETE(ByVal StoredProcedureName As String,
-                                      ByVal WDT_ID As Integer)
+    Public Sub Engr_WindoorType_DELETE(ByVal StoredProcedureName As String,
+                                       ByVal WDT_ID As Integer)
         Using sqlcon As New SqlConnection(sqlconnString)
             sqlcon.Open()
             Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
