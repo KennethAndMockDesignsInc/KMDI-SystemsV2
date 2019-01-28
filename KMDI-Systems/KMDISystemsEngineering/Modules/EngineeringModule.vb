@@ -211,9 +211,9 @@ Module EngineeringModule
             End Using
         End Using
     End Sub
-    Public Sub Engr_TFM_TimeFactor_Frame_Fetch(ByVal StoredProcedureName As String,
-                                               ByVal PT_ID As Integer,
-                                               Optional WDRT_ID As Integer = Nothing)
+    Public Sub Engr_TFM_TimeFactor_Fetch(ByVal StoredProcedureName As String,
+                                         ByVal LEFT_ID As Integer,
+                                         Optional RIGHT_ID As Integer = 0)
         sqlDataSet = New DataSet
         sqlDataAdapter = New SqlDataAdapter
         sqlBindingSource = New BindingSource
@@ -230,8 +230,9 @@ Module EngineeringModule
                 sqlCommand.CommandText = StoredProcedureName
                 sqlCommand.CommandType = CommandType.StoredProcedure
 
-                sqlCommand.Parameters.Add("@PT_ID", SqlDbType.Int).Value = PT_ID
-                sqlCommand.Parameters.Add("@WDRT_ID", SqlDbType.Int).Value = WDRT_ID
+                sqlCommand.Parameters.Add("@LEFT_ID", SqlDbType.Int).Value = LEFT_ID
+                sqlCommand.Parameters.Add("@RIGHT_ID", SqlDbType.Int).Value = RIGHT_ID
+
                 sqlCommand.ExecuteNonQuery()
 
                 transaction.Commit()
@@ -259,6 +260,27 @@ Module EngineeringModule
 
                 sqlCommand.Parameters.Add("@PT_ID_REF", SqlDbType.Int).Value = PT_ID_REF
                 sqlCommand.Parameters.Add("@WDRT_ID_REF", SqlDbType.Int).Value = WDRT_ID_REF
+                sqlCommand.Parameters.Add("@TIME_FACTOR", SqlDbType.Int).Value = TIME_FACTOR
+                sqlCommand.ExecuteNonQuery()
+
+                transaction.Commit()
+                sql_Transaction_result = "Committed"
+            End Using
+        End Using
+    End Sub
+    Public Sub Engr_TFM_TimeFactor_Screen_TRANSACT(ByVal StoredProcedureName As String,
+                                                   ByVal SCR_ID_REF As Integer,
+                                                   ByVal TIME_FACTOR As Integer)
+        Using sqlcon As New SqlConnection(sqlconnString)
+            sqlcon.Open()
+            Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
+                transaction = sqlcon.BeginTransaction(IsolationLevel.RepeatableRead, StoredProcedureName)
+                sqlCommand.Connection = sqlcon
+                sqlCommand.Transaction = transaction
+                sqlCommand.CommandText = StoredProcedureName
+                sqlCommand.CommandType = CommandType.StoredProcedure
+
+                sqlCommand.Parameters.Add("@SCR_ID_REF", SqlDbType.Int).Value = SCR_ID_REF
                 sqlCommand.Parameters.Add("@TIME_FACTOR", SqlDbType.Int).Value = TIME_FACTOR
                 sqlCommand.ExecuteNonQuery()
 

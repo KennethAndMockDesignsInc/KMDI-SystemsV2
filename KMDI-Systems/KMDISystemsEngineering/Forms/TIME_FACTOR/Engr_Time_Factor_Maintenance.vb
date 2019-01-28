@@ -110,8 +110,18 @@ Public Class Engr_Time_Factor_Maintenance
             ElseIf TFM_TODO = "TFM_TIME_FRAME_TRANSACT" Then
                 Engr_TFM_TimeFactor_Frame_TRANSACT("ENGR_stp_TFM_TFactor_Frame_Trns", Left_ID, Right_ID,
                                                    ConvertToSeconds(TFactor_Hrs, TFactor_Mins, TFactor_Secs))
-            ElseIf TFM_TODO = "TFM_TIME_FRAME_FETCH" Then
-                Engr_TFM_TimeFactor_Frame_Fetch("ENGR_stp_TFM_TFactor_Frame_Load", Left_ID, Right_ID)
+
+            ElseIf TFM_TODO = "TFM_TIME_SCREEN_TRANSACT" Then
+                Engr_TFM_TimeFactor_Screen_TRANSACT("ENGR_stp_TFM_TFactor_Screen_Trns", Left_ID,
+                                                    ConvertToSeconds(TFactor_Hrs, TFactor_Mins, TFactor_Secs))
+
+            ElseIf TFM_TODO = "TFM_TIME_FETCH" Then
+                If WINDOOR_PART = "Frame" Then
+                    Engr_TFM_TimeFactor_Fetch("ENGR_stp_TFM_TFactor_Load", Left_ID, Right_ID)
+                ElseIf WINDOOR_PART = "Screen" Then
+                    Engr_TFM_TimeFactor_Fetch("ENGR_stp_TFM_TFactor_Load", Left_ID)
+                End If
+
             End If
 
             'If TFM_TODO = "ProfileType" Or TFM_TODO = "Onload" Then
@@ -326,7 +336,12 @@ Public Class Engr_Time_Factor_Maintenance
                         Case "TFM_TIME_FRAME_TRANSACT"
                             KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
                             reset_here()
-                        Case "TFM_TIME_FRAME_FETCH"
+
+                        Case "TFM_TIME_SCREEN_TRANSACT"
+                            KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
+                            reset_here()
+
+                        Case "TFM_TIME_FETCH"
                             If sqlDataSet.Tables("QUERY_DETAILS").Rows.Count <> 0 Then
                                 ConvertToHrMinsSec(sqlDataSet.Tables("QUERY_DETAILS").Rows(0).Item("TIME_FACTOR"))
                                 TFactorHrs_Num.Value = TFactor_Hrs
@@ -423,8 +438,11 @@ Public Class Engr_Time_Factor_Maintenance
     Private Sub LeftRbtn_Clicked(sender As Object, e As EventArgs)
         Try
             Left_ID = sender.Tag
-            If Right_ID <> Nothing Then
-                TFM_TODO = "TFM_TIME_FRAME_FETCH"
+            If WINDOOR_PART = "Frame" And Right_ID <> Nothing Then
+                TFM_TODO = "TFM_TIME_FETCH"
+                Start_TFMBGW()
+            ElseIf WINDOOR_PART = "Screen" Then
+                TFM_TODO = "TFM_TIME_FETCH"
                 Start_TFMBGW()
             End If
         Catch ex As Exception
@@ -462,8 +480,8 @@ Public Class Engr_Time_Factor_Maintenance
     Private Sub RightRbtn_Clicked(sender As Object, e As EventArgs)
         Try
             Right_ID = sender.Tag
-            If Left_ID <> Nothing Then
-                TFM_TODO = "TFM_TIME_FRAME_FETCH"
+            If WINDOOR_PART = "Frame" And Left_ID <> Nothing Then
+                TFM_TODO = "TFM_TIME_FETCH"
                 Start_TFMBGW()
             End If
         Catch ex As Exception
@@ -493,11 +511,12 @@ Public Class Engr_Time_Factor_Maintenance
                         Left_Tbox.WaterMark = "Screen Type"
                         Right_Tbox.Enabled = False
                         RightRdBtn_FLP.Enabled = False
-                        'Right_Tbox.WaterMark = "Screen Type"
                         TFM_TODO = "ScreenType"
                         Start_TFMBGW()
                 End Select
             End If
+            Right_ID = Nothing
+            Left_ID = Nothing
         Catch ex As Exception
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
         End Try
@@ -599,7 +618,7 @@ Public Class Engr_Time_Factor_Maintenance
                         End If
                     Case "Screen"
                         If Left_ID <> Nothing Then
-                            TFM_TODO = "Transact_TFactor"
+                            TFM_TODO = "TFM_TIME_SCREEN_TRANSACT"
                             Start_TFMBGW()
                         Else
                             KMDIPrompts(Me, "UserWarning", "Left_ID is Empty", Environment.StackTrace, Nothing, True, True, "Please select System Type")
