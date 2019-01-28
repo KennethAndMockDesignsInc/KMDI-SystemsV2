@@ -190,6 +190,83 @@ Module EngineeringModule
             End Using
         End Using
     End Sub
+    Public Sub Engr_TFM_DELETE(ByVal StoredProcedureName As String,
+                               ByVal WindoorPart As String,
+                               ByVal ID As Integer)
+        Using sqlcon As New SqlConnection(sqlconnString)
+            sqlcon.Open()
+            Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
+                transaction = sqlcon.BeginTransaction(IsolationLevel.RepeatableRead, StoredProcedureName)
+                sqlCommand.Connection = sqlcon
+                sqlCommand.Transaction = transaction
+                sqlCommand.CommandText = StoredProcedureName
+                sqlCommand.CommandType = CommandType.StoredProcedure
+
+                sqlCommand.Parameters.Add("@WindoorPart", SqlDbType.VarChar).Value = WindoorPart
+                sqlCommand.Parameters.Add("@ID", SqlDbType.Int).Value = ID
+                sqlCommand.ExecuteNonQuery()
+
+                transaction.Commit()
+                sql_Transaction_result = "Committed"
+            End Using
+        End Using
+    End Sub
+    Public Sub Engr_TFM_TimeFactor_Frame_Fetch(ByVal StoredProcedureName As String,
+                                               ByVal PT_ID As Integer,
+                                               Optional WDRT_ID As Integer = Nothing)
+        sqlDataSet = New DataSet
+        sqlDataAdapter = New SqlDataAdapter
+        sqlBindingSource = New BindingSource
+
+        sqlDataSet.Clear()
+        sqlBindingSource.Clear()
+
+        Using sqlcon As New SqlConnection(sqlconnString)
+            sqlcon.Open()
+            Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
+                transaction = sqlcon.BeginTransaction(StoredProcedureName)
+                sqlCommand.Connection = sqlcon
+                sqlCommand.Transaction = transaction
+                sqlCommand.CommandText = StoredProcedureName
+                sqlCommand.CommandType = CommandType.StoredProcedure
+
+                sqlCommand.Parameters.Add("@PT_ID", SqlDbType.Int).Value = PT_ID
+                sqlCommand.Parameters.Add("@WDRT_ID", SqlDbType.Int).Value = WDRT_ID
+                sqlCommand.ExecuteNonQuery()
+
+                transaction.Commit()
+                sql_Transaction_result = "Committed"
+
+                sqlDataAdapter.SelectCommand = sqlCommand
+                sqlDataAdapter.Fill(sqlDataSet, "QUERY_DETAILS")
+                sqlBindingSource.DataSource = sqlDataSet
+                sqlBindingSource.DataMember = "QUERY_DETAILS"
+            End Using
+        End Using
+    End Sub
+    Public Sub Engr_TFM_TimeFactor_Frame_TRANSACT(ByVal StoredProcedureName As String,
+                                                  ByVal PT_ID_REF As Integer,
+                                                  ByVal WDRT_ID_REF As Integer,
+                                                  ByVal TIME_FACTOR As Integer)
+        Using sqlcon As New SqlConnection(sqlconnString)
+            sqlcon.Open()
+            Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
+                transaction = sqlcon.BeginTransaction(IsolationLevel.RepeatableRead, StoredProcedureName)
+                sqlCommand.Connection = sqlcon
+                sqlCommand.Transaction = transaction
+                sqlCommand.CommandText = StoredProcedureName
+                sqlCommand.CommandType = CommandType.StoredProcedure
+
+                sqlCommand.Parameters.Add("@PT_ID_REF", SqlDbType.Int).Value = PT_ID_REF
+                sqlCommand.Parameters.Add("@WDRT_ID_REF", SqlDbType.Int).Value = WDRT_ID_REF
+                sqlCommand.Parameters.Add("@TIME_FACTOR", SqlDbType.Int).Value = TIME_FACTOR
+                sqlCommand.ExecuteNonQuery()
+
+                transaction.Commit()
+                sql_Transaction_result = "Committed"
+            End Using
+        End Using
+    End Sub
     Public Sub Engr_ProfileType_UPDATE(ByVal StoredProcedureName As String,
                                       ByVal SYSTEM_TYPE As String,
                                       ByVal FRAME_SCREEN As String,

@@ -1,12 +1,10 @@
 ﻿Imports System.ComponentModel
 Imports System.Data.SqlClient
 Imports System.Threading.Thread
-Imports ComponentFactory.Krypton.Toolkit
 Public Class Engr_Time_Factor_Maintenance
     Public TFM_BGW As BackgroundWorker = New BackgroundWorker
     Dim Left_ID, Right_ID, TFactor_Hrs, TFactor_Mins, TFactor_Secs As Integer
     Dim TFM_TODO, RightTbox_Str, LeftTbox_Str, WINDOOR_PART As String
-    Dim T_FACTOR As TimeSpan
     Dim ReportBGW_bool, TrueIFProfileType_bool, CreateRadioBtn, TrueIfLeft_bool As Boolean
     Sub Start_TFMBGW()
         If TFM_BGW.IsBusy <> True Then
@@ -17,13 +15,22 @@ Public Class Engr_Time_Factor_Maintenance
             KMDIPrompts(Me, "UserWarning", Nothing, Nothing, Nothing, True, True, "Please Wait!")
         End If
     End Sub
-    Public Function ConvertToSeconds(ByVal Hrs As Integer,
-                                     ByVal Mins As Integer,
-                                     ByVal Secs As Integer) As Integer
+    Public Function ConvertToSeconds(Optional Hrs As Integer = 0,
+                                     Optional Mins As Integer = 0,
+                                     Optional Secs As Integer = 0) As Integer
         Dim TotalSecs As Integer = Nothing
         TotalSecs = (Hrs * 3600) + (Mins * 60) + Secs
+
         Return TotalSecs
     End Function
+    Public Sub ConvertToHrMinsSec(ByVal TotalSeconds As Integer)
+        Dim iSpan As TimeSpan = TimeSpan.FromSeconds(TotalSeconds)
+
+        TFactor_Hrs = iSpan.Hours.ToString.PadLeft(2, "0"c)
+        TFactor_Mins = iSpan.Minutes.ToString.PadLeft(2, "0"c)
+        TFactor_Secs = iSpan.Seconds.ToString.PadLeft(2, "0"c)
+
+    End Sub
     Sub reset_here()
         Right_Tbox.Clear()
         LeftTbox_Str = Nothing
@@ -85,13 +92,26 @@ Public Class Engr_Time_Factor_Maintenance
                 End Select
 
             ElseIf TFM_TODO = "TFM_Update" Then
-                CreateRadioBtn = True
                 Select Case TrueIfLeft_bool
                     Case True
                         Engr_TFM_UPDATE("ENGR_stp_TFM_LeftPanel_Update", WINDOOR_PART, LeftTbox_Str, Left_ID)
                     Case False
                         Engr_TFM_UPDATE("ENGR_stp_TFM_RightPanel_Update", WINDOOR_PART, RightTbox_Str, Right_ID)
                 End Select
+
+            ElseIf TFM_TODO = "TFM_Delete" Then
+                Select Case TrueIfLeft_bool
+                    Case True
+                        Engr_TFM_DELETE("ENGR_stp_TFM_LeftPanel_Delete", WINDOOR_PART, Left_ID)
+                    Case False
+                        Engr_TFM_DELETE("ENGR_stp_TFM_RightPanel_Delete", WINDOOR_PART, Right_ID)
+                End Select
+
+            ElseIf TFM_TODO = "TFM_TIME_FRAME_TRANSACT" Then
+                Engr_TFM_TimeFactor_Frame_TRANSACT("ENGR_stp_TFM_TFactor_Frame_Trns", Left_ID, Right_ID,
+                                                   ConvertToSeconds(TFactor_Hrs, TFactor_Mins, TFactor_Secs))
+            ElseIf TFM_TODO = "TFM_TIME_FRAME_FETCH" Then
+                Engr_TFM_TimeFactor_Frame_Fetch("ENGR_stp_TFM_TFactor_Frame_Load", Left_ID, Right_ID)
             End If
 
             'If TFM_TODO = "ProfileType" Or TFM_TODO = "Onload" Then
@@ -217,7 +237,7 @@ Public Class Engr_Time_Factor_Maintenance
         Try
             If e.Error IsNot Nothing Or e.Cancelled = True Then
                 ' if BackgroundWorker terminated due to error
-                LoadingPB.Visible = False
+                reset_here()
             Else
                 '' otherwise it completed normally
                 If sql_Transaction_result = "Committed" Then
@@ -271,17 +291,61 @@ Public Class Engr_Time_Factor_Maintenance
                                     For Each ctrl In LeftRdBtn_FLP.Controls
                                         If ctrl.Tag = Left_ID Then
                                             ctrl.Text = Replace(LeftTbox_Str, "&", "&&")
+                                            EngrToolTip.SetToolTip(ctrl, ctrl.Text)
                                         End If
                                     Next
                                 Case False
                                     For Each ctrl In RightRdBtn_FLP.Controls
                                         If ctrl.Tag = Right_ID Then
                                             ctrl.Text = Replace(RightTbox_Str, "&", "&&")
+                                            EngrToolTip.SetToolTip(ctrl, ctrl.Text)
                                         End If
                                     Next
                             End Select
                             KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
                             reset_here()
+
+                        Case "TFM_Delete"
+                            Select Case TrueIfLeft_bool
+                                Case True
+                                    For Each ctrl In LeftRdBtn_FLP.Controls
+                                        If ctrl.Tag = Left_ID Then
+                                            LeftRdBtn_FLP.Controls.Remove(ctrl)
+                                        End If
+                                    Next
+                                Case False
+                                    For Each ctrl In RightRdBtn_FLP.Controls
+                                        If ctrl.Tag = Right_ID Then
+                                            RightRdBtn_FLP.Controls.Remove(ctrl)
+                                        End If
+                                    Next
+                            End Select
+                            KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
+                            reset_here()
+
+                        Case "TFM_TIME_FRAME_TRANSACT"
+                            KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
+                            reset_here()
+                        Case "TFM_TIME_FRAME_FETCH"
+                            If sqlDataSet.Tables("QUERY_DETAILS").Rows.Count <> 0 Then
+                                ConvertToHrMinsSec(sqlDataSet.Tables("QUERY_DETAILS").Rows(0).Item("TIME_FACTOR"))
+                                TFactorHrs_Num.Value = TFactor_Hrs
+                                TFactorMins_Num.Value = TFactor_Mins
+                                TFactorSecs_Num.Value = TFactor_Secs
+                            ElseIf sqlDataSet.Tables("QUERY_DETAILS").Rows.Count = 0 Then
+                                TFactorHrs_Num.Value = 0
+                                TFactorMins_Num.Value = 0
+                                TFactorSecs_Num.Value = 0
+                            End If
+                            reset_here()
+
+                            'If sqlDataSet.Tables("QUERY_DETAILS").Rows(0).Item("TIME_FACTOR").ToString <> Nothing And
+                            '    sqlDataSet.Tables("QUERY_DETAILS").Rows(0).Item("TIME_FACTOR").ToString <> "" Then
+                            '    TFactor_int = sqlDataSet.Tables("QUERY_DETAILS").Rows(0).Item("TIME_FACTOR")
+                            'Else
+                            '    TFactor_int = 0
+                            'End If
+
                             'Case "ProfileType_Update"
                             '    For Each ctrl In LeftRdBtn_FLP.Controls
                             '        If ctrl.Tag = Left_ID Then
@@ -359,8 +423,38 @@ Public Class Engr_Time_Factor_Maintenance
     Private Sub LeftRbtn_Clicked(sender As Object, e As EventArgs)
         Try
             Left_ID = sender.Tag
-            'TFM_TODO = "Fetch_TFactor"
-            'Start_TFMBGW()
+            If Right_ID <> Nothing Then
+                TFM_TODO = "TFM_TIME_FRAME_FETCH"
+                Start_TFMBGW()
+            End If
+        Catch ex As Exception
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
+        End Try
+    End Sub
+    Private Sub TFactorsNum_KeyPress(sender As Object, e As KeyPressEventArgs) Handles TFactorHrs_Num.KeyPress, TFactorMins_Num.KeyPress, TFactorSecs_Num.KeyPress
+        Try
+            If ((e.KeyChar = ControlChars.Back) And sender.value = 0) Then
+                e.Handled = True
+            Else
+                e.Handled = False
+            End If
+        Catch ex As Exception
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
+        End Try
+    End Sub
+    Private Sub TFactors_Num_Enter(sender As Object, e As EventArgs) Handles TFactorHrs_Num.Enter, TFactorMins_Num.Enter, TFactorSecs_Num.Enter
+        Try
+            sender.ResetText()
+        Catch ex As Exception
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
+        End Try
+    End Sub
+
+    Private Sub TFactors_Num_Leave(sender As Object, e As EventArgs) Handles TFactorHrs_Num.Leave, TFactorMins_Num.Leave, TFactorSecs_Num.Leave
+        Try
+            If sender.text = "" Then
+                sender.value = 0
+            End If
         Catch ex As Exception
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
         End Try
@@ -368,10 +462,10 @@ Public Class Engr_Time_Factor_Maintenance
     Private Sub RightRbtn_Clicked(sender As Object, e As EventArgs)
         Try
             Right_ID = sender.Tag
-            'If Left_ID <> Nothing Then
-            '    TFM_TODO = "Fetch_TFactor"
-            '    Start_TFMBGW()
-            'End If
+            If Left_ID <> Nothing Then
+                TFM_TODO = "TFM_TIME_FRAME_FETCH"
+                Start_TFMBGW()
+            End If
         Catch ex As Exception
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
         End Try
@@ -413,13 +507,7 @@ Public Class Engr_Time_Factor_Maintenance
         Try
             KMDIPrompts(Me, "Question", "Are you sure you want to Delete?", Nothing, Nothing, True)
             If QuestionPromptAnswer = 6 Then
-                If TrueIFProfileType_bool = True Then
-                    TFM_TODO = "ProfileType_Delete"
-
-                Else TrueIFProfileType_bool = False
-                    TFM_TODO = "WindoorType_Delete"
-
-                End If
+                TFM_TODO = "TFM_Delete"
                 Start_TFMBGW()
             End If
         Catch ex As Exception
@@ -475,19 +563,33 @@ Public Class Engr_Time_Factor_Maintenance
             If (e.Control And e.KeyCode = Keys.S) Then
                 If TFactorHrs_Num.Value > 23 Then
                     TFactor_Hrs = 23
+                ElseIf TFactorHrs_Num.Text = "" Then
+                    TFactor_Hrs = 0
+                Else
+                    TFactor_Hrs = TFactorHrs_Num.Value
                 End If
+
                 If TFactorMins_Num.Value > 59 Then
                     TFactor_Mins = 59
+                ElseIf TFactorMins_Num.Text = "" Then
+                    TFactor_Mins = 0
+                Else
+                    TFactor_Mins = TFactorMins_Num.Value
                 End If
+
                 If TFactorSecs_Num.Value > 59 Then
                     TFactor_Secs = 59
+                ElseIf TFactorSecs_Num.Text = "" Then
+                    TFactor_Secs = 0
+                Else
+                    TFactor_Secs = TFactorSecs_Num.Value
                 End If
-                T_FACTOR = TimeSpan.Parse(TFactorHrs_Num.Value & ":" & TFactorMins_Num.Value & ":" & TFactorSecs_Num.Value)
+
                 Select Case WINDOOR_PART
                     Case "Frame"
                         If Left_ID <> Nothing Then
                             If Right_ID <> Nothing Then
-                                TFM_TODO = "Transact_TFactor"
+                                TFM_TODO = "TFM_TIME_FRAME_TRANSACT"
                                 Start_TFMBGW()
                             Else
                                 KMDIPrompts(Me, "UserWarning", "Right_ID is Empty", Environment.StackTrace, Nothing, True, True, "Please select Window Type")
