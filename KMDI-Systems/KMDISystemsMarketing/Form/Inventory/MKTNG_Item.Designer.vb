@@ -25,8 +25,6 @@ Partial Class MKTNG_Item
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MKTNG_Item))
         Me.Mktng_InvLBL = New MetroFramework.Controls.MetroLabel()
         Me.FRM_Pnl = New MetroFramework.Controls.MetroPanel()
-        Me.MetroLabel16 = New MetroFramework.Controls.MetroLabel()
-        Me.QuantityTbox = New MetroFramework.Controls.MetroTextBox()
         Me.MetroLabel14 = New MetroFramework.Controls.MetroLabel()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.RemarksTbox = New MetroFramework.Controls.MetroTextBox()
@@ -70,6 +68,8 @@ Partial Class MKTNG_Item
         Me.SizeTbox = New MetroFramework.Controls.MetroTextBox()
         Me.MarketPriceTbox = New MetroFramework.Controls.MetroTextBox()
         Me.LoadingPB = New System.Windows.Forms.PictureBox()
+        Me.MetroLabel16 = New MetroFramework.Controls.MetroLabel()
+        Me.QuantityTbox = New MetroFramework.Controls.MetroTextBox()
         Me.FRM_Pnl.SuspendLayout()
         Me.Panel1.SuspendLayout()
         CType(Me.LoadingPB, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -146,51 +146,6 @@ Partial Class MKTNG_Item
         Me.FRM_Pnl.VerticalScrollbarBarColor = True
         Me.FRM_Pnl.VerticalScrollbarHighlightOnWheel = False
         Me.FRM_Pnl.VerticalScrollbarSize = 10
-        '
-        'MetroLabel16
-        '
-        Me.MetroLabel16.AutoSize = True
-        Me.MetroLabel16.Location = New System.Drawing.Point(387, 20)
-        Me.MetroLabel16.Name = "MetroLabel16"
-        Me.MetroLabel16.Size = New System.Drawing.Size(61, 19)
-        Me.MetroLabel16.TabIndex = 628
-        Me.MetroLabel16.Text = "Quantity:"
-        '
-        'QuantityTbox
-        '
-        '
-        '
-        '
-        Me.QuantityTbox.CustomButton.Image = Nothing
-        Me.QuantityTbox.CustomButton.Location = New System.Drawing.Point(205, 1)
-        Me.QuantityTbox.CustomButton.Name = ""
-        Me.QuantityTbox.CustomButton.Size = New System.Drawing.Size(27, 27)
-        Me.QuantityTbox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
-        Me.QuantityTbox.CustomButton.TabIndex = 1
-        Me.QuantityTbox.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
-        Me.QuantityTbox.CustomButton.UseSelectable = True
-        Me.QuantityTbox.CustomButton.Visible = False
-        Me.QuantityTbox.FontSize = MetroFramework.MetroTextBoxSize.Tall
-        Me.QuantityTbox.ForeColor = System.Drawing.Color.Black
-        Me.QuantityTbox.Lines = New String(-1) {}
-        Me.QuantityTbox.Location = New System.Drawing.Point(449, 13)
-        Me.QuantityTbox.MaxLength = 32767
-        Me.QuantityTbox.Name = "QuantityTbox"
-        Me.QuantityTbox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
-        Me.QuantityTbox.ScrollBars = System.Windows.Forms.ScrollBars.None
-        Me.QuantityTbox.SelectedText = ""
-        Me.QuantityTbox.SelectionLength = 0
-        Me.QuantityTbox.SelectionStart = 0
-        Me.QuantityTbox.Size = New System.Drawing.Size(233, 29)
-        Me.QuantityTbox.Style = MetroFramework.MetroColorStyle.Teal
-        Me.QuantityTbox.TabIndex = 7
-        Me.QuantityTbox.Theme = MetroFramework.MetroThemeStyle.Dark
-        Me.QuantityTbox.UseCustomBackColor = True
-        Me.QuantityTbox.UseCustomForeColor = True
-        Me.QuantityTbox.UseSelectable = True
-        Me.QuantityTbox.UseStyleColors = True
-        Me.QuantityTbox.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
-        Me.QuantityTbox.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
         '
         'MetroLabel14
         '
@@ -907,6 +862,51 @@ Partial Class MKTNG_Item
         Me.LoadingPB.TabIndex = 612
         Me.LoadingPB.TabStop = False
         '
+        'MetroLabel16
+        '
+        Me.MetroLabel16.AutoSize = True
+        Me.MetroLabel16.Location = New System.Drawing.Point(387, 20)
+        Me.MetroLabel16.Name = "MetroLabel16"
+        Me.MetroLabel16.Size = New System.Drawing.Size(61, 19)
+        Me.MetroLabel16.TabIndex = 628
+        Me.MetroLabel16.Text = "Quantity:"
+        '
+        'QuantityTbox
+        '
+        '
+        '
+        '
+        Me.QuantityTbox.CustomButton.Image = Nothing
+        Me.QuantityTbox.CustomButton.Location = New System.Drawing.Point(205, 1)
+        Me.QuantityTbox.CustomButton.Name = ""
+        Me.QuantityTbox.CustomButton.Size = New System.Drawing.Size(27, 27)
+        Me.QuantityTbox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
+        Me.QuantityTbox.CustomButton.TabIndex = 1
+        Me.QuantityTbox.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
+        Me.QuantityTbox.CustomButton.UseSelectable = True
+        Me.QuantityTbox.CustomButton.Visible = False
+        Me.QuantityTbox.FontSize = MetroFramework.MetroTextBoxSize.Tall
+        Me.QuantityTbox.ForeColor = System.Drawing.Color.Black
+        Me.QuantityTbox.Lines = New String(-1) {}
+        Me.QuantityTbox.Location = New System.Drawing.Point(449, 13)
+        Me.QuantityTbox.MaxLength = 32767
+        Me.QuantityTbox.Name = "QuantityTbox"
+        Me.QuantityTbox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
+        Me.QuantityTbox.ScrollBars = System.Windows.Forms.ScrollBars.None
+        Me.QuantityTbox.SelectedText = ""
+        Me.QuantityTbox.SelectionLength = 0
+        Me.QuantityTbox.SelectionStart = 0
+        Me.QuantityTbox.Size = New System.Drawing.Size(233, 29)
+        Me.QuantityTbox.Style = MetroFramework.MetroColorStyle.Teal
+        Me.QuantityTbox.TabIndex = 7
+        Me.QuantityTbox.Theme = MetroFramework.MetroThemeStyle.Dark
+        Me.QuantityTbox.UseCustomBackColor = True
+        Me.QuantityTbox.UseCustomForeColor = True
+        Me.QuantityTbox.UseSelectable = True
+        Me.QuantityTbox.UseStyleColors = True
+        Me.QuantityTbox.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
+        Me.QuantityTbox.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
+        '
         'MKTNG_Item
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -920,7 +920,6 @@ Partial Class MKTNG_Item
         Me.MinimizeBox = False
         Me.Name = "MKTNG_Item"
         Me.Resizable = False
-        Me.Style = MetroFramework.MetroColorStyle.Teal
         Me.FRM_Pnl.ResumeLayout(False)
         Me.FRM_Pnl.PerformLayout()
         Me.Panel1.ResumeLayout(False)

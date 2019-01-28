@@ -60,7 +60,7 @@ Partial Class KMDI_MainFRM
         Me.EngrPanel = New MetroFramework.Controls.MetroPanel()
         Me.FlowLayoutPanel7 = New System.Windows.Forms.FlowLayoutPanel()
         Me.DeliveryRecieptsTile = New MetroFramework.Controls.MetroTile()
-        Me.EngrsItineraryTile = New MetroFramework.Controls.MetroTile()
+        Me.EngrsItineraryTIle = New MetroFramework.Controls.MetroTile()
         Me.DRTile = New MetroFramework.Controls.MetroTile()
         Me.DRReportTile = New MetroFramework.Controls.MetroTile()
         Me.EngrSDRequestTile = New MetroFramework.Controls.MetroTile()
@@ -80,7 +80,6 @@ Partial Class KMDI_MainFRM
         Me.NicknameLbl = New MetroFramework.Controls.MetroLabel()
         Me.ChangeDB_BGW = New System.ComponentModel.BackgroundWorker()
         Me.LoadingPBOX = New System.Windows.Forms.PictureBox()
-        Me.MHCTile = New MetroFramework.Controls.MetroTile()
         Me.MainFRMBody_FLP.SuspendLayout()
         Me.ContractsPanel.SuspendLayout()
         Me.FlowLayoutPanel9.SuspendLayout()
@@ -588,11 +587,10 @@ Partial Class KMDI_MainFRM
         'FlowLayoutPanel7
         '
         Me.FlowLayoutPanel7.Controls.Add(Me.DeliveryRecieptsTile)
-        Me.FlowLayoutPanel7.Controls.Add(Me.EngrsItineraryTile)
+        Me.FlowLayoutPanel7.Controls.Add(Me.EngrsItineraryTIle)
         Me.FlowLayoutPanel7.Controls.Add(Me.DRTile)
         Me.FlowLayoutPanel7.Controls.Add(Me.DRReportTile)
         Me.FlowLayoutPanel7.Controls.Add(Me.EngrSDRequestTile)
-        Me.FlowLayoutPanel7.Controls.Add(Me.MHCTile)
         Me.FlowLayoutPanel7.Controls.Add(Me.EngrSDSubmittalTile)
         Me.FlowLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.FlowLayoutPanel7.Location = New System.Drawing.Point(0, 30)
@@ -615,19 +613,19 @@ Partial Class KMDI_MainFRM
         Me.DeliveryRecieptsTile.UseSelectable = True
         Me.DeliveryRecieptsTile.Visible = False
         '
-        'EngrsItineraryTile
+        'EngrsItineraryTIle
         '
-        Me.EngrsItineraryTile.ActiveControl = Nothing
-        Me.EngrsItineraryTile.Location = New System.Drawing.Point(203, 3)
-        Me.EngrsItineraryTile.Name = "EngrsItineraryTile"
-        Me.EngrsItineraryTile.Size = New System.Drawing.Size(128, 63)
-        Me.EngrsItineraryTile.Style = MetroFramework.MetroColorStyle.Silver
-        Me.EngrsItineraryTile.TabIndex = 13
-        Me.EngrsItineraryTile.Text = "Engr's Itinerary"
-        Me.EngrsItineraryTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
-        Me.EngrsItineraryTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
-        Me.EngrsItineraryTile.UseSelectable = True
-        Me.EngrsItineraryTile.Visible = False
+        Me.EngrsItineraryTIle.ActiveControl = Nothing
+        Me.EngrsItineraryTIle.Location = New System.Drawing.Point(203, 3)
+        Me.EngrsItineraryTIle.Name = "EngrsItineraryTIle"
+        Me.EngrsItineraryTIle.Size = New System.Drawing.Size(128, 63)
+        Me.EngrsItineraryTIle.Style = MetroFramework.MetroColorStyle.Silver
+        Me.EngrsItineraryTIle.TabIndex = 13
+        Me.EngrsItineraryTIle.Text = "Engr's Itinerary"
+        Me.EngrsItineraryTIle.TextAlign = System.Drawing.ContentAlignment.BottomRight
+        Me.EngrsItineraryTIle.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
+        Me.EngrsItineraryTIle.UseSelectable = True
+        Me.EngrsItineraryTIle.Visible = False
         '
         'DRTile
         '
@@ -662,7 +660,7 @@ Partial Class KMDI_MainFRM
         Me.EngrSDRequestTile.ActiveControl = Nothing
         Me.EngrSDRequestTile.Location = New System.Drawing.Point(69, 72)
         Me.EngrSDRequestTile.Name = "EngrSDRequestTile"
-        Me.EngrSDRequestTile.Size = New System.Drawing.Size(128, 63)
+        Me.EngrSDRequestTile.Size = New System.Drawing.Size(262, 63)
         Me.EngrSDRequestTile.Style = MetroFramework.MetroColorStyle.Silver
         Me.EngrSDRequestTile.TabIndex = 11
         Me.EngrSDRequestTile.Text = "SD Request"
@@ -877,20 +875,6 @@ Partial Class KMDI_MainFRM
         Me.LoadingPBOX.TabStop = False
         Me.LoadingPBOX.Visible = False
         '
-        'MHCTile
-        '
-        Me.MHCTile.ActiveControl = Nothing
-        Me.MHCTile.Location = New System.Drawing.Point(203, 72)
-        Me.MHCTile.Name = "MHCTile"
-        Me.MHCTile.Size = New System.Drawing.Size(128, 63)
-        Me.MHCTile.Style = MetroFramework.MetroColorStyle.Silver
-        Me.MHCTile.TabIndex = 18
-        Me.MHCTile.Text = "Man Hour" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Computation"
-        Me.MHCTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
-        Me.MHCTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
-        Me.MHCTile.UseSelectable = True
-        Me.MHCTile.Visible = False
-        '
         'KMDI_MainFRM
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -974,7 +958,7 @@ Partial Class KMDI_MainFRM
     Friend WithEvents EngrPanel As MetroFramework.Controls.MetroPanel
     Friend WithEvents FlowLayoutPanel7 As FlowLayoutPanel
     Friend WithEvents DeliveryRecieptsTile As MetroFramework.Controls.MetroTile
-    Friend WithEvents EngrsItineraryTile As MetroFramework.Controls.MetroTile
+    Friend WithEvents EngrsItineraryTIle As MetroFramework.Controls.MetroTile
     Friend WithEvents DRTile As MetroFramework.Controls.MetroTile
     Friend WithEvents DRReportTile As MetroFramework.Controls.MetroTile
     Friend WithEvents EngrSDRequestTile As MetroFramework.Controls.MetroTile
@@ -992,5 +976,4 @@ Partial Class KMDI_MainFRM
     Friend WithEvents MetroLabel1 As MetroFramework.Controls.MetroLabel
     Friend WithEvents ChangeDB_BGW As System.ComponentModel.BackgroundWorker
     Friend WithEvents LoadingPBOX As PictureBox
-    Friend WithEvents MHCTile As MetroFramework.Controls.MetroTile
 End Class

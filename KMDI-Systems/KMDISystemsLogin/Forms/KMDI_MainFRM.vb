@@ -32,7 +32,7 @@ Public Class KMDI_MainFRM
                         Case DrReports
                             DRReportTile.Visible = True
                             ToVisibleEngrPaneL = 1
-                            EngrsItineraryTile.Visible = True
+                            EngrsItineraryTIle.Visible = True
                             ToVisibleEngrPaneL = 1
                         Case EngrSDsubm
                             EngrSDSubmittalTile.Visible = True
@@ -148,7 +148,7 @@ Public Class KMDI_MainFRM
 
             Case "Engineering"
                 DRTile.Visible = True
-                EngrsItineraryTile.Visible = True
+                EngrsItineraryTIle.Visible = True
                 DRReportTile.Visible = True
                 DeliveryRecieptsTile.Visible = True
 
@@ -156,7 +156,7 @@ Public Class KMDI_MainFRM
 
             Case "Engr. Manager"
                 DRTile.Visible = True
-                EngrsItineraryTile.Visible = True
+                EngrsItineraryTIle.Visible = True
                 DRReportTile.Visible = True
                 DeliveryRecieptsTile.Visible = True
                 EngrSDRequestTile.Visible = True
@@ -227,7 +227,7 @@ Public Class KMDI_MainFRM
             DeliveryRecieptsTile.Visible = True
             DRTile.Visible = True
             DRReportTile.Visible = True
-            EngrsItineraryTile.Visible = True
+            EngrsItineraryTIle.Visible = True
             EngrSDSubmittalTile.Visible = True
 
             ProjAssesmentTile.Visible = True
@@ -299,7 +299,7 @@ Public Class KMDI_MainFRM
         DeliveryRecieptsTile.Visible = False
         DRTile.Visible = False
         DRReportTile.Visible = False
-        EngrsItineraryTile.Visible = False
+        EngrsItineraryTIle.Visible = False
         EngrSDSubmittalTile.Visible = False
         ProjAssesmentTile.Visible = False
         SalesItineraryTile.Visible = False
@@ -505,20 +505,4 @@ Public Class KMDI_MainFRM
         End Try
     End Sub
 
-    Private Sub MHCTile_Click(sender As Object, e As EventArgs) Handles MHCTile.Click
-        Try
-
-            Dim frm As Form = ManHourComputation
-            Select Case frm.Visible
-                Case True
-                    frm.BringToFront()
-                Case False
-                    frm.Show()
-                    frm.BringToFront()
-            End Select
-
-        Catch ex As Exception
-            KMDIPrompts(Me, "DotNet", ex.Message, ex.StackTrace, Nothing, True)
-        End Try
-    End Sub
 End Class
