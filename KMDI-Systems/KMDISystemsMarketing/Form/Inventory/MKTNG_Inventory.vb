@@ -111,7 +111,7 @@ Public Class MKTNG_Inventory
                                 .DefaultCellStyle.Format = "N2"
                                 .DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
                             End If
-                            If .Name = "QUANTITY" Then
+                            If .Name = "QUANTITY" Or .Name = "MI_ID" Then
                                 .ValueType = GetType(Integer)
                                 .DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
                             End If
@@ -140,7 +140,7 @@ Public Class MKTNG_Inventory
                             For i = 0 To sqlDataSet.Tables("QUERY_DETAILS").Columns.Count - 1
                                 If i = 11 Then
                                     DGVrow_list.Add(Convert.ToDateTime(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i)))
-                                ElseIf i = 7 Then
+                                ElseIf i = 7 Or i = 0 Then
                                     DGVrow_list.Add(Convert.ToInt32(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i)))
                                 ElseIf i = 8 Or i = 9 Or i = 10 Then
                                     DGVrow_list.Add(Convert.ToDecimal(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i)))

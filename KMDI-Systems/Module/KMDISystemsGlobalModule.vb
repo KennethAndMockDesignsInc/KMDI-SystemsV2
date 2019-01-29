@@ -116,7 +116,8 @@ Module KMDISystemsGlobalModule
                                 Width As Integer,
                                 Optional RowIndex As Integer = Nothing,
                                 Optional ContextMenu As MetroContextMenu = Nothing,
-                                Optional RdBtnSize As MetroCheckBoxSize = MetroCheckBoxSize.Tall)
+                                Optional RdBtnSize As MetroCheckBoxSize = MetroCheckBoxSize.Tall,
+                                Optional DisplayFocus_bool As Boolean = True)
         With RdBtn
             If CreationMode = "Dynamic" Then
                 Dim SQL_STR As String = sqlDataSet.Tables("QUERY_DETAILS").Rows(RowIndex).Item(ItemName).ToString
@@ -131,7 +132,7 @@ Module KMDISystemsGlobalModule
                 .Text = ItemName
             End If
             .Width = Width
-            .DisplayFocus = True
+            .DisplayFocus = DisplayFocus_bool
             .ContextMenuStrip = ContextMenu
             .FontSize = RdBtnSize
             GlobalToolTip.SetToolTip(RdBtn, .Text)
@@ -144,7 +145,8 @@ Module KMDISystemsGlobalModule
                                 Width As Integer,
                                 Optional RowIndex As Integer = Nothing,
                                 Optional ContextMenu As MetroContextMenu = Nothing,
-                                Optional ChkboxSize As MetroCheckBoxSize = MetroCheckBoxSize.Tall)
+                                Optional ChkboxSize As MetroCheckBoxSize = MetroCheckBoxSize.Tall,
+                                Optional DisplayFocus_bool As Boolean = True)
         With Chkbox
             If CreationMode = "Dynamic" Then
                 Dim SQL_STR As String = sqlDataSet.Tables("QUERY_DETAILS").Rows(RowIndex).Item(ItemName).ToString
@@ -159,7 +161,7 @@ Module KMDISystemsGlobalModule
                 .Text = ItemName
             End If
             .Width = Width
-            .DisplayFocus = True
+            .DisplayFocus = DisplayFocus_bool
             .ContextMenuStrip = ContextMenu
             .FontSize = ChkboxSize
             GlobalToolTip.SetToolTip(Chkbox, .Text)

@@ -420,7 +420,6 @@ Partial Class MKTNG_Item
         Me.SubClass_FLP.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.SubClass_FLP.Location = New System.Drawing.Point(350, 271)
         Me.SubClass_FLP.Name = "SubClass_FLP"
-        Me.SubClass_FLP.Padding = New System.Windows.Forms.Padding(0, 10, 0, 0)
         Me.SubClass_FLP.Size = New System.Drawing.Size(337, 147)
         Me.SubClass_FLP.TabIndex = 23
         '

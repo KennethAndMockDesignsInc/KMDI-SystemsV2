@@ -91,13 +91,13 @@ Module MarketingModule
         Using sqlcon As New SqlConnection(sqlconnString)
             sqlcon.Open()
             Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
-                transaction = sqlcon.BeginTransaction(StoredProcedureName)
+                transaction = sqlcon.BeginTransaction(IsolationLevel.RepeatableRead, StoredProcedureName)
                 sqlCommand.Connection = sqlcon
                 sqlCommand.Transaction = transaction
                 sqlCommand.CommandText = StoredProcedureName
                 sqlCommand.CommandType = CommandType.StoredProcedure
 
-                sqlCommand.Parameters.AddWithValue("@MAIN_CLASS", MainClassStr)
+                sqlCommand.Parameters.Add("@MAIN_CLASS", SqlDbType.VarChar).Value = MainClassStr
                 sqlCommand.ExecuteNonQuery()
                 transaction.Commit()
                 sql_Transaction_result = "Committed"
@@ -110,7 +110,7 @@ Module MarketingModule
         Using sqlcon As New SqlConnection(sqlconnString)
             sqlcon.Open()
             Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
-                transaction = sqlcon.BeginTransaction(StoredProcedureName)
+                transaction = sqlcon.BeginTransaction(IsolationLevel.RepeatableRead, StoredProcedureName)
                 sqlCommand.Connection = sqlcon
                 sqlCommand.Transaction = transaction
                 sqlCommand.CommandText = StoredProcedureName
@@ -159,29 +159,29 @@ Module MarketingModule
                 sqlCommand.CommandText = StoredProcedureName
                 sqlCommand.CommandType = CommandType.StoredProcedure
 
-                sqlCommand.Parameters.AddWithValue("@MIC_ID_REF", MIC_ID_REF)
-                sqlCommand.Parameters.AddWithValue("@ITEM_CODE", ITEM_CODE)
-                sqlCommand.Parameters.AddWithValue("@ITEM_DESC", ITEM_DESC)
-                sqlCommand.Parameters.AddWithValue("@GENDER", GENDER)
-                sqlCommand.Parameters.AddWithValue("@MARKET_PRICE", MARKET_PRICE)
-                sqlCommand.Parameters.AddWithValue("@PURCHASED_PRICE", PURCHASED_PRICE)
-                sqlCommand.Parameters.AddWithValue("@DISCOUNT", DISCOUNT)
-                sqlCommand.Parameters.AddWithValue("@QUANTITY", QUANTITY)
-                sqlCommand.Parameters.AddWithValue("@PURCHASED_DATE", PURCHASED_DATE)
-                sqlCommand.Parameters.AddWithValue("@QR_STATUS", QR_STATUS)
-                sqlCommand.Parameters.AddWithValue("@GIFT", GIFT)
-                sqlCommand.Parameters.AddWithValue("@RAFFLE", RAFFLE)
-                sqlCommand.Parameters.AddWithValue("@TIER_1", TIER_1)
-                sqlCommand.Parameters.AddWithValue("@TIER_2", TIER_2)
-                sqlCommand.Parameters.AddWithValue("@TIER_3", TIER_3)
-                sqlCommand.Parameters.AddWithValue("@TIER_4", TIER_4)
-                sqlCommand.Parameters.AddWithValue("@TIER_5", TIER_5)
-                sqlCommand.Parameters.AddWithValue("@TIER_6", TIER_6)
-                sqlCommand.Parameters.AddWithValue("@TIER_7", TIER_7)
-                sqlCommand.Parameters.AddWithValue("@Color", Color)
-                sqlCommand.Parameters.AddWithValue("@BRAND", BRAND)
-                sqlCommand.Parameters.AddWithValue("@Size", Size)
-                sqlCommand.Parameters.AddWithValue("@REMARKS", REMARKS)
+                sqlCommand.Parameters.Add("@MIC_ID_REF", SqlDbType.Int).Value = MIC_ID_REF
+                sqlCommand.Parameters.Add("@ITEM_CODE", SqlDbType.VarChar).Value = ITEM_CODE
+                sqlCommand.Parameters.Add("@ITEM_DESC", SqlDbType.VarChar).Value = ITEM_DESC
+                sqlCommand.Parameters.Add("@GENDER", SqlDbType.VarChar).Value = GENDER
+                sqlCommand.Parameters.Add("@MARKET_PRICE", SqlDbType.Decimal).Value = MARKET_PRICE
+                sqlCommand.Parameters.Add("@PURCHASED_PRICE", SqlDbType.Decimal).Value = PURCHASED_PRICE
+                sqlCommand.Parameters.Add("@DISCOUNT", SqlDbType.Decimal).Value = DISCOUNT
+                sqlCommand.Parameters.Add("@QUANTITY", SqlDbType.Int).Value = QUANTITY
+                sqlCommand.Parameters.Add("@PURCHASED_DATE", SqlDbType.Date).Value = PURCHASED_DATE
+                sqlCommand.Parameters.Add("@QR_STATUS", SqlDbType.Bit).Value = QR_STATUS
+                sqlCommand.Parameters.Add("@GIFT", SqlDbType.Bit).Value = GIFT
+                sqlCommand.Parameters.Add("@RAFFLE", SqlDbType.Bit).Value = RAFFLE
+                sqlCommand.Parameters.Add("@TIER_1", SqlDbType.Bit).Value = TIER_1
+                sqlCommand.Parameters.Add("@TIER_2", SqlDbType.Bit).Value = TIER_2
+                sqlCommand.Parameters.Add("@TIER_3", SqlDbType.Bit).Value = TIER_3
+                sqlCommand.Parameters.Add("@TIER_4", SqlDbType.Bit).Value = TIER_4
+                sqlCommand.Parameters.Add("@TIER_5", SqlDbType.Bit).Value = TIER_5
+                sqlCommand.Parameters.Add("@TIER_6", SqlDbType.Bit).Value = TIER_6
+                sqlCommand.Parameters.Add("@TIER_7", SqlDbType.Bit).Value = TIER_7
+                sqlCommand.Parameters.Add("@Color", SqlDbType.VarChar).Value = Color
+                sqlCommand.Parameters.Add("@BRAND", SqlDbType.VarChar).Value = BRAND
+                sqlCommand.Parameters.Add("@Size", SqlDbType.VarChar).Value = Size
+                sqlCommand.Parameters.Add("@REMARKS", SqlDbType.VarChar).Value = REMARKS
                 Using read As SqlDataReader = sqlCommand.ExecuteReader
                     read.Read()
                     InsertedMI_ID = read.Item("MI_ID_INSERTED")
@@ -193,8 +193,8 @@ Module MarketingModule
                                                                  VALUES  (@MI_ID_REF_SUB" & SubClass_ID & ",
                                                                           @MISC_ID_REF" & SubClass_ID & ")"
                         sqlCommand.CommandType = CommandType.Text
-                        sqlCommand.Parameters.AddWithValue("@MI_ID_REF_SUB" & SubClass_ID, InsertedMI_ID)
-                        sqlCommand.Parameters.AddWithValue("@MISC_ID_REF" & SubClass_ID, SubClass_ID)
+                        sqlCommand.Parameters.Add("@MI_ID_REF_SUB" & SubClass_ID, SqlDbType.Int).Value = InsertedMI_ID
+                        sqlCommand.Parameters.Add("@MISC_ID_REF" & SubClass_ID, SqlDbType.Int).Value = SubClass_ID
                         sqlCommand.ExecuteNonQuery()
                     Next
                     For Each Events_ID As Integer In Events_list
@@ -203,8 +203,8 @@ Module MarketingModule
                                                                  VALUES  (@MI_ID_REF_EVENT" & Events_ID & ",
                                                                           @MIE_ID_REF" & Events_ID & ")"
                         sqlCommand.CommandType = CommandType.Text
-                        sqlCommand.Parameters.AddWithValue("@MI_ID_REF_EVENT" & Events_ID, InsertedMI_ID)
-                        sqlCommand.Parameters.AddWithValue("@MIE_ID_REF" & Events_ID, Events_ID)
+                        sqlCommand.Parameters.Add("@MI_ID_REF_EVENT" & Events_ID, SqlDbType.Int).Value = InsertedMI_ID
+                        sqlCommand.Parameters.Add("@MIE_ID_REF" & Events_ID, SqlDbType.Int).Value = Events_ID
                         sqlCommand.ExecuteNonQuery()
                     Next
                 End If

@@ -326,9 +326,11 @@ Public Class MKTNG_Item
 
                     Select Case ControlType
                         Case "MetroRadioButton"
-                            RdBtn_Properties("Dynamic", Rdbtn, ItemName, TagName, Width, e.ProgressPercentage)
+                            RdBtn_Properties("Dynamic", Rdbtn, ItemName, TagName, Width,
+                                             e.ProgressPercentage, Nothing, MetroCheckBoxSize.Tall, False)
                         Case "MetroCheckBox"
-                            Chkbox_Properties("Dynamic", Chkbox, ItemName, TagName, Width, e.ProgressPercentage, Nothing, MetroControlSize)
+                            Chkbox_Properties("Dynamic", Chkbox, ItemName, TagName, Width,
+                                              e.ProgressPercentage, Nothing, MetroControlSize, False)
                     End Select
 
 
@@ -587,7 +589,7 @@ Public Class MKTNG_Item
     Sub classification_insert(ByVal MODE As String)
         Select Case MODE
             Case "MAIN"
-                MainClass_FLP.Controls.Clear()
+                'MainClass_FLP.Controls.Clear()
                 If MainClassSTR = Nothing Or MainClassSTR = "" Then
                     KMDIPrompts(Me, "DotNetError", Nothing, Nothing, Nothing, True, True, "Field cannot be empty")
                 Else
