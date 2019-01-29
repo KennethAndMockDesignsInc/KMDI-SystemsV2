@@ -28,7 +28,7 @@ Public Class MKTNG_Inventory
             MktngInv_TODO = "Onload"
             Start_MktngInventoryBGW()
         Catch ex As Exception
-            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace)
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
         End Try
     End Sub
     Private Sub MktngInventory_BGW_DoWork(sender As Object, e As DoWorkEventArgs)
@@ -165,87 +165,67 @@ Public Class MKTNG_Inventory
                 LoadingPB.Visible = False
             Else
                 '' otherwise it completed normally
-                If sql_Err_no = -2 Then
-                    Dim result As Integer = MetroFramework.MetroMessageBox.Show(Me, "Click ok to Reconnect" & vbCrLf & "Cancel to Exit",
-                                                       "Request Timeout", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation)
-                    If result = DialogResult.OK Then
-                        RESET()
-                        Start_MktngInventoryBGW()
-                        Exit Sub
-                    ElseIf result = DialogResult.Cancel Then
-                        RESET()
-                        Dispose()
-                        Exit Sub
-                    End If
-                ElseIf sql_Err_no = 1232 Or sql_Err_no = 121 Then
-                    MetroFramework.MetroMessageBox.Show(Me, "Please check internet connection", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                ElseIf sql_Err_no = 19 Then
-                    MetroFramework.MetroMessageBox.Show(Me, "Sorry our server is under maintenance." & vbCrLf & "Please be patient, will come back inv_dgvCol.S.inv_dgvCol.P", "Server is down", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                ElseIf (sql_Err_no = "" Or sql_Err_no = Nothing) AndAlso
-                       (sql_Err_msg = "" Or sql_Err_msg = Nothing) Then
-                    If sql_Transaction_result = "Committed" Then
-                        'Wala ng halaga to, Hanap ka ng use nito Future EJ
-                        '-Past EJ
+                If sql_Transaction_result = "Committed" Then
+                    'Wala ng halaga to, Hanap ka ng use nito Future EJ
+                    '-Past EJ
 
-                        'Generate_DGVCols = False
-                        'Generate_DGVRows = False
-                        'sqlDataSet.Clear()
-                        'DGVrow_list.Clear()
+                    'Generate_DGVCols = False
+                    'Generate_DGVRows = False
+                    'sqlDataSet.Clear()
+                    'DGVrow_list.Clear()
 
-                        'Inv_Pnl.Controls.Clear()
-                        'DGV_Properties(Inv_DGV)
-                        'Inv_Pnl.Controls.Add(Inv_DGV)
+                    'Inv_Pnl.Controls.Clear()
+                    'DGV_Properties(Inv_DGV)
+                    'Inv_Pnl.Controls.Add(Inv_DGV)
 
-                        'Inv_DGV.DataSource = Nothing
-                        'Inv_DGV.Enabled = True
-                        'Inv_DGV.DataSource = sqlBindingSource
+                    'Inv_DGV.DataSource = Nothing
+                    'Inv_DGV.Enabled = True
+                    'Inv_DGV.DataSource = sqlBindingSource
 
-                        'With Inv_DGV
-                        '    .Columns("ITEM_PICTURE").Visible = False
-                        '    .Columns("MI_STATUS").Visible = False
-                        'End With
-                        'Select Case MktngInv_TODO
-                        '    Case "Onload"
-                        '        With Inv_DGV
-                        '            .Columns("MI_ID").Visible = False
-                        '            .Columns("ITEM CODE").Visible = False
-                        '            .Columns("PURCHASED PRICE").Visible = False
-                        '            .Columns("DISCOUNT").Visible = False
-                        '            .Columns("GENDER").Visible = False
-                        'Inv_DGV.Columns("DATE PURCHASED").DefaultCellStyle.Format = "MMM. dd, yyyy"
-                        '            .DefaultCellStyle.BackColor = Color.White
-                        '            .AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke
-                        '        End With
-                        '    Case "Search"
-                        '        If ColumnVisibility_Opened = True Then
-                        '            With ColumnVisibility
-                        '                For Each ctrl In .FLP_ColumnInvi.Controls
-                        '                    For Each dgvCol In Inv_DGV.Columns
-                        '                        If ctrl.Name = dgvCol.HeaderText Then
-                        '                            dgvCol.Visible = ctrl.Checked
-                        '                        End If
-                        '                    Next
-                        '                Next
-                        '            End With
-                        '        Else
-                        '            With Inv_DGV
-                        '                .Columns("MI_ID").Visible = False
-                        '                .Columns("ITEM CODE").Visible = False
-                        '                .Columns("PURCHASED PRICE").Visible = False
-                        '                .Columns("DISCOUNT").Visible = False
-                        '                .Columns("GENDER").Visible = False
-                        '                .Columns("DATE PURCHASED").DefaultCellStyle.Format = "MMM. dd, yyyy"
-                        '                .DefaultCellStyle.BackColor = Color.White
-                        '                .AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke
-                        '            End With
-                        '        End If
-                        'End Select
-                    End If
+                    'With Inv_DGV
+                    '    .Columns("ITEM_PICTURE").Visible = False
+                    '    .Columns("MI_STATUS").Visible = False
+                    'End With
+                    'Select Case MktngInv_TODO
+                    '    Case "Onload"
+                    '        With Inv_DGV
+                    '            .Columns("MI_ID").Visible = False
+                    '            .Columns("ITEM CODE").Visible = False
+                    '            .Columns("PURCHASED PRICE").Visible = False
+                    '            .Columns("DISCOUNT").Visible = False
+                    '            .Columns("GENDER").Visible = False
+                    'Inv_DGV.Columns("DATE PURCHASED").DefaultCellStyle.Format = "MMM. dd, yyyy"
+                    '            .DefaultCellStyle.BackColor = Color.White
+                    '            .AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke
+                    '        End With
+                    '    Case "Search"
+                    '        If ColumnVisibility_Opened = True Then
+                    '            With ColumnVisibility
+                    '                For Each ctrl In .FLP_ColumnInvi.Controls
+                    '                    For Each dgvCol In Inv_DGV.Columns
+                    '                        If ctrl.Name = dgvCol.HeaderText Then
+                    '                            dgvCol.Visible = ctrl.Checked
+                    '                        End If
+                    '                    Next
+                    '                Next
+                    '            End With
+                    '        Else
+                    '            With Inv_DGV
+                    '                .Columns("MI_ID").Visible = False
+                    '                .Columns("ITEM CODE").Visible = False
+                    '                .Columns("PURCHASED PRICE").Visible = False
+                    '                .Columns("DISCOUNT").Visible = False
+                    '                .Columns("GENDER").Visible = False
+                    '                .Columns("DATE PURCHASED").DefaultCellStyle.Format = "MMM. dd, yyyy"
+                    '                .DefaultCellStyle.BackColor = Color.White
+                    '                .AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke
+                    '            End With
+                    '        End If
+                    'End Select
                 End If
             End If
             RESET()
             LoadingPB.Visible = False
-
         Catch ex As Exception
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
         End Try
@@ -256,7 +236,7 @@ Public Class MKTNG_Inventory
     End Sub
 
     Private Sub MktngInventoryDGV_ColumnHeaderMouseClick(sender As Object, e As DataGridViewCellMouseEventArgs)
-        If e.Button = MouseButtons.Right Then
+        If e.Button = MouseButtons.Right And MktngInventory_BGW.IsBusy <> True Then
             ColumnToolStripMenuItem.Visible = True
             ItemToolStripMenuItem.Visible = False
             AddQuantityToolStripMenuItem.Visible = False
@@ -304,7 +284,7 @@ Public Class MKTNG_Inventory
 
     Private Sub MktngInventoryDGV_CellMouseClick(sender As Object, e As DataGridViewCellMouseEventArgs)
         Try
-            If e.Button = MouseButtons.Right Then
+            If e.Button = MouseButtons.Right And MktngInventory_BGW.IsBusy <> True Then
                 'Inv_DGV.Rows(e.RowIndex).Selected = True
                 ColumnToolStripMenuItem.Visible = False
                 ItemToolStripMenuItem.Visible = True

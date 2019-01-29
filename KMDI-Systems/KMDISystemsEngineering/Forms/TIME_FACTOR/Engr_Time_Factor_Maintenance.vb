@@ -301,14 +301,14 @@ Public Class Engr_Time_Factor_Maintenance
                                     For Each ctrl In LeftRdBtn_FLP.Controls
                                         If ctrl.Tag = Left_ID Then
                                             ctrl.Text = Replace(LeftTbox_Str, "&", "&&")
-                                            EngrToolTip.SetToolTip(ctrl, ctrl.Text)
+                                            GlobalToolTip.SetToolTip(ctrl, ctrl.Text)
                                         End If
                                     Next
                                 Case False
                                     For Each ctrl In RightRdBtn_FLP.Controls
                                         If ctrl.Tag = Right_ID Then
                                             ctrl.Text = Replace(RightTbox_Str, "&", "&&")
-                                            EngrToolTip.SetToolTip(ctrl, ctrl.Text)
+                                            GlobalToolTip.SetToolTip(ctrl, ctrl.Text)
                                         End If
                                     Next
                             End Select
