@@ -6,7 +6,7 @@ Module MarketingModule
     Public OpenedByFormName As Form
     Public DGVStrGlobal As String
 
-    Public InsertedMI_ID As Integer
+    Public InsertedMI_ID, InsertedMIC_ID, InsertedMISC_ID As Integer
     Public MI_ID As String
     Public ITEM_CODE As String
     Public BRAND As String
@@ -98,7 +98,11 @@ Module MarketingModule
                 sqlCommand.CommandType = CommandType.StoredProcedure
 
                 sqlCommand.Parameters.Add("@MAIN_CLASS", SqlDbType.VarChar).Value = MainClassStr
-                sqlCommand.ExecuteNonQuery()
+                Using read As SqlDataReader = sqlCommand.ExecuteReader
+                    read.Read()
+                    InsertedMIC_ID = read.Item("TAG_ID")
+                End Using
+
                 transaction.Commit()
                 sql_Transaction_result = "Committed"
             End Using
@@ -116,9 +120,12 @@ Module MarketingModule
                 sqlCommand.CommandText = StoredProcedureName
                 sqlCommand.CommandType = CommandType.StoredProcedure
 
-                sqlCommand.Parameters.AddWithValue("@SubClass", SubClassStr)
-                sqlCommand.Parameters.AddWithValue("@MIC_ID_REF", MIC_ID_REF)
-                sqlCommand.ExecuteNonQuery()
+                sqlCommand.Parameters.Add("@SubClass", SqlDbType.VarChar).Value = SubClassStr
+                sqlCommand.Parameters.Add("@MIC_ID_REF", SqlDbType.Int).Value = MIC_ID_REF
+                Using read As SqlDataReader = sqlCommand.ExecuteReader
+                    read.Read()
+                    InsertedMISC_ID = read.Item("TAG_ID")
+                End Using
                 transaction.Commit()
                 sql_Transaction_result = "Committed"
             End Using

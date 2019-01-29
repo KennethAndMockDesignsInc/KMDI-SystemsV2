@@ -253,6 +253,7 @@ Public Class MKTNG_Item
                     Mktng_QUERY_INSTANCE = "Loading_using_EqualSearch"
                     Mktng_Query_Select_STP("1", "MKTNG_stp_Inv_MAXID")
                 Case "MainClass_Insert"
+                    Cr8Control = True
                     Mktng_MainClass_Insert(MainClassSTR, "MKTNG_stp_Item_MainClass_Insert")
                 Case "SubClass_Insert"
                     Mktng_SubClass_Insert(SubClassSTR, MainClassID, "MKTNG_stp_Item_SubClass_Insert")
@@ -311,7 +312,7 @@ Public Class MKTNG_Item
                         Case "SubClass"
                             ItemName = "SUB_CLASS"
                             TagName = "MISC_ID"
-                            Width = 150
+                            Width = 100
                             MetroControlSize = MetroCheckBoxSize.Medium
                             ControlType = "MetroCheckBox"
 
@@ -475,13 +476,30 @@ Public Class MKTNG_Item
 
                         Case "MainClass_Insert"
                             'MainClass_Tbox.Clear()
-                            MktngItem_TODO = "MainClass"
-                            Start_MktngItemBGW()
+                            'MktngItem_TODO = "MainClass"
+                            'Start_MktngItemBGW()
+                            Dim RdBtn As New MetroRadioButton
+                            Select Case Cr8Control
+                                Case True
+                                    RdBtn_Properties("Static", RdBtn, MainClassSTR, InsertedMIC_ID, 150,
+                                                     Nothing, Nothing, MetroCheckBoxSize.Tall, False)
+                                    MainClass_FLP.Controls.Add(RdBtn)
+                                    AddHandler RdBtn.Click, AddressOf ClassRbtn_Clicked
+                            End Select
+                            End_MktngItemBGW()
 
                         Case "SubClass_Insert"
                             'SubClass_Tbox.Clear()
-                            MktngItem_TODO = "SubClass"
-                            Start_MktngItemBGW()
+                            'MktngItem_TODO = "SubClass"
+                            'Start_MktngItemBGW()
+                            Dim Chkbox As New MetroCheckBox
+                            Select Case Cr8Control
+                                Case True
+                                    Chkbox_Properties("Static", Chkbox, SubClassSTR, InsertedMISC_ID, 100,
+                                                      Nothing, Nothing, MetroCheckBoxSize.Medium, False)
+                                    SubClass_FLP.Controls.Add(Chkbox)
+                            End Select
+                            End_MktngItemBGW()
 
                         Case "Load_Events"
                             Report_BGW_bool = False
@@ -589,14 +607,12 @@ Public Class MKTNG_Item
     Sub classification_insert(ByVal MODE As String)
         Select Case MODE
             Case "MAIN"
-                'MainClass_FLP.Controls.Clear()
                 If MainClassSTR = Nothing Or MainClassSTR = "" Then
                     KMDIPrompts(Me, "DotNetError", Nothing, Nothing, Nothing, True, True, "Field cannot be empty")
                 Else
                     MktngItem_TODO = "MainClass_Insert"
                 End If
             Case "SUB"
-                SubClass_FLP.Controls.Clear()
                 If SubClassSTR = Nothing Or SubClassSTR = "" Then
                     KMDIPrompts(Me, "DotNetError", Nothing, Nothing, Nothing, True, True, "Field cannot be empty")
                 Else
