@@ -116,7 +116,8 @@ Public Class MKTNG_Inventory
                                 .DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
                             End If
                             If .Name = "ITEM_PICTURE" Or .Name = "MI_STATUS" Or .Name = "MI_ID" Or .Name = "ITEM CODE" Or
-                               .Name = "PURCHASED PRICE" Or .Name = "DISCOUNT" Or .Name = "GENDER" Then
+                               .Name = "PURCHASED PRICE" Or .Name = "DISCOUNT" Or .Name = "GENDER" Or .Name = "MIP_ID_REF" Or
+                               .Name = "MIT_ID_REF" Then
                                 .Visible = False
                             End If
                             If .Name = "DATE PURCHASED" Then
@@ -140,7 +141,7 @@ Public Class MKTNG_Inventory
                             For i = 0 To sqlDataSet.Tables("QUERY_DETAILS").Columns.Count - 1
                                 If i = 11 Then
                                     DGVrow_list.Add(Convert.ToDateTime(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i)))
-                                ElseIf i = 7 Or i = 0 Then
+                                ElseIf i = 7 Or i = 0 Or i = 14 Or i = 15 Then
                                     DGVrow_list.Add(Convert.ToInt32(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i)))
                                 ElseIf i = 8 Or i = 9 Or i = 10 Then
                                     DGVrow_list.Add(Convert.ToDecimal(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i)))
@@ -380,7 +381,9 @@ Public Class MKTNG_Inventory
             If (e.RowIndex >= 0 And e.ColumnIndex >= 0) Then
                 Inv_DGV.Rows(e.RowIndex).Selected = True
                 INV_DGV_ROWINDEX = e.RowIndex
-                MI_ID = Inv_DGV.Item("MI_ID", e.RowIndex).Value.ToString
+                MI_ID = Inv_DGV.Item("MI_ID", e.RowIndex).Value
+                MIP_ID_REF = Inv_DGV.Item("MIP_ID_REF", e.RowIndex).Value
+                MIT_ID_REF = Inv_DGV.Item("MIT_ID_REF", e.RowIndex).Value
                 ITEM_CODE = Inv_DGV.Item("ITEM CODE", e.RowIndex).Value.ToString
                 BRAND = Inv_DGV.Item("BRAND", e.RowIndex).Value.ToString
                 ITEM_DESC = Inv_DGV.Item("DESCRIPTION", e.RowIndex).Value.ToString

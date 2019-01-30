@@ -78,7 +78,8 @@ Public Class ColumnVisibility
                     Dim DGVHeaderTxt As String = DGVName.Columns(i).HeaderText
                     Dim DGVVisibility As Boolean = DGVName.Columns(i).Visible
                     With columnChks
-                        If (Not DGVHeaderTxt.Contains("STATUS")) And (Not DGVHeaderTxt.Contains("PICTURE")) Then 'Or Not DGVHeaderTxt.Contains("PICTURE") = True Then
+                        If (Not DGVHeaderTxt.Contains("STATUS")) And (Not DGVHeaderTxt.Contains("PICTURE")) And
+                           (Not DGVHeaderTxt = "MIP_ID_REF") And (Not DGVHeaderTxt = "MIT_ID_REF") Then 'Or Not DGVHeaderTxt.Contains("PICTURE") = True Then
                             .Name = DGVHeaderTxt
                             .Text = DGVHeaderTxt
                             .Checked = DGVVisibility

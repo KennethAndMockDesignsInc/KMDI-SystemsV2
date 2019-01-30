@@ -7,7 +7,7 @@ Module MarketingModule
     Public DGVStrGlobal As String
 
     Public InsertedMI_ID, InsertedMIC_ID, InsertedMISC_ID, InsertedMIE_ID As Integer
-    Public MI_ID As String
+    Public MI_ID, MIP_ID_REF, MIT_ID_REF As Integer
     Public ITEM_CODE As String
     Public BRAND As String
     Public ITEM_DESC As String
@@ -296,6 +296,97 @@ Module MarketingModule
                                                                           @MIE_ID_REF" & Events_ID & ")"
                         sqlCommand.CommandType = CommandType.Text
                         sqlCommand.Parameters.Add("@MI_ID_REF_EVENT" & Events_ID, SqlDbType.Int).Value = InsertedMI_ID
+                        sqlCommand.Parameters.Add("@MIE_ID_REF" & Events_ID, SqlDbType.Int).Value = Events_ID
+                        sqlCommand.ExecuteNonQuery()
+                    Next
+                End If
+                transaction.Commit()
+                sql_Transaction_result = "Committed"
+            End Using
+        End Using
+    End Sub
+    Public Sub Mktng_Inv_ItemUpdate(ByVal StoredProcedureName As String,
+                                    ByVal ITEM_DESC As String,
+                                    ByVal GENDER As String,
+                                    ByVal MARKET_PRICE As Decimal,
+                                    ByVal PURCHASED_PRICE As Decimal,
+                                    ByVal DISCOUNT As Decimal,
+                                    ByVal PURCHASED_DATE As Date,
+                                    ByVal GIFT As Boolean,
+                                    ByVal RAFFLE As Boolean,
+                                    ByVal TIER_1 As Boolean,
+                                    ByVal TIER_2 As Boolean,
+                                    ByVal TIER_3 As Boolean,
+                                    ByVal TIER_4 As Boolean,
+                                    ByVal TIER_5 As Boolean,
+                                    ByVal TIER_6 As Boolean,
+                                    ByVal TIER_7 As Boolean,
+                                    ByVal MIC_ID_REF As Integer,
+                                    ByVal MI_ID As Integer,
+                                    ByVal MIP_ID_REF As Integer,
+                                    ByVal MIT_ID_REF As Integer,
+                                    ByVal SubClass_list As List(Of Integer),
+                                    ByVal Events_list As List(Of Integer),
+                                    Optional Color As String = "",
+                                    Optional BRAND As String = "",
+                                    Optional Size As String = "",
+                                    Optional REMARKS As String = "")
+        Using sqlcon As New SqlConnection(sqlconnString)
+            sqlcon.Open()
+            Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
+                transaction = sqlcon.BeginTransaction(IsolationLevel.RepeatableRead, StoredProcedureName)
+                sqlCommand.Connection = sqlcon
+                sqlCommand.Transaction = transaction
+                sqlCommand.CommandText = StoredProcedureName
+                sqlCommand.CommandType = CommandType.StoredProcedure
+
+                sqlCommand.Parameters.Add("@MIC_ID_REF", SqlDbType.Int).Value = MIC_ID_REF
+                sqlCommand.Parameters.Add("@MIP_ID_REF", SqlDbType.Int).Value = MIP_ID_REF
+                sqlCommand.Parameters.Add("@MIT_ID_REF", SqlDbType.Int).Value = MIT_ID_REF
+                sqlCommand.Parameters.Add("@MI_ID", SqlDbType.Int).Value = MI_ID
+                sqlCommand.Parameters.Add("@ITEM_DESC", SqlDbType.VarChar).Value = ITEM_DESC
+                sqlCommand.Parameters.Add("@GENDER", SqlDbType.VarChar).Value = GENDER
+                sqlCommand.Parameters.Add("@MARKET_PRICE", SqlDbType.Decimal).Value = MARKET_PRICE
+                sqlCommand.Parameters.Add("@PURCHASED_PRICE", SqlDbType.Decimal).Value = PURCHASED_PRICE
+                sqlCommand.Parameters.Add("@DISCOUNT", SqlDbType.Decimal).Value = DISCOUNT
+                sqlCommand.Parameters.Add("@PURCHASED_DATE", SqlDbType.Date).Value = PURCHASED_DATE
+                sqlCommand.Parameters.Add("@GIFT", SqlDbType.Bit).Value = GIFT
+                sqlCommand.Parameters.Add("@RAFFLE", SqlDbType.Bit).Value = RAFFLE
+                sqlCommand.Parameters.Add("@TIER_1", SqlDbType.Bit).Value = TIER_1
+                sqlCommand.Parameters.Add("@TIER_2", SqlDbType.Bit).Value = TIER_2
+                sqlCommand.Parameters.Add("@TIER_3", SqlDbType.Bit).Value = TIER_3
+                sqlCommand.Parameters.Add("@TIER_4", SqlDbType.Bit).Value = TIER_4
+                sqlCommand.Parameters.Add("@TIER_5", SqlDbType.Bit).Value = TIER_5
+                sqlCommand.Parameters.Add("@TIER_6", SqlDbType.Bit).Value = TIER_6
+                sqlCommand.Parameters.Add("@TIER_7", SqlDbType.Bit).Value = TIER_7
+                sqlCommand.Parameters.Add("@Color", SqlDbType.VarChar).Value = Color
+                sqlCommand.Parameters.Add("@BRAND", SqlDbType.VarChar).Value = BRAND
+                sqlCommand.Parameters.Add("@Size", SqlDbType.VarChar).Value = Size
+                sqlCommand.Parameters.Add("@REMARKS", SqlDbType.VarChar).Value = REMARKS
+                'sqlCommand.Parameters.Add("@QR_STATUS", SqlDbType.Bit).Value = QR_STATUS
+                'sqlCommand.Parameters.Add("@QUANTITY", SqlDbType.Int).Value = QUANTITY
+                'sqlCommand.Parameters.Add("@ITEM_CODE", SqlDbType.VarChar).Value = ITEM_CODE
+
+                sqlCommand.ExecuteNonQuery()
+
+                If MI_ID <> Nothing Then
+                    For Each SubClass_ID As Integer In SubClass_list
+                        sqlCommand.CommandText = "INSERT INTO [A_NEW_MKTNG_INV_SUBCLASS_LOOKUP]  ([MI_ID_REF_SUB],
+                                                                                                  [MISC_ID_REF])
+                                                                 VALUES  (@MI_ID_REF_SUB" & SubClass_ID & ",
+                                                                          @MISC_ID_REF" & SubClass_ID & ")"
+                        sqlCommand.CommandType = CommandType.Text
+                        sqlCommand.Parameters.Add("@MI_ID_REF_SUB" & SubClass_ID, SqlDbType.Int).Value = MI_ID
+                        sqlCommand.Parameters.Add("@MISC_ID_REF" & SubClass_ID, SqlDbType.Int).Value = SubClass_ID
+                        sqlCommand.ExecuteNonQuery()
+                    Next
+                    For Each Events_ID As Integer In Events_list
+                        sqlCommand.CommandText = "INSERT INTO [A_NEW_MKTNG_INV_EVENT_TAGS]  ([MI_ID_REF_EVENT],
+                                                                                             [MIE_ID_REF])
+                                                                 VALUES  (@MI_ID_REF_EVENT" & Events_ID & ",
+                                                                          @MIE_ID_REF" & Events_ID & ")"
+                        sqlCommand.CommandType = CommandType.Text
+                        sqlCommand.Parameters.Add("@MI_ID_REF_EVENT" & Events_ID, SqlDbType.Int).Value = MI_ID
                         sqlCommand.Parameters.Add("@MIE_ID_REF" & Events_ID, SqlDbType.Int).Value = Events_ID
                         sqlCommand.ExecuteNonQuery()
                     Next

@@ -90,7 +90,7 @@ Public Class MKTNG_Item
         FormOnload = False
     End Sub
 
-    Sub Add_Item()
+    Sub Save_Item()
         ITEM_CODE_here = Trim(ItemCodeTbox.Text)
         BRAND_here = Trim(BrandTbox.Text)
         ITEM_DESC_here = Trim(ItemDesTbox.Text)
@@ -109,6 +109,9 @@ Public Class MKTNG_Item
         Tier5_bool = Tier5_Chk.Checked
         Tier6_bool = Tier6_Chk.Checked
         Tier7_bool = Tier7_Chk.Checked
+
+        Sub_Class_list.Clear()
+        Events_list.Clear()
 
         If QuantityTbox.Text <> Nothing Or QuantityTbox.Text <> "" Then
             QUANTITY_here = Val(QuantityTbox.Text)
@@ -309,6 +312,10 @@ Public Class MKTNG_Item
                                          Sub_Class_list, Events_list, M_COLOR_here, BRAND_here, M_SIZE_here, REMARKS_here)
 
                 Case "Update_Item"
+                    Mktng_Inv_ItemUpdate("MKTNG_stp_Inv_Item_Update", ITEM_DESC_here, GENDER_here, MARKET_PRICE_here, PURCHASED_PRICE_here,
+                                         EffectiveDiscount, PURCHASED_DATE_here, Gift_bool, Raffle_bool,
+                                         Tier1_bool, Tier2_bool, Tier3_bool, Tier4_bool, Tier5_bool, Tier6_bool, Tier7_bool, MIC_ID_REF_here,
+                                        MI_ID, MIP_ID_REF, MIT_ID_REF, Sub_Class_list, Events_list, M_COLOR_here, BRAND_here, M_SIZE_here, REMARKS_here)
             End Select
 
             Select Case Report_BGW_bool
@@ -593,7 +600,22 @@ Public Class MKTNG_Item
                                                              M_COLOR_here, M_SIZE_here, GENDER_here, QUANTITY_here, MARKET_PRICE_here,
                                                              PURCHASED_PRICE_here, EffectiveDiscount, PURCHASED_DATE, REMARKS_here)
                             KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
+                            End_MktngItemBGW()
 
+                        Case "Update_Item"
+                            MKTNG_Inventory.Inv_DGV.Rows(INV_DGV_ROWINDEX).Cells("BRAND").Value = BRAND_here
+                            MKTNG_Inventory.Inv_DGV.Rows(INV_DGV_ROWINDEX).Cells("DESCRIPTION").Value = ITEM_DESC_here
+                            MKTNG_Inventory.Inv_DGV.Rows(INV_DGV_ROWINDEX).Cells("COLOR").Value = M_COLOR_here
+                            MKTNG_Inventory.Inv_DGV.Rows(INV_DGV_ROWINDEX).Cells("SIZE").Value = M_SIZE_here
+                            MKTNG_Inventory.Inv_DGV.Rows(INV_DGV_ROWINDEX).Cells("GENDER").Value = GENDER_here
+                            MKTNG_Inventory.Inv_DGV.Rows(INV_DGV_ROWINDEX).Cells("MARKET PRICE").Value = MARKET_PRICE_here
+                            MKTNG_Inventory.Inv_DGV.Rows(INV_DGV_ROWINDEX).Cells("PURCHASED PRICE").Value = PURCHASED_PRICE_here
+                            MKTNG_Inventory.Inv_DGV.Rows(INV_DGV_ROWINDEX).Cells("DISCOUNT").Value = EffectiveDiscount
+                            MKTNG_Inventory.Inv_DGV.Rows(INV_DGV_ROWINDEX).Cells("DATE PURCHASED").Value = PURCHASED_DATE_here
+                            MKTNG_Inventory.Inv_DGV.Rows(INV_DGV_ROWINDEX).Cells("REMARKS").Value = REMARKS_here
+
+                            KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
+                            End_MktngItemBGW()
                     End Select
                 Else
                     KMDIPrompts(Me, "Failed", "Failed in Inserting Item", Environment.StackTrace, Nothing, True)
@@ -629,6 +651,11 @@ Public Class MKTNG_Item
             End If
             CreatedCtrlEditMode = sender.Parent.Name
         End If
+        'If Mktng_Cmenu.Visible = True Then
+        '    sender.DisplayFocus = True
+        'ElseIf Mktng_Cmenu.Visible = False Then
+        '    sender.DisplayFocus = False
+        'End If
     End Sub
 
     Private Sub EditToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EditToolStripMenuItem.Click
@@ -685,9 +712,7 @@ Public Class MKTNG_Item
     Private Sub MKTNG_Item_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
         Try
             If (e.Control And e.KeyCode = Keys.S) Then
-                If OpenedByToolStripMenu = "ADD" Then
-                    Add_Item()
-                End If
+                Save_Item()
             ElseIf e.KeyCode = Keys.Escape Then
                 reset_here()
             End If
