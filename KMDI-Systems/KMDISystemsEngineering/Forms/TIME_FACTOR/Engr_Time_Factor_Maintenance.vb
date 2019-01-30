@@ -32,22 +32,22 @@ Public Class Engr_Time_Factor_Maintenance
 
     End Sub
     Sub reset_here()
-        Right_Tbox.Clear()
         LeftTbox_Str = Nothing
         InsertedTFM_ID = Nothing
 
-        Left_Tbox.Clear()
         RightTbox_Str = Nothing
 
         RESET()
         LoadingPB.Visible = False
         Frm_PNL.Enabled = True
         With Left_Tbox
+            .Clear()
             .Style = MetroFramework.MetroColorStyle.Silver
             .UseStyleColors = False
             .CustomButton.Text = "+"
         End With
         With Right_Tbox
+            .Clear()
             .Style = MetroFramework.MetroColorStyle.Silver
             .UseStyleColors = False
             .CustomButton.Text = "+"

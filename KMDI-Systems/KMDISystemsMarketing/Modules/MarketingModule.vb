@@ -6,7 +6,7 @@ Module MarketingModule
     Public OpenedByFormName As Form
     Public DGVStrGlobal As String
 
-    Public InsertedMI_ID, InsertedMIC_ID, InsertedMISC_ID As Integer
+    Public InsertedMI_ID, InsertedMIC_ID, InsertedMISC_ID, InsertedMIE_ID As Integer
     Public MI_ID As String
     Public ITEM_CODE As String
     Public BRAND As String
@@ -108,6 +108,27 @@ Module MarketingModule
             End Using
         End Using
     End Sub
+    Public Sub Mktng_MainClass_Update(ByVal MainClassStr As String,
+                                      ByVal MIC_ID As Integer,
+                                      ByVal StoredProcedureName As String)
+        Using sqlcon As New SqlConnection(sqlconnString)
+            sqlcon.Open()
+            Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
+                transaction = sqlcon.BeginTransaction(IsolationLevel.RepeatableRead, StoredProcedureName)
+                sqlCommand.Connection = sqlcon
+                sqlCommand.Transaction = transaction
+                sqlCommand.CommandText = StoredProcedureName
+                sqlCommand.CommandType = CommandType.StoredProcedure
+
+                sqlCommand.Parameters.Add("@MAIN_CLASS", SqlDbType.VarChar).Value = MainClassStr
+                sqlCommand.Parameters.Add("@MIC_ID", SqlDbType.Int).Value = MIC_ID
+                sqlCommand.ExecuteNonQuery()
+
+                transaction.Commit()
+                sql_Transaction_result = "Committed"
+            End Using
+        End Using
+    End Sub
     Public Sub Mktng_SubClass_Insert(ByVal SubClassStr As String,
                                      ByVal MIC_ID_REF As Integer,
                                      ByVal StoredProcedureName As String)
@@ -126,6 +147,70 @@ Module MarketingModule
                     read.Read()
                     InsertedMISC_ID = read.Item("TAG_ID")
                 End Using
+                transaction.Commit()
+                sql_Transaction_result = "Committed"
+            End Using
+        End Using
+    End Sub
+    Public Sub Mktng_SubClass_Update(ByVal SUB_CLASS As String,
+                                     ByVal MISC_ID As Integer,
+                                     ByVal StoredProcedureName As String)
+        Using sqlcon As New SqlConnection(sqlconnString)
+            sqlcon.Open()
+            Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
+                transaction = sqlcon.BeginTransaction(IsolationLevel.RepeatableRead, StoredProcedureName)
+                sqlCommand.Connection = sqlcon
+                sqlCommand.Transaction = transaction
+                sqlCommand.CommandText = StoredProcedureName
+                sqlCommand.CommandType = CommandType.StoredProcedure
+
+                sqlCommand.Parameters.Add("@SUB_CLASS", SqlDbType.VarChar).Value = SUB_CLASS
+                sqlCommand.Parameters.Add("@MISC_ID", SqlDbType.Int).Value = MISC_ID
+                sqlCommand.ExecuteNonQuery()
+
+                transaction.Commit()
+                sql_Transaction_result = "Committed"
+            End Using
+        End Using
+    End Sub
+    Public Sub Mktng_Event_Insert(ByVal EventStr As String,
+                                  ByVal StoredProcedureName As String)
+        Using sqlcon As New SqlConnection(sqlconnString)
+            sqlcon.Open()
+            Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
+                transaction = sqlcon.BeginTransaction(IsolationLevel.RepeatableRead, StoredProcedureName)
+                sqlCommand.Connection = sqlcon
+                sqlCommand.Transaction = transaction
+                sqlCommand.CommandText = StoredProcedureName
+                sqlCommand.CommandType = CommandType.StoredProcedure
+
+                sqlCommand.Parameters.Add("@Event", SqlDbType.VarChar).Value = EventStr
+                Using read As SqlDataReader = sqlCommand.ExecuteReader
+                    read.Read()
+                    InsertedMIE_ID = read.Item("TAG_ID")
+                End Using
+
+                transaction.Commit()
+                sql_Transaction_result = "Committed"
+            End Using
+        End Using
+    End Sub
+    Public Sub Mktng_Event_Update(ByVal EventStr As String,
+                                  ByVal MIE_ID As Integer,
+                                  ByVal StoredProcedureName As String)
+        Using sqlcon As New SqlConnection(sqlconnString)
+            sqlcon.Open()
+            Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
+                transaction = sqlcon.BeginTransaction(IsolationLevel.RepeatableRead, StoredProcedureName)
+                sqlCommand.Connection = sqlcon
+                sqlCommand.Transaction = transaction
+                sqlCommand.CommandText = StoredProcedureName
+                sqlCommand.CommandType = CommandType.StoredProcedure
+
+                sqlCommand.Parameters.Add("@Event", SqlDbType.VarChar).Value = EventStr
+                sqlCommand.Parameters.Add("@MIE_ID", SqlDbType.Int).Value = MIE_ID
+                sqlCommand.ExecuteNonQuery()
+
                 transaction.Commit()
                 sql_Transaction_result = "Committed"
             End Using

@@ -3,14 +3,12 @@ Imports System.ComponentModel
 Imports System.Threading.Thread
 Imports MetroFramework.Controls
 Imports MetroFramework
-
 Public Class MKTNG_Item
     Public OpenedByToolStripMenu As String
     Public MktngItem_BGW As BackgroundWorker = New BackgroundWorker
     Public MktngItem_TODO As String
-    Dim SubClassChkToolTip As New MetroFramework.Components.MetroToolTip
-    Dim MainClassSTR, SubClassSTR, QRCode, max_MI As String
-    Dim MainClassID As Integer
+    Dim MainClassSTR, SubClassSTR, EventStr, QRCode, max_MI As String
+    Dim MainClassID As Integer = Nothing, MIC_ID_REF_here As Integer
     Dim arr_SubClassID As New List(Of Integer) '//MISC_ID
     Dim arr_EventID As New List(Of Integer) '//MIE_ID
     Dim Sub_Class_list As New List(Of Integer)
@@ -31,17 +29,17 @@ Public Class MKTNG_Item
     Dim PURCHASED_DATE_here As Date
     Dim REMARKS_here As String
     Dim ITEM_PICTURE_here As String
-    Dim MIC_ID_REF_here As Integer
     Public Gift_bool, Raffle_bool,
            Tier1_bool, Tier2_bool, Tier3_bool, Tier4_bool, Tier5_bool, Tier6_bool, Tier7_bool As Boolean
 
+    Dim MainClassID_toUpdate, SubClassID_toUpdate, EventID_toUpdate As Integer
     Public Sub Start_MktngItemBGW()
         If MktngItem_BGW.IsBusy <> True Then
             LoadingPB.Visible = True
             FRM_Pnl.Enabled = False
             MktngItem_BGW.RunWorkerAsync()
         Else
-            MetroFramework.MetroMessageBox.Show(Me, "Please Wait!", "Loading", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            MetroMessageBox.Show(Me, "Please Wait!", "Loading", MessageBoxButtons.OK, MessageBoxIcon.Warning)
         End If
     End Sub
 
@@ -58,6 +56,31 @@ Public Class MKTNG_Item
         PURCHASED_DATE_here = Nothing
         REMARKS_here = Nothing
         ITEM_PICTURE_here = Nothing
+
+        MainClassSTR = Nothing
+        SubClassSTR = Nothing
+        EventStr = Nothing
+        MainClassID_toUpdate = Nothing
+        SubClassID_toUpdate = Nothing
+        EventID_toUpdate = Nothing
+        With MainClass_Tbox
+            .Clear()
+            .Style = MetroColorStyle.Teal
+            .UseStyleColors = False
+            .CustomButton.Text = "+"
+        End With
+        With SubClass_Tbox
+            .Clear()
+            .Style = MetroColorStyle.Teal
+            .UseStyleColors = False
+            .CustomButton.Text = "+"
+        End With
+        With Event_Tbox
+            .Clear()
+            .Style = MetroColorStyle.Teal
+            .UseStyleColors = False
+            .CustomButton.Text = "+"
+        End With
     End Sub
     Public Sub End_MktngItemBGW()
         Mktng_SearchStr = Nothing
@@ -236,32 +259,55 @@ Public Class MKTNG_Item
                 Case "Load_Update_Item"
                     Mktng_QUERY_INSTANCE = "Loading_using_EqualSearch"
                     Mktng_Query_Select_STP(MI_ID, "MKTNG_stp_Inv_FetchItem")
+
                 Case "MainClass"
                     Cr8Control = True
                     Report_BGW_bool = True
                     Mktng_QUERY_INSTANCE = "Loading_using_EqualSearch"
                     Mktng_Query_Select_STP("1", "MKTNG_stp_Item_MainClass")
+
                 Case "SubClass"
                     Report_BGW_bool = True
                     Mktng_QUERY_INSTANCE = "Loading_using_EqualSearch"
                     Mktng_Query_Select_STP(MainClassID, "MKTNG_stp_Item_SubClass")
+
                 Case "Load_Events"
                     Report_BGW_bool = True
                     Mktng_QUERY_INSTANCE = "Loading_using_EqualSearch"
                     Mktng_Query_Select_STP("1", "MKTNG_stp_Inv_Events")
+
                 Case "QR"
                     Mktng_QUERY_INSTANCE = "Loading_using_EqualSearch"
                     Mktng_Query_Select_STP("1", "MKTNG_stp_Inv_MAXID")
+
                 Case "MainClass_Insert"
                     Cr8Control = True
                     Mktng_MainClass_Insert(MainClassSTR, "MKTNG_stp_Item_MainClass_Insert")
+
+                Case "MainClass_Update"
+                    Mktng_MainClass_Update(MainClassSTR, MainClassID_toUpdate, "MKTNG_stp_Item_MainClass_Update")
+
                 Case "SubClass_Insert"
+                    Cr8Control = True
                     Mktng_SubClass_Insert(SubClassSTR, MainClassID, "MKTNG_stp_Item_SubClass_Insert")
+
+                Case "SubClass_Update"
+                    Mktng_SubClass_Update(SubClassSTR, SubClassID_toUpdate, "MKTNG_stp_Item_SubClass_Update")
+
+                Case "Event_Insert"
+                    Cr8Control = True
+                    Mktng_Event_Insert(EventStr, "MKTNG_stp_Inv_Events_Insert")
+
+                Case "Event_Update"
+                    Cr8Control = True
+                    Mktng_Event_Update(EventStr, EventID_toUpdate, "MKTNG_stp_Inv_Events_Update")
+
                 Case "Add_Item"
                     Mktng_Inv_ItemInsert("MKTNG_stp_Inv_Item_Insert", ITEM_CODE_here, ITEM_DESC_here, GENDER_here, MARKET_PRICE_here, PURCHASED_PRICE_here,
                                          EffectiveDiscount, QUANTITY_here, PURCHASED_DATE_here, if_Generated_QR_Status, Gift_bool, Raffle_bool,
                                          Tier1_bool, Tier2_bool, Tier3_bool, Tier4_bool, Tier5_bool, Tier6_bool, Tier7_bool, MIC_ID_REF_here,
                                          Sub_Class_list, Events_list, M_COLOR_here, BRAND_here, M_SIZE_here, REMARKS_here)
+
                 Case "Update_Item"
             End Select
 
@@ -328,10 +374,10 @@ Public Class MKTNG_Item
                     Select Case ControlType
                         Case "MetroRadioButton"
                             RdBtn_Properties("Dynamic", Rdbtn, ItemName, TagName, Width,
-                                             e.ProgressPercentage, Nothing, MetroCheckBoxSize.Tall, False)
+                                             e.ProgressPercentage, Mktng_Cmenu, MetroCheckBoxSize.Tall, False)
                         Case "MetroCheckBox"
                             Chkbox_Properties("Dynamic", Chkbox, ItemName, TagName, Width,
-                                              e.ProgressPercentage, Nothing, MetroControlSize, False)
+                                              e.ProgressPercentage, Mktng_Cmenu, MetroControlSize, False)
                     End Select
 
 
@@ -342,6 +388,7 @@ Public Class MKTNG_Item
                             End If
 
                             AddHandler Rdbtn.Click, AddressOf ClassRbtn_Clicked
+                            AddHandler Rdbtn.MouseDown, AddressOf CreatedControls_MouseDown
                             MainClass_FLP.Controls.Add(Rdbtn)
 
                         Case "SubClass"
@@ -349,6 +396,7 @@ Public Class MKTNG_Item
                                 SubClass_FLP.Controls.Clear()
                             End If
 
+                            AddHandler Chkbox.MouseDown, AddressOf CreatedControls_MouseDown
                             SubClass_FLP.Controls.Add(Chkbox)
 
                         Case "Load_Events"
@@ -356,48 +404,12 @@ Public Class MKTNG_Item
                                 Events_FLP.Controls.Clear()
                             End If
 
+                            AddHandler Chkbox.MouseDown, AddressOf CreatedControls_MouseDown
                             Events_FLP.Controls.Add(Chkbox)
                     End Select
-
                 Case False
             End Select
 
-
-
-
-            'Select Case MktngItem_TODO
-            '    Case "MainClass"
-            '        With ClassRbtn
-            '            .Name = sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item("MAIN_CLASS").ToString
-            '            .Text = .Name
-            '            .Tag = sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item("MIC_ID").ToString
-            '            .FontSize = MetroFramework.MetroCheckBoxSize.Tall
-            '            SubClassChkToolTip.SetToolTip(ClassRbtn, .Text)
-            '            AddHandler .Click, AddressOf ClassRbtn_Clicked
-            '            MainClass_FLP.Controls.Add(ClassRbtn)
-            '        End With
-            '    Case "SubClass"
-            '        Dim SubClassChk As New MetroFramework.Controls.MetroCheckBox
-            '        With SubClassChk
-            '            .Name = sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item("SUB_CLASS").ToString
-            '            .Text = .Name
-            '            .Tag = sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item("MISC_ID").ToString
-            '            .FontSize = MetroFramework.MetroCheckBoxSize.Medium
-            '            SubClassChkToolTip.SetToolTip(SubClassChk, .Text)
-            '            SubClass_FLP.Controls.Add(SubClassChk)
-            '        End With
-            '    Case "Load_Events"
-            '        Dim EventsChk As New MetroFramework.Controls.MetroCheckBox
-            '        With EventsChk
-            '            .Name = sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item("EVENT").ToString
-            '            .Text = .Name
-            '            .Tag = sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item("MIE_ID").ToString
-            '            .Size = New Size(246, 25)
-            '            .FontSize = MetroFramework.MetroCheckBoxSize.Tall
-            '            SubClassChkToolTip.SetToolTip(EventsChk, .Text)
-            '            Events_FLP.Controls.Add(EventsChk)
-            '        End With
-            'End Select
         Catch ex As Exception
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
             LoadingPB.Visible = False
@@ -475,30 +487,67 @@ Public Class MKTNG_Item
                             End_MktngItemBGW()
 
                         Case "MainClass_Insert"
-                            'MainClass_Tbox.Clear()
-                            'MktngItem_TODO = "MainClass"
-                            'Start_MktngItemBGW()
                             Dim RdBtn As New MetroRadioButton
                             Select Case Cr8Control
                                 Case True
                                     RdBtn_Properties("Static", RdBtn, MainClassSTR, InsertedMIC_ID, 150,
-                                                     Nothing, Nothing, MetroCheckBoxSize.Tall, False)
+                                                     Nothing, Mktng_Cmenu, MetroCheckBoxSize.Tall, False)
                                     MainClass_FLP.Controls.Add(RdBtn)
                                     AddHandler RdBtn.Click, AddressOf ClassRbtn_Clicked
+                                    AddHandler RdBtn.MouseDown, AddressOf CreatedControls_MouseDown
                             End Select
                             End_MktngItemBGW()
 
+                        Case "MainClass_Update"
+                            For Each ctrl In MainClass_FLP.Controls
+                                If ctrl.Tag = MainClassID_toUpdate Then
+                                    ctrl.Text = Replace(MainClassSTR, "&", "&&")
+                                    GlobalToolTip.SetToolTip(ctrl, ctrl.Text)
+                                End If
+                            Next
+                            reset_here()
+                            End_MktngItemBGW()
+
                         Case "SubClass_Insert"
-                            'SubClass_Tbox.Clear()
-                            'MktngItem_TODO = "SubClass"
-                            'Start_MktngItemBGW()
                             Dim Chkbox As New MetroCheckBox
                             Select Case Cr8Control
                                 Case True
                                     Chkbox_Properties("Static", Chkbox, SubClassSTR, InsertedMISC_ID, 100,
-                                                      Nothing, Nothing, MetroCheckBoxSize.Medium, False)
+                                                      Nothing, Mktng_Cmenu, MetroCheckBoxSize.Medium, False)
                                     SubClass_FLP.Controls.Add(Chkbox)
+                                    AddHandler Chkbox.MouseDown, AddressOf CreatedControls_MouseDown
                             End Select
+                            End_MktngItemBGW()
+
+                        Case "SubClass_Update"
+                            For Each ctrl In SubClass_FLP.Controls
+                                If ctrl.Tag = SubClassID_toUpdate Then
+                                    ctrl.Text = Replace(SubClassSTR, "&", "&&")
+                                    GlobalToolTip.SetToolTip(ctrl, ctrl.Text)
+                                End If
+                            Next
+                            reset_here()
+                            End_MktngItemBGW()
+
+                        Case "Event_Insert"
+                            Dim Chkbox As New MetroCheckBox
+                            Select Case Cr8Control
+                                Case True
+                                    Chkbox_Properties("Static", Chkbox, EventStr, InsertedMIE_ID, 246,
+                                                      Nothing, Mktng_Cmenu, MetroCheckBoxSize.Tall, False)
+                                    Events_FLP.Controls.Add(Chkbox)
+                                    AddHandler Chkbox.MouseDown, AddressOf CreatedControls_MouseDown
+                            End Select
+                            End_MktngItemBGW()
+
+                        Case "Event_Update"
+                            For Each ctrl In Events_FLP.Controls
+                                If ctrl.Tag = EventID_toUpdate Then
+                                    ctrl.Text = Replace(EventStr, "&", "&&")
+                                    GlobalToolTip.SetToolTip(ctrl, ctrl.Text)
+                                End If
+                            Next
+                            reset_here()
                             End_MktngItemBGW()
 
                         Case "Load_Events"
@@ -564,6 +613,74 @@ Public Class MKTNG_Item
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
         End Try
     End Sub
+    Dim CreatedCtrlEditMode As String
+    Private Sub CreatedControls_MouseDown(sender As Object, e As MouseEventArgs)
+        If e.Button = MouseButtons.Right Then
+            sender.Select
+            If sender.Parent.Name = "MainClass_FLP" Then
+                MainClassSTR = sender.Text
+                MainClassID_toUpdate = sender.Tag
+            ElseIf sender.Parent.Name = "SubClass_FLP" Then
+                SubClassSTR = sender.Text
+                SubClassID_toUpdate = sender.Tag
+            ElseIf sender.Parent.Name = "Events_FLP" Then
+                EventStr = sender.Text
+                EventID_toUpdate = sender.Tag
+            End If
+            CreatedCtrlEditMode = sender.Parent.Name
+        End If
+    End Sub
+
+    Private Sub EditToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EditToolStripMenuItem.Click
+        Try
+            If CreatedCtrlEditMode = "MainClass_FLP" Then
+                With MainClass_Tbox
+                    .UseStyleColors = True
+                    .Style = MetroColorStyle.Red
+                    .CustomButton.Text = "U"
+                    .Text = Replace(MainClassSTR, "&&", "&")
+                End With
+
+            ElseIf CreatedCtrlEditMode = "SubClass_FLP" Then
+                With SubClass_Tbox
+                    .UseStyleColors = True
+                    .Style = MetroColorStyle.Red
+                    .CustomButton.Text = "U"
+                    .Text = Replace(SubClassSTR, "&&", "&")
+                End With
+
+            ElseIf CreatedCtrlEditMode = "Events_FLP" Then
+                With Event_Tbox
+                    .UseStyleColors = True
+                    .Style = MetroColorStyle.Red
+                    .CustomButton.Text = "U"
+                    .Text = Replace(EventStr, "&&", "&")
+                End With
+
+            End If
+        Catch ex As Exception
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
+        End Try
+    End Sub
+
+    Private Sub DeleteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DeleteToolStripMenuItem.Click
+        Try
+            KMDIPrompts(Me, "Question", "Are you sure you want to Delete?", Nothing, Nothing, True)
+            If QuestionPromptAnswer = 6 Then
+                If CreatedCtrlEditMode = "MainClass_FLP" Then
+
+                ElseIf CreatedCtrlEditMode = "SubClass_FLP" Then
+
+                ElseIf CreatedCtrlEditMode = "Events_FLP" Then
+
+                End If
+                MktngItem_TODO = "TFM_Delete"
+                Start_MktngItemBGW()
+            End If
+        Catch ex As Exception
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
+        End Try
+    End Sub
 
     Private Sub MKTNG_Item_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
         Try
@@ -572,7 +689,7 @@ Public Class MKTNG_Item
                     Add_Item()
                 End If
             ElseIf e.KeyCode = Keys.Escape Then
-                Close()
+                reset_here()
             End If
         Catch ex As Exception
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
@@ -604,23 +721,7 @@ Public Class MKTNG_Item
             e.Cancel = False
         End If
     End Sub
-    Sub classification_insert(ByVal MODE As String)
-        Select Case MODE
-            Case "MAIN"
-                If MainClassSTR = Nothing Or MainClassSTR = "" Then
-                    KMDIPrompts(Me, "DotNetError", Nothing, Nothing, Nothing, True, True, "Field cannot be empty")
-                Else
-                    MktngItem_TODO = "MainClass_Insert"
-                End If
-            Case "SUB"
-                If SubClassSTR = Nothing Or SubClassSTR = "" Then
-                    KMDIPrompts(Me, "DotNetError", Nothing, Nothing, Nothing, True, True, "Field cannot be empty")
-                Else
-                    MktngItem_TODO = "SubClass_Insert"
-                End If
-        End Select
-        Start_MktngItemBGW()
-    End Sub
+
     Private Sub ItemCodeTbox_ButtonClick(sender As Object, e As EventArgs) Handles ItemCodeTbox.ButtonClick
         Try
             MktngItem_TODO = "QR"
@@ -637,7 +738,26 @@ Public Class MKTNG_Item
     Private Sub MainClass_Tbox_ButtonClick(sender As Object, e As EventArgs) Handles MainClass_Tbox.ButtonClick
         Try
             MainClassSTR = Trim(MainClass_Tbox.Text)
-            classification_insert("MAIN")
+            If MainClass_Tbox.CustomButton.Text = "+" And MainClass_Tbox.Style = MetroColorStyle.Teal Then
+                If MainClassSTR <> Nothing Or MainClassSTR <> "" Then
+                    MktngItem_TODO = "MainClass_Insert"
+                    Start_MktngItemBGW()
+                Else
+                    KMDIPrompts(Me, "UserWarning", Nothing, Nothing, Nothing, True, True, "Field cannot be empty")
+                End If
+            ElseIf MainClass_Tbox.CustomButton.Text = "U" And MainClass_Tbox.Style = MetroColorStyle.Red Then
+                If MainClassSTR <> Nothing Or MainClassSTR <> "" Then
+                    If MainClassID_toUpdate <> Nothing Then
+                        MktngItem_TODO = "MainClass_Update"
+                        Start_MktngItemBGW()
+                    Else
+                        KMDIPrompts(Me, "UserWarning", "MainClassID_toUpdate is nothing", Nothing, Nothing, True, True, "Select Main Class")
+                    End If
+                Else
+                    KMDIPrompts(Me, "UserWarning", "MainClassSTR is nothing", Nothing, Nothing, True, True, "Field cannot be empty")
+                End If
+            End If
+
         Catch ex As Exception
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
         End Try
@@ -646,12 +766,60 @@ Public Class MKTNG_Item
     Private Sub SubClass_Tbox_ButtonClick(sender As Object, e As EventArgs) Handles SubClass_Tbox.ButtonClick
         Try
             SubClassSTR = Trim(SubClass_Tbox.Text)
-            classification_insert("SUB")
+            If SubClass_Tbox.CustomButton.Text = "+" And SubClass_Tbox.Style = MetroColorStyle.Teal Then
+                If SubClassSTR <> Nothing Or SubClassSTR <> "" Then
+                    If MainClassID <> Nothing Then
+                        MktngItem_TODO = "SubClass_Insert"
+                        Start_MktngItemBGW()
+                    Else
+                        KMDIPrompts(Me, "UserWarning", "Main Class is nothing", Environment.StackTrace, Nothing, True, True, "Select Main Class")
+                    End If
+                Else
+                    KMDIPrompts(Me, "UserWarning", "SubClass_Tbox is nothing", Environment.StackTrace, Nothing, True, True, "Field cannot be empty")
+                End If
+            ElseIf SubClass_Tbox.CustomButton.Text = "U" And SubClass_Tbox.Style = MetroColorStyle.Red Then
+                If SubClassSTR <> Nothing Or SubClassSTR <> "" Then
+                    If SubClassID_toUpdate <> Nothing Then
+                        MktngItem_TODO = "SubClass_Update"
+                        Start_MktngItemBGW()
+                    Else
+                        KMDIPrompts(Me, "UserWarning", "SubClassID_toUpdate is nothing", Nothing, Nothing, True, True, "Select Sub Class")
+                    End If
+                Else
+                    KMDIPrompts(Me, "UserWarning", "SubClass_Tbox is nothing", Nothing, Nothing, True, True, "Field cannot be empty")
+                End If
+            End If
+
         Catch ex As Exception
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
         End Try
     End Sub
-
+    Private Sub Event_Tbox_ButtonClick(sender As Object, e As EventArgs) Handles Event_Tbox.ButtonClick
+        Try
+            EventStr = Trim(Event_Tbox.Text)
+            If Event_Tbox.CustomButton.Text = "+" And Event_Tbox.Style = MetroColorStyle.Teal Then
+                If EventStr <> Nothing Or EventStr <> "" Then
+                    MktngItem_TODO = "Event_Insert"
+                    Start_MktngItemBGW()
+                Else
+                    KMDIPrompts(Me, "UserWarning", "EventStr is nothing", Nothing, Nothing, True, True, "Field cannot be empty")
+                End If
+            ElseIf Event_Tbox.CustomButton.Text = "U" And Event_Tbox.Style = MetroColorStyle.Red Then
+                If EventStr <> Nothing Or EventStr <> "" Then
+                    If EventID_toUpdate <> Nothing Then
+                        MktngItem_TODO = "Event_Update"
+                        Start_MktngItemBGW()
+                    Else
+                        KMDIPrompts(Me, "UserWarning", "EventID_toUpdate is nothing", Nothing, Nothing, True, True, "Select Event")
+                    End If
+                Else
+                    KMDIPrompts(Me, "UserWarning", "EventStr is nothing", Nothing, Nothing, True, True, "Field cannot be empty")
+                End If
+            End If
+        Catch ex As Exception
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
+        End Try
+    End Sub
     Private Sub PurchasedPriceTbox_TextChanged(sender As Object, e As EventArgs) Handles PurchasedPriceTbox.TextChanged
         Try
             If PurchasedPriceTbox.Text = Nothing Or PurchasedPriceTbox.Text = "" Then
@@ -735,8 +903,7 @@ Public Class MKTNG_Item
     Private Sub MainClass_Tbox_KeyDown(sender As Object, e As KeyEventArgs) Handles MainClass_Tbox.KeyDown
         Try
             If e.KeyCode = Keys.Enter Then
-                MainClassSTR = Trim(MainClass_Tbox.Text)
-                classification_insert("MAIN")
+                MainClass_Tbox.CustomButton.PerformClick()
             End If
         Catch ex As Exception
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
@@ -746,8 +913,17 @@ Public Class MKTNG_Item
     Private Sub SubClass_Tbox_KeyDown(sender As Object, e As KeyEventArgs) Handles SubClass_Tbox.KeyDown
         Try
             If e.KeyCode = Keys.Enter Then
-                SubClassSTR = Trim(SubClass_Tbox.Text)
-                classification_insert("SUB")
+                SubClass_Tbox.CustomButton.PerformClick()
+            End If
+        Catch ex As Exception
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
+        End Try
+    End Sub
+
+    Private Sub Event_Tbox_KeyDown(sender As Object, e As KeyEventArgs) Handles Event_Tbox.KeyDown
+        Try
+            If e.KeyCode = Keys.Enter Then
+                Event_Tbox.CustomButton.PerformClick()
             End If
         Catch ex As Exception
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)

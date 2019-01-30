@@ -22,6 +22,7 @@ Partial Class MKTNG_Item
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MKTNG_Item))
         Me.Mktng_InvLBL = New MetroFramework.Controls.MetroLabel()
         Me.FRM_Pnl = New MetroFramework.Controls.MetroPanel()
@@ -71,9 +72,13 @@ Partial Class MKTNG_Item
         Me.SizeTbox = New MetroFramework.Controls.MetroTextBox()
         Me.MarketPriceTbox = New MetroFramework.Controls.MetroTextBox()
         Me.LoadingPB = New System.Windows.Forms.PictureBox()
+        Me.Mktng_Cmenu = New MetroFramework.Controls.MetroContextMenu(Me.components)
+        Me.EditToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.FRM_Pnl.SuspendLayout()
         Me.Panel1.SuspendLayout()
         CType(Me.LoadingPB, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Mktng_Cmenu.SuspendLayout()
         Me.SuspendLayout()
         '
         'Mktng_InvLBL
@@ -91,6 +96,10 @@ Partial Class MKTNG_Item
         '
         Me.FRM_Pnl.AutoScroll = True
         Me.FRM_Pnl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.FRM_Pnl.Controls.Add(Me.SubClass_Tbox)
+        Me.FRM_Pnl.Controls.Add(Me.MetroLabel12)
+        Me.FRM_Pnl.Controls.Add(Me.SubClass_FLP)
+        Me.FRM_Pnl.Controls.Add(Me.MainClass_Tbox)
         Me.FRM_Pnl.Controls.Add(Me.Event_Tbox)
         Me.FRM_Pnl.Controls.Add(Me.MetroLabel16)
         Me.FRM_Pnl.Controls.Add(Me.QuantityTbox)
@@ -98,12 +107,8 @@ Partial Class MKTNG_Item
         Me.FRM_Pnl.Controls.Add(Me.Panel1)
         Me.FRM_Pnl.Controls.Add(Me.MetroLabel13)
         Me.FRM_Pnl.Controls.Add(Me.Events_FLP)
-        Me.FRM_Pnl.Controls.Add(Me.MetroLabel12)
         Me.FRM_Pnl.Controls.Add(Me.MetroLabel11)
-        Me.FRM_Pnl.Controls.Add(Me.SubClass_Tbox)
-        Me.FRM_Pnl.Controls.Add(Me.MainClass_Tbox)
         Me.FRM_Pnl.Controls.Add(Me.MetroButton1)
-        Me.FRM_Pnl.Controls.Add(Me.SubClass_FLP)
         Me.FRM_Pnl.Controls.Add(Me.MainClass_FLP)
         Me.FRM_Pnl.Controls.Add(Me.RafflePurpose_Chk)
         Me.FRM_Pnl.Controls.Add(Me.GiftPurpose_Chk)
@@ -160,13 +165,13 @@ Partial Class MKTNG_Item
         Me.Event_Tbox.CustomButton.Size = New System.Drawing.Size(27, 27)
         Me.Event_Tbox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
         Me.Event_Tbox.CustomButton.TabIndex = 1
-        Me.Event_Tbox.CustomButton.Text = "Sav"
+        Me.Event_Tbox.CustomButton.Text = "+"
         Me.Event_Tbox.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
         Me.Event_Tbox.CustomButton.UseSelectable = True
         Me.Event_Tbox.FontSize = MetroFramework.MetroTextBoxSize.Tall
         Me.Event_Tbox.ForeColor = System.Drawing.Color.Black
         Me.Event_Tbox.Lines = New String(-1) {}
-        Me.Event_Tbox.Location = New System.Drawing.Point(7, 424)
+        Me.Event_Tbox.Location = New System.Drawing.Point(7, 417)
         Me.Event_Tbox.MaxLength = 32767
         Me.Event_Tbox.Name = "Event_Tbox"
         Me.Event_Tbox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
@@ -235,7 +240,7 @@ Partial Class MKTNG_Item
         'MetroLabel14
         '
         Me.MetroLabel14.AutoSize = True
-        Me.MetroLabel14.Location = New System.Drawing.Point(362, 425)
+        Me.MetroLabel14.Location = New System.Drawing.Point(362, 413)
         Me.MetroLabel14.Name = "MetroLabel14"
         Me.MetroLabel14.Size = New System.Drawing.Size(59, 19)
         Me.MetroLabel14.TabIndex = 57
@@ -245,10 +250,10 @@ Partial Class MKTNG_Item
         '
         Me.Panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.Panel1.Controls.Add(Me.RemarksTbox)
-        Me.Panel1.Location = New System.Drawing.Point(350, 435)
+        Me.Panel1.Location = New System.Drawing.Point(350, 427)
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Padding = New System.Windows.Forms.Padding(5, 15, 5, 5)
-        Me.Panel1.Size = New System.Drawing.Size(337, 172)
+        Me.Panel1.Size = New System.Drawing.Size(337, 180)
         Me.Panel1.TabIndex = 25
         '
         'RemarksTbox
@@ -257,9 +262,9 @@ Partial Class MKTNG_Item
         '
         '
         Me.RemarksTbox.CustomButton.Image = Nothing
-        Me.RemarksTbox.CustomButton.Location = New System.Drawing.Point(177, 2)
+        Me.RemarksTbox.CustomButton.Location = New System.Drawing.Point(169, 2)
         Me.RemarksTbox.CustomButton.Name = ""
-        Me.RemarksTbox.CustomButton.Size = New System.Drawing.Size(145, 145)
+        Me.RemarksTbox.CustomButton.Size = New System.Drawing.Size(153, 153)
         Me.RemarksTbox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
         Me.RemarksTbox.CustomButton.TabIndex = 1
         Me.RemarksTbox.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
@@ -278,7 +283,7 @@ Partial Class MKTNG_Item
         Me.RemarksTbox.SelectedText = ""
         Me.RemarksTbox.SelectionLength = 0
         Me.RemarksTbox.SelectionStart = 0
-        Me.RemarksTbox.Size = New System.Drawing.Size(325, 150)
+        Me.RemarksTbox.Size = New System.Drawing.Size(325, 158)
         Me.RemarksTbox.Style = MetroFramework.MetroColorStyle.Teal
         Me.RemarksTbox.TabIndex = 26
         Me.RemarksTbox.Theme = MetroFramework.MetroThemeStyle.Dark
@@ -292,7 +297,7 @@ Partial Class MKTNG_Item
         'MetroLabel13
         '
         Me.MetroLabel13.AutoSize = True
-        Me.MetroLabel13.Location = New System.Drawing.Point(19, 451)
+        Me.MetroLabel13.Location = New System.Drawing.Point(19, 447)
         Me.MetroLabel13.Name = "MetroLabel13"
         Me.MetroLabel13.Size = New System.Drawing.Size(90, 19)
         Me.MetroLabel13.TabIndex = 614
@@ -304,14 +309,13 @@ Partial Class MKTNG_Item
         Me.Events_FLP.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.Events_FLP.Location = New System.Drawing.Point(7, 460)
         Me.Events_FLP.Name = "Events_FLP"
-        Me.Events_FLP.Padding = New System.Windows.Forms.Padding(0, 10, 0, 0)
         Me.Events_FLP.Size = New System.Drawing.Size(337, 147)
         Me.Events_FLP.TabIndex = 24
         '
         'MetroLabel12
         '
         Me.MetroLabel12.AutoSize = True
-        Me.MetroLabel12.Location = New System.Drawing.Point(362, 259)
+        Me.MetroLabel12.Location = New System.Drawing.Point(362, 254)
         Me.MetroLabel12.Name = "MetroLabel12"
         Me.MetroLabel12.Size = New System.Drawing.Size(109, 19)
         Me.MetroLabel12.TabIndex = 614
@@ -320,7 +324,7 @@ Partial Class MKTNG_Item
         'MetroLabel11
         '
         Me.MetroLabel11.AutoSize = True
-        Me.MetroLabel11.Location = New System.Drawing.Point(19, 259)
+        Me.MetroLabel11.Location = New System.Drawing.Point(19, 254)
         Me.MetroLabel11.Name = "MetroLabel11"
         Me.MetroLabel11.Size = New System.Drawing.Size(116, 19)
         Me.MetroLabel11.TabIndex = 613
@@ -337,7 +341,7 @@ Partial Class MKTNG_Item
         Me.SubClass_Tbox.CustomButton.Size = New System.Drawing.Size(27, 27)
         Me.SubClass_Tbox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
         Me.SubClass_Tbox.CustomButton.TabIndex = 1
-        Me.SubClass_Tbox.CustomButton.Text = "Sav"
+        Me.SubClass_Tbox.CustomButton.Text = "+"
         Me.SubClass_Tbox.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
         Me.SubClass_Tbox.CustomButton.UseSelectable = True
         Me.SubClass_Tbox.FontSize = MetroFramework.MetroTextBoxSize.Tall
@@ -375,7 +379,7 @@ Partial Class MKTNG_Item
         Me.MainClass_Tbox.CustomButton.Size = New System.Drawing.Size(27, 27)
         Me.MainClass_Tbox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
         Me.MainClass_Tbox.CustomButton.TabIndex = 1
-        Me.MainClass_Tbox.CustomButton.Text = "Sav"
+        Me.MainClass_Tbox.CustomButton.Text = "+"
         Me.MainClass_Tbox.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
         Me.MainClass_Tbox.CustomButton.UseSelectable = True
         Me.MainClass_Tbox.FontSize = MetroFramework.MetroTextBoxSize.Tall
@@ -418,7 +422,7 @@ Partial Class MKTNG_Item
         '
         Me.SubClass_FLP.AutoScroll = True
         Me.SubClass_FLP.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.SubClass_FLP.Location = New System.Drawing.Point(350, 271)
+        Me.SubClass_FLP.Location = New System.Drawing.Point(350, 266)
         Me.SubClass_FLP.Name = "SubClass_FLP"
         Me.SubClass_FLP.Size = New System.Drawing.Size(337, 147)
         Me.SubClass_FLP.TabIndex = 23
@@ -427,7 +431,7 @@ Partial Class MKTNG_Item
         '
         Me.MainClass_FLP.AutoScroll = True
         Me.MainClass_FLP.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.MainClass_FLP.Location = New System.Drawing.Point(7, 271)
+        Me.MainClass_FLP.Location = New System.Drawing.Point(7, 266)
         Me.MainClass_FLP.Name = "MainClass_FLP"
         Me.MainClass_FLP.Size = New System.Drawing.Size(337, 147)
         Me.MainClass_FLP.TabIndex = 22
@@ -945,6 +949,25 @@ Partial Class MKTNG_Item
         Me.LoadingPB.TabIndex = 612
         Me.LoadingPB.TabStop = False
         '
+        'Mktng_Cmenu
+        '
+        Me.Mktng_Cmenu.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        Me.Mktng_Cmenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.EditToolStripMenuItem, Me.DeleteToolStripMenuItem})
+        Me.Mktng_Cmenu.Name = "Mktng_Cmenu"
+        Me.Mktng_Cmenu.Size = New System.Drawing.Size(108, 48)
+        '
+        'EditToolStripMenuItem
+        '
+        Me.EditToolStripMenuItem.Name = "EditToolStripMenuItem"
+        Me.EditToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.EditToolStripMenuItem.Text = "Edit"
+        '
+        'DeleteToolStripMenuItem
+        '
+        Me.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem"
+        Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.DeleteToolStripMenuItem.Text = "Delete"
+        '
         'MKTNG_Item
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -962,6 +985,7 @@ Partial Class MKTNG_Item
         Me.FRM_Pnl.PerformLayout()
         Me.Panel1.ResumeLayout(False)
         CType(Me.LoadingPB, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Mktng_Cmenu.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1015,4 +1039,7 @@ Partial Class MKTNG_Item
     Friend WithEvents MetroLabel16 As MetroFramework.Controls.MetroLabel
     Friend WithEvents QuantityTbox As MetroFramework.Controls.MetroTextBox
     Friend WithEvents Event_Tbox As MetroFramework.Controls.MetroTextBox
+    Friend WithEvents Mktng_Cmenu As MetroFramework.Controls.MetroContextMenu
+    Friend WithEvents EditToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents DeleteToolStripMenuItem As ToolStripMenuItem
 End Class

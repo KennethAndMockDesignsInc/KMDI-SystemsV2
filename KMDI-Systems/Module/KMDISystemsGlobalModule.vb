@@ -175,75 +175,71 @@ Module KMDISystemsGlobalModule
                            Optional WillPrompt As Boolean = False,
                            Optional CustomPrompt As Boolean = False,
                            Optional PromptContent As String = Nothing)
+
+        Dim PreErrorMsg As String = Nothing, PreErrorNo As String = Nothing
+
         Select Case PromptMode
             Case "DotNetError"
-                Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
-                Log_File.WriteLine("Logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-                                           "Error Message: " & sql_Err_msg & vbCrLf &
-                                           "Trace: " & sql_Err_StackTrace & vbCrLf)
-                Log_File.Close()
-
+                PreErrorNo = "Error Number: "
+                PreErrorMsg = "Error Message: "
             Case "SqlError"
-                Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
-                Log_File.WriteLine("Logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-                                       "SQL Transaction Error Number: " & sql_Err_no & vbCrLf &
-                                       "SQL Transaction Error Message: " & sql_Err_msg & vbCrLf &
-                                       "Trace: " & sql_Err_StackTrace & vbCrLf)
-                Log_File.Close()
+                PreErrorNo = "SQL Transaction Error Number: "
+                PreErrorMsg = "SQL Transaction Error Message: "
             Case "UserWarning"
-                Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
-                Log_File.WriteLine("Logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-                                       "Warning message: " & sql_Err_msg & vbCrLf &
-                                       "Trace: " & sql_Err_StackTrace & vbCrLf)
-                Log_File.Close()
+                PreErrorNo = "Error Number: "
+                PreErrorMsg = "Warning message: "
             Case "Failed"
-                Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
-                Log_File.WriteLine("Logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
-                                           "Failed Message: " & sql_Err_msg & vbCrLf &
-                                           "Trace: " & sql_Err_StackTrace & vbCrLf)
-                Log_File.Close()
-
+                PreErrorNo = "Error Number: "
+                PreErrorMsg = "Failed Message: "
         End Select
+
+        Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+        Log_File.WriteLine("Logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                                           PreErrorNo & sql_Err_no & vbCrLf &
+                                           PreErrorMsg & sql_Err_msg & vbCrLf &
+                                           "Trace: " & sql_Err_StackTrace & vbCrLf)
+        Log_File.Close()
+
         Select Case WillPrompt
             Case True
                 Select Case PromptMode
                     Case "DotNetError"
                         Select Case CustomPrompt
                             Case True
-                                MetroFramework.MetroMessageBox.Show(FormName, PromptContent, "Error",
+                                MetroMessageBox.Show(FormName, PromptContent, "Error",
                                                             MessageBoxButtons.OK, MessageBoxIcon.Error)
                             Case False
-                                MetroFramework.MetroMessageBox.Show(FormName, "Please Refer to Error_Logs.txt", "Contact the Developers",
+                                MetroMessageBox.Show(FormName, "Please Refer to Error_Logs.txt", "Contact the Developers",
                                                             MessageBoxButtons.OK, MessageBoxIcon.Error)
                         End Select
 
                     Case "SqlError"
                         Select Case sql_Err_no
                             Case -2
-                                MetroFramework.MetroMessageBox.Show(FormName, " ", "Request Timeout", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                                MetroMessageBox.Show(FormName, " ", "Request Timeout", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                             Case 1232 Or 121
-                                MetroFramework.MetroMessageBox.Show(FormName, "Please check internet connection", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                                MetroMessageBox.Show(FormName, "Please check internet connection", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
                             Case 19
-                                MetroFramework.MetroMessageBox.Show(FormName, "Server is under maintenance." & vbCrLf & "Please be patient, will come back A.S.A.P", "Server is down", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                                MetroMessageBox.Show(FormName, "Server is under maintenance." & vbCrLf & "Please be patient, will come back A.S.A.P", "Server is down", MessageBoxButtons.OK, MessageBoxIcon.Error)
                             Case Else
-                                MetroFramework.MetroMessageBox.Show(FormName, "Transaction failed", "Contact the Developers",
+                                MetroMessageBox.Show(FormName, "Transaction failed", "Contact the Developers",
                                                                     MessageBoxButtons.OK, MessageBoxIcon.Error)
                         End Select
                     Case "UserWarning"
                         Select Case CustomPrompt
                             Case True
-                                MetroFramework.MetroMessageBox.Show(FormName, PromptContent, "Warning",
+                                MetroMessageBox.Show(FormName, PromptContent, "Warning",
                                                                     MessageBoxButtons.OK, MessageBoxIcon.Warning)
                             Case False
-                                MetroFramework.MetroMessageBox.Show(FormName, "Please Refer to Error_Logs.txt", "Contact the Developers",
+                                MetroMessageBox.Show(FormName, "Please Refer to Error_Logs.txt", "Contact the Developers",
                                                                     MessageBoxButtons.OK, MessageBoxIcon.Warning)
                         End Select
                     Case "Success"
-                        MetroFramework.MetroMessageBox.Show(FormName, " ", PromptMode, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                        MetroMessageBox.Show(FormName, " ", PromptMode, MessageBoxButtons.OK, MessageBoxIcon.Information)
                     Case "Failed"
-                        MetroFramework.MetroMessageBox.Show(FormName, " ", PromptMode, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                        MetroMessageBox.Show(FormName, " ", PromptMode, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                     Case "Question"
-                        QuestionPromptAnswer = MetroFramework.MetroMessageBox.Show(FormName, sql_Err_msg, " ", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+                        QuestionPromptAnswer = MetroMessageBox.Show(FormName, sql_Err_msg, " ", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
                 End Select
         End Select
     End Sub
