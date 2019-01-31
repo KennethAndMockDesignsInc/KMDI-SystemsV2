@@ -364,6 +364,12 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="KMDISystemsProjectDetails\Modules\ProjectDetailsModule.vb" />
+    <Compile Include="MHC_Prototype.Designer.vb">
+      <DependentUpon>MHC_Prototype.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MHC_Prototype.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Module\KMDISystemsGlobalModule.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -510,6 +516,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="KMDISystemsProjectDetails\Forms\SalesJobOrder\PD_SalesJobOrder.resx">
       <DependentUpon>PD_SalesJobOrder.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MHC_Prototype.resx">
+      <DependentUpon>MHC_Prototype.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
