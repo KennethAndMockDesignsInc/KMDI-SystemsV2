@@ -80,6 +80,7 @@ Partial Class KMDI_MainFRM
         Me.NicknameLbl = New MetroFramework.Controls.MetroLabel()
         Me.ChangeDB_BGW = New System.ComponentModel.BackgroundWorker()
         Me.LoadingPBOX = New System.Windows.Forms.PictureBox()
+        Me.PrototypeTile = New MetroFramework.Controls.MetroTile()
         Me.MainFRMBody_FLP.SuspendLayout()
         Me.ContractsPanel.SuspendLayout()
         Me.FlowLayoutPanel9.SuspendLayout()
@@ -223,6 +224,7 @@ Partial Class KMDI_MainFRM
         Me.FlowLayoutPanel8.Controls.Add(Me.NotifTile)
         Me.FlowLayoutPanel8.Controls.Add(Me.UpdSecTile)
         Me.FlowLayoutPanel8.Controls.Add(Me.MngeAccTile)
+        Me.FlowLayoutPanel8.Controls.Add(Me.PrototypeTile)
         Me.FlowLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.FlowLayoutPanel8.Location = New System.Drawing.Point(0, 30)
         Me.FlowLayoutPanel8.Name = "FlowLayoutPanel8"
@@ -875,6 +877,19 @@ Partial Class KMDI_MainFRM
         Me.LoadingPBOX.TabStop = False
         Me.LoadingPBOX.Visible = False
         '
+        'PrototypeTile
+        '
+        Me.PrototypeTile.ActiveControl = Nothing
+        Me.PrototypeTile.Location = New System.Drawing.Point(337, 72)
+        Me.PrototypeTile.Name = "PrototypeTile"
+        Me.PrototypeTile.Size = New System.Drawing.Size(172, 63)
+        Me.PrototypeTile.Style = MetroFramework.MetroColorStyle.Blue
+        Me.PrototypeTile.TabIndex = 37
+        Me.PrototypeTile.Text = "Prototypes"
+        Me.PrototypeTile.TextAlign = System.Drawing.ContentAlignment.BottomRight
+        Me.PrototypeTile.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold
+        Me.PrototypeTile.UseSelectable = True
+        '
         'KMDI_MainFRM
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -976,4 +991,5 @@ Partial Class KMDI_MainFRM
     Friend WithEvents MetroLabel1 As MetroFramework.Controls.MetroLabel
     Friend WithEvents ChangeDB_BGW As System.ComponentModel.BackgroundWorker
     Friend WithEvents LoadingPBOX As PictureBox
+    Friend WithEvents PrototypeTile As MetroFramework.Controls.MetroTile
 End Class

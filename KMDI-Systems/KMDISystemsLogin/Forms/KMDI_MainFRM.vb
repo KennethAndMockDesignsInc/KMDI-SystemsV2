@@ -505,4 +505,20 @@ Public Class KMDI_MainFRM
         End Try
     End Sub
 
+    Private Sub PrototypeTile_Click(sender As Object, e As EventArgs) Handles PrototypeTile.Click
+        Try
+
+            Dim frm As Form = Portal
+            Select Case frm.Visible
+                Case True
+                    frm.BringToFront()
+                Case False
+                    frm.Show()
+                    frm.BringToFront()
+            End Select
+
+        Catch ex As Exception
+
+        End Try
+    End Sub
 End Class

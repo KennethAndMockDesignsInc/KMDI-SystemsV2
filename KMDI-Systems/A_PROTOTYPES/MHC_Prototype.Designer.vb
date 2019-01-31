@@ -26,6 +26,7 @@ Partial Class MHC_Prototype
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
         Me.Combo_PNL = New System.Windows.Forms.Panel()
+        Me.MetroButton1 = New MetroFramework.Controls.MetroButton()
         Me.Awning_Chk = New MetroFramework.Controls.MetroCheckBox()
         Me.Casement_Chk = New MetroFramework.Controls.MetroCheckBox()
         Me.Fixed_Chk = New MetroFramework.Controls.MetroCheckBox()
@@ -58,7 +59,6 @@ Partial Class MHC_Prototype
         Me.MetroLabel3 = New MetroFramework.Controls.MetroLabel()
         Me.MetroLabel2 = New MetroFramework.Controls.MetroLabel()
         Me.MetroLabel1 = New MetroFramework.Controls.MetroLabel()
-        Me.MetroButton1 = New MetroFramework.Controls.MetroButton()
         Me.Panel1.SuspendLayout()
         Me.FlowLayoutPanel1.SuspendLayout()
         Me.Combo_PNL.SuspendLayout()
@@ -124,6 +124,15 @@ Partial Class MHC_Prototype
         Me.Combo_PNL.Name = "Combo_PNL"
         Me.Combo_PNL.Size = New System.Drawing.Size(367, 249)
         Me.Combo_PNL.TabIndex = 4
+        '
+        'MetroButton1
+        '
+        Me.MetroButton1.Location = New System.Drawing.Point(272, 214)
+        Me.MetroButton1.Name = "MetroButton1"
+        Me.MetroButton1.Size = New System.Drawing.Size(75, 23)
+        Me.MetroButton1.TabIndex = 34
+        Me.MetroButton1.Text = "Calculate"
+        Me.MetroButton1.UseSelectable = True
         '
         'Awning_Chk
         '
@@ -604,15 +613,6 @@ Partial Class MHC_Prototype
         Me.MetroLabel1.TabIndex = 18
         Me.MetroLabel1.Text = "Legend of Sizes"
         '
-        'MetroButton1
-        '
-        Me.MetroButton1.Location = New System.Drawing.Point(272, 214)
-        Me.MetroButton1.Name = "MetroButton1"
-        Me.MetroButton1.Size = New System.Drawing.Size(75, 23)
-        Me.MetroButton1.TabIndex = 34
-        Me.MetroButton1.Text = "Calculate"
-        Me.MetroButton1.UseSelectable = True
-        '
         'MHC_Prototype
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -620,6 +620,7 @@ Partial Class MHC_Prototype
         Me.ClientSize = New System.Drawing.Size(733, 473)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.Mktng_InvLBL)
+        Me.MaximizeBox = False
         Me.Name = "MHC_Prototype"
         Me.Resizable = False
         Me.Panel1.ResumeLayout(False)

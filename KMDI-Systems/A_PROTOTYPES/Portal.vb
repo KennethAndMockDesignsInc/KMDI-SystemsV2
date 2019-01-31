@@ -1,6 +1,6 @@
 ﻿Imports System.Data.SqlClient
 Imports ComponentFactory.Krypton.Toolkit
-Public Class Form1
+Public Class Portal
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Query = "
 Begin Transaction
@@ -354,5 +354,10 @@ Begin Transaction
 
     Private Sub Button11_Click(sender As Object, e As EventArgs) Handles Button11.Click
         MsgBox(Inv_DGV.Columns("Date Column").GetType.ToString)
+    End Sub
+
+    Private Sub Button12_Click(sender As Object, e As EventArgs) Handles Button12.Click
+        MHC_Prototype.Show()
+        Me.Hide()
     End Sub
 End Class

@@ -96,10 +96,10 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.Designer.vb">
-      <DependentUpon>Form1.vb</DependentUpon>
+    <Compile Include="A_PROTOTYPES\Portal.Designer.vb">
+      <DependentUpon>Portal.vb</DependentUpon>
     </Compile>
-    <Compile Include="Form1.vb">
+    <Compile Include="A_PROTOTYPES\Portal.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="KMDIContractItems\Class\KMDIContractItemsClass.vb" />
@@ -364,10 +364,10 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="KMDISystemsProjectDetails\Modules\ProjectDetailsModule.vb" />
-    <Compile Include="MHC_Prototype.Designer.vb">
+    <Compile Include="A_PROTOTYPES\MHC_Prototype.Designer.vb">
       <DependentUpon>MHC_Prototype.vb</DependentUpon>
     </Compile>
-    <Compile Include="MHC_Prototype.vb">
+    <Compile Include="A_PROTOTYPES\MHC_Prototype.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Module\KMDISystemsGlobalModule.vb" />
@@ -388,8 +388,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.vb</DependentUpon>
+    <EmbeddedResource Include="A_PROTOTYPES\Portal.resx">
+      <DependentUpon>Portal.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="KMDIContractItems\Forms\ContractItemsFRM.resx">
       <DependentUpon>ContractItemsFRM.vb</DependentUpon>
@@ -517,7 +517,7 @@
     <EmbeddedResource Include="KMDISystemsProjectDetails\Forms\SalesJobOrder\PD_SalesJobOrder.resx">
       <DependentUpon>PD_SalesJobOrder.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MHC_Prototype.resx">
+    <EmbeddedResource Include="A_PROTOTYPES\MHC_Prototype.resx">
       <DependentUpon>MHC_Prototype.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
