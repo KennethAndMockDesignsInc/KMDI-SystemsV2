@@ -26,6 +26,10 @@ Partial Class MKTNG_Item
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MKTNG_Item))
         Me.Mktng_InvLBL = New MetroFramework.Controls.MetroLabel()
         Me.FRM_Pnl = New MetroFramework.Controls.MetroPanel()
+        Me.SubClass_Tbox = New MetroFramework.Controls.MetroTextBox()
+        Me.MetroLabel12 = New MetroFramework.Controls.MetroLabel()
+        Me.SubClass_FLP = New System.Windows.Forms.FlowLayoutPanel()
+        Me.MainClass_Tbox = New MetroFramework.Controls.MetroTextBox()
         Me.Event_Tbox = New MetroFramework.Controls.MetroTextBox()
         Me.MetroLabel16 = New MetroFramework.Controls.MetroLabel()
         Me.QuantityTbox = New MetroFramework.Controls.MetroTextBox()
@@ -34,12 +38,8 @@ Partial Class MKTNG_Item
         Me.RemarksTbox = New MetroFramework.Controls.MetroTextBox()
         Me.MetroLabel13 = New MetroFramework.Controls.MetroLabel()
         Me.Events_FLP = New System.Windows.Forms.FlowLayoutPanel()
-        Me.MetroLabel12 = New MetroFramework.Controls.MetroLabel()
         Me.MetroLabel11 = New MetroFramework.Controls.MetroLabel()
-        Me.SubClass_Tbox = New MetroFramework.Controls.MetroTextBox()
-        Me.MainClass_Tbox = New MetroFramework.Controls.MetroTextBox()
         Me.MetroButton1 = New MetroFramework.Controls.MetroButton()
-        Me.SubClass_FLP = New System.Windows.Forms.FlowLayoutPanel()
         Me.MainClass_FLP = New System.Windows.Forms.FlowLayoutPanel()
         Me.RafflePurpose_Chk = New MetroFramework.Controls.MetroCheckBox()
         Me.GiftPurpose_Chk = New MetroFramework.Controls.MetroCheckBox()
@@ -153,6 +153,100 @@ Partial Class MKTNG_Item
         Me.FRM_Pnl.VerticalScrollbarBarColor = True
         Me.FRM_Pnl.VerticalScrollbarHighlightOnWheel = False
         Me.FRM_Pnl.VerticalScrollbarSize = 10
+        '
+        'SubClass_Tbox
+        '
+        '
+        '
+        '
+        Me.SubClass_Tbox.CustomButton.Image = Nothing
+        Me.SubClass_Tbox.CustomButton.Location = New System.Drawing.Point(309, 1)
+        Me.SubClass_Tbox.CustomButton.Name = ""
+        Me.SubClass_Tbox.CustomButton.Size = New System.Drawing.Size(27, 27)
+        Me.SubClass_Tbox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
+        Me.SubClass_Tbox.CustomButton.TabIndex = 1
+        Me.SubClass_Tbox.CustomButton.Text = "+"
+        Me.SubClass_Tbox.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
+        Me.SubClass_Tbox.CustomButton.UseSelectable = True
+        Me.SubClass_Tbox.FontSize = MetroFramework.MetroTextBoxSize.Tall
+        Me.SubClass_Tbox.ForeColor = System.Drawing.Color.Black
+        Me.SubClass_Tbox.Lines = New String(-1) {}
+        Me.SubClass_Tbox.Location = New System.Drawing.Point(350, 225)
+        Me.SubClass_Tbox.MaxLength = 32767
+        Me.SubClass_Tbox.Name = "SubClass_Tbox"
+        Me.SubClass_Tbox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
+        Me.SubClass_Tbox.ScrollBars = System.Windows.Forms.ScrollBars.None
+        Me.SubClass_Tbox.SelectedText = ""
+        Me.SubClass_Tbox.SelectionLength = 0
+        Me.SubClass_Tbox.SelectionStart = 0
+        Me.SubClass_Tbox.ShowButton = True
+        Me.SubClass_Tbox.ShowClearButton = True
+        Me.SubClass_Tbox.Size = New System.Drawing.Size(337, 29)
+        Me.SubClass_Tbox.Style = MetroFramework.MetroColorStyle.Teal
+        Me.SubClass_Tbox.TabIndex = 21
+        Me.SubClass_Tbox.Theme = MetroFramework.MetroThemeStyle.Dark
+        Me.SubClass_Tbox.UseCustomBackColor = True
+        Me.SubClass_Tbox.UseCustomForeColor = True
+        Me.SubClass_Tbox.UseSelectable = True
+        Me.SubClass_Tbox.UseStyleColors = True
+        Me.SubClass_Tbox.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
+        Me.SubClass_Tbox.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
+        '
+        'MetroLabel12
+        '
+        Me.MetroLabel12.AutoSize = True
+        Me.MetroLabel12.Location = New System.Drawing.Point(362, 254)
+        Me.MetroLabel12.Name = "MetroLabel12"
+        Me.MetroLabel12.Size = New System.Drawing.Size(109, 19)
+        Me.MetroLabel12.TabIndex = 614
+        Me.MetroLabel12.Text = "Sub Classification"
+        '
+        'SubClass_FLP
+        '
+        Me.SubClass_FLP.AutoScroll = True
+        Me.SubClass_FLP.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.SubClass_FLP.Location = New System.Drawing.Point(350, 266)
+        Me.SubClass_FLP.Name = "SubClass_FLP"
+        Me.SubClass_FLP.Size = New System.Drawing.Size(337, 147)
+        Me.SubClass_FLP.TabIndex = 23
+        '
+        'MainClass_Tbox
+        '
+        '
+        '
+        '
+        Me.MainClass_Tbox.CustomButton.Image = Nothing
+        Me.MainClass_Tbox.CustomButton.Location = New System.Drawing.Point(309, 1)
+        Me.MainClass_Tbox.CustomButton.Name = ""
+        Me.MainClass_Tbox.CustomButton.Size = New System.Drawing.Size(27, 27)
+        Me.MainClass_Tbox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
+        Me.MainClass_Tbox.CustomButton.TabIndex = 1
+        Me.MainClass_Tbox.CustomButton.Text = "+"
+        Me.MainClass_Tbox.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
+        Me.MainClass_Tbox.CustomButton.UseSelectable = True
+        Me.MainClass_Tbox.FontSize = MetroFramework.MetroTextBoxSize.Tall
+        Me.MainClass_Tbox.ForeColor = System.Drawing.Color.Black
+        Me.MainClass_Tbox.Lines = New String(-1) {}
+        Me.MainClass_Tbox.Location = New System.Drawing.Point(7, 225)
+        Me.MainClass_Tbox.MaxLength = 32767
+        Me.MainClass_Tbox.Name = "MainClass_Tbox"
+        Me.MainClass_Tbox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
+        Me.MainClass_Tbox.ScrollBars = System.Windows.Forms.ScrollBars.None
+        Me.MainClass_Tbox.SelectedText = ""
+        Me.MainClass_Tbox.SelectionLength = 0
+        Me.MainClass_Tbox.SelectionStart = 0
+        Me.MainClass_Tbox.ShowButton = True
+        Me.MainClass_Tbox.ShowClearButton = True
+        Me.MainClass_Tbox.Size = New System.Drawing.Size(337, 29)
+        Me.MainClass_Tbox.Style = MetroFramework.MetroColorStyle.Teal
+        Me.MainClass_Tbox.TabIndex = 20
+        Me.MainClass_Tbox.Theme = MetroFramework.MetroThemeStyle.Dark
+        Me.MainClass_Tbox.UseCustomBackColor = True
+        Me.MainClass_Tbox.UseCustomForeColor = True
+        Me.MainClass_Tbox.UseSelectable = True
+        Me.MainClass_Tbox.UseStyleColors = True
+        Me.MainClass_Tbox.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
+        Me.MainClass_Tbox.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
         '
         'Event_Tbox
         '
@@ -312,15 +406,6 @@ Partial Class MKTNG_Item
         Me.Events_FLP.Size = New System.Drawing.Size(337, 147)
         Me.Events_FLP.TabIndex = 24
         '
-        'MetroLabel12
-        '
-        Me.MetroLabel12.AutoSize = True
-        Me.MetroLabel12.Location = New System.Drawing.Point(362, 254)
-        Me.MetroLabel12.Name = "MetroLabel12"
-        Me.MetroLabel12.Size = New System.Drawing.Size(109, 19)
-        Me.MetroLabel12.TabIndex = 614
-        Me.MetroLabel12.Text = "Sub Classification"
-        '
         'MetroLabel11
         '
         Me.MetroLabel11.AutoSize = True
@@ -329,82 +414,6 @@ Partial Class MKTNG_Item
         Me.MetroLabel11.Size = New System.Drawing.Size(116, 19)
         Me.MetroLabel11.TabIndex = 613
         Me.MetroLabel11.Text = "Main Classification"
-        '
-        'SubClass_Tbox
-        '
-        '
-        '
-        '
-        Me.SubClass_Tbox.CustomButton.Image = Nothing
-        Me.SubClass_Tbox.CustomButton.Location = New System.Drawing.Point(309, 1)
-        Me.SubClass_Tbox.CustomButton.Name = ""
-        Me.SubClass_Tbox.CustomButton.Size = New System.Drawing.Size(27, 27)
-        Me.SubClass_Tbox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
-        Me.SubClass_Tbox.CustomButton.TabIndex = 1
-        Me.SubClass_Tbox.CustomButton.Text = "+"
-        Me.SubClass_Tbox.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
-        Me.SubClass_Tbox.CustomButton.UseSelectable = True
-        Me.SubClass_Tbox.FontSize = MetroFramework.MetroTextBoxSize.Tall
-        Me.SubClass_Tbox.ForeColor = System.Drawing.Color.Black
-        Me.SubClass_Tbox.Lines = New String(-1) {}
-        Me.SubClass_Tbox.Location = New System.Drawing.Point(350, 225)
-        Me.SubClass_Tbox.MaxLength = 32767
-        Me.SubClass_Tbox.Name = "SubClass_Tbox"
-        Me.SubClass_Tbox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
-        Me.SubClass_Tbox.ScrollBars = System.Windows.Forms.ScrollBars.None
-        Me.SubClass_Tbox.SelectedText = ""
-        Me.SubClass_Tbox.SelectionLength = 0
-        Me.SubClass_Tbox.SelectionStart = 0
-        Me.SubClass_Tbox.ShowButton = True
-        Me.SubClass_Tbox.ShowClearButton = True
-        Me.SubClass_Tbox.Size = New System.Drawing.Size(337, 29)
-        Me.SubClass_Tbox.Style = MetroFramework.MetroColorStyle.Teal
-        Me.SubClass_Tbox.TabIndex = 21
-        Me.SubClass_Tbox.Theme = MetroFramework.MetroThemeStyle.Dark
-        Me.SubClass_Tbox.UseCustomBackColor = True
-        Me.SubClass_Tbox.UseCustomForeColor = True
-        Me.SubClass_Tbox.UseSelectable = True
-        Me.SubClass_Tbox.UseStyleColors = True
-        Me.SubClass_Tbox.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
-        Me.SubClass_Tbox.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
-        '
-        'MainClass_Tbox
-        '
-        '
-        '
-        '
-        Me.MainClass_Tbox.CustomButton.Image = Nothing
-        Me.MainClass_Tbox.CustomButton.Location = New System.Drawing.Point(309, 1)
-        Me.MainClass_Tbox.CustomButton.Name = ""
-        Me.MainClass_Tbox.CustomButton.Size = New System.Drawing.Size(27, 27)
-        Me.MainClass_Tbox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
-        Me.MainClass_Tbox.CustomButton.TabIndex = 1
-        Me.MainClass_Tbox.CustomButton.Text = "+"
-        Me.MainClass_Tbox.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
-        Me.MainClass_Tbox.CustomButton.UseSelectable = True
-        Me.MainClass_Tbox.FontSize = MetroFramework.MetroTextBoxSize.Tall
-        Me.MainClass_Tbox.ForeColor = System.Drawing.Color.Black
-        Me.MainClass_Tbox.Lines = New String(-1) {}
-        Me.MainClass_Tbox.Location = New System.Drawing.Point(7, 225)
-        Me.MainClass_Tbox.MaxLength = 32767
-        Me.MainClass_Tbox.Name = "MainClass_Tbox"
-        Me.MainClass_Tbox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
-        Me.MainClass_Tbox.ScrollBars = System.Windows.Forms.ScrollBars.None
-        Me.MainClass_Tbox.SelectedText = ""
-        Me.MainClass_Tbox.SelectionLength = 0
-        Me.MainClass_Tbox.SelectionStart = 0
-        Me.MainClass_Tbox.ShowButton = True
-        Me.MainClass_Tbox.ShowClearButton = True
-        Me.MainClass_Tbox.Size = New System.Drawing.Size(337, 29)
-        Me.MainClass_Tbox.Style = MetroFramework.MetroColorStyle.Teal
-        Me.MainClass_Tbox.TabIndex = 20
-        Me.MainClass_Tbox.Theme = MetroFramework.MetroThemeStyle.Dark
-        Me.MainClass_Tbox.UseCustomBackColor = True
-        Me.MainClass_Tbox.UseCustomForeColor = True
-        Me.MainClass_Tbox.UseSelectable = True
-        Me.MainClass_Tbox.UseStyleColors = True
-        Me.MainClass_Tbox.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
-        Me.MainClass_Tbox.WaterMarkFont = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel)
         '
         'MetroButton1
         '
@@ -417,15 +426,6 @@ Partial Class MKTNG_Item
         Me.MetroButton1.Text = "Image"
         Me.MetroButton1.UseSelectable = True
         Me.MetroButton1.Visible = False
-        '
-        'SubClass_FLP
-        '
-        Me.SubClass_FLP.AutoScroll = True
-        Me.SubClass_FLP.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.SubClass_FLP.Location = New System.Drawing.Point(350, 266)
-        Me.SubClass_FLP.Name = "SubClass_FLP"
-        Me.SubClass_FLP.Size = New System.Drawing.Size(337, 147)
-        Me.SubClass_FLP.TabIndex = 23
         '
         'MainClass_FLP
         '
@@ -954,18 +954,18 @@ Partial Class MKTNG_Item
         Me.Mktng_Cmenu.Font = New System.Drawing.Font("Segoe UI", 9.0!)
         Me.Mktng_Cmenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.EditToolStripMenuItem, Me.DeleteToolStripMenuItem})
         Me.Mktng_Cmenu.Name = "Mktng_Cmenu"
-        Me.Mktng_Cmenu.Size = New System.Drawing.Size(108, 48)
+        Me.Mktng_Cmenu.Size = New System.Drawing.Size(153, 70)
         '
         'EditToolStripMenuItem
         '
         Me.EditToolStripMenuItem.Name = "EditToolStripMenuItem"
-        Me.EditToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.EditToolStripMenuItem.Size = New System.Drawing.Size(107, 22)
         Me.EditToolStripMenuItem.Text = "Edit"
         '
         'DeleteToolStripMenuItem
         '
         Me.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem"
-        Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(107, 22)
         Me.DeleteToolStripMenuItem.Text = "Delete"
         '
         'MKTNG_Item
@@ -981,6 +981,7 @@ Partial Class MKTNG_Item
         Me.MinimizeBox = False
         Me.Name = "MKTNG_Item"
         Me.Resizable = False
+        Me.Style = MetroFramework.MetroColorStyle.Teal
         Me.FRM_Pnl.ResumeLayout(False)
         Me.FRM_Pnl.PerformLayout()
         Me.Panel1.ResumeLayout(False)

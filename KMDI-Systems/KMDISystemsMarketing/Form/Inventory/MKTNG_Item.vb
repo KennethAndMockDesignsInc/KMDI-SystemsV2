@@ -224,7 +224,6 @@ Public Class MKTNG_Item
             AddHandler MktngItem_BGW.ProgressChanged, AddressOf MktngItem_BGW_ProgressChanged
             AddHandler MktngItem_BGW.RunWorkerCompleted, AddressOf MktngItem_BGW_RunWorkerCompleted
             GenPrefCbox.SelectedIndex = 0
-            'MainClass_FLP.Controls.Clear()
             FormOnload = True
             Select Case OpenedByToolStripMenu
                 Case "ADD"
@@ -457,7 +456,6 @@ Public Class MKTNG_Item
 
                         Case "MainClass"
                             Report_BGW_bool = False
-                            'Events_FLP.Controls.Clear()
                             If FormOnload = True Then
                                 MktngItem_TODO = "Load_Events"
                                 Start_MktngItemBGW()
@@ -651,11 +649,6 @@ Public Class MKTNG_Item
             End If
             CreatedCtrlEditMode = sender.Parent.Name
         End If
-        'If Mktng_Cmenu.Visible = True Then
-        '    sender.DisplayFocus = True
-        'ElseIf Mktng_Cmenu.Visible = False Then
-        '    sender.DisplayFocus = False
-        'End If
     End Sub
 
     Private Sub EditToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EditToolStripMenuItem.Click
@@ -708,7 +701,6 @@ Public Class MKTNG_Item
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
         End Try
     End Sub
-
     Private Sub MKTNG_Item_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
         Try
             If (e.Control And e.KeyCode = Keys.S) Then
