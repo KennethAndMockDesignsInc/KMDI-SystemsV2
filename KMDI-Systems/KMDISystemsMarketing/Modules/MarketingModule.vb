@@ -192,6 +192,25 @@ Module MarketingModule
             End Using
         End Using
     End Sub
+    Public Sub Mktng_SubClass_Delete(ByVal MISC_ID As Integer,
+                                     ByVal StoredProcedureName As String)
+        Using sqlcon As New SqlConnection(sqlconnString)
+            sqlcon.Open()
+            Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
+                transaction = sqlcon.BeginTransaction(IsolationLevel.RepeatableRead, StoredProcedureName)
+                sqlCommand.Connection = sqlcon
+                sqlCommand.Transaction = transaction
+                sqlCommand.CommandText = StoredProcedureName
+                sqlCommand.CommandType = CommandType.StoredProcedure
+
+                sqlCommand.Parameters.Add("@MISC_ID", SqlDbType.Int).Value = MISC_ID
+                sqlCommand.ExecuteNonQuery()
+
+                transaction.Commit()
+                sql_Transaction_result = "Committed"
+            End Using
+        End Using
+    End Sub
     Public Sub Mktng_Event_Insert(ByVal EventStr As String,
                                   ByVal StoredProcedureName As String)
         Using sqlcon As New SqlConnection(sqlconnString)

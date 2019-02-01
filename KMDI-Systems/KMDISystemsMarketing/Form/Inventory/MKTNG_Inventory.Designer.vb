@@ -53,19 +53,19 @@ Partial Class MKTNG_Inventory
         Me.MktngInv_Cmenu.Font = New System.Drawing.Font("Segoe UI", 9.0!)
         Me.MktngInv_Cmenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ColumnToolStripMenuItem, Me.ItemToolStripMenuItem, Me.AddQuantityToolStripMenuItem})
         Me.MktngInv_Cmenu.Name = "MktngInv_Cmenu"
-        Me.MktngInv_Cmenu.Size = New System.Drawing.Size(153, 92)
+        Me.MktngInv_Cmenu.Size = New System.Drawing.Size(146, 70)
         '
         'ColumnToolStripMenuItem
         '
         Me.ColumnToolStripMenuItem.Name = "ColumnToolStripMenuItem"
-        Me.ColumnToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.ColumnToolStripMenuItem.Size = New System.Drawing.Size(145, 22)
         Me.ColumnToolStripMenuItem.Text = "Columns"
         '
         'ItemToolStripMenuItem
         '
         Me.ItemToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AddItemToolStripMenuItem1, Me.UpdateItemToolStripMenuItem1, Me.DeleteItemToolStripMenuItem1})
         Me.ItemToolStripMenuItem.Name = "ItemToolStripMenuItem"
-        Me.ItemToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.ItemToolStripMenuItem.Size = New System.Drawing.Size(145, 22)
         Me.ItemToolStripMenuItem.Text = "Item"
         '
         'AddItemToolStripMenuItem1
@@ -89,7 +89,7 @@ Partial Class MKTNG_Inventory
         'AddQuantityToolStripMenuItem
         '
         Me.AddQuantityToolStripMenuItem.Name = "AddQuantityToolStripMenuItem"
-        Me.AddQuantityToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.AddQuantityToolStripMenuItem.Size = New System.Drawing.Size(145, 22)
         Me.AddQuantityToolStripMenuItem.Text = "Add Quantity"
         '
         'LoadingPB

@@ -300,6 +300,9 @@ Public Class MKTNG_Item
                 Case "SubClass_Update"
                     Mktng_SubClass_Update(SubClassSTR, SubClassID_toUpdate, "MKTNG_stp_Item_SubClass_Update")
 
+                Case "SubClass_Delete"
+                    Mktng_SubClass_Delete(SubClassID_toUpdate, "MKTNG_stp_Item_SubClass_Delete")
+
                 Case "Event_Insert"
                     Cr8Control = True
                     Mktng_Event_Insert(EventStr, "MKTNG_stp_Inv_Events_Insert")
@@ -323,6 +326,10 @@ Public Class MKTNG_Item
                 Case "Main_Class_Search_HIT"
                     Mktng_QUERY_INSTANCE = "Loading_using_EqualSearch"
                     Mktng_Query_Select_STP(MainClassID_toUpdate, "MKTNG_stp_Item_MainClass_Hit")
+
+                Case "Sub_Class_Search_HIT"
+                    Mktng_QUERY_INSTANCE = "Loading_using_EqualSearch"
+                    Mktng_Query_Select_STP(SubClassID_toUpdate, "MKTNG_stp_Item_SubClass_Hit")
 
             End Select
 
@@ -454,12 +461,15 @@ Public Class MKTNG_Item
                                 GiftPurpose_Chk.Checked = row("GIFT")
                                 RafflePurpose_Chk.Checked = row("RAFFLE")
 
-                                MainClassID = row("MIC_ID")
-                                arr_EventID.Add(row("MIE_ID"))
+                                If Not IsDBNull(row("MIC_ID")) Then
+                                    MainClassID = row("MIC_ID")
+                                End If
+                                If Not IsDBNull(row("MIE_ID")) Then
+                                    arr_EventID.Add(row("MIE_ID"))
+                                End If
                                 If Not IsDBNull(row("MISC_ID")) Then
                                     arr_SubClassID.Add(row("MISC_ID"))
                                 End If
-                                MsgBox(MainClassID)
                             Next
                             MktngItem_TODO = "SubClass"
                             Start_MktngItemBGW()
@@ -529,13 +539,19 @@ Public Class MKTNG_Item
                                     MainClass_FLP.Controls.Remove(ctrl)
                                 End If
                             Next
-                            For Each items As Integer In Inventoy_Hits_list
-                                For i = 0 To MKTNG_Inventory.Inv_DGV.Rows.Count - 1
-                                    If items = MKTNG_Inventory.Inv_DGV.Rows(i).Cells("MI_ID").Value Then
-                                        MKTNG_Inventory.Inv_DGV.Rows(i).DefaultCellStyle.BackColor = Color.LightCoral
-                                    End If
-                                Next
-                            Next
+
+                            If SubClass_FLP.Controls.Count <> 0 Then
+                                SubClass_FLP.Controls.Clear()
+                            End If
+                            'For Each items As Integer In Inventoy_Hits_list
+                            '    For i = 0 To MKTNG_Inventory.Inv_DGV.Rows.Count - 1
+                            '        If items = MKTNG_Inventory.Inv_DGV.Rows(i).Cells("MI_ID").Value Then
+                            '            MKTNG_Inventory.Inv_DGV.Rows(i).DefaultCellStyle.BackColor = Color.LightCoral
+                            '        End If
+                            '    Next
+                            'Next
+                            KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
+
                             Inventoy_Hits_list.Clear()
                             reset_here()
                             End_MktngItemBGW()
@@ -593,6 +609,59 @@ Public Class MKTNG_Item
                                 End If
                             Next
                             reset_here()
+                            End_MktngItemBGW()
+
+                        Case "SubClass_Delete"
+                            For Each ctrl In SubClass_FLP.Controls
+                                If ctrl.Tag = SubClassID_toUpdate Then
+                                    SubClass_FLP.Controls.Remove(ctrl)
+                                End If
+                            Next
+                            'For Each items As Integer In Inventoy_Hits_list
+                            '    For i = 0 To MKTNG_Inventory.Inv_DGV.Rows.Count - 1
+                            '        If items = MKTNG_Inventory.Inv_DGV.Rows(i).Cells("MI_ID").Value Then
+                            '            MKTNG_Inventory.Inv_DGV.Rows(i).DefaultCellStyle.BackColor = Color.LightCoral
+                            '        End If
+                            '    Next
+                            'Next
+                            KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
+
+                            Inventoy_Hits_list.Clear()
+                            reset_here()
+                            End_MktngItemBGW()
+
+                        Case "Sub_Class_Search_HIT"
+                            Dim Item_list As String = Nothing, Item_list_log As String = vbCrLf & SubClassSTR & vbCrLf
+                            Dim counter As Integer = 0
+
+                            If sqlDataSet.Tables("QUERY_DETAILS").Rows.Count > 0 Then
+                                For Each row In sqlBindingSource
+                                    counter += 1
+                                    Item_list += (counter & ". " & row("ITEM_CODE") & " - " & row("ITEM") & vbCrLf)
+                                    Item_list_log += (row("ID").ToString + ". " + row("ITEM") + vbCrLf)
+                                    Inventoy_Hits_list.Add(row("ID"))
+                                Next
+                                KMDIPrompts(Me, "UserWarning", Item_list_log, Nothing, Nothing, True, True,
+                                            "Hits detected. Proceed?", MessageBoxButtons.YesNo)
+                                If QuestionPromptAnswer = 6 Then
+                                    Dim saveFileDialog1 As New SaveFileDialog()
+
+                                    saveFileDialog1.Filter = "TXT Files (*.txt*)|*.txt"
+                                    If saveFileDialog1.ShowDialog = DialogResult.OK Then
+                                        My.Computer.FileSystem.WriteAllText(saveFileDialog1.FileName, Item_list, True)
+
+                                        MktngItem_TODO = "SubClass_Delete"
+                                        Start_MktngItemBGW()
+                                    End If
+                                End If
+
+                            ElseIf sqlDataSet.Tables("QUERY_DETAILS").Rows.Count = 0 Then
+                                KMDIPrompts(Me, "Question", "No hits detected. Proceed?", Nothing, Nothing, True)
+                                If QuestionPromptAnswer = 6 Then
+                                    MktngItem_TODO = "SubClass_Delete"
+                                    Start_MktngItemBGW()
+                                End If
+                            End If
                             End_MktngItemBGW()
 
                         Case "Event_Insert"
@@ -753,10 +822,11 @@ Public Class MKTNG_Item
                 MktngItem_TODO = "Main_Class_Search_HIT"
 
             ElseIf CreatedCtrlEditMode = "SubClass_FLP" Then
+                MktngItem_TODO = "Sub_Class_Search_HIT"
 
-                ElseIf CreatedCtrlEditMode = "Events_FLP" Then
+            ElseIf CreatedCtrlEditMode = "Events_FLP" Then
 
-                End If
+            End If
             Start_MktngItemBGW()
             'End If
         Catch ex As Exception
