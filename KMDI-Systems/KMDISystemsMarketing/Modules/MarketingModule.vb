@@ -129,6 +129,25 @@ Module MarketingModule
             End Using
         End Using
     End Sub
+    Public Sub Mktng_MainClass_Delete(ByVal MIC_ID As Integer,
+                                      ByVal StoredProcedureName As String)
+        Using sqlcon As New SqlConnection(sqlconnString)
+            sqlcon.Open()
+            Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
+                transaction = sqlcon.BeginTransaction(IsolationLevel.RepeatableRead, StoredProcedureName)
+                sqlCommand.Connection = sqlcon
+                sqlCommand.Transaction = transaction
+                sqlCommand.CommandText = StoredProcedureName
+                sqlCommand.CommandType = CommandType.StoredProcedure
+
+                sqlCommand.Parameters.Add("@MIC_ID", SqlDbType.Int).Value = MIC_ID
+                sqlCommand.ExecuteNonQuery()
+
+                transaction.Commit()
+                sql_Transaction_result = "Committed"
+            End Using
+        End Using
+    End Sub
     Public Sub Mktng_SubClass_Insert(ByVal SubClassStr As String,
                                      ByVal MIC_ID_REF As Integer,
                                      ByVal StoredProcedureName As String)
@@ -279,28 +298,30 @@ Module MarketingModule
                     InsertedMI_ID = read.Item("MI_ID_INSERTED")
                 End Using
                 If InsertedMI_ID <> Nothing Then
-                    For Each SubClass_ID As Integer In SubClass_list
-                        sqlCommand.CommandText = "INSERT INTO [A_NEW_MKTNG_INV_SUBCLASS_LOOKUP]  ([MI_ID_REF_SUB],
+                    If SubClass_list.Count <> 0 Then
+                        For Each SubClass_ID As Integer In SubClass_list
+                            sqlCommand.CommandText = "INSERT INTO [A_NEW_MKTNG_INV_SUBCLASS_LOOKUP]  ([MI_ID_REF_SUB],
                                                                                               [MISC_ID_REF])
                                                                  VALUES  (@MI_ID_REF_SUB" & SubClass_ID & ",
                                                                           @MISC_ID_REF" & SubClass_ID & ")"
-                        sqlCommand.CommandType = CommandType.Text
-                        sqlCommand.Parameters.Add("@MI_ID_REF_SUB" & SubClass_ID, SqlDbType.Int).Value = InsertedMI_ID
-                        sqlCommand.Parameters.Add("@MISC_ID_REF" & SubClass_ID, SqlDbType.Int).Value = SubClass_ID
-                        sqlCommand.ExecuteNonQuery()
-                    Next
+                            sqlCommand.CommandType = CommandType.Text
+                            sqlCommand.Parameters.Add("@MI_ID_REF_SUB" & SubClass_ID, SqlDbType.Int).Value = InsertedMI_ID
+                            sqlCommand.Parameters.Add("@MISC_ID_REF" & SubClass_ID, SqlDbType.Int).Value = SubClass_ID
+                            sqlCommand.ExecuteNonQuery()
+                        Next
+                    End If
                     For Each Events_ID As Integer In Events_list
-                        sqlCommand.CommandText = "INSERT INTO [A_NEW_MKTNG_INV_EVENT_TAGS]  ([MI_ID_REF_EVENT],
+                            sqlCommand.CommandText = "INSERT INTO [A_NEW_MKTNG_INV_EVENT_TAGS]  ([MI_ID_REF_EVENT],
                                                                                              [MIE_ID_REF])
                                                                  VALUES  (@MI_ID_REF_EVENT" & Events_ID & ",
                                                                           @MIE_ID_REF" & Events_ID & ")"
-                        sqlCommand.CommandType = CommandType.Text
-                        sqlCommand.Parameters.Add("@MI_ID_REF_EVENT" & Events_ID, SqlDbType.Int).Value = InsertedMI_ID
-                        sqlCommand.Parameters.Add("@MIE_ID_REF" & Events_ID, SqlDbType.Int).Value = Events_ID
-                        sqlCommand.ExecuteNonQuery()
-                    Next
-                End If
-                transaction.Commit()
+                            sqlCommand.CommandType = CommandType.Text
+                            sqlCommand.Parameters.Add("@MI_ID_REF_EVENT" & Events_ID, SqlDbType.Int).Value = InsertedMI_ID
+                            sqlCommand.Parameters.Add("@MIE_ID_REF" & Events_ID, SqlDbType.Int).Value = Events_ID
+                            sqlCommand.ExecuteNonQuery()
+                        Next
+                    End If
+                    transaction.Commit()
                 sql_Transaction_result = "Committed"
             End Using
         End Using
@@ -370,28 +391,30 @@ Module MarketingModule
                 sqlCommand.ExecuteNonQuery()
 
                 If MI_ID <> Nothing Then
-                    For Each SubClass_ID As Integer In SubClass_list
-                        sqlCommand.CommandText = "INSERT INTO [A_NEW_MKTNG_INV_SUBCLASS_LOOKUP]  ([MI_ID_REF_SUB],
+                    If SubClass_list.Count <> 0 Then
+                        For Each SubClass_ID As Integer In SubClass_list
+                            sqlCommand.CommandText = "INSERT INTO [A_NEW_MKTNG_INV_SUBCLASS_LOOKUP]  ([MI_ID_REF_SUB],
                                                                                                   [MISC_ID_REF])
                                                                  VALUES  (@MI_ID_REF_SUB" & SubClass_ID & ",
                                                                           @MISC_ID_REF" & SubClass_ID & ")"
-                        sqlCommand.CommandType = CommandType.Text
-                        sqlCommand.Parameters.Add("@MI_ID_REF_SUB" & SubClass_ID, SqlDbType.Int).Value = MI_ID
-                        sqlCommand.Parameters.Add("@MISC_ID_REF" & SubClass_ID, SqlDbType.Int).Value = SubClass_ID
-                        sqlCommand.ExecuteNonQuery()
-                    Next
+                            sqlCommand.CommandType = CommandType.Text
+                            sqlCommand.Parameters.Add("@MI_ID_REF_SUB" & SubClass_ID, SqlDbType.Int).Value = MI_ID
+                            sqlCommand.Parameters.Add("@MISC_ID_REF" & SubClass_ID, SqlDbType.Int).Value = SubClass_ID
+                            sqlCommand.ExecuteNonQuery()
+                        Next
+                    End If
                     For Each Events_ID As Integer In Events_list
-                        sqlCommand.CommandText = "INSERT INTO [A_NEW_MKTNG_INV_EVENT_TAGS]  ([MI_ID_REF_EVENT],
+                            sqlCommand.CommandText = "INSERT INTO [A_NEW_MKTNG_INV_EVENT_TAGS]  ([MI_ID_REF_EVENT],
                                                                                              [MIE_ID_REF])
                                                                  VALUES  (@MI_ID_REF_EVENT" & Events_ID & ",
                                                                           @MIE_ID_REF" & Events_ID & ")"
-                        sqlCommand.CommandType = CommandType.Text
-                        sqlCommand.Parameters.Add("@MI_ID_REF_EVENT" & Events_ID, SqlDbType.Int).Value = MI_ID
-                        sqlCommand.Parameters.Add("@MIE_ID_REF" & Events_ID, SqlDbType.Int).Value = Events_ID
-                        sqlCommand.ExecuteNonQuery()
-                    Next
-                End If
-                transaction.Commit()
+                            sqlCommand.CommandType = CommandType.Text
+                            sqlCommand.Parameters.Add("@MI_ID_REF_EVENT" & Events_ID, SqlDbType.Int).Value = MI_ID
+                            sqlCommand.Parameters.Add("@MIE_ID_REF" & Events_ID, SqlDbType.Int).Value = Events_ID
+                            sqlCommand.ExecuteNonQuery()
+                        Next
+                    End If
+                    transaction.Commit()
                 sql_Transaction_result = "Committed"
             End Using
         End Using

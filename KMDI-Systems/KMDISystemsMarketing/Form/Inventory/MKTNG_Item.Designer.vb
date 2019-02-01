@@ -954,7 +954,7 @@ Partial Class MKTNG_Item
         Me.Mktng_Cmenu.Font = New System.Drawing.Font("Segoe UI", 9.0!)
         Me.Mktng_Cmenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.EditToolStripMenuItem, Me.DeleteToolStripMenuItem})
         Me.Mktng_Cmenu.Name = "Mktng_Cmenu"
-        Me.Mktng_Cmenu.Size = New System.Drawing.Size(153, 70)
+        Me.Mktng_Cmenu.Size = New System.Drawing.Size(108, 48)
         '
         'EditToolStripMenuItem
         '

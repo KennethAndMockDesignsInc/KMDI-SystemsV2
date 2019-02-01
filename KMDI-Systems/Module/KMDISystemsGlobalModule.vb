@@ -174,31 +174,38 @@ Module KMDISystemsGlobalModule
                            Optional sql_Err_no As Integer = Nothing,
                            Optional WillPrompt As Boolean = False,
                            Optional CustomPrompt As Boolean = False,
-                           Optional PromptContent As String = Nothing)
+                           Optional PromptContent As String = Nothing,
+                           Optional Buttons As MessageBoxButtons = MessageBoxButtons.OK,
+                           Optional LogToFile As Boolean = True)
 
         Dim PreErrorMsg As String = Nothing, PreErrorNo As String = Nothing
 
-        Select Case PromptMode
-            Case "DotNetError"
-                PreErrorNo = "Error Number: "
-                PreErrorMsg = "Error Message: "
-            Case "SqlError"
-                PreErrorNo = "SQL Transaction Error Number: "
-                PreErrorMsg = "SQL Transaction Error Message: "
-            Case "UserWarning"
-                PreErrorNo = "Error Number: "
-                PreErrorMsg = "Warning message: "
-            Case "Failed"
-                PreErrorNo = "Error Number: "
-                PreErrorMsg = "Failed Message: "
-        End Select
+        Select Case LogToFile
+            Case True
+                Select Case PromptMode
+                    Case "DotNetError"
+                        PreErrorNo = "Error Number: "
+                        PreErrorMsg = "Error Message: "
+                    Case "SqlError"
+                        PreErrorNo = "SQL Transaction Error Number: "
+                        PreErrorMsg = "SQL Transaction Error Message: "
+                    Case "UserWarning"
+                        PreErrorNo = "Error Number: "
+                        PreErrorMsg = "Warning message: "
+                    Case "Failed"
+                        PreErrorNo = "Error Number: "
+                        PreErrorMsg = "Failed Message: "
+                End Select
 
-        Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
-        Log_File.WriteLine("Logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
+                Log_File = My.Computer.FileSystem.OpenTextFileWriter(Application.StartupPath & "\Error_Logs.txt", True)
+                Log_File.WriteLine("Logs dated " & Date.Now.ToString("dddd, MMMM dd, yyyy HH:mm:ss tt") & vbCrLf &
                                            PreErrorNo & sql_Err_no & vbCrLf &
                                            PreErrorMsg & sql_Err_msg & vbCrLf &
                                            "Trace: " & sql_Err_StackTrace & vbCrLf)
-        Log_File.Close()
+                Log_File.Close()
+
+            Case False
+        End Select
 
         Select Case WillPrompt
             Case True
@@ -228,8 +235,8 @@ Module KMDISystemsGlobalModule
                     Case "UserWarning"
                         Select Case CustomPrompt
                             Case True
-                                MetroMessageBox.Show(FormName, PromptContent, "Warning",
-                                                                    MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                                QuestionPromptAnswer = MetroMessageBox.Show(FormName, PromptContent, "Warning",
+                                                                    Buttons, MessageBoxIcon.Warning)
                             Case False
                                 MetroMessageBox.Show(FormName, "Please Refer to Error_Logs.txt", "Contact the Developers",
                                                                     MessageBoxButtons.OK, MessageBoxIcon.Warning)
