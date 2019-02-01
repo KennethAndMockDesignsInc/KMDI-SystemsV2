@@ -543,13 +543,6 @@ Public Class MKTNG_Item
                             If SubClass_FLP.Controls.Count <> 0 Then
                                 SubClass_FLP.Controls.Clear()
                             End If
-                            'For Each items As Integer In Inventoy_Hits_list
-                            '    For i = 0 To MKTNG_Inventory.Inv_DGV.Rows.Count - 1
-                            '        If items = MKTNG_Inventory.Inv_DGV.Rows(i).Cells("MI_ID").Value Then
-                            '            MKTNG_Inventory.Inv_DGV.Rows(i).DefaultCellStyle.BackColor = Color.LightCoral
-                            '        End If
-                            '    Next
-                            'Next
                             KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
 
                             Inventoy_Hits_list.Clear()
@@ -617,13 +610,6 @@ Public Class MKTNG_Item
                                     SubClass_FLP.Controls.Remove(ctrl)
                                 End If
                             Next
-                            'For Each items As Integer In Inventoy_Hits_list
-                            '    For i = 0 To MKTNG_Inventory.Inv_DGV.Rows.Count - 1
-                            '        If items = MKTNG_Inventory.Inv_DGV.Rows(i).Cells("MI_ID").Value Then
-                            '            MKTNG_Inventory.Inv_DGV.Rows(i).DefaultCellStyle.BackColor = Color.LightCoral
-                            '        End If
-                            '    Next
-                            'Next
                             KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
 
                             Inventoy_Hits_list.Clear()
@@ -771,12 +757,17 @@ Public Class MKTNG_Item
             If sender.Parent.Name = "MainClass_FLP" Then
                 MainClassSTR = sender.Text
                 MainClassID_toUpdate = sender.Tag
+                DeleteToolStripMenuItem.Visible = True
+
             ElseIf sender.Parent.Name = "SubClass_FLP" Then
                 SubClassSTR = sender.Text
                 SubClassID_toUpdate = sender.Tag
+                DeleteToolStripMenuItem.Visible = True
+
             ElseIf sender.Parent.Name = "Events_FLP" Then
                 EventStr = sender.Text
                 EventID_toUpdate = sender.Tag
+                DeleteToolStripMenuItem.Visible = False
             End If
             CreatedCtrlEditMode = sender.Parent.Name
         End If
