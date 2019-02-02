@@ -32,9 +32,14 @@ Partial Class MKTNG_Inventory
         Me.UpdateItemToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.DeleteItemToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.AddQuantityToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Frm_PNL = New System.Windows.Forms.Panel()
+        Me.Panel1 = New System.Windows.Forms.Panel()
         Me.LoadingPB = New System.Windows.Forms.PictureBox()
+        Me.AddNewItem_Sidebar = New System.Windows.Forms.Panel()
+        Me.Panel3 = New System.Windows.Forms.Panel()
         Me.MktngInv_Cmenu.SuspendLayout()
         CType(Me.LoadingPB, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.AddNewItem_Sidebar.SuspendLayout()
         Me.SuspendLayout()
         '
         'Mktng_InvLBL
@@ -92,6 +97,23 @@ Partial Class MKTNG_Inventory
         Me.AddQuantityToolStripMenuItem.Size = New System.Drawing.Size(145, 22)
         Me.AddQuantityToolStripMenuItem.Text = "Add Quantity"
         '
+        'Frm_PNL
+        '
+        Me.Frm_PNL.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Frm_PNL.Location = New System.Drawing.Point(21, 60)
+        Me.Frm_PNL.Name = "Frm_PNL"
+        Me.Frm_PNL.Size = New System.Drawing.Size(982, 620)
+        Me.Frm_PNL.TabIndex = 612
+        '
+        'Panel1
+        '
+        Me.Panel1.BackColor = System.Drawing.Color.Teal
+        Me.Panel1.BackgroundImage = Global.KMDI_Systems.My.Resources.Resources.icons8_add_to_inbox_96
+        Me.Panel1.Location = New System.Drawing.Point(3, 0)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(93, 92)
+        Me.Panel1.TabIndex = 613
+        '
         'LoadingPB
         '
         Me.LoadingPB.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -103,6 +125,30 @@ Partial Class MKTNG_Inventory
         Me.LoadingPB.TabIndex = 611
         Me.LoadingPB.TabStop = False
         '
+        'AddNewItem_Sidebar
+        '
+        Me.AddNewItem_Sidebar.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.AddNewItem_Sidebar.Controls.Add(Me.Panel1)
+        Me.AddNewItem_Sidebar.Controls.Add(Me.Panel3)
+        Me.AddNewItem_Sidebar.Location = New System.Drawing.Point(540, 60)
+        Me.AddNewItem_Sidebar.Name = "AddNewItem_Sidebar"
+        Me.AddNewItem_Sidebar.Size = New System.Drawing.Size(484, 619)
+        Me.AddNewItem_Sidebar.TabIndex = 614
+        '
+        'Panel3
+        '
+        Me.Panel3.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Panel3.BackColor = System.Drawing.Color.Teal
+        Me.Panel3.Location = New System.Drawing.Point(96, 0)
+        Me.Panel3.Name = "Panel3"
+        Me.Panel3.Size = New System.Drawing.Size(388, 619)
+        Me.Panel3.TabIndex = 614
+        Me.Panel3.Visible = False
+        '
         'MKTNG_Inventory
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -110,6 +156,8 @@ Partial Class MKTNG_Inventory
         Me.ClientSize = New System.Drawing.Size(1024, 700)
         Me.Controls.Add(Me.LoadingPB)
         Me.Controls.Add(Me.Mktng_InvLBL)
+        Me.Controls.Add(Me.AddNewItem_Sidebar)
+        Me.Controls.Add(Me.Frm_PNL)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
         Me.KeyPreview = True
         Me.Name = "MKTNG_Inventory"
@@ -119,6 +167,7 @@ Partial Class MKTNG_Inventory
         Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
         Me.MktngInv_Cmenu.ResumeLayout(False)
         CType(Me.LoadingPB, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.AddNewItem_Sidebar.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -133,4 +182,8 @@ Partial Class MKTNG_Inventory
     Friend WithEvents UpdateItemToolStripMenuItem1 As ToolStripMenuItem
     Friend WithEvents DeleteItemToolStripMenuItem1 As ToolStripMenuItem
     Friend WithEvents AddQuantityToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents Frm_PNL As Panel
+    Friend WithEvents Panel1 As Panel
+    Friend WithEvents AddNewItem_Sidebar As Panel
+    Friend WithEvents Panel3 As Panel
 End Class

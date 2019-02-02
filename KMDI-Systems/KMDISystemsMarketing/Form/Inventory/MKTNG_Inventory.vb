@@ -90,7 +90,7 @@ Public Class MKTNG_Inventory
                     If e.ProgressPercentage = 0 Then
                         If Not Controls.Contains(Inv_DGV) Then
                             DGV_Properties(Inv_DGV, "Inv_DGV")
-                            Controls.Add(Inv_DGV)
+                            Frm_PNL.Controls.Add(Inv_DGV)
 
                             AddHandler Inv_DGV.RowPostPaint, AddressOf MktngInventoryDGV_RowPostPaint
                             AddHandler Inv_DGV.RowEnter, AddressOf MktngInventoryDGV_RowEnter
@@ -375,7 +375,6 @@ Public Class MKTNG_Inventory
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace)
         End Try
     End Sub
-
     Private Sub MktngInventoryDGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs)
         Try
             If (e.RowIndex >= 0 And e.ColumnIndex >= 0) Then
