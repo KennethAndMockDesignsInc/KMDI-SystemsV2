@@ -360,4 +360,9 @@ Begin Transaction
         MHC_Prototype.Show()
         Me.Hide()
     End Sub
+
+    Private Sub Button13_Click(sender As Object, e As EventArgs) Handles Button13.Click
+        Transition_Prototype.Show()
+        Me.Hide()
+    End Sub
 End Class

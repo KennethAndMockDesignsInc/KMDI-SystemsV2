@@ -48,6 +48,7 @@ Partial Class Portal
         Me.Button10 = New System.Windows.Forms.Button()
         Me.Button11 = New System.Windows.Forms.Button()
         Me.Button12 = New System.Windows.Forms.Button()
+        Me.Button13 = New System.Windows.Forms.Button()
         CType(Me.LoadingPboxRNP, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -291,18 +292,28 @@ Partial Class Portal
         '
         'Button12
         '
-        Me.Button12.Location = New System.Drawing.Point(207, 12)
+        Me.Button12.Location = New System.Drawing.Point(234, 12)
         Me.Button12.Name = "Button12"
-        Me.Button12.Size = New System.Drawing.Size(152, 23)
+        Me.Button12.Size = New System.Drawing.Size(125, 23)
         Me.Button12.TabIndex = 30
         Me.Button12.Text = "Man Hour Computation"
         Me.Button12.UseVisualStyleBackColor = True
         '
-        'Form1
+        'Button13
+        '
+        Me.Button13.Location = New System.Drawing.Point(151, 11)
+        Me.Button13.Name = "Button13"
+        Me.Button13.Size = New System.Drawing.Size(77, 23)
+        Me.Button13.TabIndex = 31
+        Me.Button13.Text = "Transitions"
+        Me.Button13.UseVisualStyleBackColor = True
+        '
+        'Portal
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(944, 294)
+        Me.Controls.Add(Me.Button13)
         Me.Controls.Add(Me.Button12)
         Me.Controls.Add(Me.Button11)
         Me.Controls.Add(Me.Button10)
@@ -328,7 +339,7 @@ Partial Class Portal
         Me.Controls.Add(Me.TextBox2)
         Me.Controls.Add(Me.TextBox1)
         Me.Controls.Add(Me.Button1)
-        Me.Name = "Form1"
+        Me.Name = "Portal"
         Me.Text = "Form1"
         CType(Me.LoadingPboxRNP, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
@@ -362,4 +373,5 @@ Partial Class Portal
     Friend WithEvents Button10 As Button
     Friend WithEvents Button11 As Button
     Friend WithEvents Button12 As Button
+    Friend WithEvents Button13 As Button
 End Class
