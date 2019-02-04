@@ -9,14 +9,50 @@ Public Class TE_Installation_CPanel
     Dim DGVrow_list As New List(Of Object)
     Public InsCpanel_DGV As New KryptonDataGridView
 
-    Dim XS As Integer = 0, S As Integer = 0, M As Integer = 0, L As Integer = 0, XL As Integer = 0
+    Dim XS As Integer = 0, S As Integer = 0, M As Integer = 0, L As Integer = 0, XL As Integer = 0, TE_ID As Integer, ROWINDEX As Integer
     Dim Profile_Type As String = Nothing
     Public Sub Start_InsCPanelBGW()
         If InsCPanel_BGW.IsBusy <> True Then
             LoadingPB.Visible = True
+            Frm_PNL.Enabled = False
             InsCPanel_BGW.RunWorkerAsync()
         Else
             MetroFramework.MetroMessageBox.Show(Me, "Please Wait!", "Loading", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+        End If
+    End Sub
+    Sub reset_here()
+        TE_ID = Nothing
+        ProfileType_Tbox.Clear()
+        XS_Tbox.Clear()
+        S_Tbox.Clear()
+        M_Tbox.Clear()
+        L_Tbox.Clear()
+        XL_Tbox.Clear()
+        Generate_DGVCols = False
+    End Sub
+    Sub SAVE()
+        Profile_Type = Trim(ProfileType_Tbox.Text)
+        XS = Val(XS_Tbox.Text)
+        S = Val(S_Tbox.Text)
+        M = Val(M_Tbox.Text)
+        L = Val(L_Tbox.Text)
+        XL = Val(XL_Tbox.Text)
+        If InsCPanel_TODO = "UPDATE" Then
+            If TE_ID <> 0 Then
+                If Profile_Type <> Nothing Or Profile_Type <> "" Then
+                    Start_InsCPanelBGW()
+                Else
+                    KMDIPrompts(Me, "UserWarning", "Profile Type is empty", Environment.StackTrace, Nothing, True, True, "Profile Type cannot be empty")
+                End If
+            Else
+                KMDIPrompts(Me, "UserWarning", "TE_ID IS EMPTY", Environment.StackTrace, Nothing, True, True, "Please Select to Update")
+            End If
+        ElseIf InsCPanel_TODO = "ADD" Then
+            If Profile_Type <> Nothing Or Profile_Type <> "" Then
+                Start_InsCPanelBGW()
+            Else
+                KMDIPrompts(Me, "UserWarning", "Profile Type is empty", Environment.StackTrace, Nothing, True, True, "Profile Type cannot be empty")
+            End If
         End If
     End Sub
     Private Sub TE_Installation_CPanel_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -32,6 +68,46 @@ Public Class TE_Installation_CPanel
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
         End Try
     End Sub
+
+    Private Sub TE_Installation_CPanel_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
+        Try
+            If (e.Control And e.KeyCode = Keys.S) Then
+                InsCPanel_TODO = "UPDATE"
+                SAVE()
+            ElseIf e.KeyCode = Keys.Escape Then
+                reset_here()
+            End If
+        Catch ex As Exception
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
+        End Try
+    End Sub
+
+    Private Sub SizesTbox_KeyPress(sender As Object, e As KeyPressEventArgs) Handles XS_Tbox.KeyPress, S_Tbox.KeyPress,
+                                                                                     M_Tbox.KeyPress, L_Tbox.KeyPress,
+                                                                                     XL_Tbox.KeyPress
+        Try
+            If (Not IsNumeric(e.KeyChar)) And (e.KeyChar <> ControlChars.Back) Then
+                e.Handled = True
+            Else
+                e.Handled = False
+            End If
+        Catch ex As Exception
+            KMDIPrompts(Me, "UserWarning", "Invalid value", Environment.StackTrace, Nothing, True, True, "Numbers only")
+        End Try
+    End Sub
+
+    Private Sub DeleteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DeleteToolStripMenuItem.Click
+        Try
+            KMDIPrompts(Me, "Question", "Are you sure to Delete?", Nothing, Nothing, True)
+            If QuestionPromptAnswer = 6 Then
+                InsCPanel_TODO = "DELETE"
+                Start_InsCPanelBGW()
+            End If
+        Catch ex As Exception
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
+        End Try
+    End Sub
+
     Private Sub InsCPanel_BGW_DoWork(sender As Object, e As DoWorkEventArgs)
         Try
             Select Case InsCPanel_TODO
@@ -40,7 +116,17 @@ Public Class TE_Installation_CPanel
                     TMLMNT_QUERY_INSTANCE = "Loading_using_SearchString"
                     TMLMNT_Query_Select_STP("", "TE_stp_Search")
                 Case "ADD"
+                    Generate_DGVCols = False
+                    Generate_DGVRows = False
                     TMLMNT_Insert("TE_stp_ADD", Profile_Type, XS, S, M, L, XL)
+                Case "UPDATE"
+                    Generate_DGVCols = False
+                    Generate_DGVRows = False
+                    TMLMNT_Update("TE_stp_UPDATE", TE_ID, Profile_Type, XS, S, M, L, XL)
+                Case "DELETE"
+                    Generate_DGVCols = False
+                    Generate_DGVRows = False
+                    TMLMNT_Delete("TE_stp_DELETE", TE_ID)
             End Select
 
             Select Case Generate_DGVCols
@@ -89,11 +175,11 @@ Public Class TE_Installation_CPanel
                     If e.ProgressPercentage = 0 Then
                         If Not Dgv_PNL.Controls.Contains(InsCpanel_DGV) Then
                             DGV_Properties(InsCpanel_DGV, "InsCpanel_DGV")
-                            Dgv_PNL.Controls.Add(InsCpanel_DGV)
-                            'AddHandler InsCpanel_DGV.RowPostPaint, AddressOf InsCpanel_DGV_RowPostPaint
-                            'AddHandler InsCpanel_DGV.RowEnter, AddressOf InsCpanel_DGV_RowEnter
-                            'AddHandler InsCpanel_DGV.CellMouseClick, AddressOf InsCpanel_DGV_CellMouseClick
-                            'AddHandler InsCpanel_DGV.ColumnHeaderMouseClick, AddressOf InsCpanel_DGV_ColumnHeaderMouseClick
+                            DGV_Pnl.Controls.Add(InsCpanel_DGV)
+                            InsCpanel_DGV.MultiSelect = False
+                            AddHandler InsCpanel_DGV.RowPostPaint, AddressOf InsCpanel_DGV_RowPostPaint
+                            AddHandler InsCpanel_DGV.RowEnter, AddressOf InsCpanel_DGV_RowEnter
+                            AddHandler InsCpanel_DGV.CellMouseClick, AddressOf InsCpanel_DGV_CellMouseClick
                         End If
                     End If
                     Dim dgvCol As New DataGridViewColumn
@@ -104,11 +190,7 @@ Public Class TE_Installation_CPanel
                             .HeaderText = dgvCol.Name
                             .CellTemplate = cell
                             .SortMode = DataGridViewColumnSortMode.Automatic
-                            If .Name = "TE_ID" Then
-                                .ValueType = GetType(Integer)
-                                .DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
-                            End If
-                            If .Name = "TE_ID" Then
+                            If .Name = "TE_ID" Or .Name = "TE_STATUS" Then
                                 .Visible = False
                             End If
                         End With
@@ -125,7 +207,11 @@ Public Class TE_Installation_CPanel
                         Case False
                             DGVrow_list.Clear()
                             For i = 0 To sqlDataSet.Tables("QUERY_DETAILS").Columns.Count - 1
-                                DGVrow_list.Add(Convert.ToInt32(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i)))
+                                If i = 1 Then
+                                    DGVrow_list.Add(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i).ToString)
+                                Else
+                                    DGVrow_list.Add(Convert.ToInt32(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i)))
+                                End If
                             Next
                             InsCpanel_DGV.Rows.Add(DGVrow_list.ToArray)
                     End Select
@@ -147,44 +233,84 @@ Public Class TE_Installation_CPanel
                 If sql_Transaction_result = "Committed" Then
                     Select Case InsCPanel_TODO
                         Case "Search"
-                            If sqlDataSet.Tables("QUERY_DETAILS").Rows.Count <> 0 Then
-                                With ProfileType_Cbox
-                                    .DataSource = sqlDataSet
-                                    .ValueMember = "TE_ID"
-                                    .DisplayMember = "PROFILE_TYPE"
-                                End With
-                            End If
-                            Generate_DGVCols = False
+                            reset_here()
                         Case "ADD"
-                            If sqlDataSet.Tables("QUERY_DETAILS").Rows.Count <> 0 Then
-                                With ProfileType_Cbox
-                                    .DataSource = sqlDataSet
-                                    .ValueMember = "TE_ID"
-                                    .DisplayMember = "PROFILE_TYPE"
-                                End With
-                            End If
-                            InsCpanel_DGV.Rows.Add(InsertedTE_ID, XS, S, M, L, XL, Profile_Type)
+                            InsCpanel_DGV.Rows.Add(InsertedTE_ID, Profile_Type, XS, S, M, L, XL)
+                            reset_here()
+                        Case "UPDATE"
+                            InsCpanel_DGV.Rows(ROWINDEX).Cells("PROFILE_TYPE").Value = Profile_Type
+                            InsCpanel_DGV.Rows(ROWINDEX).Cells("EXTRA_SMALL").Value = XS
+                            InsCpanel_DGV.Rows(ROWINDEX).Cells("SMALL").Value = S
+                            InsCpanel_DGV.Rows(ROWINDEX).Cells("MEDIUM").Value = M
+                            InsCpanel_DGV.Rows(ROWINDEX).Cells("LARGE").Value = L
+                            InsCpanel_DGV.Rows(ROWINDEX).Cells("EXTRA_LARGE").Value = XL
+                            KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
+                            reset_here()
+                        Case "DELETE"
+                            InsCpanel_DGV.Rows.RemoveAt(ROWINDEX)
+                            reset_here()
                     End Select
                 End If
             End If
             RESET()
             LoadingPB.Visible = False
+            Frm_PNL.Enabled = True
         Catch ex As Exception
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
             LoadingPB.Visible = False
+            Frm_PNL.Enabled = True
+        End Try
+    End Sub
+    Private Sub InsCpanel_DGV_RowPostPaint(sender As Object, e As DataGridViewRowPostPaintEventArgs)
+        rowpostpaint(sender, e)
+    End Sub
+    Private Sub InsCpanel_DGV_RowEnter(sender As Object, e As DataGridViewCellEventArgs)
+        Try
+            If (e.RowIndex >= 0 And e.ColumnIndex >= 0) Then
+                With InsCpanel_DGV
+                    ROWINDEX = e.RowIndex
+                    .Rows(e.RowIndex).Selected = True
+                    TE_ID = .Item("TE_ID", e.RowIndex).Value
+                    XS_Tbox.Text = .Item("EXTRA_SMALL", e.RowIndex).Value
+                    S_Tbox.Text = .Item("SMALL", e.RowIndex).Value
+                    M_Tbox.Text = .Item("MEDIUM", e.RowIndex).Value.ToString
+                    L_Tbox.Text = .Item("LARGE", e.RowIndex).Value.ToString
+                    XL_Tbox.Text = .Item("EXTRA_LARGE", e.RowIndex).Value.ToString
+                    ProfileType_Tbox.Text = .Item("PROFILE_TYPE", e.RowIndex).Value.ToString
+                End With
+            End If
+        Catch ex As Exception
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace)
+        End Try
+    End Sub
+    Private Sub InsCpanel_DGV_CellMouseClick(sender As Object, e As DataGridViewCellMouseEventArgs)
+        Try
+            If (e.RowIndex >= 0 And e.ColumnIndex >= 0) Then
+                With InsCpanel_DGV
+                    ROWINDEX = e.RowIndex
+                    .Rows(e.RowIndex).Selected = True
+                    TE_ID = .Item("TE_ID", e.RowIndex).Value
+                    XS_Tbox.Text = .Item("EXTRA_SMALL", e.RowIndex).Value
+                    S_Tbox.Text = .Item("SMALL", e.RowIndex).Value
+                    M_Tbox.Text = .Item("MEDIUM", e.RowIndex).Value.ToString
+                    L_Tbox.Text = .Item("LARGE", e.RowIndex).Value.ToString
+                    XL_Tbox.Text = .Item("EXTRA_LARGE", e.RowIndex).Value.ToString
+                    ProfileType_Tbox.Text = .Item("PROFILE_TYPE", e.RowIndex).Value.ToString
+                End With
+                If e.Button = MouseButtons.Right Then
+                    'Inv_DGV.Rows(e.RowIndex).Selected = True
+                    TE_Cmenu.Show()
+                    TE_Cmenu.Location = New Point(MousePosition.X, MousePosition.Y)
+                End If
+            End If
+        Catch ex As Exception
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace)
         End Try
     End Sub
     Private Sub ProfileType_Tbox_ButtonClick(sender As Object, e As EventArgs) Handles ProfileType_Tbox.ButtonClick
         Try
-            Profile_Type = Trim(ProfileType_Tbox.Text)
-            XS = XS_Tbox.Text
-            S = S_Tbox.Text
-            M = M_Tbox.Text
-            L = L_Tbox.Text
-            XL = XL_Tbox.Text
-            InsCpanel_DGV.Rows.Clear()
             InsCPanel_TODO = "ADD"
-            Start_InsCPanelBGW()
+            SAVE()
         Catch ex As Exception
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
         End Try

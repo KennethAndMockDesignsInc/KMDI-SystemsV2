@@ -99,5 +99,55 @@ Module TimeElementModule
             End Using
         End Using
     End Sub
+    Public Sub TMLMNT_Update(ByVal StoredProcedureName As String,
+                             ByVal TE_ID As Integer,
+                             ByVal PROFILE_TYPE As String,
+                             Optional XS As Integer = 0,
+                             Optional S As Integer = 0,
+                             Optional M As Integer = 0,
+                             Optional L As Integer = 0,
+                             Optional XL As Integer = 0)
+        Using sqlcon As New SqlConnection(sqlconnString)
+            sqlcon.Open()
+            Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
+                transaction = sqlcon.BeginTransaction(IsolationLevel.RepeatableRead, StoredProcedureName)
+                sqlCommand.Connection = sqlcon
+                sqlCommand.Transaction = transaction
+                sqlCommand.CommandText = StoredProcedureName
+                sqlCommand.CommandType = CommandType.StoredProcedure
+
+                sqlCommand.Parameters.Add("@PROFILE_TYPE", SqlDbType.VarChar).Value = PROFILE_TYPE
+                sqlCommand.Parameters.Add("@TE_ID", SqlDbType.Int).Value = TE_ID
+                sqlCommand.Parameters.Add("@EXTRA_SMALL", SqlDbType.Int).Value = XS
+                sqlCommand.Parameters.Add("@SMALL", SqlDbType.Int).Value = S
+                sqlCommand.Parameters.Add("@MEDIUM", SqlDbType.Int).Value = M
+                sqlCommand.Parameters.Add("@LARGE", SqlDbType.Int).Value = L
+                sqlCommand.Parameters.Add("@EXTRA_LARGE", SqlDbType.Int).Value = XL
+                sqlCommand.ExecuteNonQuery()
+
+                transaction.Commit()
+                sql_Transaction_result = "Committed"
+            End Using
+        End Using
+    End Sub
+    Public Sub TMLMNT_Delete(ByVal StoredProcedureName As String,
+                             ByVal TE_ID As Integer)
+        Using sqlcon As New SqlConnection(sqlconnString)
+            sqlcon.Open()
+            Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
+                transaction = sqlcon.BeginTransaction(IsolationLevel.RepeatableRead, StoredProcedureName)
+                sqlCommand.Connection = sqlcon
+                sqlCommand.Transaction = transaction
+                sqlCommand.CommandText = StoredProcedureName
+                sqlCommand.CommandType = CommandType.StoredProcedure
+
+                sqlCommand.Parameters.Add("@TE_ID", SqlDbType.Int).Value = TE_ID
+                sqlCommand.ExecuteNonQuery()
+
+                transaction.Commit()
+                sql_Transaction_result = "Committed"
+            End Using
+        End Using
+    End Sub
 
 End Module

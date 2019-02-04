@@ -22,9 +22,11 @@ Partial Class TE_Installation_CPanel
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(TE_Installation_CPanel))
         Me.Mktng_InvLBL = New MetroFramework.Controls.MetroLabel()
         Me.Frm_PNL = New System.Windows.Forms.Panel()
+        Me.MetroLabel6 = New MetroFramework.Controls.MetroLabel()
         Me.DGV_Pnl = New System.Windows.Forms.Panel()
         Me.XL_Tbox = New MetroFramework.Controls.MetroTextBox()
         Me.L_Tbox = New MetroFramework.Controls.MetroTextBox()
@@ -37,10 +39,12 @@ Partial Class TE_Installation_CPanel
         Me.MetroLabel2 = New MetroFramework.Controls.MetroLabel()
         Me.MetroLabel1 = New MetroFramework.Controls.MetroLabel()
         Me.ProfileType_Tbox = New MetroFramework.Controls.MetroTextBox()
-        Me.ProfileType_Cbox = New MetroFramework.Controls.MetroComboBox()
         Me.LoadingPB = New System.Windows.Forms.PictureBox()
+        Me.TE_Cmenu = New MetroFramework.Controls.MetroContextMenu(Me.components)
+        Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Frm_PNL.SuspendLayout()
         CType(Me.LoadingPB, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TE_Cmenu.SuspendLayout()
         Me.SuspendLayout()
         '
         'Mktng_InvLBL
@@ -56,6 +60,7 @@ Partial Class TE_Installation_CPanel
         '
         'Frm_PNL
         '
+        Me.Frm_PNL.Controls.Add(Me.MetroLabel6)
         Me.Frm_PNL.Controls.Add(Me.DGV_Pnl)
         Me.Frm_PNL.Controls.Add(Me.XL_Tbox)
         Me.Frm_PNL.Controls.Add(Me.L_Tbox)
@@ -68,20 +73,30 @@ Partial Class TE_Installation_CPanel
         Me.Frm_PNL.Controls.Add(Me.MetroLabel2)
         Me.Frm_PNL.Controls.Add(Me.MetroLabel1)
         Me.Frm_PNL.Controls.Add(Me.ProfileType_Tbox)
-        Me.Frm_PNL.Controls.Add(Me.ProfileType_Cbox)
         Me.Frm_PNL.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Frm_PNL.Location = New System.Drawing.Point(20, 60)
         Me.Frm_PNL.Name = "Frm_PNL"
         Me.Frm_PNL.Padding = New System.Windows.Forms.Padding(10)
-        Me.Frm_PNL.Size = New System.Drawing.Size(879, 241)
+        Me.Frm_PNL.Size = New System.Drawing.Size(879, 234)
         Me.Frm_PNL.TabIndex = 0
+        '
+        'MetroLabel6
+        '
+        Me.MetroLabel6.AutoSize = True
+        Me.MetroLabel6.FontSize = MetroFramework.MetroLabelSize.Tall
+        Me.MetroLabel6.FontWeight = MetroFramework.MetroLabelWeight.Regular
+        Me.MetroLabel6.Location = New System.Drawing.Point(12, 14)
+        Me.MetroLabel6.Name = "MetroLabel6"
+        Me.MetroLabel6.Size = New System.Drawing.Size(113, 25)
+        Me.MetroLabel6.TabIndex = 19
+        Me.MetroLabel6.Text = "Profile Type :"
         '
         'DGV_Pnl
         '
         Me.DGV_Pnl.Dock = System.Windows.Forms.DockStyle.Right
         Me.DGV_Pnl.Location = New System.Drawing.Point(342, 10)
         Me.DGV_Pnl.Name = "DGV_Pnl"
-        Me.DGV_Pnl.Size = New System.Drawing.Size(527, 221)
+        Me.DGV_Pnl.Size = New System.Drawing.Size(527, 214)
         Me.DGV_Pnl.TabIndex = 18
         '
         'XL_Tbox
@@ -102,7 +117,7 @@ Partial Class TE_Installation_CPanel
         Me.XL_Tbox.CustomButton.Visible = False
         Me.XL_Tbox.FontSize = MetroFramework.MetroTextBoxSize.Tall
         Me.XL_Tbox.Lines = New String(-1) {}
-        Me.XL_Tbox.Location = New System.Drawing.Point(131, 202)
+        Me.XL_Tbox.Location = New System.Drawing.Point(131, 193)
         Me.XL_Tbox.MaxLength = 32767
         Me.XL_Tbox.Name = "XL_Tbox"
         Me.XL_Tbox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
@@ -135,7 +150,7 @@ Partial Class TE_Installation_CPanel
         Me.L_Tbox.CustomButton.Visible = False
         Me.L_Tbox.FontSize = MetroFramework.MetroTextBoxSize.Tall
         Me.L_Tbox.Lines = New String(-1) {}
-        Me.L_Tbox.Location = New System.Drawing.Point(131, 166)
+        Me.L_Tbox.Location = New System.Drawing.Point(131, 157)
         Me.L_Tbox.MaxLength = 32767
         Me.L_Tbox.Name = "L_Tbox"
         Me.L_Tbox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
@@ -168,7 +183,7 @@ Partial Class TE_Installation_CPanel
         Me.M_Tbox.CustomButton.Visible = False
         Me.M_Tbox.FontSize = MetroFramework.MetroTextBoxSize.Tall
         Me.M_Tbox.Lines = New String(-1) {}
-        Me.M_Tbox.Location = New System.Drawing.Point(131, 130)
+        Me.M_Tbox.Location = New System.Drawing.Point(131, 121)
         Me.M_Tbox.MaxLength = 32767
         Me.M_Tbox.Name = "M_Tbox"
         Me.M_Tbox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
@@ -201,7 +216,7 @@ Partial Class TE_Installation_CPanel
         Me.S_Tbox.CustomButton.Visible = False
         Me.S_Tbox.FontSize = MetroFramework.MetroTextBoxSize.Tall
         Me.S_Tbox.Lines = New String(-1) {}
-        Me.S_Tbox.Location = New System.Drawing.Point(131, 94)
+        Me.S_Tbox.Location = New System.Drawing.Point(131, 85)
         Me.S_Tbox.MaxLength = 32767
         Me.S_Tbox.Name = "S_Tbox"
         Me.S_Tbox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
@@ -234,7 +249,7 @@ Partial Class TE_Installation_CPanel
         Me.XS_Tbox.CustomButton.Visible = False
         Me.XS_Tbox.FontSize = MetroFramework.MetroTextBoxSize.Tall
         Me.XS_Tbox.Lines = New String(-1) {}
-        Me.XS_Tbox.Location = New System.Drawing.Point(131, 58)
+        Me.XS_Tbox.Location = New System.Drawing.Point(131, 49)
         Me.XS_Tbox.MaxLength = 32767
         Me.XS_Tbox.Name = "XS_Tbox"
         Me.XS_Tbox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
@@ -254,7 +269,7 @@ Partial Class TE_Installation_CPanel
         Me.MetroLabel5.AutoSize = True
         Me.MetroLabel5.FontSize = MetroFramework.MetroLabelSize.Tall
         Me.MetroLabel5.FontWeight = MetroFramework.MetroLabelWeight.Regular
-        Me.MetroLabel5.Location = New System.Drawing.Point(13, 203)
+        Me.MetroLabel5.Location = New System.Drawing.Point(13, 194)
         Me.MetroLabel5.Name = "MetroLabel5"
         Me.MetroLabel5.Size = New System.Drawing.Size(112, 25)
         Me.MetroLabel5.TabIndex = 12
@@ -265,7 +280,7 @@ Partial Class TE_Installation_CPanel
         Me.MetroLabel4.AutoSize = True
         Me.MetroLabel4.FontSize = MetroFramework.MetroLabelSize.Tall
         Me.MetroLabel4.FontWeight = MetroFramework.MetroLabelWeight.Regular
-        Me.MetroLabel4.Location = New System.Drawing.Point(56, 169)
+        Me.MetroLabel4.Location = New System.Drawing.Point(56, 160)
         Me.MetroLabel4.Name = "MetroLabel4"
         Me.MetroLabel4.Size = New System.Drawing.Size(69, 25)
         Me.MetroLabel4.TabIndex = 11
@@ -276,7 +291,7 @@ Partial Class TE_Installation_CPanel
         Me.MetroLabel3.AutoSize = True
         Me.MetroLabel3.FontSize = MetroFramework.MetroLabelSize.Tall
         Me.MetroLabel3.FontWeight = MetroFramework.MetroLabelWeight.Regular
-        Me.MetroLabel3.Location = New System.Drawing.Point(33, 132)
+        Me.MetroLabel3.Location = New System.Drawing.Point(33, 123)
         Me.MetroLabel3.Name = "MetroLabel3"
         Me.MetroLabel3.Size = New System.Drawing.Size(92, 25)
         Me.MetroLabel3.TabIndex = 10
@@ -287,7 +302,7 @@ Partial Class TE_Installation_CPanel
         Me.MetroLabel2.AutoSize = True
         Me.MetroLabel2.FontSize = MetroFramework.MetroLabelSize.Tall
         Me.MetroLabel2.FontWeight = MetroFramework.MetroLabelWeight.Regular
-        Me.MetroLabel2.Location = New System.Drawing.Point(56, 95)
+        Me.MetroLabel2.Location = New System.Drawing.Point(56, 86)
         Me.MetroLabel2.Name = "MetroLabel2"
         Me.MetroLabel2.Size = New System.Drawing.Size(69, 25)
         Me.MetroLabel2.TabIndex = 9
@@ -298,7 +313,7 @@ Partial Class TE_Installation_CPanel
         Me.MetroLabel1.AutoSize = True
         Me.MetroLabel1.FontSize = MetroFramework.MetroLabelSize.Tall
         Me.MetroLabel1.FontWeight = MetroFramework.MetroLabelWeight.Regular
-        Me.MetroLabel1.Location = New System.Drawing.Point(13, 58)
+        Me.MetroLabel1.Location = New System.Drawing.Point(13, 49)
         Me.MetroLabel1.Name = "MetroLabel1"
         Me.MetroLabel1.Size = New System.Drawing.Size(112, 25)
         Me.MetroLabel1.TabIndex = 8
@@ -310,7 +325,7 @@ Partial Class TE_Installation_CPanel
         '
         '
         Me.ProfileType_Tbox.CustomButton.Image = Nothing
-        Me.ProfileType_Tbox.CustomButton.Location = New System.Drawing.Point(139, 2)
+        Me.ProfileType_Tbox.CustomButton.Location = New System.Drawing.Point(177, 2)
         Me.ProfileType_Tbox.CustomButton.Name = ""
         Me.ProfileType_Tbox.CustomButton.Size = New System.Drawing.Size(25, 25)
         Me.ProfileType_Tbox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
@@ -320,7 +335,7 @@ Partial Class TE_Installation_CPanel
         Me.ProfileType_Tbox.CustomButton.UseSelectable = True
         Me.ProfileType_Tbox.FontSize = MetroFramework.MetroTextBoxSize.Tall
         Me.ProfileType_Tbox.Lines = New String(-1) {}
-        Me.ProfileType_Tbox.Location = New System.Drawing.Point(169, 13)
+        Me.ProfileType_Tbox.Location = New System.Drawing.Point(131, 13)
         Me.ProfileType_Tbox.MaxLength = 32767
         Me.ProfileType_Tbox.Name = "ProfileType_Tbox"
         Me.ProfileType_Tbox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
@@ -329,23 +344,12 @@ Partial Class TE_Installation_CPanel
         Me.ProfileType_Tbox.SelectionLength = 0
         Me.ProfileType_Tbox.SelectionStart = 0
         Me.ProfileType_Tbox.ShowButton = True
-        Me.ProfileType_Tbox.Size = New System.Drawing.Size(167, 30)
+        Me.ProfileType_Tbox.Size = New System.Drawing.Size(205, 30)
         Me.ProfileType_Tbox.Style = MetroFramework.MetroColorStyle.Blue
         Me.ProfileType_Tbox.TabIndex = 1
         Me.ProfileType_Tbox.UseSelectable = True
-        Me.ProfileType_Tbox.WaterMark = "Profile Type"
         Me.ProfileType_Tbox.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
         Me.ProfileType_Tbox.WaterMarkFont = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        '
-        'ProfileType_Cbox
-        '
-        Me.ProfileType_Cbox.FormattingEnabled = True
-        Me.ProfileType_Cbox.ItemHeight = 23
-        Me.ProfileType_Cbox.Location = New System.Drawing.Point(13, 13)
-        Me.ProfileType_Cbox.Name = "ProfileType_Cbox"
-        Me.ProfileType_Cbox.Size = New System.Drawing.Size(150, 29)
-        Me.ProfileType_Cbox.TabIndex = 7
-        Me.ProfileType_Cbox.UseSelectable = True
         '
         'LoadingPB
         '
@@ -358,14 +362,28 @@ Partial Class TE_Installation_CPanel
         Me.LoadingPB.TabIndex = 612
         Me.LoadingPB.TabStop = False
         '
+        'TE_Cmenu
+        '
+        Me.TE_Cmenu.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        Me.TE_Cmenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DeleteToolStripMenuItem})
+        Me.TE_Cmenu.Name = "TE_Cmenu"
+        Me.TE_Cmenu.Size = New System.Drawing.Size(108, 26)
+        '
+        'DeleteToolStripMenuItem
+        '
+        Me.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem"
+        Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.DeleteToolStripMenuItem.Text = "Delete"
+        '
         'TE_Installation_CPanel
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(919, 321)
+        Me.ClientSize = New System.Drawing.Size(919, 314)
         Me.Controls.Add(Me.LoadingPB)
         Me.Controls.Add(Me.Mktng_InvLBL)
         Me.Controls.Add(Me.Frm_PNL)
+        Me.KeyPreview = True
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "TE_Installation_CPanel"
@@ -373,6 +391,7 @@ Partial Class TE_Installation_CPanel
         Me.Frm_PNL.ResumeLayout(False)
         Me.Frm_PNL.PerformLayout()
         CType(Me.LoadingPB, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TE_Cmenu.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -380,7 +399,6 @@ Partial Class TE_Installation_CPanel
 
     Friend WithEvents Mktng_InvLBL As MetroFramework.Controls.MetroLabel
     Friend WithEvents Frm_PNL As Panel
-    Friend WithEvents ProfileType_Cbox As MetroFramework.Controls.MetroComboBox
     Friend WithEvents LoadingPB As PictureBox
     Friend WithEvents ProfileType_Tbox As MetroFramework.Controls.MetroTextBox
     Friend WithEvents XL_Tbox As MetroFramework.Controls.MetroTextBox
@@ -394,4 +412,7 @@ Partial Class TE_Installation_CPanel
     Friend WithEvents MetroLabel2 As MetroFramework.Controls.MetroLabel
     Friend WithEvents MetroLabel1 As MetroFramework.Controls.MetroLabel
     Friend WithEvents DGV_Pnl As Panel
+    Friend WithEvents MetroLabel6 As MetroFramework.Controls.MetroLabel
+    Friend WithEvents TE_Cmenu As MetroFramework.Controls.MetroContextMenu
+    Friend WithEvents DeleteToolStripMenuItem As ToolStripMenuItem
 End Class
