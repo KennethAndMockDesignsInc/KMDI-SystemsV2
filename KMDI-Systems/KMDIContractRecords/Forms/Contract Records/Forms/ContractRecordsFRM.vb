@@ -48,8 +48,6 @@ Public Class ContractRecordsFRM
 
     Public ErrorMessage As String
 
-    'Public GenerateOutput As Boolean
-
     Public ContractRecordsBGW As BackgroundWorker = New BackgroundWorker
     Public Delegate Sub PBVisibilityDelegate(ByVal Visibility As Boolean)
     Dim ChangePBVisibility As PBVisibilityDelegate
@@ -115,7 +113,7 @@ Public Class ContractRecordsFRM
                 ContractRecordsBGW.WorkerSupportsCancellation = True
                 ContractRecordsBGW.RunWorkerAsync()
             Else
-                MetroMessageBox.Show(Me, "System is gathering information.", "Please wait for a moment", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                MetroMessageBox.Show(Me, "Insight is gathering information.", "Please wait for a moment", MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
 
         Catch ex As Exception
@@ -366,8 +364,6 @@ Public Class ContractRecordsFRM
                             StartWorker()
                         Case "ItemSearchSecondF2"
                             OpenScannedContract()
-                            'SearchString = PDID
-                            'StartWorker()
                     End Select
                 Case Keys.Back
                     LoadInitialSetUp()
@@ -394,8 +390,6 @@ Public Class ContractRecordsFRM
                             StartWorker()
                         Case "ItemSearchSecondF2"
                             OpenScannedContract()
-                            'SearchString = PDID
-                            'StartWorker()
                     End Select
             End Select
 
@@ -422,8 +416,6 @@ Public Class ContractRecordsFRM
                         StartWorker()
                     Case "ItemSearchSecondF2"
                         OpenContractItems()
-                        'SearchString = PDID
-                        'StartWorker()
                 End Select
             End If
         Catch ex As Exception

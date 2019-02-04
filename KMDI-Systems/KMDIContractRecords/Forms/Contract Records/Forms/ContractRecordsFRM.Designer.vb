@@ -45,6 +45,7 @@ Partial Class ContractRecordsFRM
         Me.ContractRecordsDGV = New ComponentFactory.Krypton.Toolkit.KryptonDataGridView()
         Me.ContractRecordsLBL = New MetroFramework.Controls.MetroLabel()
         Me.LoadingPB = New System.Windows.Forms.PictureBox()
+        Me.OverviewToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ListOfViewMenuStrip.SuspendLayout()
         CType(Me.ContractRecordsDGV, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LoadingPB, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -59,7 +60,7 @@ Partial Class ContractRecordsFRM
         '
         'ViewToolStripMenuItem
         '
-        Me.ViewToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ContractsToolStripMenuItem, Me.ContractItemsToolStripMenuItem, Me.ScannedContractsToolStripMenuItem})
+        Me.ViewToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ContractsToolStripMenuItem, Me.ContractItemsToolStripMenuItem, Me.ScannedContractsToolStripMenuItem, Me.OverviewToolStripMenuItem})
         Me.ViewToolStripMenuItem.Name = "ViewToolStripMenuItem"
         Me.ViewToolStripMenuItem.Size = New System.Drawing.Size(182, 22)
         Me.ViewToolStripMenuItem.Text = "View"
@@ -222,6 +223,12 @@ Partial Class ContractRecordsFRM
         Me.LoadingPB.TabStop = False
         Me.LoadingPB.Visible = False
         '
+        'OverviewToolStripMenuItem
+        '
+        Me.OverviewToolStripMenuItem.Name = "OverviewToolStripMenuItem"
+        Me.OverviewToolStripMenuItem.Size = New System.Drawing.Size(173, 22)
+        Me.OverviewToolStripMenuItem.Text = "Overview"
+        '
         'ContractRecordsFRM
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 17.0!)
@@ -264,4 +271,5 @@ Partial Class ContractRecordsFRM
     Friend WithEvents ScannedContractsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ContractsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ContractItemsToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents OverviewToolStripMenuItem As ToolStripMenuItem
 End Class
