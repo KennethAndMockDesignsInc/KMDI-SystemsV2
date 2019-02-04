@@ -2,8 +2,6 @@
 Imports System.Data.SqlClient
 Imports System.Threading.Thread
 Imports ComponentFactory.Krypton.Toolkit
-Imports System.IO
-Imports System.Net
 Public Class MKTNG_Inventory
     Public MktngInventory_BGW As BackgroundWorker = New BackgroundWorker
     Public MktngInv_TODO As String

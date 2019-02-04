@@ -154,10 +154,10 @@ Partial Class MKTNG_Inventory
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1024, 700)
+        Me.Controls.Add(Me.Frm_PNL)
         Me.Controls.Add(Me.LoadingPB)
         Me.Controls.Add(Me.Mktng_InvLBL)
         Me.Controls.Add(Me.AddNewItem_Sidebar)
-        Me.Controls.Add(Me.Frm_PNL)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
         Me.KeyPreview = True
         Me.Name = "MKTNG_Inventory"
