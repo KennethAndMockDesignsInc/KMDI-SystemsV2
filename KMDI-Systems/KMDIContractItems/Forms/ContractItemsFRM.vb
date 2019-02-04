@@ -83,11 +83,6 @@ Public Class ContractItemsFRM
                 ContractItemsBGW.WorkerSupportsCancellation = True
                 ContractItemsBGW.RunWorkerAsync()
 
-                Select Case ActionTaken
-                    Case "Russell"
-
-                    Case "Ej"
-                End Select
             Else
                 MetroMessageBox.Show(Me, "System is gathering information.", "Please wait for a moment", MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
@@ -607,7 +602,6 @@ Public Class ContractItemsFRM
                                 .AllowUserToAddRows = False
                                 .AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells
                                 .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
-                                '.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells)
                                 .CausesValidation = True
                                 .ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableWithAutoHeaderText
                                 .PaletteMode = PaletteMode.Office2010Silver

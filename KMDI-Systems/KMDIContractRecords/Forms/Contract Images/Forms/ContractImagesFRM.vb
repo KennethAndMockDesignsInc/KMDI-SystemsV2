@@ -33,7 +33,7 @@ Public Class ContractImagesFRM
 
     Private Sub ContractImagesFRM_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
-            Me.WindowState = FormWindowState.Maximized
+            WindowState = FormWindowState.Maximized
             AddHandler ContractImagesBGW.DoWork, AddressOf ContractImagesBGW_DoWork
             AddHandler ContractImagesBGW.RunWorkerCompleted, AddressOf ContractImagesBGW_RunWorkerCompleted
             AddHandler ContractImagesBGW.ProgressChanged, AddressOf ContractImagesBGW_ProgressChanged

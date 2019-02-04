@@ -118,6 +118,12 @@
     <Compile Include="KMDIContractItems\Forms\ContractItemsFRM.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="KMDIContractOverview\Forms\GeneralizedOverview\GeneralizedOverview.Designer.vb">
+      <DependentUpon>GeneralizedOverview.vb</DependentUpon>
+    </Compile>
+    <Compile Include="KMDIContractOverview\Forms\GeneralizedOverview\GeneralizedOverview.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="KMDIContractRecords\Class\KMDIContractRecordsClass.vb" />
     <Compile Include="KMDIContractRecords\Forms\Client Background\ClientBackgroundFRM.Designer.vb">
       <DependentUpon>ClientBackgroundFRM.vb</DependentUpon>
@@ -406,6 +412,9 @@
     <EmbeddedResource Include="KMDIContractItems\Forms\ContractItemsFRM.resx">
       <DependentUpon>ContractItemsFRM.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="KMDIContractOverview\Forms\GeneralizedOverview\GeneralizedOverview.resx">
+      <DependentUpon>GeneralizedOverview.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="KMDIContractRecords\Forms\Client Background\ClientBackgroundFRM.resx">
       <DependentUpon>ClientBackgroundFRM.vb</DependentUpon>
     </EmbeddedResource>
@@ -554,6 +563,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="KMDIContractOverview\Class\" />
+    <Folder Include="KMDIContractOverview\Forms\DetailedOverview\" />
     <Folder Include="KMDISystemsAccount\Module\" />
     <Folder Include="KMDISystemsCosting\Module\" />
     <Folder Include="KMDISystemsCosting\WinDoorMaker\Module\" />
