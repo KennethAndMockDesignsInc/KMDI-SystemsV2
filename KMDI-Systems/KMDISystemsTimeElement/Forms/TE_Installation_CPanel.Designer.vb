@@ -381,11 +381,12 @@ Partial Class TE_Installation_CPanel
         '
         'GlassHrs_Lbl
         '
+        Me.GlassHrs_Lbl.AutoSize = True
         Me.GlassHrs_Lbl.Location = New System.Drawing.Point(3, 36)
         Me.GlassHrs_Lbl.Name = "GlassHrs_Lbl"
-        Me.GlassHrs_Lbl.Size = New System.Drawing.Size(121, 19)
+        Me.GlassHrs_Lbl.Size = New System.Drawing.Size(73, 19)
         Me.GlassHrs_Lbl.TabIndex = 35
-        Me.GlassHrs_Lbl.Text = "GlassHrs_Lbl"
+        Me.GlassHrs_Lbl.Text = "00 : 00 : 00"
         '
         'MetroLabel6
         '
@@ -418,9 +419,9 @@ Partial Class TE_Installation_CPanel
         Me.FrameHrs_Lbl.AutoSize = True
         Me.FrameHrs_Lbl.Location = New System.Drawing.Point(3, 36)
         Me.FrameHrs_Lbl.Name = "FrameHrs_Lbl"
-        Me.FrameHrs_Lbl.Size = New System.Drawing.Size(89, 19)
+        Me.FrameHrs_Lbl.Size = New System.Drawing.Size(73, 19)
         Me.FrameHrs_Lbl.TabIndex = 0
-        Me.FrameHrs_Lbl.Text = "FrameHrs_Lbl"
+        Me.FrameHrs_Lbl.Text = "00 : 00 : 00"
         '
         'TableLayoutPanel2
         '
@@ -439,11 +440,12 @@ Partial Class TE_Installation_CPanel
         '
         'SashHrs_Lbl
         '
+        Me.SashHrs_Lbl.AutoSize = True
         Me.SashHrs_Lbl.Location = New System.Drawing.Point(3, 34)
         Me.SashHrs_Lbl.Name = "SashHrs_Lbl"
-        Me.SashHrs_Lbl.Size = New System.Drawing.Size(121, 19)
+        Me.SashHrs_Lbl.Size = New System.Drawing.Size(73, 19)
         Me.SashHrs_Lbl.TabIndex = 34
-        Me.SashHrs_Lbl.Text = "SashHrs_Lbl"
+        Me.SashHrs_Lbl.Text = "00 : 00 : 00"
         '
         'FieldsHeader_Pnl
         '
@@ -535,9 +537,11 @@ Partial Class TE_Installation_CPanel
         Me.Fields_TblPnl.ResumeLayout(False)
         Me.Fields_TblPnl.PerformLayout()
         Me.TableLayoutPanel3.ResumeLayout(False)
+        Me.TableLayoutPanel3.PerformLayout()
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.TableLayoutPanel1.PerformLayout()
         Me.TableLayoutPanel2.ResumeLayout(False)
+        Me.TableLayoutPanel2.PerformLayout()
         Me.FieldsHeader_Pnl.ResumeLayout(False)
         Me.FieldsHeader_Pnl.PerformLayout()
         CType(Me.Exit_Pbtn, System.ComponentModel.ISupportInitialize).EndInit()

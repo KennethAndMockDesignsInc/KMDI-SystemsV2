@@ -281,9 +281,6 @@ Public Class TE_Installation_CPanel
                                     DGVrow_list.Add(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i).ToString)
                                 ElseIf i = 3 Or i = 4 Or i = 5 Then
                                     Dim iSpan As TimeSpan = TimeSpan.FromSeconds(Convert.ToInt32(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i)))
-                                    'Dim TotalHrs As String = iSpan.Hours.ToString.PadLeft(2, "0"c) & " : " &
-                                    '                         iSpan.Minutes.ToString.PadLeft(2, "0"c) & " : " &
-                                    '                         iSpan.Seconds.ToString.PadLeft(2, "0"c)
 
                                     DGVrow_list.Add(iSpan)
                                 End If
@@ -351,9 +348,6 @@ Public Class TE_Installation_CPanel
                     Frame_Tbox.Text = .Item("FRAME", e.RowIndex).Value.TotalSeconds
                     Sash_Tbox.Text = .Item("SASH", e.RowIndex).Value.TotalSeconds
                     Glass_Tbox.Text = .Item("GLASS", e.RowIndex).Value.TotalSeconds
-                    'Frame_Tbox.Text = ConvertToSeconds(.Item("FRAME", e.RowIndex).Value)
-                    'Sash_Tbox.Text = ConvertToSeconds(.Item("SASH", e.RowIndex).Value)
-                    'Glass_Tbox.Text = ConvertToSeconds(.Item("GLASS", e.RowIndex).Value)
                     Size_Tbox.Text = .Item("SIZE", e.RowIndex).Value.ToString
                     ProfileType_Tbox.Text = .Item("PROFILE TYPE", e.RowIndex).Value.ToString
                 End With
@@ -372,9 +366,6 @@ Public Class TE_Installation_CPanel
                     Frame_Tbox.Text = .Item("FRAME", e.RowIndex).Value.TotalSeconds
                     Sash_Tbox.Text = .Item("SASH", e.RowIndex).Value.TotalSeconds
                     Glass_Tbox.Text = .Item("GLASS", e.RowIndex).Value.TotalSeconds
-                    'Frame_Tbox.Text = ConvertToSeconds(.Item("FRAME", e.RowIndex).Value)
-                    'Sash_Tbox.Text = ConvertToSeconds(.Item("SASH", e.RowIndex).Value)
-                    'Glass_Tbox.Text = ConvertToSeconds(.Item("GLASS", e.RowIndex).Value)
                     Size_Tbox.Text = .Item("SIZE", e.RowIndex).Value.ToString
                     ProfileType_Tbox.Text = .Item("PROFILE TYPE", e.RowIndex).Value.ToString
                 End With
