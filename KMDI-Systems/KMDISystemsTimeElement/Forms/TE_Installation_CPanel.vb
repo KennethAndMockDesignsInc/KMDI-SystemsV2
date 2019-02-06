@@ -61,6 +61,8 @@ Public Class TE_Installation_CPanel
             AddHandler InsCPanel_BGW.DoWork, AddressOf InsCPanel_BGW_DoWork
             AddHandler InsCPanel_BGW.ProgressChanged, AddressOf InsCPanel_BGW_ProgressChanged
             AddHandler InsCPanel_BGW.RunWorkerCompleted, AddressOf InsCPanel_BGW_RunWorkerCompleted
+
+            WindoorPart_Cbox.SelectedIndex = 0
             InsCPanel_TODO = "Search"
             Start_InsCPanelBGW()
         Catch ex As Exception

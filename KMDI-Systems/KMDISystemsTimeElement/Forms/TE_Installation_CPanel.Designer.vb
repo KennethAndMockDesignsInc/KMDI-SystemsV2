@@ -54,6 +54,7 @@ Partial Class TE_Installation_CPanel
         Me.AddSidebar_Lbl = New ComponentFactory.Krypton.Toolkit.KryptonLabel()
         Me.AddSidebar_Pnl = New System.Windows.Forms.Panel()
         Me.LoadingPB = New System.Windows.Forms.PictureBox()
+        Me.WindoorPart_Cbox = New MetroFramework.Controls.MetroComboBox()
         Me.Frm_PNL.SuspendLayout()
         Me.TE_Cmenu.SuspendLayout()
         Me.Fields_Pnl.SuspendLayout()
@@ -79,6 +80,7 @@ Partial Class TE_Installation_CPanel
         '
         'Frm_PNL
         '
+        Me.Frm_PNL.Controls.Add(Me.WindoorPart_Cbox)
         Me.Frm_PNL.Controls.Add(Me.DGV_Pnl)
         Me.Frm_PNL.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Frm_PNL.Location = New System.Drawing.Point(20, 60)
@@ -89,11 +91,13 @@ Partial Class TE_Installation_CPanel
         '
         'DGV_Pnl
         '
+        Me.DGV_Pnl.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.DGV_Pnl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.DGV_Pnl.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.DGV_Pnl.Location = New System.Drawing.Point(10, 10)
+        Me.DGV_Pnl.Location = New System.Drawing.Point(10, 36)
         Me.DGV_Pnl.Name = "DGV_Pnl"
-        Me.DGV_Pnl.Size = New System.Drawing.Size(593, 275)
+        Me.DGV_Pnl.Size = New System.Drawing.Size(593, 249)
         Me.DGV_Pnl.TabIndex = 18
         '
         'Glass_Tbox
@@ -515,6 +519,17 @@ Partial Class TE_Installation_CPanel
         Me.LoadingPB.TabIndex = 612
         Me.LoadingPB.TabStop = False
         '
+        'WindoorPart_Cbox
+        '
+        Me.WindoorPart_Cbox.FormattingEnabled = True
+        Me.WindoorPart_Cbox.ItemHeight = 23
+        Me.WindoorPart_Cbox.Items.AddRange(New Object() {"F/SH/GL", "Screen"})
+        Me.WindoorPart_Cbox.Location = New System.Drawing.Point(10, 1)
+        Me.WindoorPart_Cbox.Name = "WindoorPart_Cbox"
+        Me.WindoorPart_Cbox.Size = New System.Drawing.Size(138, 29)
+        Me.WindoorPart_Cbox.TabIndex = 613
+        Me.WindoorPart_Cbox.UseSelectable = True
+        '
         'TE_Installation_CPanel
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -581,4 +596,5 @@ Partial Class TE_Installation_CPanel
     Friend WithEvents GlassHrs_Lbl As MetroFramework.Controls.MetroLabel
     Friend WithEvents TableLayoutPanel2 As TableLayoutPanel
     Friend WithEvents SashHrs_Lbl As MetroFramework.Controls.MetroLabel
+    Friend WithEvents WindoorPart_Cbox As MetroFramework.Controls.MetroComboBox
 End Class
