@@ -45,8 +45,15 @@ Public Class TE_Installation_CPanel
         Else
             KMDIPrompts(Me, "UserWarning", "Profile Type is empty", Environment.StackTrace, Nothing, True, True, "Profile Type cannot be empty")
         End If
-
     End Sub
+    Public Function ConvertToSeconds(Optional Hrs As Integer = 0,
+                                     Optional Mins As Integer = 0,
+                                     Optional Secs As Integer = 0) As Integer
+        Dim TotalSecs As Integer = Nothing
+        TotalSecs = (Hrs * 3600) + (Mins * 60) + Secs
+
+        Return TotalSecs
+    End Function
     Private Sub TE_Installation_CPanel_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
             InsCPanel_BGW.WorkerSupportsCancellation = True
@@ -182,6 +189,32 @@ Public Class TE_Installation_CPanel
         reset_here()
         Fields_Pnl.Visible = False
     End Sub
+    Private Sub HrsTbox_TextChanged(sender As Object, e As EventArgs) Handles Frame_Tbox.TextChanged, Sash_Tbox.TextChanged, Glass_Tbox.TextChanged
+        Try
+            Dim iSpan As TimeSpan = TimeSpan.FromSeconds(Val(sender.Text))
+            Dim TotalHrs As String
+
+            TotalHrs = iSpan.Hours.ToString.PadLeft(2, "0"c) & " : " &
+                       iSpan.Minutes.ToString.PadLeft(2, "0"c) & " : " &
+                       iSpan.Seconds.ToString.PadLeft(2, "0"c)
+
+            If sender.Name = "Frame_Tbox" Then
+                FrameHrs_Lbl.Text = TotalHrs
+            ElseIf sender.Name = "Sash_Tbox" Then
+                SashHrs_Lbl.Text = TotalHrs
+            ElseIf sender.Name = "Glass_Tbox" Then
+                GlassHrs_Lbl.Text = TotalHrs
+            End If
+        Catch ex As Exception
+            If ex.Message = "TimeSpan overflowed because the duration is too long." Then
+                KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True, True,
+                            "Input not allowed")
+                sender.Clear()
+            Else
+                KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
+            End If
+        End Try
+    End Sub
 
     Private Sub AddSidebar_Click(sender As Object, e As EventArgs) Handles AddSidebar_Pnl.Click, AddSidebar_Lbl.Click
         If Fields_Pnl.Visible = False Then
@@ -219,6 +252,15 @@ Public Class TE_Installation_CPanel
                             If .Name = "TE_ID" Or .Name = "TE_STATUS" Then
                                 .Visible = False
                             End If
+                            If .Name = "TE_ID" Then
+                                .ValueType = GetType(Integer)
+                            End If
+                            If .Name = "PROFILE TYPE" Or .Name = "SIZE" Then
+                                .ValueType = GetType(String)
+                            End If
+                            If .Name = "FRAME" Or .Name = "SASH" Or .Name = "GLASS" Then
+                                .ValueType = GetType(TimeSpan)
+                            End If
                         End With
                         InsCpanel_DGV.Columns.Add(dgvCol)
                     End If
@@ -233,10 +275,17 @@ Public Class TE_Installation_CPanel
                         Case False
                             DGVrow_list.Clear()
                             For i = 0 To sqlDataSet.Tables("QUERY_DETAILS").Columns.Count - 1
-                                If i = 1 Or i = 2 Then
+                                If i = 0 Then
+                                    DGVrow_list.Add(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i))
+                                ElseIf i = 1 Or i = 2 Then
                                     DGVrow_list.Add(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i).ToString)
-                                Else
-                                    DGVrow_list.Add(Convert.ToInt32(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i)))
+                                ElseIf i = 3 Or i = 4 Or i = 5 Then
+                                    Dim iSpan As TimeSpan = TimeSpan.FromSeconds(Convert.ToInt32(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i)))
+                                    'Dim TotalHrs As String = iSpan.Hours.ToString.PadLeft(2, "0"c) & " : " &
+                                    '                         iSpan.Minutes.ToString.PadLeft(2, "0"c) & " : " &
+                                    '                         iSpan.Seconds.ToString.PadLeft(2, "0"c)
+
+                                    DGVrow_list.Add(iSpan)
                                 End If
                             Next
                             InsCpanel_DGV.Rows.Add(DGVrow_list.ToArray)
@@ -261,15 +310,16 @@ Public Class TE_Installation_CPanel
                         Case "Search"
                             reset_here()
                         Case "ADD"
-                            InsCpanel_DGV.Rows.Add(InsertedTE_ID, Profile_Type, Item_Size, Item_Frame, Item_Sash, Item_Glass)
+                            InsCpanel_DGV.Rows.Add(InsertedTE_ID, Profile_Type, Item_Size, TimeSpan.FromSeconds(Item_Frame),
+                                                   TimeSpan.FromSeconds(Item_Sash), TimeSpan.FromSeconds(Item_Glass))
                             KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
                             reset_here()
                         Case "UPDATE"
                             InsCpanel_DGV.Rows(ROWINDEX).Cells("PROFILE TYPE").Value = Profile_Type
                             InsCpanel_DGV.Rows(ROWINDEX).Cells("SIZE").Value = Item_Size
-                            InsCpanel_DGV.Rows(ROWINDEX).Cells("FRAME").Value = Item_Frame
-                            InsCpanel_DGV.Rows(ROWINDEX).Cells("SASH").Value = Item_Sash
-                            InsCpanel_DGV.Rows(ROWINDEX).Cells("GLASS").Value = Item_Glass
+                            InsCpanel_DGV.Rows(ROWINDEX).Cells("FRAME").Value = TimeSpan.FromSeconds(Item_Frame)
+                            InsCpanel_DGV.Rows(ROWINDEX).Cells("SASH").Value = TimeSpan.FromSeconds(Item_Sash)
+                            InsCpanel_DGV.Rows(ROWINDEX).Cells("GLASS").Value = TimeSpan.FromSeconds(Item_Glass)
                             KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
                             reset_here()
                             Fields_Pnl.Visible = False
@@ -298,9 +348,12 @@ Public Class TE_Installation_CPanel
                     ROWINDEX = e.RowIndex
                     .Rows(e.RowIndex).Selected = True
                     TE_ID = .Item("TE_ID", e.RowIndex).Value
-                    Frame_Tbox.Text = .Item("FRAME", e.RowIndex).Value
-                    Sash_Tbox.Text = .Item("SASH", e.RowIndex).Value
-                    Glass_Tbox.Text = .Item("GLASS", e.RowIndex).Value
+                    Frame_Tbox.Text = .Item("FRAME", e.RowIndex).Value.TotalSeconds
+                    Sash_Tbox.Text = .Item("SASH", e.RowIndex).Value.TotalSeconds
+                    Glass_Tbox.Text = .Item("GLASS", e.RowIndex).Value.TotalSeconds
+                    'Frame_Tbox.Text = ConvertToSeconds(.Item("FRAME", e.RowIndex).Value)
+                    'Sash_Tbox.Text = ConvertToSeconds(.Item("SASH", e.RowIndex).Value)
+                    'Glass_Tbox.Text = ConvertToSeconds(.Item("GLASS", e.RowIndex).Value)
                     Size_Tbox.Text = .Item("SIZE", e.RowIndex).Value.ToString
                     ProfileType_Tbox.Text = .Item("PROFILE TYPE", e.RowIndex).Value.ToString
                 End With
@@ -316,9 +369,12 @@ Public Class TE_Installation_CPanel
                     ROWINDEX = e.RowIndex
                     .Rows(e.RowIndex).Selected = True
                     TE_ID = .Item("TE_ID", e.RowIndex).Value
-                    Frame_Tbox.Text = .Item("FRAME", e.RowIndex).Value
-                    Sash_Tbox.Text = .Item("SASH", e.RowIndex).Value
-                    Glass_Tbox.Text = .Item("GLASS", e.RowIndex).Value
+                    Frame_Tbox.Text = .Item("FRAME", e.RowIndex).Value.TotalSeconds
+                    Sash_Tbox.Text = .Item("SASH", e.RowIndex).Value.TotalSeconds
+                    Glass_Tbox.Text = .Item("GLASS", e.RowIndex).Value.TotalSeconds
+                    'Frame_Tbox.Text = ConvertToSeconds(.Item("FRAME", e.RowIndex).Value)
+                    'Sash_Tbox.Text = ConvertToSeconds(.Item("SASH", e.RowIndex).Value)
+                    'Glass_Tbox.Text = ConvertToSeconds(.Item("GLASS", e.RowIndex).Value)
                     Size_Tbox.Text = .Item("SIZE", e.RowIndex).Value.ToString
                     ProfileType_Tbox.Text = .Item("PROFILE TYPE", e.RowIndex).Value.ToString
                 End With
