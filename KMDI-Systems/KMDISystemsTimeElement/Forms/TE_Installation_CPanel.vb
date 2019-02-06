@@ -9,8 +9,8 @@ Public Class TE_Installation_CPanel
     Dim DGVrow_list As New List(Of Object)
     Public InsCpanel_DGV As New KryptonDataGridView
 
-    Dim XS As Integer = 0, S As Integer = 0, M As Integer = 0, L As Integer = 0, XL As Integer = 0, TE_ID As Integer, ROWINDEX As Integer
-    Dim Profile_Type As String = Nothing
+    Dim Item_Frame As Integer = 0, Item_Sash As Integer = 0, Item_Glass As Integer = 0, TE_ID As Integer, ROWINDEX As Integer
+    Dim Profile_Type As String = Nothing, Item_Size As String = Nothing
     Public Sub Start_InsCPanelBGW()
         If InsCPanel_BGW.IsBusy <> True Then
             LoadingPB.Visible = True
@@ -23,20 +23,18 @@ Public Class TE_Installation_CPanel
     Sub reset_here()
         TE_ID = Nothing
         ProfileType_Tbox.Clear()
-        XS_Tbox.Clear()
-        S_Tbox.Clear()
-        M_Tbox.Clear()
-        L_Tbox.Clear()
-        XL_Tbox.Clear()
+        Size_Tbox.Clear()
+        Frame_Tbox.Clear()
+        Sash_Tbox.Clear()
+        Glass_Tbox.Clear()
         Generate_DGVCols = False
     End Sub
     Sub SAVE()
         Profile_Type = Trim(ProfileType_Tbox.Text)
-        XS = Val(XS_Tbox.Text)
-        S = Val(S_Tbox.Text)
-        M = Val(M_Tbox.Text)
-        L = Val(L_Tbox.Text)
-        XL = Val(XL_Tbox.Text)
+        Item_Size = Val(Size_Tbox.Text)
+        Item_Frame = Val(Frame_Tbox.Text)
+        Item_Sash = Val(Sash_Tbox.Text)
+        Item_Glass = Val(Glass_Tbox.Text)
         If InsCPanel_TODO = "UPDATE" Then
             If TE_ID <> 0 Then
                 If Profile_Type <> Nothing Or Profile_Type <> "" Then
@@ -82,9 +80,7 @@ Public Class TE_Installation_CPanel
         End Try
     End Sub
 
-    Private Sub SizesTbox_KeyPress(sender As Object, e As KeyPressEventArgs) Handles XS_Tbox.KeyPress, S_Tbox.KeyPress,
-                                                                                     M_Tbox.KeyPress, L_Tbox.KeyPress,
-                                                                                     XL_Tbox.KeyPress
+    Private Sub SizesTbox_KeyPress(sender As Object, e As KeyPressEventArgs)
         Try
             If (Not IsNumeric(e.KeyChar)) And (e.KeyChar <> ControlChars.Back) Then
                 e.Handled = True
@@ -97,17 +93,8 @@ Public Class TE_Installation_CPanel
     End Sub
 
     Private Sub DeleteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DeleteToolStripMenuItem.Click
-        Try
-            KMDIPrompts(Me, "Question", "Are you sure to Delete?", Nothing, Nothing, True)
-            If QuestionPromptAnswer = 6 Then
-                InsCPanel_TODO = "DELETE"
-                Start_InsCPanelBGW()
-            End If
-        Catch ex As Exception
-            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
-        End Try
-    End Sub
 
+    End Sub
     Private Sub InsCPanel_BGW_DoWork(sender As Object, e As DoWorkEventArgs)
         Try
             Select Case InsCPanel_TODO
@@ -118,11 +105,11 @@ Public Class TE_Installation_CPanel
                 Case "ADD"
                     Generate_DGVCols = False
                     Generate_DGVRows = False
-                    TMLMNT_Insert("TE_stp_ADD", Profile_Type, XS, S, M, L, XL)
+                    TMLMNT_Insert("TE_stp_ADD", Profile_Type, Item_Size, Item_Frame, Item_Sash, Item_Glass)
                 Case "UPDATE"
                     Generate_DGVCols = False
                     Generate_DGVRows = False
-                    TMLMNT_Update("TE_stp_UPDATE", TE_ID, Profile_Type, XS, S, M, L, XL)
+                    TMLMNT_Update("TE_stp_UPDATE", TE_ID, Profile_Type, Item_Size, Item_Frame, Item_Sash, Item_Glass)
                 Case "DELETE"
                     Generate_DGVCols = False
                     Generate_DGVRows = False
@@ -168,12 +155,30 @@ Public Class TE_Installation_CPanel
         End If
     End Sub
 
+    Private Sub AddSidebar_MouseEnterAndHover(sender As Object, e As EventArgs) Handles AddSidebar_Pnl.MouseEnter, AddSidebar_Lbl.MouseEnter,
+                                                                                        AddSidebar_Pnl.MouseHover, AddSidebar_Lbl.MouseHover
+        AddSidebar_Pnl.BackColor = SystemColors.MenuHighlight
+    End Sub
+
+    Private Sub AddSidebar_MouseLeave(sender As Object, e As EventArgs) Handles AddSidebar_Pnl.MouseLeave, AddSidebar_Lbl.MouseLeave
+        AddSidebar_Pnl.BackColor = Color.DimGray
+    End Sub
+
+    Private Sub AddSidebar_Click(sender As Object, e As EventArgs) Handles AddSidebar_Pnl.Click, AddSidebar_Lbl.Click
+        If Fields_Pnl.Visible = False Then
+            Fields_Pnl.Visible = True
+            ProfileType_Tbox.Select()
+            ProfileType_Tbox.Focus()
+        ElseIf Fields_Pnl.Visible = True Then
+            Fields_Pnl.Visible = False
+        End If
+    End Sub
     Private Sub InsCPanel_BGW_ProgressChanged(sender As Object, e As ProgressChangedEventArgs)
         Try
             Select Case Generate_DGVCols
                 Case True
                     If e.ProgressPercentage = 0 Then
-                        If Not Dgv_PNL.Controls.Contains(InsCpanel_DGV) Then
+                        If Not DGV_Pnl.Controls.Contains(InsCpanel_DGV) Then
                             DGV_Properties(InsCpanel_DGV, "InsCpanel_DGV")
                             DGV_Pnl.Controls.Add(InsCpanel_DGV)
                             InsCpanel_DGV.MultiSelect = False
@@ -207,7 +212,7 @@ Public Class TE_Installation_CPanel
                         Case False
                             DGVrow_list.Clear()
                             For i = 0 To sqlDataSet.Tables("QUERY_DETAILS").Columns.Count - 1
-                                If i = 1 Then
+                                If i = 1 Or i = 2 Then
                                     DGVrow_list.Add(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i).ToString)
                                 Else
                                     DGVrow_list.Add(Convert.ToInt32(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i)))
@@ -235,15 +240,14 @@ Public Class TE_Installation_CPanel
                         Case "Search"
                             reset_here()
                         Case "ADD"
-                            InsCpanel_DGV.Rows.Add(InsertedTE_ID, Profile_Type, XS, S, M, L, XL)
+                            InsCpanel_DGV.Rows.Add(InsertedTE_ID, Profile_Type, Item_Size, Item_Frame, Item_Sash, Item_Glass)
                             reset_here()
                         Case "UPDATE"
                             InsCpanel_DGV.Rows(ROWINDEX).Cells("PROFILE_TYPE").Value = Profile_Type
-                            InsCpanel_DGV.Rows(ROWINDEX).Cells("EXTRA_SMALL").Value = XS
-                            InsCpanel_DGV.Rows(ROWINDEX).Cells("SMALL").Value = S
-                            InsCpanel_DGV.Rows(ROWINDEX).Cells("MEDIUM").Value = M
-                            InsCpanel_DGV.Rows(ROWINDEX).Cells("LARGE").Value = L
-                            InsCpanel_DGV.Rows(ROWINDEX).Cells("EXTRA_LARGE").Value = XL
+                            InsCpanel_DGV.Rows(ROWINDEX).Cells("SIZE").Value = Item_Size
+                            InsCpanel_DGV.Rows(ROWINDEX).Cells("FRAME").Value = Item_Frame
+                            InsCpanel_DGV.Rows(ROWINDEX).Cells("SASH").Value = Item_Sash
+                            InsCpanel_DGV.Rows(ROWINDEX).Cells("GLASS").Value = Item_Glass
                             KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
                             reset_here()
                         Case "DELETE"
@@ -271,11 +275,10 @@ Public Class TE_Installation_CPanel
                     ROWINDEX = e.RowIndex
                     .Rows(e.RowIndex).Selected = True
                     TE_ID = .Item("TE_ID", e.RowIndex).Value
-                    XS_Tbox.Text = .Item("EXTRA_SMALL", e.RowIndex).Value
-                    S_Tbox.Text = .Item("SMALL", e.RowIndex).Value
-                    M_Tbox.Text = .Item("MEDIUM", e.RowIndex).Value.ToString
-                    L_Tbox.Text = .Item("LARGE", e.RowIndex).Value.ToString
-                    XL_Tbox.Text = .Item("EXTRA_LARGE", e.RowIndex).Value.ToString
+                    Size_Tbox.Text = .Item("EXTRA_SMALL", e.RowIndex).Value
+                    Frame_Tbox.Text = .Item("SMALL", e.RowIndex).Value
+                    Sash_Tbox.Text = .Item("MEDIUM", e.RowIndex).Value.ToString
+                    Glass_Tbox.Text = .Item("LARGE", e.RowIndex).Value.ToString
                     ProfileType_Tbox.Text = .Item("PROFILE_TYPE", e.RowIndex).Value.ToString
                 End With
             End If
@@ -290,11 +293,10 @@ Public Class TE_Installation_CPanel
                     ROWINDEX = e.RowIndex
                     .Rows(e.RowIndex).Selected = True
                     TE_ID = .Item("TE_ID", e.RowIndex).Value
-                    XS_Tbox.Text = .Item("EXTRA_SMALL", e.RowIndex).Value
-                    S_Tbox.Text = .Item("SMALL", e.RowIndex).Value
-                    M_Tbox.Text = .Item("MEDIUM", e.RowIndex).Value.ToString
-                    L_Tbox.Text = .Item("LARGE", e.RowIndex).Value.ToString
-                    XL_Tbox.Text = .Item("EXTRA_LARGE", e.RowIndex).Value.ToString
+                    Size_Tbox.Text = .Item("EXTRA_SMALL", e.RowIndex).Value
+                    Frame_Tbox.Text = .Item("SMALL", e.RowIndex).Value
+                    Sash_Tbox.Text = .Item("MEDIUM", e.RowIndex).Value.ToString
+                    Glass_Tbox.Text = .Item("LARGE", e.RowIndex).Value.ToString
                     ProfileType_Tbox.Text = .Item("PROFILE_TYPE", e.RowIndex).Value.ToString
                 End With
                 If e.Button = MouseButtons.Right Then
@@ -307,7 +309,7 @@ Public Class TE_Installation_CPanel
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace)
         End Try
     End Sub
-    Private Sub ProfileType_Tbox_ButtonClick(sender As Object, e As EventArgs) Handles ProfileType_Tbox.ButtonClick
+    Private Sub ProfileType_Tbox_ButtonClick(sender As Object, e As EventArgs)
         Try
             InsCPanel_TODO = "ADD"
             SAVE()
