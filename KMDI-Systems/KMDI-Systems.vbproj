@@ -576,6 +576,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="kmlogo.ico" />
+    <None Include="Resources\icons8-close-window-96.png" />
     <None Include="Resources\icons8-add-to-inbox-96.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

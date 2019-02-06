@@ -175,8 +175,8 @@ Module KMDISystemsGlobalModule
                            Optional WillPrompt As Boolean = False,
                            Optional CustomPrompt As Boolean = False,
                            Optional PromptContent As String = Nothing,
-                           Optional Buttons As MessageBoxButtons = MessageBoxButtons.OK,
-                           Optional LogToFile As Boolean = True)
+                           Optional LogToFile As Boolean = True,
+                           Optional Buttons As MessageBoxButtons = MessageBoxButtons.OK)
 
         Dim PreErrorMsg As String = Nothing, PreErrorNo As String = Nothing
 
@@ -216,20 +216,20 @@ Module KMDISystemsGlobalModule
                                 MetroMessageBox.Show(FormName, PromptContent, "Error",
                                                             MessageBoxButtons.OK, MessageBoxIcon.Error)
                             Case False
-                                MetroMessageBox.Show(FormName, "Please Refer to Error_Logs.txt", "Contact the Developers",
+                                MetroMessageBox.Show(FormName, "Please refer to Error_Logs.txt", "Contact the developers",
                                                             MessageBoxButtons.OK, MessageBoxIcon.Error)
                         End Select
 
                     Case "SqlError"
                         Select Case sql_Err_no
                             Case -2
-                                MetroMessageBox.Show(FormName, " ", "Request Timeout", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                                MetroMessageBox.Show(FormName, " ", "Request timeout", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                             Case 1232 Or 121
-                                MetroMessageBox.Show(FormName, "Please check internet connection", "Network Disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                                MetroMessageBox.Show(FormName, "Please check internet connection", "Network disconnected?", MessageBoxButtons.OK, MessageBoxIcon.Error)
                             Case 19
                                 MetroMessageBox.Show(FormName, "Server is under maintenance." & vbCrLf & "Please be patient, will come back A.S.A.P", "Server is down", MessageBoxButtons.OK, MessageBoxIcon.Error)
                             Case Else
-                                MetroMessageBox.Show(FormName, "Transaction failed", "Contact the Developers",
+                                MetroMessageBox.Show(FormName, "Transaction failed", "Contact the developers",
                                                                     MessageBoxButtons.OK, MessageBoxIcon.Error)
                         End Select
                     Case "UserWarning"
@@ -238,7 +238,7 @@ Module KMDISystemsGlobalModule
                                 QuestionPromptAnswer = MetroMessageBox.Show(FormName, PromptContent, "Warning",
                                                                     Buttons, MessageBoxIcon.Warning)
                             Case False
-                                MetroMessageBox.Show(FormName, "Please Refer to Error_Logs.txt", "Contact the Developers",
+                                MetroMessageBox.Show(FormName, "Please Refer to Error_Logs.txt", "Contact the developers",
                                                                     MessageBoxButtons.OK, MessageBoxIcon.Warning)
                         End Select
                     Case "Success"

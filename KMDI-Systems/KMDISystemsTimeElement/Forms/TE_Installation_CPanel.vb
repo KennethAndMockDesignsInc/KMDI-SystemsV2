@@ -31,27 +31,21 @@ Public Class TE_Installation_CPanel
     End Sub
     Sub SAVE()
         Profile_Type = Trim(ProfileType_Tbox.Text)
-        Item_Size = Val(Size_Tbox.Text)
+        Item_Size = Trim(Size_Tbox.Text)
         Item_Frame = Val(Frame_Tbox.Text)
         Item_Sash = Val(Sash_Tbox.Text)
         Item_Glass = Val(Glass_Tbox.Text)
-        If InsCPanel_TODO = "UPDATE" Then
-            If TE_ID <> 0 Then
-                If Profile_Type <> Nothing Or Profile_Type <> "" Then
-                    Start_InsCPanelBGW()
-                Else
-                    KMDIPrompts(Me, "UserWarning", "Profile Type is empty", Environment.StackTrace, Nothing, True, True, "Profile Type cannot be empty")
-                End If
-            Else
-                KMDIPrompts(Me, "UserWarning", "TE_ID IS EMPTY", Environment.StackTrace, Nothing, True, True, "Please Select to Update")
-            End If
-        ElseIf InsCPanel_TODO = "ADD" Then
-            If Profile_Type <> Nothing Or Profile_Type <> "" Then
+
+        If Profile_Type <> Nothing Or Profile_Type <> "" Then
+            If Item_Size <> Nothing Or Item_Size <> "" Then
                 Start_InsCPanelBGW()
             Else
-                KMDIPrompts(Me, "UserWarning", "Profile Type is empty", Environment.StackTrace, Nothing, True, True, "Profile Type cannot be empty")
+                KMDIPrompts(Me, "UserWarning", "Item_Size is empty", Environment.StackTrace, Nothing, True, True, "Size cannot be empty")
             End If
+        Else
+            KMDIPrompts(Me, "UserWarning", "Profile Type is empty", Environment.StackTrace, Nothing, True, True, "Profile Type cannot be empty")
         End If
+
     End Sub
     Private Sub TE_Installation_CPanel_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
@@ -69,31 +63,31 @@ Public Class TE_Installation_CPanel
 
     Private Sub TE_Installation_CPanel_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
         Try
-            If (e.Control And e.KeyCode = Keys.S) Then
-                InsCPanel_TODO = "UPDATE"
+            If (e.Control And e.KeyCode = Keys.S) And (Fields_Pnl.Visible = True) Then
+                If FieldsHeader_Lbl.Text.Contains("Add") Then
+                    InsCPanel_TODO = "ADD"
+                ElseIf FieldsHeader_Lbl.Text.Contains("Update") Then
+                    InsCPanel_TODO = "UPDATE"
+                End If
                 SAVE()
             ElseIf e.KeyCode = Keys.Escape Then
                 reset_here()
+                Fields_Pnl.Visible = False
             End If
         Catch ex As Exception
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
         End Try
     End Sub
-
-    Private Sub SizesTbox_KeyPress(sender As Object, e As KeyPressEventArgs)
+    Private Sub DeleteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DeleteToolStripMenuItem.Click
         Try
-            If (Not IsNumeric(e.KeyChar)) And (e.KeyChar <> ControlChars.Back) Then
-                e.Handled = True
-            Else
-                e.Handled = False
+            KMDIPrompts(Me, "Question", "Are you sure to Delete?", Nothing, Nothing, True, False, Nothing, False, MessageBoxButtons.YesNo)
+            If QuestionPromptAnswer = 6 Then
+                InsCPanel_TODO = "DELETE"
+                Start_InsCPanelBGW()
             End If
         Catch ex As Exception
-            KMDIPrompts(Me, "UserWarning", "Invalid value", Environment.StackTrace, Nothing, True, True, "Numbers only")
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
         End Try
-    End Sub
-
-    Private Sub DeleteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DeleteToolStripMenuItem.Click
-
     End Sub
     Private Sub InsCPanel_BGW_DoWork(sender As Object, e As DoWorkEventArgs)
         Try
@@ -164,8 +158,35 @@ Public Class TE_Installation_CPanel
         AddSidebar_Pnl.BackColor = Color.DimGray
     End Sub
 
+    Private Sub TimeElementTbox_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Frame_Tbox.KeyPress, Sash_Tbox.KeyPress, Glass_Tbox.KeyPress
+        Try
+            If (Not IsNumeric(e.KeyChar)) And (e.KeyChar <> ControlChars.Back) Then
+                e.Handled = True
+            Else
+                e.Handled = False
+            End If
+        Catch ex As Exception
+            KMDIPrompts(Me, "UserWarning", "Invalid value", Environment.StackTrace, Nothing, True, True, "Numbers only")
+        End Try
+    End Sub
+
+    Private Sub EditToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EditToolStripMenuItem.Click
+        FieldsHeader_Lbl.Text = "Update item"
+        FieldsHeader_Pnl.BackColor = Color.IndianRed
+        Fields_Pnl.Visible = True
+        ProfileType_Tbox.Select()
+        ProfileType_Tbox.Focus()
+    End Sub
+
+    Private Sub Exit_Pbtn_Click(sender As Object, e As EventArgs) Handles Exit_Pbtn.Click
+        reset_here()
+        Fields_Pnl.Visible = False
+    End Sub
+
     Private Sub AddSidebar_Click(sender As Object, e As EventArgs) Handles AddSidebar_Pnl.Click, AddSidebar_Lbl.Click
         If Fields_Pnl.Visible = False Then
+            FieldsHeader_Lbl.Text = "Add new item"
+            FieldsHeader_Pnl.BackColor = SystemColors.MenuHighlight
             Fields_Pnl.Visible = True
             ProfileType_Tbox.Select()
             ProfileType_Tbox.Focus()
@@ -241,15 +262,17 @@ Public Class TE_Installation_CPanel
                             reset_here()
                         Case "ADD"
                             InsCpanel_DGV.Rows.Add(InsertedTE_ID, Profile_Type, Item_Size, Item_Frame, Item_Sash, Item_Glass)
+                            KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
                             reset_here()
                         Case "UPDATE"
-                            InsCpanel_DGV.Rows(ROWINDEX).Cells("PROFILE_TYPE").Value = Profile_Type
+                            InsCpanel_DGV.Rows(ROWINDEX).Cells("PROFILE TYPE").Value = Profile_Type
                             InsCpanel_DGV.Rows(ROWINDEX).Cells("SIZE").Value = Item_Size
                             InsCpanel_DGV.Rows(ROWINDEX).Cells("FRAME").Value = Item_Frame
                             InsCpanel_DGV.Rows(ROWINDEX).Cells("SASH").Value = Item_Sash
                             InsCpanel_DGV.Rows(ROWINDEX).Cells("GLASS").Value = Item_Glass
                             KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
                             reset_here()
+                            Fields_Pnl.Visible = False
                         Case "DELETE"
                             InsCpanel_DGV.Rows.RemoveAt(ROWINDEX)
                             reset_here()
@@ -275,11 +298,11 @@ Public Class TE_Installation_CPanel
                     ROWINDEX = e.RowIndex
                     .Rows(e.RowIndex).Selected = True
                     TE_ID = .Item("TE_ID", e.RowIndex).Value
-                    Size_Tbox.Text = .Item("EXTRA_SMALL", e.RowIndex).Value
-                    Frame_Tbox.Text = .Item("SMALL", e.RowIndex).Value
-                    Sash_Tbox.Text = .Item("MEDIUM", e.RowIndex).Value.ToString
-                    Glass_Tbox.Text = .Item("LARGE", e.RowIndex).Value.ToString
-                    ProfileType_Tbox.Text = .Item("PROFILE_TYPE", e.RowIndex).Value.ToString
+                    Frame_Tbox.Text = .Item("FRAME", e.RowIndex).Value
+                    Sash_Tbox.Text = .Item("SASH", e.RowIndex).Value
+                    Glass_Tbox.Text = .Item("GLASS", e.RowIndex).Value
+                    Size_Tbox.Text = .Item("SIZE", e.RowIndex).Value.ToString
+                    ProfileType_Tbox.Text = .Item("PROFILE TYPE", e.RowIndex).Value.ToString
                 End With
             End If
         Catch ex As Exception
@@ -293,14 +316,13 @@ Public Class TE_Installation_CPanel
                     ROWINDEX = e.RowIndex
                     .Rows(e.RowIndex).Selected = True
                     TE_ID = .Item("TE_ID", e.RowIndex).Value
-                    Size_Tbox.Text = .Item("EXTRA_SMALL", e.RowIndex).Value
-                    Frame_Tbox.Text = .Item("SMALL", e.RowIndex).Value
-                    Sash_Tbox.Text = .Item("MEDIUM", e.RowIndex).Value.ToString
-                    Glass_Tbox.Text = .Item("LARGE", e.RowIndex).Value.ToString
-                    ProfileType_Tbox.Text = .Item("PROFILE_TYPE", e.RowIndex).Value.ToString
+                    Frame_Tbox.Text = .Item("FRAME", e.RowIndex).Value
+                    Sash_Tbox.Text = .Item("SASH", e.RowIndex).Value
+                    Glass_Tbox.Text = .Item("GLASS", e.RowIndex).Value
+                    Size_Tbox.Text = .Item("SIZE", e.RowIndex).Value.ToString
+                    ProfileType_Tbox.Text = .Item("PROFILE TYPE", e.RowIndex).Value.ToString
                 End With
                 If e.Button = MouseButtons.Right Then
-                    'Inv_DGV.Rows(e.RowIndex).Selected = True
                     TE_Cmenu.Show()
                     TE_Cmenu.Location = New Point(MousePosition.X, MousePosition.Y)
                 End If
@@ -309,13 +331,4 @@ Public Class TE_Installation_CPanel
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace)
         End Try
     End Sub
-    Private Sub ProfileType_Tbox_ButtonClick(sender As Object, e As EventArgs)
-        Try
-            InsCPanel_TODO = "ADD"
-            SAVE()
-        Catch ex As Exception
-            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
-        End Try
-    End Sub
-
 End Class
