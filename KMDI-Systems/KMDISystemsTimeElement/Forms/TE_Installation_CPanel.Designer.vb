@@ -41,17 +41,26 @@ Partial Class TE_Installation_CPanel
         Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Fields_Pnl = New System.Windows.Forms.Panel()
         Me.Fields_TblPnl = New System.Windows.Forms.TableLayoutPanel()
+        Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel()
+        Me.GlassHrs_Lbl = New MetroFramework.Controls.MetroLabel()
         Me.MetroLabel6 = New MetroFramework.Controls.MetroLabel()
+        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.FrameHrs_Lbl = New MetroFramework.Controls.MetroLabel()
+        Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
+        Me.SashHrs_Lbl = New MetroFramework.Controls.MetroLabel()
         Me.FieldsHeader_Pnl = New System.Windows.Forms.Panel()
+        Me.Exit_Pbtn = New System.Windows.Forms.PictureBox()
         Me.FieldsHeader_Lbl = New MetroFramework.Controls.MetroLabel()
         Me.AddSidebar_Lbl = New ComponentFactory.Krypton.Toolkit.KryptonLabel()
         Me.AddSidebar_Pnl = New System.Windows.Forms.Panel()
-        Me.Exit_Pbtn = New System.Windows.Forms.PictureBox()
         Me.LoadingPB = New System.Windows.Forms.PictureBox()
         Me.Frm_PNL.SuspendLayout()
         Me.TE_Cmenu.SuspendLayout()
         Me.Fields_Pnl.SuspendLayout()
         Me.Fields_TblPnl.SuspendLayout()
+        Me.TableLayoutPanel3.SuspendLayout()
+        Me.TableLayoutPanel1.SuspendLayout()
+        Me.TableLayoutPanel2.SuspendLayout()
         Me.FieldsHeader_Pnl.SuspendLayout()
         CType(Me.Exit_Pbtn, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LoadingPB, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -75,7 +84,7 @@ Partial Class TE_Installation_CPanel
         Me.Frm_PNL.Location = New System.Drawing.Point(20, 60)
         Me.Frm_PNL.Name = "Frm_PNL"
         Me.Frm_PNL.Padding = New System.Windows.Forms.Padding(10)
-        Me.Frm_PNL.Size = New System.Drawing.Size(613, 284)
+        Me.Frm_PNL.Size = New System.Drawing.Size(613, 295)
         Me.Frm_PNL.TabIndex = 0
         '
         'DGV_Pnl
@@ -84,7 +93,7 @@ Partial Class TE_Installation_CPanel
         Me.DGV_Pnl.Dock = System.Windows.Forms.DockStyle.Fill
         Me.DGV_Pnl.Location = New System.Drawing.Point(10, 10)
         Me.DGV_Pnl.Name = "DGV_Pnl"
-        Me.DGV_Pnl.Size = New System.Drawing.Size(593, 264)
+        Me.DGV_Pnl.Size = New System.Drawing.Size(593, 275)
         Me.DGV_Pnl.TabIndex = 18
         '
         'Glass_Tbox
@@ -94,9 +103,9 @@ Partial Class TE_Installation_CPanel
         '
         '
         Me.Glass_Tbox.CustomButton.Image = Nothing
-        Me.Glass_Tbox.CustomButton.Location = New System.Drawing.Point(99, 2)
+        Me.Glass_Tbox.CustomButton.Location = New System.Drawing.Point(93, 1)
         Me.Glass_Tbox.CustomButton.Name = ""
-        Me.Glass_Tbox.CustomButton.Size = New System.Drawing.Size(25, 25)
+        Me.Glass_Tbox.CustomButton.Size = New System.Drawing.Size(27, 27)
         Me.Glass_Tbox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
         Me.Glass_Tbox.CustomButton.TabIndex = 1
         Me.Glass_Tbox.CustomButton.Text = "+"
@@ -105,7 +114,7 @@ Partial Class TE_Installation_CPanel
         Me.Glass_Tbox.CustomButton.Visible = False
         Me.Glass_Tbox.FontSize = MetroFramework.MetroTextBoxSize.Tall
         Me.Glass_Tbox.Lines = New String(-1) {}
-        Me.Glass_Tbox.Location = New System.Drawing.Point(139, 212)
+        Me.Glass_Tbox.Location = New System.Drawing.Point(3, 3)
         Me.Glass_Tbox.MaxLength = 32767
         Me.Glass_Tbox.Name = "Glass_Tbox"
         Me.Glass_Tbox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
@@ -113,7 +122,7 @@ Partial Class TE_Installation_CPanel
         Me.Glass_Tbox.SelectedText = ""
         Me.Glass_Tbox.SelectionLength = 0
         Me.Glass_Tbox.SelectionStart = 0
-        Me.Glass_Tbox.Size = New System.Drawing.Size(127, 30)
+        Me.Glass_Tbox.Size = New System.Drawing.Size(121, 29)
         Me.Glass_Tbox.Style = MetroFramework.MetroColorStyle.Blue
         Me.Glass_Tbox.TabIndex = 34
         Me.Glass_Tbox.UseSelectable = True
@@ -127,9 +136,9 @@ Partial Class TE_Installation_CPanel
         '
         '
         Me.Sash_Tbox.CustomButton.Image = Nothing
-        Me.Sash_Tbox.CustomButton.Location = New System.Drawing.Point(99, 1)
+        Me.Sash_Tbox.CustomButton.Location = New System.Drawing.Point(95, 2)
         Me.Sash_Tbox.CustomButton.Name = ""
-        Me.Sash_Tbox.CustomButton.Size = New System.Drawing.Size(27, 27)
+        Me.Sash_Tbox.CustomButton.Size = New System.Drawing.Size(23, 23)
         Me.Sash_Tbox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
         Me.Sash_Tbox.CustomButton.TabIndex = 1
         Me.Sash_Tbox.CustomButton.Text = "+"
@@ -138,7 +147,7 @@ Partial Class TE_Installation_CPanel
         Me.Sash_Tbox.CustomButton.Visible = False
         Me.Sash_Tbox.FontSize = MetroFramework.MetroTextBoxSize.Tall
         Me.Sash_Tbox.Lines = New String(-1) {}
-        Me.Sash_Tbox.Location = New System.Drawing.Point(139, 160)
+        Me.Sash_Tbox.Location = New System.Drawing.Point(3, 3)
         Me.Sash_Tbox.MaxLength = 32767
         Me.Sash_Tbox.Name = "Sash_Tbox"
         Me.Sash_Tbox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
@@ -146,7 +155,7 @@ Partial Class TE_Installation_CPanel
         Me.Sash_Tbox.SelectedText = ""
         Me.Sash_Tbox.SelectionLength = 0
         Me.Sash_Tbox.SelectionStart = 0
-        Me.Sash_Tbox.Size = New System.Drawing.Size(127, 29)
+        Me.Sash_Tbox.Size = New System.Drawing.Size(121, 28)
         Me.Sash_Tbox.Style = MetroFramework.MetroColorStyle.Blue
         Me.Sash_Tbox.TabIndex = 33
         Me.Sash_Tbox.UseSelectable = True
@@ -160,7 +169,7 @@ Partial Class TE_Installation_CPanel
         '
         '
         Me.Frame_Tbox.CustomButton.Image = Nothing
-        Me.Frame_Tbox.CustomButton.Location = New System.Drawing.Point(99, 1)
+        Me.Frame_Tbox.CustomButton.Location = New System.Drawing.Point(93, 1)
         Me.Frame_Tbox.CustomButton.Name = ""
         Me.Frame_Tbox.CustomButton.Size = New System.Drawing.Size(27, 27)
         Me.Frame_Tbox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
@@ -171,7 +180,7 @@ Partial Class TE_Installation_CPanel
         Me.Frame_Tbox.CustomButton.Visible = False
         Me.Frame_Tbox.FontSize = MetroFramework.MetroTextBoxSize.Tall
         Me.Frame_Tbox.Lines = New String(-1) {}
-        Me.Frame_Tbox.Location = New System.Drawing.Point(139, 108)
+        Me.Frame_Tbox.Location = New System.Drawing.Point(3, 3)
         Me.Frame_Tbox.MaxLength = 32767
         Me.Frame_Tbox.Name = "Frame_Tbox"
         Me.Frame_Tbox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
@@ -179,7 +188,7 @@ Partial Class TE_Installation_CPanel
         Me.Frame_Tbox.SelectedText = ""
         Me.Frame_Tbox.SelectionLength = 0
         Me.Frame_Tbox.SelectionStart = 0
-        Me.Frame_Tbox.Size = New System.Drawing.Size(127, 29)
+        Me.Frame_Tbox.Size = New System.Drawing.Size(121, 29)
         Me.Frame_Tbox.Style = MetroFramework.MetroColorStyle.Blue
         Me.Frame_Tbox.TabIndex = 32
         Me.Frame_Tbox.UseSelectable = True
@@ -203,7 +212,7 @@ Partial Class TE_Installation_CPanel
         Me.Size_Tbox.CustomButton.Visible = False
         Me.Size_Tbox.FontSize = MetroFramework.MetroTextBoxSize.Tall
         Me.Size_Tbox.Lines = New String(-1) {}
-        Me.Size_Tbox.Location = New System.Drawing.Point(139, 56)
+        Me.Size_Tbox.Location = New System.Drawing.Point(139, 42)
         Me.Size_Tbox.MaxLength = 32767
         Me.Size_Tbox.Name = "Size_Tbox"
         Me.Size_Tbox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
@@ -223,7 +232,7 @@ Partial Class TE_Installation_CPanel
         Me.MetroLabel4.AutoSize = True
         Me.MetroLabel4.FontSize = MetroFramework.MetroLabelSize.Tall
         Me.MetroLabel4.FontWeight = MetroFramework.MetroLabelWeight.Regular
-        Me.MetroLabel4.Location = New System.Drawing.Point(4, 209)
+        Me.MetroLabel4.Location = New System.Drawing.Point(4, 205)
         Me.MetroLabel4.Name = "MetroLabel4"
         Me.MetroLabel4.Size = New System.Drawing.Size(120, 25)
         Me.MetroLabel4.TabIndex = 38
@@ -234,7 +243,7 @@ Partial Class TE_Installation_CPanel
         Me.MetroLabel3.AutoSize = True
         Me.MetroLabel3.FontSize = MetroFramework.MetroLabelSize.Tall
         Me.MetroLabel3.FontWeight = MetroFramework.MetroLabelWeight.Regular
-        Me.MetroLabel3.Location = New System.Drawing.Point(4, 157)
+        Me.MetroLabel3.Location = New System.Drawing.Point(4, 141)
         Me.MetroLabel3.Name = "MetroLabel3"
         Me.MetroLabel3.Size = New System.Drawing.Size(116, 25)
         Me.MetroLabel3.TabIndex = 37
@@ -245,7 +254,7 @@ Partial Class TE_Installation_CPanel
         Me.MetroLabel2.AutoSize = True
         Me.MetroLabel2.FontSize = MetroFramework.MetroLabelSize.Tall
         Me.MetroLabel2.FontWeight = MetroFramework.MetroLabelWeight.Regular
-        Me.MetroLabel2.Location = New System.Drawing.Point(4, 105)
+        Me.MetroLabel2.Location = New System.Drawing.Point(4, 77)
         Me.MetroLabel2.Name = "MetroLabel2"
         Me.MetroLabel2.Size = New System.Drawing.Size(128, 25)
         Me.MetroLabel2.TabIndex = 36
@@ -256,7 +265,7 @@ Partial Class TE_Installation_CPanel
         Me.MetroLabel1.AutoSize = True
         Me.MetroLabel1.FontSize = MetroFramework.MetroLabelSize.Tall
         Me.MetroLabel1.FontWeight = MetroFramework.MetroLabelWeight.Regular
-        Me.MetroLabel1.Location = New System.Drawing.Point(4, 53)
+        Me.MetroLabel1.Location = New System.Drawing.Point(4, 39)
         Me.MetroLabel1.Name = "MetroLabel1"
         Me.MetroLabel1.Size = New System.Drawing.Size(43, 25)
         Me.MetroLabel1.TabIndex = 35
@@ -323,7 +332,7 @@ Partial Class TE_Installation_CPanel
         Me.Fields_Pnl.Controls.Add(Me.FieldsHeader_Pnl)
         Me.Fields_Pnl.Location = New System.Drawing.Point(351, 60)
         Me.Fields_Pnl.Name = "Fields_Pnl"
-        Me.Fields_Pnl.Size = New System.Drawing.Size(272, 284)
+        Me.Fields_Pnl.Size = New System.Drawing.Size(272, 295)
         Me.Fields_Pnl.TabIndex = 20
         Me.Fields_Pnl.Visible = False
         '
@@ -333,27 +342,50 @@ Partial Class TE_Installation_CPanel
         Me.Fields_TblPnl.ColumnCount = 2
         Me.Fields_TblPnl.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.55762!))
         Me.Fields_TblPnl.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.44238!))
-        Me.Fields_TblPnl.Controls.Add(Me.Glass_Tbox, 1, 4)
+        Me.Fields_TblPnl.Controls.Add(Me.TableLayoutPanel3, 1, 4)
         Me.Fields_TblPnl.Controls.Add(Me.ProfileType_Tbox, 1, 0)
         Me.Fields_TblPnl.Controls.Add(Me.MetroLabel4, 0, 4)
-        Me.Fields_TblPnl.Controls.Add(Me.Sash_Tbox, 1, 3)
         Me.Fields_TblPnl.Controls.Add(Me.MetroLabel6, 0, 0)
-        Me.Fields_TblPnl.Controls.Add(Me.Frame_Tbox, 1, 2)
         Me.Fields_TblPnl.Controls.Add(Me.MetroLabel3, 0, 3)
         Me.Fields_TblPnl.Controls.Add(Me.MetroLabel1, 0, 1)
         Me.Fields_TblPnl.Controls.Add(Me.Size_Tbox, 1, 1)
         Me.Fields_TblPnl.Controls.Add(Me.MetroLabel2, 0, 2)
+        Me.Fields_TblPnl.Controls.Add(Me.TableLayoutPanel1, 1, 2)
+        Me.Fields_TblPnl.Controls.Add(Me.TableLayoutPanel2, 1, 3)
         Me.Fields_TblPnl.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Fields_TblPnl.Location = New System.Drawing.Point(0, 21)
         Me.Fields_TblPnl.Name = "Fields_TblPnl"
         Me.Fields_TblPnl.RowCount = 5
-        Me.Fields_TblPnl.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
-        Me.Fields_TblPnl.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
-        Me.Fields_TblPnl.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
-        Me.Fields_TblPnl.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
-        Me.Fields_TblPnl.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
-        Me.Fields_TblPnl.Size = New System.Drawing.Size(270, 261)
+        Me.Fields_TblPnl.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.0!))
+        Me.Fields_TblPnl.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.0!))
+        Me.Fields_TblPnl.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 24.0!))
+        Me.Fields_TblPnl.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 24.0!))
+        Me.Fields_TblPnl.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 24.0!))
+        Me.Fields_TblPnl.Size = New System.Drawing.Size(270, 272)
         Me.Fields_TblPnl.TabIndex = 30
+        '
+        'TableLayoutPanel3
+        '
+        Me.TableLayoutPanel3.ColumnCount = 1
+        Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel3.Controls.Add(Me.GlassHrs_Lbl, 0, 1)
+        Me.TableLayoutPanel3.Controls.Add(Me.Glass_Tbox, 0, 0)
+        Me.TableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel3.Location = New System.Drawing.Point(139, 208)
+        Me.TableLayoutPanel3.Name = "TableLayoutPanel3"
+        Me.TableLayoutPanel3.RowCount = 2
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 60.94!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 39.06!))
+        Me.TableLayoutPanel3.Size = New System.Drawing.Size(127, 60)
+        Me.TableLayoutPanel3.TabIndex = 42
+        '
+        'GlassHrs_Lbl
+        '
+        Me.GlassHrs_Lbl.Location = New System.Drawing.Point(3, 36)
+        Me.GlassHrs_Lbl.Name = "GlassHrs_Lbl"
+        Me.GlassHrs_Lbl.Size = New System.Drawing.Size(121, 19)
+        Me.GlassHrs_Lbl.TabIndex = 35
+        Me.GlassHrs_Lbl.Text = "GlassHrs_Lbl"
         '
         'MetroLabel6
         '
@@ -366,6 +398,53 @@ Partial Class TE_Installation_CPanel
         Me.MetroLabel6.TabIndex = 39
         Me.MetroLabel6.Text = "Profile Type"
         '
+        'TableLayoutPanel1
+        '
+        Me.TableLayoutPanel1.ColumnCount = 1
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.TableLayoutPanel1.Controls.Add(Me.FrameHrs_Lbl, 0, 1)
+        Me.TableLayoutPanel1.Controls.Add(Me.Frame_Tbox, 0, 0)
+        Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(139, 80)
+        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+        Me.TableLayoutPanel1.RowCount = 2
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 64.38356!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 35.61644!))
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(127, 57)
+        Me.TableLayoutPanel1.TabIndex = 40
+        '
+        'FrameHrs_Lbl
+        '
+        Me.FrameHrs_Lbl.AutoSize = True
+        Me.FrameHrs_Lbl.Location = New System.Drawing.Point(3, 36)
+        Me.FrameHrs_Lbl.Name = "FrameHrs_Lbl"
+        Me.FrameHrs_Lbl.Size = New System.Drawing.Size(89, 19)
+        Me.FrameHrs_Lbl.TabIndex = 0
+        Me.FrameHrs_Lbl.Text = "FrameHrs_Lbl"
+        '
+        'TableLayoutPanel2
+        '
+        Me.TableLayoutPanel2.ColumnCount = 1
+        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel2.Controls.Add(Me.SashHrs_Lbl, 0, 1)
+        Me.TableLayoutPanel2.Controls.Add(Me.Sash_Tbox, 0, 0)
+        Me.TableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel2.Location = New System.Drawing.Point(139, 144)
+        Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
+        Me.TableLayoutPanel2.RowCount = 2
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 60.9375!))
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 39.0625!))
+        Me.TableLayoutPanel2.Size = New System.Drawing.Size(127, 57)
+        Me.TableLayoutPanel2.TabIndex = 41
+        '
+        'SashHrs_Lbl
+        '
+        Me.SashHrs_Lbl.Location = New System.Drawing.Point(3, 34)
+        Me.SashHrs_Lbl.Name = "SashHrs_Lbl"
+        Me.SashHrs_Lbl.Size = New System.Drawing.Size(121, 19)
+        Me.SashHrs_Lbl.TabIndex = 34
+        Me.SashHrs_Lbl.Text = "SashHrs_Lbl"
+        '
         'FieldsHeader_Pnl
         '
         Me.FieldsHeader_Pnl.BackColor = System.Drawing.SystemColors.MenuHighlight
@@ -377,6 +456,17 @@ Partial Class TE_Installation_CPanel
         Me.FieldsHeader_Pnl.Name = "FieldsHeader_Pnl"
         Me.FieldsHeader_Pnl.Size = New System.Drawing.Size(270, 21)
         Me.FieldsHeader_Pnl.TabIndex = 31
+        '
+        'Exit_Pbtn
+        '
+        Me.Exit_Pbtn.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.Exit_Pbtn.Image = Global.KMDI_Systems.My.Resources.Resources.icons8_close_window_96
+        Me.Exit_Pbtn.Location = New System.Drawing.Point(245, -2)
+        Me.Exit_Pbtn.Name = "Exit_Pbtn"
+        Me.Exit_Pbtn.Size = New System.Drawing.Size(22, 22)
+        Me.Exit_Pbtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.Exit_Pbtn.TabIndex = 41
+        Me.Exit_Pbtn.TabStop = False
         '
         'FieldsHeader_Lbl
         '
@@ -412,17 +502,6 @@ Partial Class TE_Installation_CPanel
         Me.AddSidebar_Pnl.Size = New System.Drawing.Size(7, 86)
         Me.AddSidebar_Pnl.TabIndex = 1
         '
-        'Exit_Pbtn
-        '
-        Me.Exit_Pbtn.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.Exit_Pbtn.Image = Global.KMDI_Systems.My.Resources.Resources.icons8_close_window_96
-        Me.Exit_Pbtn.Location = New System.Drawing.Point(245, -2)
-        Me.Exit_Pbtn.Name = "Exit_Pbtn"
-        Me.Exit_Pbtn.Size = New System.Drawing.Size(22, 22)
-        Me.Exit_Pbtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.Exit_Pbtn.TabIndex = 41
-        Me.Exit_Pbtn.TabStop = False
-        '
         'LoadingPB
         '
         Me.LoadingPB.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -438,7 +517,7 @@ Partial Class TE_Installation_CPanel
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(653, 364)
+        Me.ClientSize = New System.Drawing.Size(653, 375)
         Me.Controls.Add(Me.Fields_Pnl)
         Me.Controls.Add(Me.AddSidebar_Pnl)
         Me.Controls.Add(Me.AddSidebar_Lbl)
@@ -455,6 +534,10 @@ Partial Class TE_Installation_CPanel
         Me.Fields_Pnl.ResumeLayout(False)
         Me.Fields_TblPnl.ResumeLayout(False)
         Me.Fields_TblPnl.PerformLayout()
+        Me.TableLayoutPanel3.ResumeLayout(False)
+        Me.TableLayoutPanel1.ResumeLayout(False)
+        Me.TableLayoutPanel1.PerformLayout()
+        Me.TableLayoutPanel2.ResumeLayout(False)
         Me.FieldsHeader_Pnl.ResumeLayout(False)
         Me.FieldsHeader_Pnl.PerformLayout()
         CType(Me.Exit_Pbtn, System.ComponentModel.ISupportInitialize).EndInit()
@@ -488,4 +571,10 @@ Partial Class TE_Installation_CPanel
     Friend WithEvents FieldsHeader_Lbl As MetroFramework.Controls.MetroLabel
     Friend WithEvents EditToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents Exit_Pbtn As PictureBox
+    Friend WithEvents FrameHrs_Lbl As MetroFramework.Controls.MetroLabel
+    Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
+    Friend WithEvents TableLayoutPanel3 As TableLayoutPanel
+    Friend WithEvents GlassHrs_Lbl As MetroFramework.Controls.MetroLabel
+    Friend WithEvents TableLayoutPanel2 As TableLayoutPanel
+    Friend WithEvents SashHrs_Lbl As MetroFramework.Controls.MetroLabel
 End Class
