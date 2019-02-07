@@ -56,7 +56,7 @@ Partial Class TE_Installation_CPanel
         Me.AddSidebar_Pnl = New System.Windows.Forms.Panel()
         Me.LoadingPB = New System.Windows.Forms.PictureBox()
         Me.ScreenFields_Pnl = New System.Windows.Forms.Panel()
-        Me.TableLayoutPanel4 = New System.Windows.Forms.TableLayoutPanel()
+        Me.ScreenFields_TblPnl = New System.Windows.Forms.TableLayoutPanel()
         Me.MetroLabel8 = New MetroFramework.Controls.MetroLabel()
         Me.MetroLabel11 = New MetroFramework.Controls.MetroLabel()
         Me.TableLayoutPanel6 = New System.Windows.Forms.TableLayoutPanel()
@@ -66,6 +66,17 @@ Partial Class TE_Installation_CPanel
         Me.ScreenFieldsHeader_Pnl = New System.Windows.Forms.Panel()
         Me.ExitScreen_Btn = New System.Windows.Forms.PictureBox()
         Me.ScreenHeader_Lbl = New MetroFramework.Controls.MetroLabel()
+        Me.HandleFields_Pnl = New System.Windows.Forms.Panel()
+        Me.HandleFields_TblPnl = New System.Windows.Forms.TableLayoutPanel()
+        Me.MetroLabel5 = New MetroFramework.Controls.MetroLabel()
+        Me.MetroLabel7 = New MetroFramework.Controls.MetroLabel()
+        Me.TableLayoutPanel7 = New System.Windows.Forms.TableLayoutPanel()
+        Me.HandleTime_Lbl = New MetroFramework.Controls.MetroLabel()
+        Me.HandleTime_Tbox = New MetroFramework.Controls.MetroTextBox()
+        Me.HandleType_Tbox = New MetroFramework.Controls.MetroTextBox()
+        Me.HandleFieldsHeader_Pnl = New System.Windows.Forms.Panel()
+        Me.ExitHandle_Btn = New System.Windows.Forms.PictureBox()
+        Me.HandleHeader_lbl = New MetroFramework.Controls.MetroLabel()
         Me.Frm_PNL.SuspendLayout()
         Me.TE_Cmenu.SuspendLayout()
         Me.FrameFields_Pnl.SuspendLayout()
@@ -77,10 +88,15 @@ Partial Class TE_Installation_CPanel
         CType(Me.Exit_Pbtn, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LoadingPB, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.ScreenFields_Pnl.SuspendLayout()
-        Me.TableLayoutPanel4.SuspendLayout()
+        Me.ScreenFields_TblPnl.SuspendLayout()
         Me.TableLayoutPanel6.SuspendLayout()
         Me.ScreenFieldsHeader_Pnl.SuspendLayout()
         CType(Me.ExitScreen_Btn, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.HandleFields_Pnl.SuspendLayout()
+        Me.HandleFields_TblPnl.SuspendLayout()
+        Me.TableLayoutPanel7.SuspendLayout()
+        Me.HandleFieldsHeader_Pnl.SuspendLayout()
+        CType(Me.ExitHandle_Btn, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Mktng_InvLBL
@@ -109,7 +125,7 @@ Partial Class TE_Installation_CPanel
         '
         Me.WindoorPart_Cbox.FormattingEnabled = True
         Me.WindoorPart_Cbox.ItemHeight = 23
-        Me.WindoorPart_Cbox.Items.AddRange(New Object() {"F/SH/GL", "Screen"})
+        Me.WindoorPart_Cbox.Items.AddRange(New Object() {"F/SH/GL", "Screen", "Handle"})
         Me.WindoorPart_Cbox.Location = New System.Drawing.Point(10, 1)
         Me.WindoorPart_Cbox.Name = "WindoorPart_Cbox"
         Me.WindoorPart_Cbox.Size = New System.Drawing.Size(138, 29)
@@ -552,7 +568,7 @@ Partial Class TE_Installation_CPanel
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ScreenFields_Pnl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.ScreenFields_Pnl.Controls.Add(Me.TableLayoutPanel4)
+        Me.ScreenFields_Pnl.Controls.Add(Me.ScreenFields_TblPnl)
         Me.ScreenFields_Pnl.Controls.Add(Me.ScreenFieldsHeader_Pnl)
         Me.ScreenFields_Pnl.Location = New System.Drawing.Point(351, 60)
         Me.ScreenFields_Pnl.Name = "ScreenFields_Pnl"
@@ -560,26 +576,26 @@ Partial Class TE_Installation_CPanel
         Me.ScreenFields_Pnl.TabIndex = 614
         Me.ScreenFields_Pnl.Visible = False
         '
-        'TableLayoutPanel4
+        'ScreenFields_TblPnl
         '
-        Me.TableLayoutPanel4.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.[Single]
-        Me.TableLayoutPanel4.ColumnCount = 2
-        Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.55762!))
-        Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.44238!))
-        Me.TableLayoutPanel4.Controls.Add(Me.MetroLabel8, 0, 0)
-        Me.TableLayoutPanel4.Controls.Add(Me.MetroLabel11, 0, 1)
-        Me.TableLayoutPanel4.Controls.Add(Me.TableLayoutPanel6, 1, 1)
-        Me.TableLayoutPanel4.Controls.Add(Me.ScreenType_Tbox, 1, 0)
-        Me.TableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TableLayoutPanel4.Location = New System.Drawing.Point(0, 21)
-        Me.TableLayoutPanel4.Name = "TableLayoutPanel4"
-        Me.TableLayoutPanel4.RowCount = 2
-        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 36.8421!))
-        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 63.1579!))
-        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel4.Size = New System.Drawing.Size(270, 101)
-        Me.TableLayoutPanel4.TabIndex = 30
+        Me.ScreenFields_TblPnl.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.[Single]
+        Me.ScreenFields_TblPnl.ColumnCount = 2
+        Me.ScreenFields_TblPnl.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.55762!))
+        Me.ScreenFields_TblPnl.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.44238!))
+        Me.ScreenFields_TblPnl.Controls.Add(Me.MetroLabel8, 0, 0)
+        Me.ScreenFields_TblPnl.Controls.Add(Me.MetroLabel11, 0, 1)
+        Me.ScreenFields_TblPnl.Controls.Add(Me.TableLayoutPanel6, 1, 1)
+        Me.ScreenFields_TblPnl.Controls.Add(Me.ScreenType_Tbox, 1, 0)
+        Me.ScreenFields_TblPnl.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ScreenFields_TblPnl.Location = New System.Drawing.Point(0, 21)
+        Me.ScreenFields_TblPnl.Name = "ScreenFields_TblPnl"
+        Me.ScreenFields_TblPnl.RowCount = 2
+        Me.ScreenFields_TblPnl.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 36.8421!))
+        Me.ScreenFields_TblPnl.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 63.1579!))
+        Me.ScreenFields_TblPnl.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.ScreenFields_TblPnl.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.ScreenFields_TblPnl.Size = New System.Drawing.Size(270, 101)
+        Me.ScreenFields_TblPnl.TabIndex = 30
         '
         'MetroLabel8
         '
@@ -728,11 +744,194 @@ Partial Class TE_Installation_CPanel
         Me.ScreenHeader_Lbl.UseCustomBackColor = True
         Me.ScreenHeader_Lbl.UseCustomForeColor = True
         '
+        'HandleFields_Pnl
+        '
+        Me.HandleFields_Pnl.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.HandleFields_Pnl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.HandleFields_Pnl.Controls.Add(Me.HandleFields_TblPnl)
+        Me.HandleFields_Pnl.Controls.Add(Me.HandleFieldsHeader_Pnl)
+        Me.HandleFields_Pnl.Location = New System.Drawing.Point(351, 60)
+        Me.HandleFields_Pnl.Name = "HandleFields_Pnl"
+        Me.HandleFields_Pnl.Size = New System.Drawing.Size(272, 124)
+        Me.HandleFields_Pnl.TabIndex = 615
+        Me.HandleFields_Pnl.Visible = False
+        '
+        'HandleFields_TblPnl
+        '
+        Me.HandleFields_TblPnl.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.[Single]
+        Me.HandleFields_TblPnl.ColumnCount = 2
+        Me.HandleFields_TblPnl.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.55762!))
+        Me.HandleFields_TblPnl.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.44238!))
+        Me.HandleFields_TblPnl.Controls.Add(Me.MetroLabel5, 0, 0)
+        Me.HandleFields_TblPnl.Controls.Add(Me.MetroLabel7, 0, 1)
+        Me.HandleFields_TblPnl.Controls.Add(Me.TableLayoutPanel7, 1, 1)
+        Me.HandleFields_TblPnl.Controls.Add(Me.HandleType_Tbox, 1, 0)
+        Me.HandleFields_TblPnl.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.HandleFields_TblPnl.Location = New System.Drawing.Point(0, 21)
+        Me.HandleFields_TblPnl.Name = "HandleFields_TblPnl"
+        Me.HandleFields_TblPnl.RowCount = 2
+        Me.HandleFields_TblPnl.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 36.8421!))
+        Me.HandleFields_TblPnl.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 63.1579!))
+        Me.HandleFields_TblPnl.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.HandleFields_TblPnl.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.HandleFields_TblPnl.Size = New System.Drawing.Size(270, 101)
+        Me.HandleFields_TblPnl.TabIndex = 30
+        '
+        'MetroLabel5
+        '
+        Me.MetroLabel5.AutoSize = True
+        Me.MetroLabel5.FontSize = MetroFramework.MetroLabelSize.Tall
+        Me.MetroLabel5.FontWeight = MetroFramework.MetroLabelWeight.Regular
+        Me.MetroLabel5.Location = New System.Drawing.Point(4, 1)
+        Me.MetroLabel5.Name = "MetroLabel5"
+        Me.MetroLabel5.Size = New System.Drawing.Size(110, 25)
+        Me.MetroLabel5.TabIndex = 39
+        Me.MetroLabel5.Text = "Handle Type"
+        '
+        'MetroLabel7
+        '
+        Me.MetroLabel7.AutoSize = True
+        Me.MetroLabel7.FontSize = MetroFramework.MetroLabelSize.Tall
+        Me.MetroLabel7.FontWeight = MetroFramework.MetroLabelWeight.Regular
+        Me.MetroLabel7.Location = New System.Drawing.Point(4, 38)
+        Me.MetroLabel7.Name = "MetroLabel7"
+        Me.MetroLabel7.Size = New System.Drawing.Size(117, 25)
+        Me.MetroLabel7.TabIndex = 36
+        Me.MetroLabel7.Text = "Time (in secs)"
+        '
+        'TableLayoutPanel7
+        '
+        Me.TableLayoutPanel7.ColumnCount = 1
+        Me.TableLayoutPanel7.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.TableLayoutPanel7.Controls.Add(Me.HandleTime_Lbl, 0, 1)
+        Me.TableLayoutPanel7.Controls.Add(Me.HandleTime_Tbox, 0, 0)
+        Me.TableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel7.Location = New System.Drawing.Point(139, 41)
+        Me.TableLayoutPanel7.Name = "TableLayoutPanel7"
+        Me.TableLayoutPanel7.RowCount = 2
+        Me.TableLayoutPanel7.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 64.38356!))
+        Me.TableLayoutPanel7.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 35.61644!))
+        Me.TableLayoutPanel7.Size = New System.Drawing.Size(127, 56)
+        Me.TableLayoutPanel7.TabIndex = 40
+        '
+        'HandleTime_Lbl
+        '
+        Me.HandleTime_Lbl.AutoSize = True
+        Me.HandleTime_Lbl.Location = New System.Drawing.Point(3, 36)
+        Me.HandleTime_Lbl.Name = "HandleTime_Lbl"
+        Me.HandleTime_Lbl.Size = New System.Drawing.Size(73, 19)
+        Me.HandleTime_Lbl.TabIndex = 0
+        Me.HandleTime_Lbl.Text = "00 : 00 : 00"
+        '
+        'HandleTime_Tbox
+        '
+        Me.HandleTime_Tbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Lower
+        '
+        '
+        '
+        Me.HandleTime_Tbox.CustomButton.Image = Nothing
+        Me.HandleTime_Tbox.CustomButton.Location = New System.Drawing.Point(93, 1)
+        Me.HandleTime_Tbox.CustomButton.Name = ""
+        Me.HandleTime_Tbox.CustomButton.Size = New System.Drawing.Size(27, 27)
+        Me.HandleTime_Tbox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
+        Me.HandleTime_Tbox.CustomButton.TabIndex = 1
+        Me.HandleTime_Tbox.CustomButton.Text = "+"
+        Me.HandleTime_Tbox.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
+        Me.HandleTime_Tbox.CustomButton.UseSelectable = True
+        Me.HandleTime_Tbox.CustomButton.Visible = False
+        Me.HandleTime_Tbox.FontSize = MetroFramework.MetroTextBoxSize.Tall
+        Me.HandleTime_Tbox.Lines = New String(-1) {}
+        Me.HandleTime_Tbox.Location = New System.Drawing.Point(3, 3)
+        Me.HandleTime_Tbox.MaxLength = 32767
+        Me.HandleTime_Tbox.Name = "HandleTime_Tbox"
+        Me.HandleTime_Tbox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
+        Me.HandleTime_Tbox.ScrollBars = System.Windows.Forms.ScrollBars.None
+        Me.HandleTime_Tbox.SelectedText = ""
+        Me.HandleTime_Tbox.SelectionLength = 0
+        Me.HandleTime_Tbox.SelectionStart = 0
+        Me.HandleTime_Tbox.Size = New System.Drawing.Size(121, 29)
+        Me.HandleTime_Tbox.Style = MetroFramework.MetroColorStyle.Blue
+        Me.HandleTime_Tbox.TabIndex = 32
+        Me.HandleTime_Tbox.UseSelectable = True
+        Me.HandleTime_Tbox.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
+        Me.HandleTime_Tbox.WaterMarkFont = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        '
+        'HandleType_Tbox
+        '
+        '
+        '
+        '
+        Me.HandleType_Tbox.CustomButton.Image = Nothing
+        Me.HandleType_Tbox.CustomButton.Location = New System.Drawing.Point(93, 1)
+        Me.HandleType_Tbox.CustomButton.Name = ""
+        Me.HandleType_Tbox.CustomButton.Size = New System.Drawing.Size(27, 27)
+        Me.HandleType_Tbox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
+        Me.HandleType_Tbox.CustomButton.TabIndex = 1
+        Me.HandleType_Tbox.CustomButton.Text = "+"
+        Me.HandleType_Tbox.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
+        Me.HandleType_Tbox.CustomButton.UseSelectable = True
+        Me.HandleType_Tbox.CustomButton.Visible = False
+        Me.HandleType_Tbox.FontSize = MetroFramework.MetroTextBoxSize.Tall
+        Me.HandleType_Tbox.Lines = New String(-1) {}
+        Me.HandleType_Tbox.Location = New System.Drawing.Point(139, 4)
+        Me.HandleType_Tbox.MaxLength = 32767
+        Me.HandleType_Tbox.Name = "HandleType_Tbox"
+        Me.HandleType_Tbox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
+        Me.HandleType_Tbox.ScrollBars = System.Windows.Forms.ScrollBars.None
+        Me.HandleType_Tbox.SelectedText = ""
+        Me.HandleType_Tbox.SelectionLength = 0
+        Me.HandleType_Tbox.SelectionStart = 0
+        Me.HandleType_Tbox.Size = New System.Drawing.Size(121, 29)
+        Me.HandleType_Tbox.Style = MetroFramework.MetroColorStyle.Blue
+        Me.HandleType_Tbox.TabIndex = 30
+        Me.HandleType_Tbox.UseSelectable = True
+        Me.HandleType_Tbox.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
+        Me.HandleType_Tbox.WaterMarkFont = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        '
+        'HandleFieldsHeader_Pnl
+        '
+        Me.HandleFieldsHeader_Pnl.BackColor = System.Drawing.SystemColors.MenuHighlight
+        Me.HandleFieldsHeader_Pnl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.HandleFieldsHeader_Pnl.Controls.Add(Me.ExitHandle_Btn)
+        Me.HandleFieldsHeader_Pnl.Controls.Add(Me.HandleHeader_lbl)
+        Me.HandleFieldsHeader_Pnl.Dock = System.Windows.Forms.DockStyle.Top
+        Me.HandleFieldsHeader_Pnl.Location = New System.Drawing.Point(0, 0)
+        Me.HandleFieldsHeader_Pnl.Name = "HandleFieldsHeader_Pnl"
+        Me.HandleFieldsHeader_Pnl.Size = New System.Drawing.Size(270, 21)
+        Me.HandleFieldsHeader_Pnl.TabIndex = 31
+        '
+        'ExitHandle_Btn
+        '
+        Me.ExitHandle_Btn.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.ExitHandle_Btn.Image = Global.KMDI_Systems.My.Resources.Resources.icons8_close_window_96
+        Me.ExitHandle_Btn.Location = New System.Drawing.Point(245, -2)
+        Me.ExitHandle_Btn.Name = "ExitHandle_Btn"
+        Me.ExitHandle_Btn.Size = New System.Drawing.Size(22, 22)
+        Me.ExitHandle_Btn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.ExitHandle_Btn.TabIndex = 41
+        Me.ExitHandle_Btn.TabStop = False
+        '
+        'HandleHeader_lbl
+        '
+        Me.HandleHeader_lbl.AutoSize = True
+        Me.HandleHeader_lbl.FontWeight = MetroFramework.MetroLabelWeight.Regular
+        Me.HandleHeader_lbl.ForeColor = System.Drawing.Color.Black
+        Me.HandleHeader_lbl.Location = New System.Drawing.Point(3, 0)
+        Me.HandleHeader_lbl.Name = "HandleHeader_lbl"
+        Me.HandleHeader_lbl.Size = New System.Drawing.Size(100, 19)
+        Me.HandleHeader_lbl.TabIndex = 40
+        Me.HandleHeader_lbl.Text = "Handle Header"
+        Me.HandleHeader_lbl.UseCustomBackColor = True
+        Me.HandleHeader_lbl.UseCustomForeColor = True
+        '
         'TE_Installation_CPanel
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(653, 375)
+        Me.Controls.Add(Me.HandleFields_Pnl)
         Me.Controls.Add(Me.ScreenFields_Pnl)
         Me.Controls.Add(Me.FrameFields_Pnl)
         Me.Controls.Add(Me.AddSidebar_Pnl)
@@ -761,13 +960,21 @@ Partial Class TE_Installation_CPanel
         CType(Me.Exit_Pbtn, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.LoadingPB, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ScreenFields_Pnl.ResumeLayout(False)
-        Me.TableLayoutPanel4.ResumeLayout(False)
-        Me.TableLayoutPanel4.PerformLayout()
+        Me.ScreenFields_TblPnl.ResumeLayout(False)
+        Me.ScreenFields_TblPnl.PerformLayout()
         Me.TableLayoutPanel6.ResumeLayout(False)
         Me.TableLayoutPanel6.PerformLayout()
         Me.ScreenFieldsHeader_Pnl.ResumeLayout(False)
         Me.ScreenFieldsHeader_Pnl.PerformLayout()
         CType(Me.ExitScreen_Btn, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.HandleFields_Pnl.ResumeLayout(False)
+        Me.HandleFields_TblPnl.ResumeLayout(False)
+        Me.HandleFields_TblPnl.PerformLayout()
+        Me.TableLayoutPanel7.ResumeLayout(False)
+        Me.TableLayoutPanel7.PerformLayout()
+        Me.HandleFieldsHeader_Pnl.ResumeLayout(False)
+        Me.HandleFieldsHeader_Pnl.PerformLayout()
+        CType(Me.ExitHandle_Btn, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -805,7 +1012,7 @@ Partial Class TE_Installation_CPanel
     Friend WithEvents SashHrs_Lbl As MetroFramework.Controls.MetroLabel
     Friend WithEvents WindoorPart_Cbox As MetroFramework.Controls.MetroComboBox
     Friend WithEvents ScreenFields_Pnl As Panel
-    Friend WithEvents TableLayoutPanel4 As TableLayoutPanel
+    Friend WithEvents ScreenFields_TblPnl As TableLayoutPanel
     Friend WithEvents ScreenType_Tbox As MetroFramework.Controls.MetroTextBox
     Friend WithEvents MetroLabel8 As MetroFramework.Controls.MetroLabel
     Friend WithEvents MetroLabel11 As MetroFramework.Controls.MetroLabel
@@ -815,4 +1022,15 @@ Partial Class TE_Installation_CPanel
     Friend WithEvents ScreenFieldsHeader_Pnl As Panel
     Friend WithEvents ExitScreen_Btn As PictureBox
     Friend WithEvents ScreenHeader_Lbl As MetroFramework.Controls.MetroLabel
+    Friend WithEvents HandleFields_Pnl As Panel
+    Friend WithEvents HandleFields_TblPnl As TableLayoutPanel
+    Friend WithEvents MetroLabel5 As MetroFramework.Controls.MetroLabel
+    Friend WithEvents MetroLabel7 As MetroFramework.Controls.MetroLabel
+    Friend WithEvents TableLayoutPanel7 As TableLayoutPanel
+    Friend WithEvents HandleTime_Lbl As MetroFramework.Controls.MetroLabel
+    Friend WithEvents HandleTime_Tbox As MetroFramework.Controls.MetroTextBox
+    Friend WithEvents HandleType_Tbox As MetroFramework.Controls.MetroTextBox
+    Friend WithEvents HandleFieldsHeader_Pnl As Panel
+    Friend WithEvents ExitHandle_Btn As PictureBox
+    Friend WithEvents HandleHeader_lbl As MetroFramework.Controls.MetroLabel
 End Class

@@ -3,7 +3,7 @@ Module TimeElementModule
     Dim sqlconnString As String = "Data Source = 121.58.229.248,49107; Network Library=DBMSSOCN;Initial Catalog='heretosave';User ID=kmdiadmin;Password=kmdiadmin;"
     Public TMLMNT_SearchStr As String = Nothing
     Public TMLMNT_QUERY_INSTANCE As String = Nothing
-    Public InsertedTE_ID, InsertedSCR_ID As Integer
+    Public InsertedTE_ID, InsertedSCR_ID, InsertedHDL_ID As Integer
     Public Sub TMLMNT_Query_Select_STP(ByVal SearchString As String,
                                        ByVal StoredProcedureName As String,
                                        Optional WillUseReader As Boolean = False)
@@ -204,6 +204,72 @@ Module TimeElementModule
                 sqlCommand.CommandType = CommandType.StoredProcedure
 
                 sqlCommand.Parameters.Add("@SCR_ID", SqlDbType.Int).Value = SCR_ID
+                sqlCommand.ExecuteNonQuery()
+
+                transaction.Commit()
+                sql_Transaction_result = "Committed"
+            End Using
+        End Using
+    End Sub
+    Public Sub TMLMNT_Handle_Insert(ByVal StoredProcedureName As String,
+                                   ByVal HANDLE_TYPE As String,
+                                   Optional W_Handle As Integer = 0)
+        Using sqlcon As New SqlConnection(sqlconnString)
+            sqlcon.Open()
+            Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
+                transaction = sqlcon.BeginTransaction(IsolationLevel.RepeatableRead, StoredProcedureName)
+                sqlCommand.Connection = sqlcon
+                sqlCommand.Transaction = transaction
+                sqlCommand.CommandText = StoredProcedureName
+                sqlCommand.CommandType = CommandType.StoredProcedure
+
+                sqlCommand.Parameters.Add("@HANDLE_TYPE", SqlDbType.VarChar).Value = HANDLE_TYPE
+                sqlCommand.Parameters.Add("@W_Handle", SqlDbType.Int).Value = W_Handle
+                Using read As SqlDataReader = sqlCommand.ExecuteReader
+                    read.Read()
+                    InsertedHDL_ID = read.Item("INSERTED_HDL_ID")
+                End Using
+
+                transaction.Commit()
+                sql_Transaction_result = "Committed"
+            End Using
+        End Using
+    End Sub
+    Public Sub TMLMNT_Handle_Update(ByVal StoredProcedureName As String,
+                                    ByVal HDL_ID As Integer,
+                                    ByVal HANDLE_TYPE As String,
+                                    Optional W_Handle As Integer = 0)
+        Using sqlcon As New SqlConnection(sqlconnString)
+            sqlcon.Open()
+            Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
+                transaction = sqlcon.BeginTransaction(IsolationLevel.RepeatableRead, StoredProcedureName)
+                sqlCommand.Connection = sqlcon
+                sqlCommand.Transaction = transaction
+                sqlCommand.CommandText = StoredProcedureName
+                sqlCommand.CommandType = CommandType.StoredProcedure
+
+                sqlCommand.Parameters.Add("@HANDLE_TYPE", SqlDbType.VarChar).Value = HANDLE_TYPE
+                sqlCommand.Parameters.Add("@HDL_ID", SqlDbType.Int).Value = HDL_ID
+                sqlCommand.Parameters.Add("@W_Handle", SqlDbType.Int).Value = W_Handle
+                sqlCommand.ExecuteNonQuery()
+
+                transaction.Commit()
+                sql_Transaction_result = "Committed"
+            End Using
+        End Using
+    End Sub
+    Public Sub TMLMNT_Handle_Delete(ByVal StoredProcedureName As String,
+                                    ByVal HDL_ID As Integer)
+        Using sqlcon As New SqlConnection(sqlconnString)
+            sqlcon.Open()
+            Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
+                transaction = sqlcon.BeginTransaction(IsolationLevel.RepeatableRead, StoredProcedureName)
+                sqlCommand.Connection = sqlcon
+                sqlCommand.Transaction = transaction
+                sqlCommand.CommandText = StoredProcedureName
+                sqlCommand.CommandType = CommandType.StoredProcedure
+
+                sqlCommand.Parameters.Add("@HDL_ID", SqlDbType.Int).Value = HDL_ID
                 sqlCommand.ExecuteNonQuery()
 
                 transaction.Commit()

@@ -9,9 +9,10 @@ Public Class TE_Installation_CPanel
     Dim DGVrow_list As New List(Of Object)
     Public InsCpanel_DGV As New KryptonDataGridView
 
-    Dim Item_Frame As Integer = 0, Item_Sash As Integer = 0, Item_Glass As Integer = 0, TE_ID As Integer, SCR_ID As Integer, ROWINDEX As Integer,
-        Item_Screen As Integer = 0
-    Dim Profile_Type As String = Nothing, Item_Size As String = Nothing, Screen_Type As String = Nothing
+    Dim Item_Frame As Integer = 0, Item_Sash As Integer = 0, Item_Glass As Integer = 0, TE_ID As Integer, ROWINDEX As Integer,
+        SCR_ID As Integer, Item_Screen As Integer = 0,
+        HDL_ID As Integer, Item_Handle As Integer = 0
+    Dim Profile_Type As String = Nothing, Item_Size As String = Nothing, Screen_Type As String = Nothing, Handle_Type As String = Nothing
     Public Sub Start_InsCPanelBGW()
         If InsCPanel_BGW.IsBusy <> True Then
             LoadingPB.Visible = True
@@ -32,6 +33,10 @@ Public Class TE_Installation_CPanel
         SCR_ID = Nothing
         ScreenType_Tbox.Clear()
         ScreenTime_Tbox.Clear()
+
+        HDL_ID = Nothing
+        HandleType_Tbox.Clear()
+        HandleTime_Tbox.Clear()
         Generate_DGVCols = False
         Generate_DGVRows = False
     End Sub
@@ -59,6 +64,14 @@ Public Class TE_Installation_CPanel
                 Start_InsCPanelBGW()
             Else
                 KMDIPrompts(Me, "UserWarning", "Screen Type is empty", Environment.StackTrace, Nothing, True, True, "Screen Type cannot be empty")
+            End If
+        ElseIf WindoorPart_Cbox.SelectedIndex = 2 Then
+            Handle_Type = Trim(HandleType_Tbox.Text)
+            Item_Handle = Val(HandleTime_Tbox.Text)
+            If Handle_Type <> Nothing Or Handle_Type <> "" Then
+                Start_InsCPanelBGW()
+            Else
+                KMDIPrompts(Me, "UserWarning", "Handle Type is empty", Environment.StackTrace, Nothing, True, True, "Handle Type cannot be empty")
             End If
         End If
     End Sub
@@ -123,6 +136,27 @@ Public Class TE_Installation_CPanel
                     Generate_DGVCols = False
                     Generate_DGVRows = False
                     TMLMNT_Screen_Delete("TE_stp_Screen_DELETE", SCR_ID)
+                    '// End of Screen
+
+                    '// Start of Handle
+                Case "Handle"
+                    Generate_DGVCols = True
+                    TMLMNT_QUERY_INSTANCE = "Loading_using_SearchString"
+                    TMLMNT_Query_Select_STP("", "TE_stp_Handle_Search")
+                Case "Handle_ADD"
+                    Generate_DGVCols = False
+                    Generate_DGVRows = False
+                    TMLMNT_Handle_Insert("TE_stp_Handle_ADD", Handle_Type, Item_Handle)
+                Case "Handle_UPDATE"
+                    Generate_DGVCols = False
+                    Generate_DGVRows = False
+                    TMLMNT_Handle_Update("TE_stp_Handle_UPDATE", HDL_ID, Handle_Type, Item_Handle)
+                Case "Handle_DELETE"
+                    Generate_DGVCols = False
+                    Generate_DGVRows = False
+                    TMLMNT_Handle_Delete("TE_stp_Handle_DELETE", HDL_ID)
+                    '// End of Handle
+
             End Select
 
             Select Case Generate_DGVCols
@@ -219,6 +253,25 @@ Public Class TE_Installation_CPanel
                                     .ValueType = GetType(TimeSpan)
                                 End If
                             End With
+                        ElseIf InsCPanel_TODO = "Handle" Then
+                            With dgvCol
+                                .Name = sqlDataSet.Tables("QUERY_DETAILS").Columns(e.ProgressPercentage).ToString
+                                .HeaderText = dgvCol.Name
+                                .CellTemplate = cell
+                                .SortMode = DataGridViewColumnSortMode.Automatic
+                                If .Name = "HDL_ID" Or .Name = "HDL_STATUS" Then
+                                    .Visible = False
+                                End If
+                                If .Name = "HDL_ID" Then
+                                    .ValueType = GetType(Integer)
+                                End If
+                                If .Name = "HANDLE TYPE" Then
+                                    .ValueType = GetType(String)
+                                End If
+                                If .Name = "TIME" Then
+                                    .ValueType = GetType(TimeSpan)
+                                End If
+                            End With
                         End If
                         InsCpanel_DGV.Columns.Add(dgvCol)
                         'Console.WriteLine("Columns " & e.ProgressPercentage & " created")
@@ -240,7 +293,6 @@ Public Class TE_Installation_CPanel
                                     ElseIf i = 1 Or i = 2 Then
                                         DGVrow_list.Add(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i).ToString)
                                     ElseIf i = 3 Or i = 4 Or i = 5 Then
-                                        'Dim iSpan As TimeSpan = 
                                         DGVrow_list.Add(TimeSpan.FromSeconds(Convert.ToInt32(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i))))
                                     End If
                                 Next
@@ -251,7 +303,16 @@ Public Class TE_Installation_CPanel
                                     ElseIf i = 1 Then
                                         DGVrow_list.Add(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i).ToString)
                                     ElseIf i = 2 Then
-                                        'Dim iSpan As TimeSpan =
+                                        DGVrow_list.Add(TimeSpan.FromSeconds(Convert.ToInt32(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i))))
+                                    End If
+                                Next
+                            ElseIf InsCPanel_TODO = "Handle" Then
+                                For i = 0 To sqlDataSet.Tables("QUERY_DETAILS").Columns.Count - 1
+                                    If i = 0 Then
+                                        DGVrow_list.Add(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i))
+                                    ElseIf i = 1 Then
+                                        DGVrow_list.Add(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i).ToString)
+                                    ElseIf i = 2 Then
                                         DGVrow_list.Add(TimeSpan.FromSeconds(Convert.ToInt32(sqlDataSet.Tables("QUERY_DETAILS").Rows(e.ProgressPercentage).Item(i))))
                                     End If
                                 Next
@@ -312,6 +373,21 @@ Public Class TE_Installation_CPanel
                             InsCpanel_DGV.Rows.RemoveAt(ROWINDEX)
                             reset_here()
 
+                        Case "Handle"
+                            reset_here()
+                        Case "Handle_ADD"
+                            InsCpanel_DGV.Rows.Add(InsertedHDL_ID, Handle_Type, TimeSpan.FromSeconds(Item_Handle))
+                            KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
+                            reset_here()
+                        Case "Handle_UPDATE"
+                            InsCpanel_DGV.Rows(ROWINDEX).Cells("HANDLE TYPE").Value = Handle_Type
+                            InsCpanel_DGV.Rows(ROWINDEX).Cells("TIME").Value = TimeSpan.FromSeconds(Item_Handle)
+                            reset_here()
+                            HandleFields_Pnl.Visible = False
+                            KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
+                        Case "Handle_DELETE"
+                            InsCpanel_DGV.Rows.RemoveAt(ROWINDEX)
+                            reset_here()
                     End Select
                 End If
             End If
@@ -339,12 +415,19 @@ Public Class TE_Installation_CPanel
                     ElseIf ScreenHeader_Lbl.Text.Contains("Update") Then
                         InsCPanel_TODO = "Screen_UPDATE"
                     End If
+                ElseIf HandleFields_Pnl.Visible = True Then
+                    If HandleHeader_lbl.Text.Contains("Add") Then
+                        InsCPanel_TODO = "Handle_ADD"
+                    ElseIf HandleHeader_lbl.Text.Contains("Update") Then
+                        InsCPanel_TODO = "Handle_UPDATE"
+                    End If
                 End If
                 SAVE()
             ElseIf e.KeyCode = Keys.Escape Then
                 reset_here()
                 FrameFields_Pnl.Visible = False
                 ScreenFields_Pnl.Visible = False
+                HandleFields_Pnl.Visible = False
             End If
         Catch ex As Exception
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
@@ -359,9 +442,11 @@ Public Class TE_Installation_CPanel
                     InsCPanel_TODO = "Frame_DELETE"
                 ElseIf WindoorPart_Cbox.SelectedIndex = 1 Then
                     InsCPanel_TODO = "Screen_DELETE"
+                ElseIf WindoorPart_Cbox.SelectedIndex = 2 Then
+                    InsCPanel_TODO = "Handle_DELETE"
                 End If
+                Start_InsCPanelBGW()
             End If
-            Start_InsCPanelBGW()
         Catch ex As Exception
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
         End Try
@@ -377,7 +462,8 @@ Public Class TE_Installation_CPanel
     End Sub
 
     Private Sub TimeElementTbox_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Frame_Tbox.KeyPress, Sash_Tbox.KeyPress,
-                                                                                           Glass_Tbox.KeyPress, ScreenTime_Tbox.KeyPress
+                                                                                           Glass_Tbox.KeyPress, ScreenTime_Tbox.KeyPress,
+                                                                                           HandleTime_Tbox.KeyPress
         Try
             If (Not IsNumeric(e.KeyChar)) And (e.KeyChar <> ControlChars.Back) Then
                 e.Handled = True
@@ -387,6 +473,11 @@ Public Class TE_Installation_CPanel
         Catch ex As Exception
             KMDIPrompts(Me, "UserWarning", "Invalid value", Environment.StackTrace, Nothing, True, True, "Numbers only")
         End Try
+    End Sub
+
+    Private Sub ExitHandle_Btn_Click(sender As Object, e As EventArgs) Handles ExitHandle_Btn.Click
+        reset_here()
+        HandleFields_Pnl.Visible = False
     End Sub
 
     Private Sub ExitScreen_Btn_Click(sender As Object, e As EventArgs) Handles ExitScreen_Btn.Click
@@ -407,6 +498,12 @@ Public Class TE_Installation_CPanel
             ScreenFields_Pnl.Visible = True
             ScreenType_Tbox.Select()
             ScreenType_Tbox.Focus()
+        ElseIf WindoorPart_Cbox.SelectedIndex = 2 Then
+            HandleHeader_lbl.Text = "Update item"
+            HandleFieldsHeader_Pnl.BackColor = Color.IndianRed
+            HandleFields_Pnl.Visible = True
+            HandleType_Tbox.Select()
+            HandleType_Tbox.Focus()
         End If
     End Sub
 
@@ -415,7 +512,8 @@ Public Class TE_Installation_CPanel
         FrameFields_Pnl.Visible = False
     End Sub
     Private Sub HrsTbox_TextChanged(sender As Object, e As EventArgs) Handles Frame_Tbox.TextChanged, Sash_Tbox.TextChanged,
-                                                                              Glass_Tbox.TextChanged, ScreenTime_Tbox.TextChanged
+                                                                              Glass_Tbox.TextChanged, ScreenTime_Tbox.TextChanged,
+                                                                              HandleTime_Tbox.TextChanged
         Try
             Dim iSpan As TimeSpan = TimeSpan.FromSeconds(Val(sender.Text))
             Dim TotalHrs As String
@@ -432,6 +530,8 @@ Public Class TE_Installation_CPanel
                 GlassHrs_Lbl.Text = TotalHrs
             ElseIf sender.Name = "ScreenTime_Tbox" Then
                 ScreenTime_Lbl.Text = TotalHrs
+            ElseIf sender.Name = "HandleTime_Tbox" Then
+                HandleTime_Lbl.Text = TotalHrs
             End If
         Catch ex As Exception
             If ex.Message = "TimeSpan overflowed because the duration is too long." Then
@@ -449,11 +549,14 @@ Public Class TE_Installation_CPanel
         InsCpanel_DGV.Rows.Clear()
         FrameFields_Pnl.Visible = False
         ScreenFields_Pnl.Visible = False
+        HandleFields_Pnl.Visible = False
 
         If WindoorPart_Cbox.SelectedIndex = 0 Then
             InsCPanel_TODO = "Frame"
         ElseIf WindoorPart_Cbox.SelectedIndex = 1 Then
             InsCPanel_TODO = "Screen"
+        ElseIf WindoorPart_Cbox.SelectedIndex = 2 Then
+            InsCPanel_TODO = "Handle"
         End If
         Start_InsCPanelBGW()
     End Sub
@@ -479,6 +582,16 @@ Public Class TE_Installation_CPanel
             ElseIf ScreenFields_Pnl.Visible = True Then
                 ScreenFields_Pnl.Visible = False
             End If
+        ElseIf WindoorPart_Cbox.SelectedIndex = 2 Then
+            If HandleFields_Pnl.Visible = False Then
+                HandleHeader_lbl.Text = "Add new item"
+                HandleFieldsHeader_Pnl.BackColor = SystemColors.MenuHighlight
+                HandleFields_Pnl.Visible = True
+                HandleType_Tbox.Select()
+                HandleType_Tbox.Focus()
+            ElseIf HandleFields_Pnl.Visible = True Then
+                HandleFields_Pnl.Visible = False
+            End If
         End If
 
     End Sub
@@ -489,9 +602,9 @@ Public Class TE_Installation_CPanel
         Try
             If (e.RowIndex >= 0 And e.ColumnIndex >= 0) Then
                 ROWINDEX = e.RowIndex
+                InsCpanel_DGV.Rows(e.RowIndex).Selected = True
                 If WindoorPart_Cbox.SelectedIndex = 0 Then
                     With InsCpanel_DGV
-                        .Rows(e.RowIndex).Selected = True
                         TE_ID = .Item("TE_ID", e.RowIndex).Value
                         Frame_Tbox.Text = .Item("FRAME", e.RowIndex).Value.TotalSeconds
                         Sash_Tbox.Text = .Item("SASH", e.RowIndex).Value.TotalSeconds
@@ -501,10 +614,15 @@ Public Class TE_Installation_CPanel
                     End With
                 ElseIf WindoorPart_Cbox.SelectedIndex = 1 Then
                     With InsCpanel_DGV
-                        .Rows(e.RowIndex).Selected = True
                         SCR_ID = .Item("SCR_ID", e.RowIndex).Value
                         ScreenType_Tbox.Text = .Item("SCREEN TYPE", e.RowIndex).Value.ToString
                         ScreenTime_Tbox.Text = .Item("TIME", e.RowIndex).Value.TotalSeconds
+                    End With
+                ElseIf WindoorPart_Cbox.SelectedIndex = 2 Then
+                    With InsCpanel_DGV
+                        HDL_ID = .Item("HDL_ID", e.RowIndex).Value
+                        HandleType_Tbox.Text = .Item("HANDLE TYPE", e.RowIndex).Value.ToString
+                        HandleTime_Tbox.Text = .Item("TIME", e.RowIndex).Value.TotalSeconds
                     End With
                 End If
             End If
@@ -516,9 +634,9 @@ Public Class TE_Installation_CPanel
         Try
             If (e.RowIndex >= 0 And e.ColumnIndex >= 0) Then
                 ROWINDEX = e.RowIndex
+                InsCpanel_DGV.Rows(e.RowIndex).Selected = True
                 If WindoorPart_Cbox.SelectedIndex = 0 Then
                     With InsCpanel_DGV
-                        .Rows(e.RowIndex).Selected = True
                         TE_ID = .Item("TE_ID", e.RowIndex).Value
                         Frame_Tbox.Text = .Item("FRAME", e.RowIndex).Value.TotalSeconds
                         Sash_Tbox.Text = .Item("SASH", e.RowIndex).Value.TotalSeconds
@@ -528,10 +646,15 @@ Public Class TE_Installation_CPanel
                     End With
                 ElseIf WindoorPart_Cbox.SelectedIndex = 1 Then
                     With InsCpanel_DGV
-                        .Rows(e.RowIndex).Selected = True
                         SCR_ID = .Item("SCR_ID", e.RowIndex).Value
                         ScreenType_Tbox.Text = .Item("SCREEN TYPE", e.RowIndex).Value.ToString
                         ScreenTime_Tbox.Text = .Item("TIME", e.RowIndex).Value.TotalSeconds
+                    End With
+                ElseIf WindoorPart_Cbox.SelectedIndex = 2 Then
+                    With InsCpanel_DGV
+                        HDL_ID = .Item("HDL_ID", e.RowIndex).Value
+                        HandleType_Tbox.Text = .Item("HANDLE TYPE", e.RowIndex).Value.ToString
+                        HandleTime_Tbox.Text = .Item("TIME", e.RowIndex).Value.TotalSeconds
                     End With
                 End If
                 If e.Button = MouseButtons.Right Then
