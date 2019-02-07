@@ -342,7 +342,7 @@ Public Class TE_Installation_CPanel
                         Case "Frame_ADD"
                             InsCpanel_DGV.Rows.Add(InsertedTE_ID, Profile_Type, Item_Size, TimeSpan.FromSeconds(Item_Frame),
                                                    TimeSpan.FromSeconds(Item_Sash), TimeSpan.FromSeconds(Item_Glass))
-                            KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
+                            KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True, False, Nothing, False)
                             reset_here()
                         Case "Frame_UPDATE"
                             InsCpanel_DGV.Rows(ROWINDEX).Cells("PROFILE TYPE").Value = Profile_Type
@@ -352,7 +352,7 @@ Public Class TE_Installation_CPanel
                             InsCpanel_DGV.Rows(ROWINDEX).Cells("GLASS").Value = TimeSpan.FromSeconds(Item_Glass)
                             reset_here()
                             FrameFields_Pnl.Visible = False
-                            KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
+                            KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True, False, Nothing, False)
                         Case "Frame_DELETE"
                             InsCpanel_DGV.Rows.RemoveAt(ROWINDEX)
                             reset_here()
@@ -361,14 +361,14 @@ Public Class TE_Installation_CPanel
                             reset_here()
                         Case "Screen_ADD"
                             InsCpanel_DGV.Rows.Add(InsertedSCR_ID, Screen_Type, TimeSpan.FromSeconds(Item_Screen))
-                            KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
+                            KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True, False, Nothing, False)
                             reset_here()
                         Case "Screen_UPDATE"
                             InsCpanel_DGV.Rows(ROWINDEX).Cells("SCREEN TYPE").Value = Screen_Type
                             InsCpanel_DGV.Rows(ROWINDEX).Cells("TIME").Value = TimeSpan.FromSeconds(Item_Screen)
                             reset_here()
                             ScreenFields_Pnl.Visible = False
-                            KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
+                            KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True, False, Nothing, False)
                         Case "Screen_DELETE"
                             InsCpanel_DGV.Rows.RemoveAt(ROWINDEX)
                             reset_here()
@@ -377,14 +377,14 @@ Public Class TE_Installation_CPanel
                             reset_here()
                         Case "Handle_ADD"
                             InsCpanel_DGV.Rows.Add(InsertedHDL_ID, Handle_Type, TimeSpan.FromSeconds(Item_Handle))
-                            KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
+                            KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True, False, Nothing, False)
                             reset_here()
                         Case "Handle_UPDATE"
                             InsCpanel_DGV.Rows(ROWINDEX).Cells("HANDLE TYPE").Value = Handle_Type
                             InsCpanel_DGV.Rows(ROWINDEX).Cells("TIME").Value = TimeSpan.FromSeconds(Item_Handle)
                             reset_here()
                             HandleFields_Pnl.Visible = False
-                            KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
+                            KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True, False, Nothing, False)
                         Case "Handle_DELETE"
                             InsCpanel_DGV.Rows.RemoveAt(ROWINDEX)
                             reset_here()
