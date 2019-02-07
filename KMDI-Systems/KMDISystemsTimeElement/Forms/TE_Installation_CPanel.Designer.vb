@@ -26,6 +26,7 @@ Partial Class TE_Installation_CPanel
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(TE_Installation_CPanel))
         Me.Mktng_InvLBL = New MetroFramework.Controls.MetroLabel()
         Me.Frm_PNL = New System.Windows.Forms.Panel()
+        Me.WindoorPart_Cbox = New MetroFramework.Controls.MetroComboBox()
         Me.DGV_Pnl = New System.Windows.Forms.Panel()
         Me.Glass_Tbox = New MetroFramework.Controls.MetroTextBox()
         Me.Sash_Tbox = New MetroFramework.Controls.MetroTextBox()
@@ -39,8 +40,8 @@ Partial Class TE_Installation_CPanel
         Me.TE_Cmenu = New MetroFramework.Controls.MetroContextMenu(Me.components)
         Me.EditToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.Fields_Pnl = New System.Windows.Forms.Panel()
-        Me.Fields_TblPnl = New System.Windows.Forms.TableLayoutPanel()
+        Me.FrameFields_Pnl = New System.Windows.Forms.Panel()
+        Me.FrameFields_TblPnl = New System.Windows.Forms.TableLayoutPanel()
         Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel()
         Me.GlassHrs_Lbl = New MetroFramework.Controls.MetroLabel()
         Me.MetroLabel6 = New MetroFramework.Controls.MetroLabel()
@@ -48,23 +49,38 @@ Partial Class TE_Installation_CPanel
         Me.FrameHrs_Lbl = New MetroFramework.Controls.MetroLabel()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.SashHrs_Lbl = New MetroFramework.Controls.MetroLabel()
-        Me.FieldsHeader_Pnl = New System.Windows.Forms.Panel()
+        Me.FrameFieldsHeader_Pnl = New System.Windows.Forms.Panel()
         Me.Exit_Pbtn = New System.Windows.Forms.PictureBox()
         Me.FieldsHeader_Lbl = New MetroFramework.Controls.MetroLabel()
         Me.AddSidebar_Lbl = New ComponentFactory.Krypton.Toolkit.KryptonLabel()
         Me.AddSidebar_Pnl = New System.Windows.Forms.Panel()
         Me.LoadingPB = New System.Windows.Forms.PictureBox()
-        Me.WindoorPart_Cbox = New MetroFramework.Controls.MetroComboBox()
+        Me.ScreenFields_Pnl = New System.Windows.Forms.Panel()
+        Me.TableLayoutPanel4 = New System.Windows.Forms.TableLayoutPanel()
+        Me.MetroLabel8 = New MetroFramework.Controls.MetroLabel()
+        Me.MetroLabel11 = New MetroFramework.Controls.MetroLabel()
+        Me.TableLayoutPanel6 = New System.Windows.Forms.TableLayoutPanel()
+        Me.ScreenTime_Lbl = New MetroFramework.Controls.MetroLabel()
+        Me.ScreenTime_Tbox = New MetroFramework.Controls.MetroTextBox()
+        Me.ScreenType_Tbox = New MetroFramework.Controls.MetroTextBox()
+        Me.ScreenFieldsHeader_Pnl = New System.Windows.Forms.Panel()
+        Me.ExitScreen_Btn = New System.Windows.Forms.PictureBox()
+        Me.ScreenHeader_Lbl = New MetroFramework.Controls.MetroLabel()
         Me.Frm_PNL.SuspendLayout()
         Me.TE_Cmenu.SuspendLayout()
-        Me.Fields_Pnl.SuspendLayout()
-        Me.Fields_TblPnl.SuspendLayout()
+        Me.FrameFields_Pnl.SuspendLayout()
+        Me.FrameFields_TblPnl.SuspendLayout()
         Me.TableLayoutPanel3.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
-        Me.FieldsHeader_Pnl.SuspendLayout()
+        Me.FrameFieldsHeader_Pnl.SuspendLayout()
         CType(Me.Exit_Pbtn, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LoadingPB, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.ScreenFields_Pnl.SuspendLayout()
+        Me.TableLayoutPanel4.SuspendLayout()
+        Me.TableLayoutPanel6.SuspendLayout()
+        Me.ScreenFieldsHeader_Pnl.SuspendLayout()
+        CType(Me.ExitScreen_Btn, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Mktng_InvLBL
@@ -88,6 +104,17 @@ Partial Class TE_Installation_CPanel
         Me.Frm_PNL.Padding = New System.Windows.Forms.Padding(10)
         Me.Frm_PNL.Size = New System.Drawing.Size(613, 295)
         Me.Frm_PNL.TabIndex = 0
+        '
+        'WindoorPart_Cbox
+        '
+        Me.WindoorPart_Cbox.FormattingEnabled = True
+        Me.WindoorPart_Cbox.ItemHeight = 23
+        Me.WindoorPart_Cbox.Items.AddRange(New Object() {"F/SH/GL", "Screen"})
+        Me.WindoorPart_Cbox.Location = New System.Drawing.Point(10, 1)
+        Me.WindoorPart_Cbox.Name = "WindoorPart_Cbox"
+        Me.WindoorPart_Cbox.Size = New System.Drawing.Size(138, 29)
+        Me.WindoorPart_Cbox.TabIndex = 613
+        Me.WindoorPart_Cbox.UseSelectable = True
         '
         'DGV_Pnl
         '
@@ -326,47 +353,47 @@ Partial Class TE_Installation_CPanel
         Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(107, 22)
         Me.DeleteToolStripMenuItem.Text = "Delete"
         '
-        'Fields_Pnl
+        'FrameFields_Pnl
         '
-        Me.Fields_Pnl.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+        Me.FrameFields_Pnl.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Fields_Pnl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Fields_Pnl.Controls.Add(Me.Fields_TblPnl)
-        Me.Fields_Pnl.Controls.Add(Me.FieldsHeader_Pnl)
-        Me.Fields_Pnl.Location = New System.Drawing.Point(351, 60)
-        Me.Fields_Pnl.Name = "Fields_Pnl"
-        Me.Fields_Pnl.Size = New System.Drawing.Size(272, 295)
-        Me.Fields_Pnl.TabIndex = 20
-        Me.Fields_Pnl.Visible = False
+        Me.FrameFields_Pnl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.FrameFields_Pnl.Controls.Add(Me.FrameFields_TblPnl)
+        Me.FrameFields_Pnl.Controls.Add(Me.FrameFieldsHeader_Pnl)
+        Me.FrameFields_Pnl.Location = New System.Drawing.Point(351, 60)
+        Me.FrameFields_Pnl.Name = "FrameFields_Pnl"
+        Me.FrameFields_Pnl.Size = New System.Drawing.Size(272, 295)
+        Me.FrameFields_Pnl.TabIndex = 20
+        Me.FrameFields_Pnl.Visible = False
         '
-        'Fields_TblPnl
+        'FrameFields_TblPnl
         '
-        Me.Fields_TblPnl.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.[Single]
-        Me.Fields_TblPnl.ColumnCount = 2
-        Me.Fields_TblPnl.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.55762!))
-        Me.Fields_TblPnl.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.44238!))
-        Me.Fields_TblPnl.Controls.Add(Me.TableLayoutPanel3, 1, 4)
-        Me.Fields_TblPnl.Controls.Add(Me.ProfileType_Tbox, 1, 0)
-        Me.Fields_TblPnl.Controls.Add(Me.MetroLabel4, 0, 4)
-        Me.Fields_TblPnl.Controls.Add(Me.MetroLabel6, 0, 0)
-        Me.Fields_TblPnl.Controls.Add(Me.MetroLabel3, 0, 3)
-        Me.Fields_TblPnl.Controls.Add(Me.MetroLabel1, 0, 1)
-        Me.Fields_TblPnl.Controls.Add(Me.Size_Tbox, 1, 1)
-        Me.Fields_TblPnl.Controls.Add(Me.MetroLabel2, 0, 2)
-        Me.Fields_TblPnl.Controls.Add(Me.TableLayoutPanel1, 1, 2)
-        Me.Fields_TblPnl.Controls.Add(Me.TableLayoutPanel2, 1, 3)
-        Me.Fields_TblPnl.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Fields_TblPnl.Location = New System.Drawing.Point(0, 21)
-        Me.Fields_TblPnl.Name = "Fields_TblPnl"
-        Me.Fields_TblPnl.RowCount = 5
-        Me.Fields_TblPnl.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.0!))
-        Me.Fields_TblPnl.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.0!))
-        Me.Fields_TblPnl.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 24.0!))
-        Me.Fields_TblPnl.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 24.0!))
-        Me.Fields_TblPnl.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 24.0!))
-        Me.Fields_TblPnl.Size = New System.Drawing.Size(270, 272)
-        Me.Fields_TblPnl.TabIndex = 30
+        Me.FrameFields_TblPnl.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.[Single]
+        Me.FrameFields_TblPnl.ColumnCount = 2
+        Me.FrameFields_TblPnl.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.55762!))
+        Me.FrameFields_TblPnl.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.44238!))
+        Me.FrameFields_TblPnl.Controls.Add(Me.TableLayoutPanel3, 1, 4)
+        Me.FrameFields_TblPnl.Controls.Add(Me.ProfileType_Tbox, 1, 0)
+        Me.FrameFields_TblPnl.Controls.Add(Me.MetroLabel4, 0, 4)
+        Me.FrameFields_TblPnl.Controls.Add(Me.MetroLabel6, 0, 0)
+        Me.FrameFields_TblPnl.Controls.Add(Me.MetroLabel3, 0, 3)
+        Me.FrameFields_TblPnl.Controls.Add(Me.MetroLabel1, 0, 1)
+        Me.FrameFields_TblPnl.Controls.Add(Me.Size_Tbox, 1, 1)
+        Me.FrameFields_TblPnl.Controls.Add(Me.MetroLabel2, 0, 2)
+        Me.FrameFields_TblPnl.Controls.Add(Me.TableLayoutPanel1, 1, 2)
+        Me.FrameFields_TblPnl.Controls.Add(Me.TableLayoutPanel2, 1, 3)
+        Me.FrameFields_TblPnl.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.FrameFields_TblPnl.Location = New System.Drawing.Point(0, 21)
+        Me.FrameFields_TblPnl.Name = "FrameFields_TblPnl"
+        Me.FrameFields_TblPnl.RowCount = 5
+        Me.FrameFields_TblPnl.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.0!))
+        Me.FrameFields_TblPnl.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.0!))
+        Me.FrameFields_TblPnl.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 24.0!))
+        Me.FrameFields_TblPnl.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 24.0!))
+        Me.FrameFields_TblPnl.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 24.0!))
+        Me.FrameFields_TblPnl.Size = New System.Drawing.Size(270, 272)
+        Me.FrameFields_TblPnl.TabIndex = 30
         '
         'TableLayoutPanel3
         '
@@ -451,17 +478,17 @@ Partial Class TE_Installation_CPanel
         Me.SashHrs_Lbl.TabIndex = 34
         Me.SashHrs_Lbl.Text = "00 : 00 : 00"
         '
-        'FieldsHeader_Pnl
+        'FrameFieldsHeader_Pnl
         '
-        Me.FieldsHeader_Pnl.BackColor = System.Drawing.SystemColors.MenuHighlight
-        Me.FieldsHeader_Pnl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.FieldsHeader_Pnl.Controls.Add(Me.Exit_Pbtn)
-        Me.FieldsHeader_Pnl.Controls.Add(Me.FieldsHeader_Lbl)
-        Me.FieldsHeader_Pnl.Dock = System.Windows.Forms.DockStyle.Top
-        Me.FieldsHeader_Pnl.Location = New System.Drawing.Point(0, 0)
-        Me.FieldsHeader_Pnl.Name = "FieldsHeader_Pnl"
-        Me.FieldsHeader_Pnl.Size = New System.Drawing.Size(270, 21)
-        Me.FieldsHeader_Pnl.TabIndex = 31
+        Me.FrameFieldsHeader_Pnl.BackColor = System.Drawing.SystemColors.MenuHighlight
+        Me.FrameFieldsHeader_Pnl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.FrameFieldsHeader_Pnl.Controls.Add(Me.Exit_Pbtn)
+        Me.FrameFieldsHeader_Pnl.Controls.Add(Me.FieldsHeader_Lbl)
+        Me.FrameFieldsHeader_Pnl.Dock = System.Windows.Forms.DockStyle.Top
+        Me.FrameFieldsHeader_Pnl.Location = New System.Drawing.Point(0, 0)
+        Me.FrameFieldsHeader_Pnl.Name = "FrameFieldsHeader_Pnl"
+        Me.FrameFieldsHeader_Pnl.Size = New System.Drawing.Size(270, 21)
+        Me.FrameFieldsHeader_Pnl.TabIndex = 31
         '
         'Exit_Pbtn
         '
@@ -481,9 +508,9 @@ Partial Class TE_Installation_CPanel
         Me.FieldsHeader_Lbl.ForeColor = System.Drawing.Color.Black
         Me.FieldsHeader_Lbl.Location = New System.Drawing.Point(3, 0)
         Me.FieldsHeader_Lbl.Name = "FieldsHeader_Lbl"
-        Me.FieldsHeader_Lbl.Size = New System.Drawing.Size(53, 19)
+        Me.FieldsHeader_Lbl.Size = New System.Drawing.Size(108, 19)
         Me.FieldsHeader_Lbl.TabIndex = 40
-        Me.FieldsHeader_Lbl.Text = "Header"
+        Me.FieldsHeader_Lbl.Text = "F/SH/GL Header"
         Me.FieldsHeader_Lbl.UseCustomBackColor = True
         Me.FieldsHeader_Lbl.UseCustomForeColor = True
         '
@@ -519,28 +546,200 @@ Partial Class TE_Installation_CPanel
         Me.LoadingPB.TabIndex = 612
         Me.LoadingPB.TabStop = False
         '
-        'WindoorPart_Cbox
+        'ScreenFields_Pnl
         '
-        Me.WindoorPart_Cbox.FormattingEnabled = True
-        Me.WindoorPart_Cbox.ItemHeight = 23
-        Me.WindoorPart_Cbox.Items.AddRange(New Object() {"F/SH/GL", "Screen"})
-        Me.WindoorPart_Cbox.Location = New System.Drawing.Point(10, 1)
-        Me.WindoorPart_Cbox.Name = "WindoorPart_Cbox"
-        Me.WindoorPart_Cbox.Size = New System.Drawing.Size(138, 29)
-        Me.WindoorPart_Cbox.TabIndex = 613
-        Me.WindoorPart_Cbox.UseSelectable = True
+        Me.ScreenFields_Pnl.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ScreenFields_Pnl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.ScreenFields_Pnl.Controls.Add(Me.TableLayoutPanel4)
+        Me.ScreenFields_Pnl.Controls.Add(Me.ScreenFieldsHeader_Pnl)
+        Me.ScreenFields_Pnl.Location = New System.Drawing.Point(351, 60)
+        Me.ScreenFields_Pnl.Name = "ScreenFields_Pnl"
+        Me.ScreenFields_Pnl.Size = New System.Drawing.Size(272, 124)
+        Me.ScreenFields_Pnl.TabIndex = 614
+        Me.ScreenFields_Pnl.Visible = False
+        '
+        'TableLayoutPanel4
+        '
+        Me.TableLayoutPanel4.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.[Single]
+        Me.TableLayoutPanel4.ColumnCount = 2
+        Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.55762!))
+        Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.44238!))
+        Me.TableLayoutPanel4.Controls.Add(Me.MetroLabel8, 0, 0)
+        Me.TableLayoutPanel4.Controls.Add(Me.MetroLabel11, 0, 1)
+        Me.TableLayoutPanel4.Controls.Add(Me.TableLayoutPanel6, 1, 1)
+        Me.TableLayoutPanel4.Controls.Add(Me.ScreenType_Tbox, 1, 0)
+        Me.TableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel4.Location = New System.Drawing.Point(0, 21)
+        Me.TableLayoutPanel4.Name = "TableLayoutPanel4"
+        Me.TableLayoutPanel4.RowCount = 2
+        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 36.8421!))
+        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 63.1579!))
+        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel4.Size = New System.Drawing.Size(270, 101)
+        Me.TableLayoutPanel4.TabIndex = 30
+        '
+        'MetroLabel8
+        '
+        Me.MetroLabel8.AutoSize = True
+        Me.MetroLabel8.FontSize = MetroFramework.MetroLabelSize.Tall
+        Me.MetroLabel8.FontWeight = MetroFramework.MetroLabelWeight.Regular
+        Me.MetroLabel8.Location = New System.Drawing.Point(4, 1)
+        Me.MetroLabel8.Name = "MetroLabel8"
+        Me.MetroLabel8.Size = New System.Drawing.Size(106, 25)
+        Me.MetroLabel8.TabIndex = 39
+        Me.MetroLabel8.Text = "Screen Type"
+        '
+        'MetroLabel11
+        '
+        Me.MetroLabel11.AutoSize = True
+        Me.MetroLabel11.FontSize = MetroFramework.MetroLabelSize.Tall
+        Me.MetroLabel11.FontWeight = MetroFramework.MetroLabelWeight.Regular
+        Me.MetroLabel11.Location = New System.Drawing.Point(4, 38)
+        Me.MetroLabel11.Name = "MetroLabel11"
+        Me.MetroLabel11.Size = New System.Drawing.Size(117, 25)
+        Me.MetroLabel11.TabIndex = 36
+        Me.MetroLabel11.Text = "Time (in secs)"
+        '
+        'TableLayoutPanel6
+        '
+        Me.TableLayoutPanel6.ColumnCount = 1
+        Me.TableLayoutPanel6.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.TableLayoutPanel6.Controls.Add(Me.ScreenTime_Lbl, 0, 1)
+        Me.TableLayoutPanel6.Controls.Add(Me.ScreenTime_Tbox, 0, 0)
+        Me.TableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel6.Location = New System.Drawing.Point(139, 41)
+        Me.TableLayoutPanel6.Name = "TableLayoutPanel6"
+        Me.TableLayoutPanel6.RowCount = 2
+        Me.TableLayoutPanel6.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 64.38356!))
+        Me.TableLayoutPanel6.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 35.61644!))
+        Me.TableLayoutPanel6.Size = New System.Drawing.Size(127, 56)
+        Me.TableLayoutPanel6.TabIndex = 40
+        '
+        'ScreenTime_Lbl
+        '
+        Me.ScreenTime_Lbl.AutoSize = True
+        Me.ScreenTime_Lbl.Location = New System.Drawing.Point(3, 36)
+        Me.ScreenTime_Lbl.Name = "ScreenTime_Lbl"
+        Me.ScreenTime_Lbl.Size = New System.Drawing.Size(73, 19)
+        Me.ScreenTime_Lbl.TabIndex = 0
+        Me.ScreenTime_Lbl.Text = "00 : 00 : 00"
+        '
+        'ScreenTime_Tbox
+        '
+        Me.ScreenTime_Tbox.CharacterCasing = System.Windows.Forms.CharacterCasing.Lower
+        '
+        '
+        '
+        Me.ScreenTime_Tbox.CustomButton.Image = Nothing
+        Me.ScreenTime_Tbox.CustomButton.Location = New System.Drawing.Point(93, 1)
+        Me.ScreenTime_Tbox.CustomButton.Name = ""
+        Me.ScreenTime_Tbox.CustomButton.Size = New System.Drawing.Size(27, 27)
+        Me.ScreenTime_Tbox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
+        Me.ScreenTime_Tbox.CustomButton.TabIndex = 1
+        Me.ScreenTime_Tbox.CustomButton.Text = "+"
+        Me.ScreenTime_Tbox.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
+        Me.ScreenTime_Tbox.CustomButton.UseSelectable = True
+        Me.ScreenTime_Tbox.CustomButton.Visible = False
+        Me.ScreenTime_Tbox.FontSize = MetroFramework.MetroTextBoxSize.Tall
+        Me.ScreenTime_Tbox.Lines = New String(-1) {}
+        Me.ScreenTime_Tbox.Location = New System.Drawing.Point(3, 3)
+        Me.ScreenTime_Tbox.MaxLength = 32767
+        Me.ScreenTime_Tbox.Name = "ScreenTime_Tbox"
+        Me.ScreenTime_Tbox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
+        Me.ScreenTime_Tbox.ScrollBars = System.Windows.Forms.ScrollBars.None
+        Me.ScreenTime_Tbox.SelectedText = ""
+        Me.ScreenTime_Tbox.SelectionLength = 0
+        Me.ScreenTime_Tbox.SelectionStart = 0
+        Me.ScreenTime_Tbox.Size = New System.Drawing.Size(121, 29)
+        Me.ScreenTime_Tbox.Style = MetroFramework.MetroColorStyle.Blue
+        Me.ScreenTime_Tbox.TabIndex = 32
+        Me.ScreenTime_Tbox.UseSelectable = True
+        Me.ScreenTime_Tbox.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
+        Me.ScreenTime_Tbox.WaterMarkFont = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        '
+        'ScreenType_Tbox
+        '
+        '
+        '
+        '
+        Me.ScreenType_Tbox.CustomButton.Image = Nothing
+        Me.ScreenType_Tbox.CustomButton.Location = New System.Drawing.Point(93, 1)
+        Me.ScreenType_Tbox.CustomButton.Name = ""
+        Me.ScreenType_Tbox.CustomButton.Size = New System.Drawing.Size(27, 27)
+        Me.ScreenType_Tbox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue
+        Me.ScreenType_Tbox.CustomButton.TabIndex = 1
+        Me.ScreenType_Tbox.CustomButton.Text = "+"
+        Me.ScreenType_Tbox.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light
+        Me.ScreenType_Tbox.CustomButton.UseSelectable = True
+        Me.ScreenType_Tbox.CustomButton.Visible = False
+        Me.ScreenType_Tbox.FontSize = MetroFramework.MetroTextBoxSize.Tall
+        Me.ScreenType_Tbox.Lines = New String(-1) {}
+        Me.ScreenType_Tbox.Location = New System.Drawing.Point(139, 4)
+        Me.ScreenType_Tbox.MaxLength = 32767
+        Me.ScreenType_Tbox.Name = "ScreenType_Tbox"
+        Me.ScreenType_Tbox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
+        Me.ScreenType_Tbox.ScrollBars = System.Windows.Forms.ScrollBars.None
+        Me.ScreenType_Tbox.SelectedText = ""
+        Me.ScreenType_Tbox.SelectionLength = 0
+        Me.ScreenType_Tbox.SelectionStart = 0
+        Me.ScreenType_Tbox.Size = New System.Drawing.Size(121, 29)
+        Me.ScreenType_Tbox.Style = MetroFramework.MetroColorStyle.Blue
+        Me.ScreenType_Tbox.TabIndex = 30
+        Me.ScreenType_Tbox.UseSelectable = True
+        Me.ScreenType_Tbox.WaterMarkColor = System.Drawing.Color.FromArgb(CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer), CType(CType(109, Byte), Integer))
+        Me.ScreenType_Tbox.WaterMarkFont = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        '
+        'ScreenFieldsHeader_Pnl
+        '
+        Me.ScreenFieldsHeader_Pnl.BackColor = System.Drawing.SystemColors.MenuHighlight
+        Me.ScreenFieldsHeader_Pnl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.ScreenFieldsHeader_Pnl.Controls.Add(Me.ExitScreen_Btn)
+        Me.ScreenFieldsHeader_Pnl.Controls.Add(Me.ScreenHeader_Lbl)
+        Me.ScreenFieldsHeader_Pnl.Dock = System.Windows.Forms.DockStyle.Top
+        Me.ScreenFieldsHeader_Pnl.Location = New System.Drawing.Point(0, 0)
+        Me.ScreenFieldsHeader_Pnl.Name = "ScreenFieldsHeader_Pnl"
+        Me.ScreenFieldsHeader_Pnl.Size = New System.Drawing.Size(270, 21)
+        Me.ScreenFieldsHeader_Pnl.TabIndex = 31
+        '
+        'ExitScreen_Btn
+        '
+        Me.ExitScreen_Btn.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.ExitScreen_Btn.Image = Global.KMDI_Systems.My.Resources.Resources.icons8_close_window_96
+        Me.ExitScreen_Btn.Location = New System.Drawing.Point(245, -2)
+        Me.ExitScreen_Btn.Name = "ExitScreen_Btn"
+        Me.ExitScreen_Btn.Size = New System.Drawing.Size(22, 22)
+        Me.ExitScreen_Btn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.ExitScreen_Btn.TabIndex = 41
+        Me.ExitScreen_Btn.TabStop = False
+        '
+        'ScreenHeader_Lbl
+        '
+        Me.ScreenHeader_Lbl.AutoSize = True
+        Me.ScreenHeader_Lbl.FontWeight = MetroFramework.MetroLabelWeight.Regular
+        Me.ScreenHeader_Lbl.ForeColor = System.Drawing.Color.Black
+        Me.ScreenHeader_Lbl.Location = New System.Drawing.Point(3, 0)
+        Me.ScreenHeader_Lbl.Name = "ScreenHeader_Lbl"
+        Me.ScreenHeader_Lbl.Size = New System.Drawing.Size(97, 19)
+        Me.ScreenHeader_Lbl.TabIndex = 40
+        Me.ScreenHeader_Lbl.Text = "Screen Header"
+        Me.ScreenHeader_Lbl.UseCustomBackColor = True
+        Me.ScreenHeader_Lbl.UseCustomForeColor = True
         '
         'TE_Installation_CPanel
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(653, 375)
-        Me.Controls.Add(Me.Fields_Pnl)
+        Me.Controls.Add(Me.ScreenFields_Pnl)
+        Me.Controls.Add(Me.FrameFields_Pnl)
         Me.Controls.Add(Me.AddSidebar_Pnl)
         Me.Controls.Add(Me.AddSidebar_Lbl)
-        Me.Controls.Add(Me.Frm_PNL)
         Me.Controls.Add(Me.LoadingPB)
         Me.Controls.Add(Me.Mktng_InvLBL)
+        Me.Controls.Add(Me.Frm_PNL)
         Me.KeyPreview = True
         Me.MaximizeBox = False
         Me.MinimizeBox = False
@@ -548,19 +747,27 @@ Partial Class TE_Installation_CPanel
         Me.Resizable = False
         Me.Frm_PNL.ResumeLayout(False)
         Me.TE_Cmenu.ResumeLayout(False)
-        Me.Fields_Pnl.ResumeLayout(False)
-        Me.Fields_TblPnl.ResumeLayout(False)
-        Me.Fields_TblPnl.PerformLayout()
+        Me.FrameFields_Pnl.ResumeLayout(False)
+        Me.FrameFields_TblPnl.ResumeLayout(False)
+        Me.FrameFields_TblPnl.PerformLayout()
         Me.TableLayoutPanel3.ResumeLayout(False)
         Me.TableLayoutPanel3.PerformLayout()
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.TableLayoutPanel1.PerformLayout()
         Me.TableLayoutPanel2.ResumeLayout(False)
         Me.TableLayoutPanel2.PerformLayout()
-        Me.FieldsHeader_Pnl.ResumeLayout(False)
-        Me.FieldsHeader_Pnl.PerformLayout()
+        Me.FrameFieldsHeader_Pnl.ResumeLayout(False)
+        Me.FrameFieldsHeader_Pnl.PerformLayout()
         CType(Me.Exit_Pbtn, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.LoadingPB, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.ScreenFields_Pnl.ResumeLayout(False)
+        Me.TableLayoutPanel4.ResumeLayout(False)
+        Me.TableLayoutPanel4.PerformLayout()
+        Me.TableLayoutPanel6.ResumeLayout(False)
+        Me.TableLayoutPanel6.PerformLayout()
+        Me.ScreenFieldsHeader_Pnl.ResumeLayout(False)
+        Me.ScreenFieldsHeader_Pnl.PerformLayout()
+        CType(Me.ExitScreen_Btn, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -572,8 +779,8 @@ Partial Class TE_Installation_CPanel
     Friend WithEvents DGV_Pnl As Panel
     Friend WithEvents TE_Cmenu As MetroFramework.Controls.MetroContextMenu
     Friend WithEvents DeleteToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents Fields_Pnl As Panel
-    Friend WithEvents Fields_TblPnl As TableLayoutPanel
+    Friend WithEvents FrameFields_Pnl As Panel
+    Friend WithEvents FrameFields_TblPnl As TableLayoutPanel
     Friend WithEvents MetroLabel6 As MetroFramework.Controls.MetroLabel
     Friend WithEvents Glass_Tbox As MetroFramework.Controls.MetroTextBox
     Friend WithEvents Sash_Tbox As MetroFramework.Controls.MetroTextBox
@@ -586,7 +793,7 @@ Partial Class TE_Installation_CPanel
     Friend WithEvents ProfileType_Tbox As MetroFramework.Controls.MetroTextBox
     Friend WithEvents AddSidebar_Lbl As ComponentFactory.Krypton.Toolkit.KryptonLabel
     Friend WithEvents AddSidebar_Pnl As Panel
-    Friend WithEvents FieldsHeader_Pnl As Panel
+    Friend WithEvents FrameFieldsHeader_Pnl As Panel
     Friend WithEvents FieldsHeader_Lbl As MetroFramework.Controls.MetroLabel
     Friend WithEvents EditToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents Exit_Pbtn As PictureBox
@@ -597,4 +804,15 @@ Partial Class TE_Installation_CPanel
     Friend WithEvents TableLayoutPanel2 As TableLayoutPanel
     Friend WithEvents SashHrs_Lbl As MetroFramework.Controls.MetroLabel
     Friend WithEvents WindoorPart_Cbox As MetroFramework.Controls.MetroComboBox
+    Friend WithEvents ScreenFields_Pnl As Panel
+    Friend WithEvents TableLayoutPanel4 As TableLayoutPanel
+    Friend WithEvents ScreenType_Tbox As MetroFramework.Controls.MetroTextBox
+    Friend WithEvents MetroLabel8 As MetroFramework.Controls.MetroLabel
+    Friend WithEvents MetroLabel11 As MetroFramework.Controls.MetroLabel
+    Friend WithEvents TableLayoutPanel6 As TableLayoutPanel
+    Friend WithEvents ScreenTime_Lbl As MetroFramework.Controls.MetroLabel
+    Friend WithEvents ScreenTime_Tbox As MetroFramework.Controls.MetroTextBox
+    Friend WithEvents ScreenFieldsHeader_Pnl As Panel
+    Friend WithEvents ExitScreen_Btn As PictureBox
+    Friend WithEvents ScreenHeader_Lbl As MetroFramework.Controls.MetroLabel
 End Class

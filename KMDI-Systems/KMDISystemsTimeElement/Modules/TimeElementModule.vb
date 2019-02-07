@@ -3,7 +3,7 @@ Module TimeElementModule
     Dim sqlconnString As String = "Data Source = 121.58.229.248,49107; Network Library=DBMSSOCN;Initial Catalog='heretosave';User ID=kmdiadmin;Password=kmdiadmin;"
     Public TMLMNT_SearchStr As String = Nothing
     Public TMLMNT_QUERY_INSTANCE As String = Nothing
-    Public InsertedTE_ID As Integer
+    Public InsertedTE_ID, InsertedSCR_ID As Integer
     Public Sub TMLMNT_Query_Select_STP(ByVal SearchString As String,
                                        ByVal StoredProcedureName As String,
                                        Optional WillUseReader As Boolean = False)
@@ -67,12 +67,12 @@ Module TimeElementModule
         '    End Try
         'End Try
     End Sub
-    Public Sub TMLMNT_Insert(ByVal StoredProcedureName As String,
-                             ByVal PROFILE_TYPE As String,
-                             ByVal W_Size As String,
-                             Optional W_Frame As Integer = 0,
-                             Optional W_Sash As Integer = 0,
-                             Optional W_Glass As Integer = 0)
+    Public Sub TMLMNT_Frame_Insert(ByVal StoredProcedureName As String,
+                                   ByVal PROFILE_TYPE As String,
+                                   ByVal W_Size As String,
+                                   Optional W_Frame As Integer = 0,
+                                   Optional W_Sash As Integer = 0,
+                                   Optional W_Glass As Integer = 0)
         Using sqlcon As New SqlConnection(sqlconnString)
             sqlcon.Open()
             Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
@@ -97,7 +97,7 @@ Module TimeElementModule
             End Using
         End Using
     End Sub
-    Public Sub TMLMNT_Update(ByVal StoredProcedureName As String,
+    Public Sub TMLMNT_Frame_Update(ByVal StoredProcedureName As String,
                              ByVal TE_ID As Integer,
                              ByVal PROFILE_TYPE As String,
                              ByVal W_Size As String,
@@ -126,8 +126,8 @@ Module TimeElementModule
             End Using
         End Using
     End Sub
-    Public Sub TMLMNT_Delete(ByVal StoredProcedureName As String,
-                             ByVal TE_ID As Integer)
+    Public Sub TMLMNT_Frame_Delete(ByVal StoredProcedureName As String,
+                                   ByVal TE_ID As Integer)
         Using sqlcon As New SqlConnection(sqlconnString)
             sqlcon.Open()
             Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
@@ -138,6 +138,72 @@ Module TimeElementModule
                 sqlCommand.CommandType = CommandType.StoredProcedure
 
                 sqlCommand.Parameters.Add("@TE_ID", SqlDbType.Int).Value = TE_ID
+                sqlCommand.ExecuteNonQuery()
+
+                transaction.Commit()
+                sql_Transaction_result = "Committed"
+            End Using
+        End Using
+    End Sub
+    Public Sub TMLMNT_Screen_Insert(ByVal StoredProcedureName As String,
+                                   ByVal SCREEN_TYPE As String,
+                                   Optional W_Screen As Integer = 0)
+        Using sqlcon As New SqlConnection(sqlconnString)
+            sqlcon.Open()
+            Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
+                transaction = sqlcon.BeginTransaction(IsolationLevel.RepeatableRead, StoredProcedureName)
+                sqlCommand.Connection = sqlcon
+                sqlCommand.Transaction = transaction
+                sqlCommand.CommandText = StoredProcedureName
+                sqlCommand.CommandType = CommandType.StoredProcedure
+
+                sqlCommand.Parameters.Add("@SCREEN_TYPE", SqlDbType.VarChar).Value = SCREEN_TYPE
+                sqlCommand.Parameters.Add("@W_Screen", SqlDbType.Int).Value = W_Screen
+                Using read As SqlDataReader = sqlCommand.ExecuteReader
+                    read.Read()
+                    InsertedSCR_ID = read.Item("INSERTED_SCR_ID")
+                End Using
+
+                transaction.Commit()
+                sql_Transaction_result = "Committed"
+            End Using
+        End Using
+    End Sub
+    Public Sub TMLMNT_Screen_Update(ByVal StoredProcedureName As String,
+                                    ByVal SCR_ID As Integer,
+                                    ByVal SCREEN_TYPE As String,
+                                    Optional W_Screen As Integer = 0)
+        Using sqlcon As New SqlConnection(sqlconnString)
+            sqlcon.Open()
+            Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
+                transaction = sqlcon.BeginTransaction(IsolationLevel.RepeatableRead, StoredProcedureName)
+                sqlCommand.Connection = sqlcon
+                sqlCommand.Transaction = transaction
+                sqlCommand.CommandText = StoredProcedureName
+                sqlCommand.CommandType = CommandType.StoredProcedure
+
+                sqlCommand.Parameters.Add("@SCREEN_TYPE", SqlDbType.VarChar).Value = SCREEN_TYPE
+                sqlCommand.Parameters.Add("@SCR_ID", SqlDbType.Int).Value = SCR_ID
+                sqlCommand.Parameters.Add("@W_Screen", SqlDbType.Int).Value = W_Screen
+                sqlCommand.ExecuteNonQuery()
+
+                transaction.Commit()
+                sql_Transaction_result = "Committed"
+            End Using
+        End Using
+    End Sub
+    Public Sub TMLMNT_Screen_Delete(ByVal StoredProcedureName As String,
+                                    ByVal SCR_ID As Integer)
+        Using sqlcon As New SqlConnection(sqlconnString)
+            sqlcon.Open()
+            Using sqlCommand As SqlCommand = sqlcon.CreateCommand()
+                transaction = sqlcon.BeginTransaction(IsolationLevel.RepeatableRead, StoredProcedureName)
+                sqlCommand.Connection = sqlcon
+                sqlCommand.Transaction = transaction
+                sqlCommand.CommandText = StoredProcedureName
+                sqlCommand.CommandType = CommandType.StoredProcedure
+
+                sqlCommand.Parameters.Add("@SCR_ID", SqlDbType.Int).Value = SCR_ID
                 sqlCommand.ExecuteNonQuery()
 
                 transaction.Commit()
