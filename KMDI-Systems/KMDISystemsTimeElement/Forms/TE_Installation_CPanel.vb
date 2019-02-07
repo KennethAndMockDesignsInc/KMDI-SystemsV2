@@ -344,6 +344,8 @@ Public Class TE_Installation_CPanel
                                                    TimeSpan.FromSeconds(Item_Sash), TimeSpan.FromSeconds(Item_Glass))
                             KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True, False, Nothing, False)
                             reset_here()
+                            ProfileType_Tbox.Focus()
+                            ProfileType_Tbox.Select()
                         Case "Frame_UPDATE"
                             InsCpanel_DGV.Rows(ROWINDEX).Cells("PROFILE TYPE").Value = Profile_Type
                             InsCpanel_DGV.Rows(ROWINDEX).Cells("SIZE").Value = Item_Size
@@ -363,6 +365,8 @@ Public Class TE_Installation_CPanel
                             InsCpanel_DGV.Rows.Add(InsertedSCR_ID, Screen_Type, TimeSpan.FromSeconds(Item_Screen))
                             KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True, False, Nothing, False)
                             reset_here()
+                            ScreenType_Tbox.Focus()
+                            ScreenType_Tbox.Select()
                         Case "Screen_UPDATE"
                             InsCpanel_DGV.Rows(ROWINDEX).Cells("SCREEN TYPE").Value = Screen_Type
                             InsCpanel_DGV.Rows(ROWINDEX).Cells("TIME").Value = TimeSpan.FromSeconds(Item_Screen)
@@ -379,6 +383,8 @@ Public Class TE_Installation_CPanel
                             InsCpanel_DGV.Rows.Add(InsertedHDL_ID, Handle_Type, TimeSpan.FromSeconds(Item_Handle))
                             KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True, False, Nothing, False)
                             reset_here()
+                            HandleType_Tbox.Focus()
+                            HandleType_Tbox.Select()
                         Case "Handle_UPDATE"
                             InsCpanel_DGV.Rows(ROWINDEX).Cells("HANDLE TYPE").Value = Handle_Type
                             InsCpanel_DGV.Rows(ROWINDEX).Cells("TIME").Value = TimeSpan.FromSeconds(Item_Handle)
@@ -428,6 +434,17 @@ Public Class TE_Installation_CPanel
                 FrameFields_Pnl.Visible = False
                 ScreenFields_Pnl.Visible = False
                 HandleFields_Pnl.Visible = False
+            ElseIf e.KeyCode = Keys.F5 Then
+                InsCpanel_DGV.Columns.Clear()
+                InsCpanel_DGV.Rows.Clear()
+                If WindoorPart_Cbox.SelectedIndex = 0 Then
+                    InsCPanel_TODO = "Frame"
+                ElseIf WindoorPart_Cbox.SelectedIndex = 1 Then
+                    InsCPanel_TODO = "Screen"
+                ElseIf WindoorPart_Cbox.SelectedIndex = 2 Then
+                    InsCPanel_TODO = "Handle"
+                End If
+                Start_InsCPanelBGW()
             End If
         Catch ex As Exception
             KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
