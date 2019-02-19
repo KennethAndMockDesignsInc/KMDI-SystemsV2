@@ -213,10 +213,10 @@ Module KMDISystemsGlobalModule
                     Case "DotNetError"
                         Select Case CustomPrompt
                             Case True
-                                MetroMessageBox.Show(FormName, PromptContent, "Error",
+                                MetroMessageBox.Show(FormName, PromptContent, "Internal error",
                                                             MessageBoxButtons.OK, MessageBoxIcon.Error)
                             Case False
-                                MetroMessageBox.Show(FormName, "Please refer to Error_Logs.txt", "Contact the developers",
+                                MetroMessageBox.Show(FormName, "Press F5 to refresh", "Internal error",
                                                             MessageBoxButtons.OK, MessageBoxIcon.Error)
                         End Select
 
@@ -229,7 +229,7 @@ Module KMDISystemsGlobalModule
                             Case 19
                                 MetroMessageBox.Show(FormName, "Server is under maintenance." & vbCrLf & "Please be patient, will come back A.S.A.P", "Server is down", MessageBoxButtons.OK, MessageBoxIcon.Error)
                             Case Else
-                                MetroMessageBox.Show(FormName, "Transaction failed", "Contact the developers",
+                                MetroMessageBox.Show(FormName, "Transaction failed", "Internal error",
                                                                     MessageBoxButtons.OK, MessageBoxIcon.Error)
                         End Select
                     Case "UserWarning"
@@ -238,8 +238,8 @@ Module KMDISystemsGlobalModule
                                 QuestionPromptAnswer = MetroMessageBox.Show(FormName, PromptContent, "Warning",
                                                                     Buttons, MessageBoxIcon.Warning)
                             Case False
-                                MetroMessageBox.Show(FormName, "Please Refer to Error_Logs.txt", "Contact the developers",
-                                                                    MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                                MetroMessageBox.Show(FormName, "Press F5 to refresh", "Internal error",
+                                                               MessageBoxButtons.OK, MessageBoxIcon.Warning)
                         End Select
                     Case "Success"
                         MetroMessageBox.Show(FormName, " ", PromptMode, MessageBoxButtons.OK, MessageBoxIcon.Information)

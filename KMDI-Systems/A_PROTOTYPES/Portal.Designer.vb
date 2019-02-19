@@ -31,7 +31,6 @@ Partial Class Portal
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
         Me.Button5 = New System.Windows.Forms.Button()
         Me.Button6 = New System.Windows.Forms.Button()
-        Me.LoadingPboxRNP = New System.Windows.Forms.PictureBox()
         Me.MetroTextButton1 = New MetroFramework.Controls.MetroTextBox.MetroTextButton()
         Me.MetroTextButton2 = New MetroFramework.Controls.MetroTextBox.MetroTextButton()
         Me.MetroTextButton3 = New MetroFramework.Controls.MetroTextBox.MetroTextButton()
@@ -49,12 +48,18 @@ Partial Class Portal
         Me.Button11 = New System.Windows.Forms.Button()
         Me.Button12 = New System.Windows.Forms.Button()
         Me.Button13 = New System.Windows.Forms.Button()
+        Me.Button14 = New System.Windows.Forms.Button()
+        Me.Button15 = New System.Windows.Forms.Button()
+        Me.Button16 = New System.Windows.Forms.Button()
+        Me.LoadingPboxRNP = New System.Windows.Forms.PictureBox()
+        Me.Button17 = New System.Windows.Forms.Button()
+        Me.Button18 = New System.Windows.Forms.Button()
         CType(Me.LoadingPboxRNP, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Button1
         '
-        Me.Button1.Location = New System.Drawing.Point(365, 41)
+        Me.Button1.Location = New System.Drawing.Point(479, 41)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(108, 23)
         Me.Button1.TabIndex = 0
@@ -79,7 +84,7 @@ Partial Class Portal
         '
         'Button2
         '
-        Me.Button2.Location = New System.Drawing.Point(365, 12)
+        Me.Button2.Location = New System.Drawing.Point(479, 12)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(108, 23)
         Me.Button2.TabIndex = 3
@@ -88,7 +93,7 @@ Partial Class Portal
         '
         'Button3
         '
-        Me.Button3.Location = New System.Drawing.Point(365, 70)
+        Me.Button3.Location = New System.Drawing.Point(479, 70)
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(108, 43)
         Me.Button3.TabIndex = 4
@@ -97,7 +102,7 @@ Partial Class Portal
         '
         'Button4
         '
-        Me.Button4.Location = New System.Drawing.Point(365, 119)
+        Me.Button4.Location = New System.Drawing.Point(479, 119)
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(108, 43)
         Me.Button4.TabIndex = 5
@@ -111,7 +116,7 @@ Partial Class Portal
         '
         'Button5
         '
-        Me.Button5.Location = New System.Drawing.Point(365, 168)
+        Me.Button5.Location = New System.Drawing.Point(479, 168)
         Me.Button5.Name = "Button5"
         Me.Button5.Size = New System.Drawing.Size(108, 28)
         Me.Button5.TabIndex = 6
@@ -120,24 +125,12 @@ Partial Class Portal
         '
         'Button6
         '
-        Me.Button6.Location = New System.Drawing.Point(365, 202)
+        Me.Button6.Location = New System.Drawing.Point(479, 202)
         Me.Button6.Name = "Button6"
         Me.Button6.Size = New System.Drawing.Size(108, 28)
         Me.Button6.TabIndex = 7
         Me.Button6.Text = "Project_Details.vb"
         Me.Button6.UseVisualStyleBackColor = True
-        '
-        'LoadingPboxRNP
-        '
-        Me.LoadingPboxRNP.BackColor = System.Drawing.Color.Transparent
-        Me.LoadingPboxRNP.Image = Global.KMDI_Systems.My.Resources.Resources.loading_page
-        Me.LoadingPboxRNP.Location = New System.Drawing.Point(12, 12)
-        Me.LoadingPboxRNP.Name = "LoadingPboxRNP"
-        Me.LoadingPboxRNP.Size = New System.Drawing.Size(57, 22)
-        Me.LoadingPboxRNP.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.LoadingPboxRNP.TabIndex = 13
-        Me.LoadingPboxRNP.TabStop = False
-        Me.LoadingPboxRNP.Visible = False
         '
         'MetroTextButton1
         '
@@ -249,9 +242,9 @@ Partial Class Portal
         '
         'Panel1
         '
-        Me.Panel1.Location = New System.Drawing.Point(479, 12)
+        Me.Panel1.Location = New System.Drawing.Point(593, 12)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(453, 244)
+        Me.Panel1.Size = New System.Drawing.Size(339, 244)
         Me.Panel1.TabIndex = 25
         '
         'Button8
@@ -308,11 +301,73 @@ Partial Class Portal
         Me.Button13.Text = "Transitions"
         Me.Button13.UseVisualStyleBackColor = True
         '
+        'Button14
+        '
+        Me.Button14.Location = New System.Drawing.Point(365, 202)
+        Me.Button14.Name = "Button14"
+        Me.Button14.Size = New System.Drawing.Size(108, 28)
+        Me.Button14.TabIndex = 32
+        Me.Button14.Text = "Add Pair Values"
+        Me.Button14.UseVisualStyleBackColor = True
+        '
+        'Button15
+        '
+        Me.Button15.Location = New System.Drawing.Point(365, 168)
+        Me.Button15.Name = "Button15"
+        Me.Button15.Size = New System.Drawing.Size(108, 28)
+        Me.Button15.TabIndex = 33
+        Me.Button15.Text = "Return Pair Values"
+        Me.Button15.UseVisualStyleBackColor = True
+        '
+        'Button16
+        '
+        Me.Button16.Location = New System.Drawing.Point(365, 134)
+        Me.Button16.Name = "Button16"
+        Me.Button16.Size = New System.Drawing.Size(108, 28)
+        Me.Button16.TabIndex = 34
+        Me.Button16.Text = "Pie Chart"
+        Me.Button16.UseVisualStyleBackColor = True
+        '
+        'LoadingPboxRNP
+        '
+        Me.LoadingPboxRNP.BackColor = System.Drawing.Color.Transparent
+        Me.LoadingPboxRNP.Image = Global.KMDI_Systems.My.Resources.Resources.loading_page
+        Me.LoadingPboxRNP.Location = New System.Drawing.Point(12, 12)
+        Me.LoadingPboxRNP.Name = "LoadingPboxRNP"
+        Me.LoadingPboxRNP.Size = New System.Drawing.Size(57, 22)
+        Me.LoadingPboxRNP.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.LoadingPboxRNP.TabIndex = 13
+        Me.LoadingPboxRNP.TabStop = False
+        Me.LoadingPboxRNP.Visible = False
+        '
+        'Button17
+        '
+        Me.Button17.Location = New System.Drawing.Point(365, 100)
+        Me.Button17.Name = "Button17"
+        Me.Button17.Size = New System.Drawing.Size(108, 28)
+        Me.Button17.TabIndex = 35
+        Me.Button17.Text = "Distinct DataTable"
+        Me.Button17.UseVisualStyleBackColor = True
+        '
+        'Button18
+        '
+        Me.Button18.Location = New System.Drawing.Point(365, 66)
+        Me.Button18.Name = "Button18"
+        Me.Button18.Size = New System.Drawing.Size(108, 28)
+        Me.Button18.TabIndex = 36
+        Me.Button18.Text = "SecsToHrs"
+        Me.Button18.UseVisualStyleBackColor = True
+        '
         'Portal
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(944, 294)
+        Me.ClientSize = New System.Drawing.Size(944, 295)
+        Me.Controls.Add(Me.Button18)
+        Me.Controls.Add(Me.Button17)
+        Me.Controls.Add(Me.Button16)
+        Me.Controls.Add(Me.Button15)
+        Me.Controls.Add(Me.Button14)
         Me.Controls.Add(Me.Button13)
         Me.Controls.Add(Me.Button12)
         Me.Controls.Add(Me.Button11)
@@ -374,4 +429,9 @@ Partial Class Portal
     Friend WithEvents Button11 As Button
     Friend WithEvents Button12 As Button
     Friend WithEvents Button13 As Button
+    Friend WithEvents Button14 As Button
+    Friend WithEvents Button15 As Button
+    Friend WithEvents Button16 As Button
+    Friend WithEvents Button17 As Button
+    Friend WithEvents Button18 As Button
 End Class

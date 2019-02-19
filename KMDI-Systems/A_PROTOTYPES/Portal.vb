@@ -365,4 +365,33 @@ Begin Transaction
         Transition_Prototype.Show()
         Me.Hide()
     End Sub
+    Dim list As List(Of KeyValuePair(Of Integer, Integer)) =
+            New List(Of KeyValuePair(Of Integer, Integer))
+    Private Sub Button14_Click(sender As Object, e As EventArgs) Handles Button14.Click
+        list.Add(New KeyValuePair(Of Integer, Integer)(TextBox1.Text, TextBox2.Text))
+    End Sub
+
+    Private Sub Button15_Click(sender As Object, e As EventArgs) Handles Button15.Click
+        ' Loop over pairs.
+        For Each pair As KeyValuePair(Of Integer, Integer) In list
+            ' Get key.
+            Dim key As Integer = pair.Key
+            ' Get value.
+            Dim value As Integer = pair.Value
+            ' Display.
+            Console.WriteLine(key & vbCrLf & value)
+        Next
+    End Sub
+
+    Private Sub Button16_Click(sender As Object, e As EventArgs) Handles Button16.Click
+        PieChart.Show()
+    End Sub
+
+    Private Sub Button17_Click(sender As Object, e As EventArgs) Handles Button17.Click
+        DistinctDataTables.Show()
+    End Sub
+
+    Private Sub Button18_Click(sender As Object, e As EventArgs) Handles Button18.Click
+        SecsToHours.Show()
+    End Sub
 End Class

@@ -99,10 +99,28 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="A_PROTOTYPES\DistinctDataTables.Designer.vb">
+      <DependentUpon>DistinctDataTables.vb</DependentUpon>
+    </Compile>
+    <Compile Include="A_PROTOTYPES\DistinctDataTables.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="A_PROTOTYPES\PieChart.Designer.vb">
+      <DependentUpon>PieChart.vb</DependentUpon>
+    </Compile>
+    <Compile Include="A_PROTOTYPES\PieChart.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="A_PROTOTYPES\Portal.Designer.vb">
       <DependentUpon>Portal.vb</DependentUpon>
     </Compile>
     <Compile Include="A_PROTOTYPES\Portal.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="A_PROTOTYPES\SecsToHours.Designer.vb">
+      <DependentUpon>SecsToHours.vb</DependentUpon>
+    </Compile>
+    <Compile Include="A_PROTOTYPES\SecsToHours.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="A_PROTOTYPES\Transition_Prototype.Designer.vb">
@@ -410,8 +428,17 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="A_PROTOTYPES\DistinctDataTables.resx">
+      <DependentUpon>DistinctDataTables.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="A_PROTOTYPES\PieChart.resx">
+      <DependentUpon>PieChart.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="A_PROTOTYPES\Portal.resx">
       <DependentUpon>Portal.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="A_PROTOTYPES\SecsToHours.resx">
+      <DependentUpon>SecsToHours.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="A_PROTOTYPES\Transition_Prototype.resx">
       <DependentUpon>Transition_Prototype.vb</DependentUpon>
