@@ -4,6 +4,7 @@ Module MarketingModule
     Public Mktng_QUERY_INSTANCE As String = Nothing
 
     Public OpenedByFormName As Form
+    Public ObjContainingDGV As Object
     Public DGVStrGlobal As String
 
     Public InsertedMI_ID, InsertedMIC_ID, InsertedMISC_ID, InsertedMIE_ID As Integer

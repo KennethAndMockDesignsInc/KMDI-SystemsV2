@@ -14,9 +14,13 @@ Public Class ColumnVisibility
         End If
     End Sub
     Public Sub CreateMetroChkBoxes()
-        For Each ctrl In OpenedByFormName.Controls
-            If ctrl.Name = DGVStrGlobal Then
-                DGVName = ctrl
+        For Each Obj In OpenedByFormName.Controls
+            If Obj Is ObjContainingDGV Then
+                For Each dgv In Obj.Controls
+                    If dgv.Name = DGVStrGlobal Then
+                        DGVName = dgv
+                    End If
+                Next
             End If
         Next
     End Sub
@@ -33,11 +37,21 @@ Public Class ColumnVisibility
     End Sub
 
     Private Sub columnChks_CheckedChanged(sender As Object, e As EventArgs)
-        For Each ctrl In OpenedByFormName.Controls
-            If ctrl.Name = DGVStrGlobal Then
-                ctrl.Columns(sender.Name).Visible = sender.Checked
+        For Each Obj In OpenedByFormName.Controls
+            If Obj Is ObjContainingDGV Then
+                For Each dgv In Obj.Controls
+                    If dgv.Name = DGVStrGlobal Then
+                        dgv.Columns(sender.Name).Visible = sender.Checked
+                        'DGVName = dgv
+                    End If
+                Next
             End If
         Next
+        'For Each ctrl In OpenedByFormName.Controls
+        '    If ctrl.Name = DGVStrGlobal Then
+        '        ctrl.Columns(sender.Name).Visible = sender.Checked
+        '    End If
+        'Next
     End Sub
 
     Private Sub ColumnVisibility_Load(sender As Object, e As EventArgs) Handles MyBase.Load

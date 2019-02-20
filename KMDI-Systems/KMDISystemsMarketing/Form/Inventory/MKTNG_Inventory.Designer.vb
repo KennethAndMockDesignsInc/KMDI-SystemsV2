@@ -76,19 +76,19 @@ Partial Class MKTNG_Inventory
         'AddItemToolStripMenuItem1
         '
         Me.AddItemToolStripMenuItem1.Name = "AddItemToolStripMenuItem1"
-        Me.AddItemToolStripMenuItem1.Size = New System.Drawing.Size(112, 22)
+        Me.AddItemToolStripMenuItem1.Size = New System.Drawing.Size(152, 22)
         Me.AddItemToolStripMenuItem1.Text = "Add"
         '
         'UpdateItemToolStripMenuItem1
         '
         Me.UpdateItemToolStripMenuItem1.Name = "UpdateItemToolStripMenuItem1"
-        Me.UpdateItemToolStripMenuItem1.Size = New System.Drawing.Size(112, 22)
+        Me.UpdateItemToolStripMenuItem1.Size = New System.Drawing.Size(152, 22)
         Me.UpdateItemToolStripMenuItem1.Text = "Update"
         '
         'DeleteItemToolStripMenuItem1
         '
         Me.DeleteItemToolStripMenuItem1.Name = "DeleteItemToolStripMenuItem1"
-        Me.DeleteItemToolStripMenuItem1.Size = New System.Drawing.Size(112, 22)
+        Me.DeleteItemToolStripMenuItem1.Size = New System.Drawing.Size(152, 22)
         Me.DeleteItemToolStripMenuItem1.Text = "Delete"
         '
         'AddQuantityToolStripMenuItem

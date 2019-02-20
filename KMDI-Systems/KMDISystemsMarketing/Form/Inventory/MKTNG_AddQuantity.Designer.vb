@@ -57,7 +57,7 @@ Partial Class MKTNG_AddQuantity
         Me.QTYTbox.FontSize = MetroFramework.MetroTextBoxSize.Tall
         Me.QTYTbox.Lines = New String(-1) {}
         Me.QTYTbox.Location = New System.Drawing.Point(23, 75)
-        Me.QTYTbox.MaxLength = 32767
+        Me.QTYTbox.MaxLength = 10
         Me.QTYTbox.Name = "QTYTbox"
         Me.QTYTbox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
         Me.QTYTbox.ScrollBars = System.Windows.Forms.ScrollBars.None

@@ -47,6 +47,9 @@ Public Class MKTNG_AddQuantity
                 If sql_Transaction_result = "Committed" Then
                     MKTNG_Inventory.Inv_DGV.Rows(INV_DGV_ROWINDEX).Cells(7).Value = NEW_QUANTITY
                     KMDIPrompts(Me, "Success", Nothing, Nothing, Nothing, True)
+                    Me.Dispose()
+                    OpenedByFormName.Enabled = True
+                    OpenedByFormName.BringToFront()
                 End If
             End If
         Catch ex As Exception
@@ -56,8 +59,12 @@ Public Class MKTNG_AddQuantity
     End Sub
 
     Private Sub AddBTN_Click(sender As Object, e As EventArgs) Handles AddBTN.Click
-        Quantity_here = Val(QTYTbox.Text)
-        Start_MKTNG_AddQuantity_BGW()
+        Try
+            Quantity_here = Val(QTYTbox.Text)
+            Start_MKTNG_AddQuantity_BGW()
+        Catch ex As Exception
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
+        End Try
     End Sub
 
     Private Sub QTYTbox_KeyPress(sender As Object, e As KeyPressEventArgs) Handles QTYTbox.KeyPress

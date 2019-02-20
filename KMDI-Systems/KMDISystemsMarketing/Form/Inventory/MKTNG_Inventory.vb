@@ -247,6 +247,7 @@ Public Class MKTNG_Inventory
     Private Sub ColumnToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ColumnToolStripMenuItem.Click
         Try
             OpenedByFormName = Me
+            ObjContainingDGV = Frm_PNL
             DGVStrGlobal = "Inv_DGV"
             Dim frm As Form = ColumnVisibility
             Select Case frm.Visible
@@ -361,6 +362,7 @@ Public Class MKTNG_Inventory
     Private Sub AddQuantityToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AddQuantityToolStripMenuItem.Click
         Try
             Dim frm As Form = MKTNG_AddQuantity
+            OpenedByFormName = Me
             Select Case frm.Visible
                 Case True
                     frm.BringToFront()
