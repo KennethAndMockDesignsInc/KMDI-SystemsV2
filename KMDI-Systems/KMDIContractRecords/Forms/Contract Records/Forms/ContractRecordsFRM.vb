@@ -1,5 +1,6 @@
 ﻿Imports System.ComponentModel
 Imports MetroFramework
+Imports ComponentFactory.Krypton.Toolkit
 
 Public Class ContractRecordsFRM
     Dim sql As New KMDIContractRecordsClass
@@ -51,6 +52,7 @@ Public Class ContractRecordsFRM
     Public ContractRecordsBGW As BackgroundWorker = New BackgroundWorker
     Public Delegate Sub PBVisibilityDelegate(ByVal Visibility As Boolean)
     Dim ChangePBVisibility As PBVisibilityDelegate
+    Public ListofClients_DGV As New KryptonDataGridView
 
     Private Sub ContractRecordsGridView_ColumnHeaderMouseClick(sender As Object, e As DataGridViewCellMouseEventArgs) Handles ContractRecordsDGV.ColumnHeaderMouseClick
         Try
@@ -85,12 +87,12 @@ Public Class ContractRecordsFRM
             AddHandler ContractRecordsBGW.RunWorkerCompleted, AddressOf ContractRecordsBGW_RunWorkerCompleted
 
             ChangePBVisibility = AddressOf ChangeVisibility
+            ListofClients_DGV.DataSource = ListOfClients_BS
 
             LoadInitialSetUp()
 
         Catch ex As Exception
-            ErrorMessage = ex.ToString
-            MessageBox.Show(ex.ToString)
+            KMDIPrompts(Me, "DotNetError", ex.Message, ex.StackTrace, Nothing, True)
         End Try
 
     End Sub
@@ -106,9 +108,10 @@ Public Class ContractRecordsFRM
     Public Sub StartWorker()
         Try
             If ContractRecordsBGW.IsBusy <> True Then
-                ContractRecordsDGV.Columns.Clear()
-                ContractRecordsDGV.DataSource = Nothing
-                ContractRecordsDGV.DataMember = Nothing
+                'ContractRecordsDGV.Columns.Clear()
+                'ContractRecordsDGV.DataSource = Nothing
+                'ContractRecordsDGV.DataMember = Nothing
+                Invoke(ChangePBVisibility, True)
                 ContractRecordsBGW.WorkerReportsProgress = True
                 ContractRecordsBGW.WorkerSupportsCancellation = True
                 ContractRecordsBGW.RunWorkerAsync()
@@ -124,7 +127,12 @@ Public Class ContractRecordsFRM
 
     Private Sub ContractRecordsBGW_DoWork(ByVal sender As System.Object, ByVal e As DoWorkEventArgs)
         Try
-            Invoke(ChangePBVisibility, True)
+            Select Case ActionTaken
+                Case "Search"
+                Case "Add"
+                Case "Update"
+                Case "Deleted"
+            End Select
             ActionTakenByUser()
 
             sql.ContractRecordsLoad(ActionTaken,

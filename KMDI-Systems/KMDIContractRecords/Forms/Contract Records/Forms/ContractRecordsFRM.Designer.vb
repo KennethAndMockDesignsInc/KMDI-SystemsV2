@@ -29,6 +29,7 @@ Partial Class ContractRecordsFRM
         Me.ContractsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ContractItemsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ScannedContractsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.OverviewToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SearchToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.RefreshToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ReloadToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -45,10 +46,11 @@ Partial Class ContractRecordsFRM
         Me.ContractRecordsDGV = New ComponentFactory.Krypton.Toolkit.KryptonDataGridView()
         Me.ContractRecordsLBL = New MetroFramework.Controls.MetroLabel()
         Me.LoadingPB = New System.Windows.Forms.PictureBox()
-        Me.OverviewToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Panel1 = New System.Windows.Forms.Panel()
         Me.ListOfViewMenuStrip.SuspendLayout()
         CType(Me.ContractRecordsDGV, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LoadingPB, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'ListOfViewMenuStrip
@@ -82,6 +84,12 @@ Partial Class ContractRecordsFRM
         Me.ScannedContractsToolStripMenuItem.Name = "ScannedContractsToolStripMenuItem"
         Me.ScannedContractsToolStripMenuItem.Size = New System.Drawing.Size(173, 22)
         Me.ScannedContractsToolStripMenuItem.Text = "Scanned Contracts"
+        '
+        'OverviewToolStripMenuItem
+        '
+        Me.OverviewToolStripMenuItem.Name = "OverviewToolStripMenuItem"
+        Me.OverviewToolStripMenuItem.Size = New System.Drawing.Size(173, 22)
+        Me.OverviewToolStripMenuItem.Text = "Overview"
         '
         'SearchToolStripMenuItem
         '
@@ -173,7 +181,7 @@ Partial Class ContractRecordsFRM
         Me.ContractRecordsDGV.ColumnHeadersHeight = 30
         Me.ContractRecordsDGV.Cursor = System.Windows.Forms.Cursors.Hand
         Me.ContractRecordsDGV.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ContractRecordsDGV.Location = New System.Drawing.Point(20, 60)
+        Me.ContractRecordsDGV.Location = New System.Drawing.Point(0, 0)
         Me.ContractRecordsDGV.Name = "ContractRecordsDGV"
         Me.ContractRecordsDGV.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Office2010Silver
         Me.ContractRecordsDGV.ReadOnly = True
@@ -223,11 +231,14 @@ Partial Class ContractRecordsFRM
         Me.LoadingPB.TabStop = False
         Me.LoadingPB.Visible = False
         '
-        'OverviewToolStripMenuItem
+        'Panel1
         '
-        Me.OverviewToolStripMenuItem.Name = "OverviewToolStripMenuItem"
-        Me.OverviewToolStripMenuItem.Size = New System.Drawing.Size(173, 22)
-        Me.OverviewToolStripMenuItem.Text = "Overview"
+        Me.Panel1.Controls.Add(Me.ContractRecordsDGV)
+        Me.Panel1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Panel1.Location = New System.Drawing.Point(20, 60)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(1160, 625)
+        Me.Panel1.TabIndex = 4
         '
         'ContractRecordsFRM
         '
@@ -236,7 +247,7 @@ Partial Class ContractRecordsFRM
         Me.ClientSize = New System.Drawing.Size(1200, 705)
         Me.Controls.Add(Me.LoadingPB)
         Me.Controls.Add(Me.ContractRecordsLBL)
-        Me.Controls.Add(Me.ContractRecordsDGV)
+        Me.Controls.Add(Me.Panel1)
         Me.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
@@ -246,6 +257,7 @@ Partial Class ContractRecordsFRM
         Me.ListOfViewMenuStrip.ResumeLayout(False)
         CType(Me.ContractRecordsDGV, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.LoadingPB, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Panel1.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -272,4 +284,5 @@ Partial Class ContractRecordsFRM
     Friend WithEvents ContractsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ContractItemsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents OverviewToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents Panel1 As Panel
 End Class
